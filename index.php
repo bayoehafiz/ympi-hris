@@ -1,12 +1,12 @@
 <?php
 $title = 'Home';
 
-include(dirname(__FILE__)."/login/misc/pagehead.php");
+include __DIR__."/login/misc/pagehead.php";
 ?>
 </head>
 <body>
 
-<?php include(dirname(__FILE__)."/login/misc/pullnav.php"); ?>
+<?php include __DIR__."/login/misc/pullnav.php"; ?>
 
 <div class="container">
 

@@ -9,7 +9,7 @@ ehthumbs.db
 Thumbs.db
 /nbproject/private/
 vendor*
-login/dbconf.php
+# login/dbconf.php
 composer.lock
 install/cache
 install/db
