@@ -9,23 +9,6 @@ var App = function() {
     // Helper variables - set in uiInit()
     var $lHtml, $lBody, $lPage, $lSidebar, $lSidebarScroll, $lSideOverlay, $lSideOverlayScroll, $lHeader, $lMain, $lFooter;
 
-    // Authorization init
-    // var clientId = "6TTb24k3ZF1po9mKwmsi49TQuanpC9H0";
-    // var domain = "ympi.auth0.com";
-    // var lock = new Auth0Lock(clientId, domain);
-
-    // lock.on("authenticated", function(authResult) {
-    //     lock.getUserInfo(authResult.accessToken, function(error, profile) {
-    //         if (error) {
-    //             // Handle error
-    //             return;
-    //         }
-
-    //         localStorage.setItem("accessToken", authResult.accessToken);
-    //         localStorage.setItem("profile", JSON.stringify(profile));
-    //     });
-    // });
-
     /*
      ********************************************************************************************
      *
@@ -1387,5 +1370,61 @@ var OneUI = App;
 jQuery(function() {
     if (typeof angular == 'undefined') {
         App.init();
+
+        // Authorization init
+        var clientId = "6TTb24k3ZF1po9mKwmsi49TQuanpC9H0";
+        var domain = "ympi.auth0.com";
+        var options = {
+            allowShowPassword: true,
+            closable: false,
+            autoclose: true,
+            allowAutocomplete: false,
+            rememberLastLogin: false,
+            redirect: false,
+            theme: {
+                logo: 'assets/img/yamaha-logo-pd.png',
+                primaryColor: '#a48ad4'
+            },
+            languageDictionary: {
+                title: "Silahkan login",
+                error: {
+                    login: {
+                        "lock.invalid_email_password": "Email atau password yang dimasukkan salah",
+                        "lock.network": "Sedang terjadi network error! Silahkan coba lagi nanti",
+                        "lock.unauthorized": "Login gagal",
+                        "too_many_attempts": "Anda telah gagal login."
+                    },
+                    signUp: {
+                        "invalid_password": "Password salah!",
+                        "user_exists": "User ini sudah tersedia"
+                    }
+                }
+            },
+        };
+        var lock = new Auth0Lock(clientId, domain, options);
+
+        lock.on("authenticated", function(authResult) {
+            lock.hide();
+            lock.getUserInfo(authResult.accessToken, function(error, profile) {
+                if (error) {
+                    console.log('Error:', error);
+                    return;
+                }
+
+                if (window.sessionStorage) {
+                    sessionStorage.setItem('accessToken', authResult.accessToken);
+                    sessionStorage.setItem('profile', JSON.stringify(profile));
+                    location.reload();
+                }
+            });
+        });
+
+        // check if user is authenticated
+        var token = sessionStorage.getItem('accessToken');
+        if (!token || token == undefined) {
+            lock.show();
+        } else {
+            console.log(token);
+        }
     }
 });

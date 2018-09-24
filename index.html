@@ -19,6 +19,8 @@
     <link rel="stylesheet" id="css-main" href="assets/css/oneui.css">
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css">
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <!-- END Stylesheets -->
 </head>
 
@@ -64,22 +66,22 @@
                             </li>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
                             <li>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Level Jabatan</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Level Jabatan</span></a>
                             </li>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
                             <li>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
                             </li>
                             <li>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
                             </li>
                             <li>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
                             </li>
                             <li>
-                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
+                                <a class="nav-menu js-swal-error" data-toggle="nav-menu" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
                             </li>
                         </ul>
                     </div>
@@ -103,20 +105,13 @@
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-header">Profile</li>
                             <li>
-                                <a tabindex="-1" href="#">
-                                        <i class="si si-envelope-open pull-right"></i>
-                                        <span class="badge badge-primary pull-right">3</span>Inbox
-                                    </a>
-                            </li>
-                            <li>
-                                <a tabindex="-1" href="#">
-                                        <i class="si si-user pull-right"></i>
-                                        <span class="badge badge-success pull-right">1</span>Profile
+                                <a class="js-swal-error" tabindex="-1" href="#">
+                                        <i class="si si-user pull-right"></i>Profile
                                     </a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a tabindex="-1" href="#">
+                                <a tabindex="-1" href="#" id="btn-logout">
                                         <i class="si si-logout pull-right"></i>Log out
                                     </a>
                             </li>
@@ -125,6 +120,13 @@
                 </li>
             </ul>
             <!-- END Header Navigation Right -->
+            <!-- Header Navigation Left -->
+            <ul class="nav-header pull-left">
+                <li class="js-header-search header-search">
+                    <span class="current-time"></span>
+                </li>
+            </ul>
+            <!-- END Header Navigation Left -->
         </header>
         <!-- END Header -->
         <!-- Main Container -->
@@ -196,9 +198,13 @@
     <!-- Main script -->
     <script src="assets/js/app.js"></script>
     <!-- Auth plugin -->
-    <script src="//cdn.auth0.com/js/lock/11.9/lock.min.js"></script>
+    <script src="assets/js/core/lock.min.js"></script>
+    <script src="assets/js/core/storage.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
     <!-- Page JS Plugins -->
     <script src="assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="assets/js/plugins/sweetalert2/es6-promise.auto.min.js"></script>
+    <script src="assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- Page JS Code -->
     <script src="assets/js/pages/dashboard.js"></script>
 </body>
