@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>YMPI HRIS</title>
+    <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Stylesheets -->
+    <!-- Web fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+    <!-- Bootstrap and OneUI CSS framework -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" id="css-main" href="assets/css/oneui.css">
+    <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+    <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css">
+    <!-- END Stylesheets -->
+</head>
+
+<body>
+    <!-- Page Container -->
+    <!--
+            Available Classes:
+
+            'enable-cookies'             Remembers active color theme between pages (when set through color theme list)
+
+            'sidebar-l'                  Left Sidebar and right Side Overlay
+            'sidebar-r'                  Right Sidebar and left Side Overlay
+            'sidebar-mini'               Mini hoverable Sidebar (> 991px)
+            'sidebar-o'                  Visible Sidebar by default (> 991px)
+            'sidebar-o-xs'               Visible Sidebar by default (< 992px)
+
+            'side-overlay-hover'         Hoverable Side Overlay (> 991px)
+            'side-overlay-o'             Visible Side Overlay by default (> 991px)
+
+            'side-scroll'                Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (> 991px)
+
+            'header-navbar-fixed'        Enables fixed header
+        -->
+    <div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <!-- Sidebar Scroll Container -->
+            <div id="sidebar-scroll">
+                <!-- Sidebar Content -->
+                <!-- Adding .sidebar-mini-hide to an element will hide it when the sidebar is in mini mode -->
+                <div class="sidebar-content">
+                    <!-- Side Header -->
+                    <div class="side-header side-content bg-white-op">
+                        <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
+                        <a class="h5 text-white" href="/"><img src="assets/img/yamaha-logo-white.png" class="img-responsive pb-10"></a>
+                    </div>
+                    <!-- END Side Header -->
+                    <!-- Side Content -->
+                    <div class="side-content">
+                        <ul class="nav-main">
+                            <li>
+                                <a class="active" href="/"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
+                            </li>
+                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
+                            <li>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Level Jabatan</span></a>
+                            </li>
+                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
+                            <li>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
+                            </li>
+                            <li>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
+                            </li>
+                            <li>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
+                            </li>
+                            <li>
+                                <a class="nav-menu" data-toggle="nav-menu" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END Side Content -->
+                </div>
+                <!-- Sidebar Content -->
+            </div>
+            <!-- END Sidebar Scroll Container -->
+        </nav>
+        <!-- END Sidebar -->
+        <!-- Header -->
+        <header id="header-navbar" class="content-mini content-mini-full">
+            <!-- Header Navigation Right -->
+            <ul class="nav-header pull-right">
+                <li>
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
+                            <img src="assets/img/avatars/avatar10.jpg" alt="Avatar">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Profile</li>
+                            <li>
+                                <a tabindex="-1" href="#">
+                                        <i class="si si-envelope-open pull-right"></i>
+                                        <span class="badge badge-primary pull-right">3</span>Inbox
+                                    </a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="#">
+                                        <i class="si si-user pull-right"></i>
+                                        <span class="badge badge-success pull-right">1</span>Profile
+                                    </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="#">
+                                        <i class="si si-logout pull-right"></i>Log out
+                                    </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <!-- END Header Navigation Right -->
+        </header>
+        <!-- END Header -->
+        <!-- Main Container -->
+        <main id="main-container">
+            <!-- Page Header -->
+            <div class="content bg-image overflow-hidden" style="background-image: url('assets/img/photos/photo3@2x.jpg');">
+                <div class="push-50-t push-15">
+                    <h1 class="h2 text-white animated zoomIn">Dashboard</h1>
+                    <h2 class="h5 text-white-op animated zoomIn">Welcome <span id="nick" class="nickname"></span></h2>
+                </div>
+            </div>
+            <!-- END Page Header -->
+            <!-- Stats -->
+            <div class="content bg-white border-b">
+                <div class="row items-push text-uppercase">
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Ijin Cuti</div>
+                        <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> Hari ini</small></div>
+                        <a class="h2 font-w300 text-primary animated flipInX" href="base_comp_charts.html">4</a>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Ijin Sakit</div>
+                        <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> Hari ini</small></div>
+                        <a class="h2 font-w300 text-primary animated flipInX" href="base_comp_charts.html">2</a>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Ijin Cuti</div>
+                        <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> Bulan ini</small></div>
+                        <a class="h2 font-w300 text-primary animated flipInX" href="base_comp_charts.html">120</a>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Ijin Sakit</div>
+                        <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> Bulan ini</small></div>
+                        <a class="h2 font-w300 text-primary animated flipInX" href="base_comp_charts.html"> 50</a>
+                    </div>
+                </div>
+            </div>
+            <!-- END Stats -->
+            <!-- Page Content -->
+            <div class="content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Something here -->
+                    </div>
+                </div>
+            </div>
+            <!-- END Page Content -->
+        </main>
+        <!-- END Main Container -->
+        <!-- Footer -->
+        <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
+            <div class="pull-right">
+                &copy; 2018 <a class="font-w600" href="#" target="_blank">Yamaha Musical Products Indonesia</a>
+            </div>
+        </footer>
+        <!-- END Footer -->
+    </div>
+    <!-- END Page Container -->
+    <!-- END Apps Modal -->
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+    <script src="assets/js/core/jquery.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+    <script src="assets/js/core/jquery.slimscroll.min.js"></script>
+    <script src="assets/js/core/jquery.scrollLock.min.js"></script>
+    <script src="assets/js/core/jquery.appear.min.js"></script>
+    <script src="assets/js/core/jquery.countTo.min.js"></script>
+    <script src="assets/js/core/jquery.placeholder.min.js"></script>
+    <script src="assets/js/core/js.cookie.min.js"></script>
+    <!-- Main script -->
+    <script src="assets/js/app.js"></script>
+    <!-- Auth plugin -->
+    <script src="//cdn.auth0.com/js/lock/11.9/lock.min.js"></script>
+    <!-- Page JS Plugins -->
+    <script src="assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <!-- Page JS Code -->
+    <script src="assets/js/pages/dashboard.js"></script>
+</body>
+
+</html>
