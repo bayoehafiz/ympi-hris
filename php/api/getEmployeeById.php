@@ -1,8 +1,8 @@
 <?php
-include "conn.php";
-include "inc/chromePhp.php";
+include "../conn.php";
+include "../inc/chromePhp.php";
 
-if (!empty($_POST['tanggal'])) {
+if (!empty($_POST['nik'])) {
     $query = $db->query("SELECT * FROM employee WHERE nik = '{$_POST['nik']}'");
     $rows = array();
 

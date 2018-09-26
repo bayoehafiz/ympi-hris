@@ -1,19 +1,20 @@
 <?php
-include "conn.php";
+include "../config/conn.php";
+include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT * FROM employee ORDER BY nik");
+$query = $db->query("SELECT * FROM employee ORDER BY pin");
 $rows = array();
 
 if ($query->num_rows > 0) {
     while ($r = mysqli_fetch_assoc($query)) {
         $rows[] = $r;
-    }
+    };
+
     $data['status'] = 'ok';
-    $data['week'] = $rows[0]['week'];
-    $data['result'] = $rows;
+    $data['data'] = $rows;
 } else {
     $data['status'] = 'err';
-    $data['result'] = '';
+    $data['data'] = '';
 }
 
 echo json_encode($data);
