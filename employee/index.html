@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>YMPI HRIS</title>
+    <title>YMPI HRIS - Karyawan</title>
     <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
     <meta name="author" content="pixelcave">
     <meta name="robots" content="noindex, nofollow">
@@ -14,14 +14,15 @@
     <!-- Stylesheets -->
     <!-- Web fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
-    <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
-    <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
+    <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+    <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
 </head>
 
@@ -62,28 +63,16 @@
                     <!-- Side Content -->
                     <div class="side-content">
                         <ul class="nav-main">
-                            <li>
-                                <a href="/"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
-                            </li>
-                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
-                            <li>
-                                <a class="nav-menu active" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Level Jabatan</span></a>
-                            </li>
+                            <a href="/"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
+                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Karyawan</span></li>
+                            <a class="nav-menu active" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Data Karyawan</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Divisi</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Jabatan</span></a>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
-                            <li>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
-                            </li>
-                            <li>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
-                            </li>
-                            <li>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
-                            </li>
-                            <li>
-                                <a class="nav-menu js-swal-error" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
-                            </li>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
                         </ul>
                     </div>
                     <!-- END Side Content -->
@@ -149,7 +138,7 @@
                 <div class="row items-push">
                     <div class="col-sm-7">
                         <h1 class="page-heading">
-                                Data Karyawan <small>Klik pada nama karyawan untuk melihat detail</small>
+                                Data Karyawan <button class="btn btn-success push-5-r push-10-l" type="button" id="btn-add"><i class="si si-user-follow"></i> Tambah Karyawan</button>
                             </h1>
                     </div>
                     <div class="col-sm-5 text-right hidden-xs">
@@ -161,13 +150,49 @@
                 </div>
             </div>
             <!-- END Page Header -->
+            <!-- Stats -->
+            <div class="content bg-white border-b">
+                <div class="row items-push text-uppercase text-center">
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Finance</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-finance"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">HRGA</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-hrga"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Production</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-production"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Prod. Engineering</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-prod-engineering"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Prod. Support</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-prod-support"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2">
+                        <div class="font-w700 text-gray-darker animated fadeIn">Total</div>
+                        <span class="h2 font-w300 text-primary animated flipInX" id="total-karyawan"></span>
+                        <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
                 <!-- Dynamic Table Full Pagination -->
                 <div class="block">
                     <div class="block-content">
                         <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality initialized in js/pages/base_tables_datatables.js -->
-                        <table class="table table-bordered table-striped js-dataTable-full-pagination" id="table-employee">
+                        <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee">
                             <thead>
                                 <tr>
                                     <th class="text-center">NIK</th>
@@ -175,6 +200,7 @@
                                     <th class="hidden-xs">Divisi</th>
                                     <th class="hidden-xs">Departemen</th>
                                     <th class="text-center">Status</th>
+                                    <th class="text-center" style="width: 10%;">Actions</th>
                                 </tr>
                             </thead>
                             </tbody>
@@ -187,83 +213,101 @@
         </main>
         </main>
         <!-- END Main Container -->
-        <!-- Pop In Modal -->
+        <!-- Profile  Modal -->
         <div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
-                <div class="modal-content">
-                    <div class="block block-themed block-transparent remove-margin-b">
-                        <div class="block-header bg-primary-dark">
-                            <ul class="block-options">
-                                <li>
-                                    <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                                </li>
-                            </ul>
-                            <h3 class="block-title">Data Karyawan</h3>
-                        </div>
-                        <div class="block-content">
-                            <div class="row">
-                                <div class="col-sm-12 col-lg-12">
-                                    <div class="block-content block-content-full clearfix">
-                                        <div class="text-right pull-right push-10-t">
-                                            <div class="lead" id="modal-nama"></div>
-                                            <div class="font-w600 push-5" id="modal-jabatan"></div>
-                                            <div class="text-muted" id="modal-divisi"></div>
-                                        </div>
-                                        <div class="pull-left">
-                                            <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar13.jpg" alt="">
+                <form class="js-validation-material" action="" method="post" id="profile-form">
+                    <div class="modal-content">
+                        <div class="block block-themed block-transparent remove-margin-b">
+                            <div class="block-header bg-primary-dark">
+                                <ul class="block-options">
+                                    <li>
+                                        <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                                    </li>
+                                </ul>
+                                <h3 class="block-title" id="modal-title">Data Karyawan</h3>
+                            </div>
+                            <div class="block-content">
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12">
+                                        <div class="block-content block-content-full clearfix">
+                                            <div class="text-right pull-right push-5-t">
+                                                <div class="lead" id="modal-nama"></div>
+                                                <div class="font-w600 push-5" id="modal-jabatan"></div>
+                                                <div class="text-muted" id="modal-divisi"></div>
+                                            </div>
+                                            <div class="pull-left">
+                                                <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar13.jpg" alt="">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="block-content block-content-full bg-gray-lighter">
-                                        <div class="row items-push">
-                                            <div class="col-xs-6">
-                                                <div class="push-10">NIK
-                                                    <br/><strong id="profile-nik"></strong></div>
-                                                <div class="push-10">Department
-                                                    <br/><strong id="profile-department"></strong></div>
-                                                <div class="push-10">Section
-                                                    <br/><strong id="profile-section"></strong></div>
-                                                <div class="push-10">Sub Section
-                                                    <br/><strong id="profile-sub-section"></strong></div>
-                                                <div class="push-10">Group
-                                                    <br/><strong id="profile-group"></strong></div>
-                                                <div class="push-10">Tgl Masuk
-                                                    <br/><strong id="profile-tgl-masuk"></strong></div>
-                                                <div class="push-10">Masa Kerja 
-                                                    <br/><strong id="profile-masa-kerja"></strong></div>
-                                                <div class="push-10">Status Pegawai
-                                                    <br/><strong id="profile-status"></strong></div>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <div class="push-10">No. KTP
-                                                    <br/><strong id="profile-no-ktp"></strong></div>
-                                                <div class="push-10">Tempat Lahir
-                                                    <br/><strong id="profile-tempat-lahir"></strong></div>
-                                                <div class="push-10">Tgl Lahir
-                                                    <br/><strong id="profile-tgl-lahir"></strong></div>
-                                                <div class="push-10">Agama
-                                                    <br/><strong id="profile-agama"></strong></div>
-                                                <div class="push-10">Alamat Lengkap
-                                                    <br/><strong id="profile-alamat-lengkap"></strong></div>
-                                                <div class="push-10">Alamat Domisili
-                                                    <br/><strong id="profile-alamat-domisili"></strong></div>
-                                                <div class="push-10">No. Telp
-                                                    <br/><strong id="profile-telepon"></strong></div>
+                                    <div class="col-sm-12 col-lg-12">
+                                        <div class="block bg-gray-lighter">
+                                            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+                                                <li class="active">
+                                                    <a href="#btabs-static-kerja">Data Kerja</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#btabs-static-pribadi">Data Pribadi</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#btabs-static-pendidikan">Data Pendidikan</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#btabs-static-admin">Data Admin</a>
+                                                </li>
+                                            </ul>
+                                            <div class="block-content tab-content">
+                                                <div class="tab-pane active" id="btabs-static-kerja">
+                                                    <div class="push-10" id="profile-status"></div>
+                                                    <div class="push-10" id="profile-nik"></div>
+                                                    <div class="push-10" id="profile-department"></div>
+                                                    <div class="push-10" id="profile-section"></div>
+                                                    <div class="push-10" id="profile-sub-section"></div>
+                                                    <div class="push-10" id="profile-group"></div>
+                                                    <div class="push-10" id="profile-tgl-masuk"></div>
+                                                    <div class="push-10" id="profile-masa-kerja"></div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-pribadi">
+                                                    <div class="push-10" id="profile-tempat-lahir"></div>
+                                                    <div class="push-10" id="profile-tgl-lahir"></div>
+                                                    <div class="push-10" id="profile-agama"></div>
+                                                    <div class="push-10" id="profile-jenis-kelamin"></div>
+                                                    <div class="push-10" id="profile-alamat-lengkap"></div>
+                                                    <div class="push-10" id="profile-alamat-domisili"></div>
+                                                    <div class="push-10" id="profile-status-keluarga"></div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-pendidikan">
+                                                    <div class="push-10" id="profile-pendidikan"></div>
+                                                    <div class="push-10" id="profile-sekolah-universitas"></div>
+                                                    <div class="push-10" id="profile-jurusan"></div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-admin">
+                                                    <div class="push-10" id="profile-telepon"></div>
+                                                    <div class="push-10" id="profile-no-ktp"></div>
+                                                    <div class="push-10" id="profile-no-npwp"></div>
+                                                    <div class="push-10" id="profile-no-bpjstk"></div>
+                                                    <div class="push-10" id="profile-no-bpjskes"></div>
+                                                    <div class="push-10" id="profile-no-jp"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-remove-profile"><i class="fa fa-trash"></i> Hapus</button>
+                            <button class="btn btn-sm btn-success" type="submit" id="btn-save-profile"><i class="fa fa-save"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"><i class="fa fa-check"></i> Tutup</button>
+                            <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="fa fa-times"></i> Batal</button>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
-                        <button class="btn btn-sm btn-danger" type="button" data-dismiss="modal"><i class="fa fa-trash"></i> Hapus</button>
-                        <button class="btn btn-sm btn-default" type="button" data-dismiss="modal"><i class="fa fa-check"></i> Tutup</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-        <!-- END Pop In Modal -->
+        <!-- END Profile Modal -->
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
             <div class="pull-right">
@@ -271,6 +315,9 @@
             </div>
         </footer>
         <!-- END Footer -->
+        <input type="hidden" id="opened-profile">
+        <input type="hidden" id="origin">
+        <input type="hidden" id="form-scope">
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->
@@ -295,8 +342,26 @@
     <script src="../assets/js/app.js"></script>
     <!-- Page JS Plugins -->
     <script src="../assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datetimepicker/moment.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
+    <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
+    <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
+    <script src="../assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="../assets/js/plugins/dropzonejs/dropzone.min.js"></script>
+    <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
+    <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page JS Code -->
     <script src="../assets/js/pages/employee.js"></script>
+    <script>
+    jQuery(function() {
+        App.initHelpers(['datepicker', 'datetimepicker', 'colorpicker', 'maxlength', 'masked-inputs', 'rangeslider', 'tags-inputs', 'select2']);
+    });
+    </script>
 </body>
 
 </html>

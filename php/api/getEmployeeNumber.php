@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT * FROM employee");
+$query = $db->query("SELECT division, COUNT(*) AS total FROM employee GROUP BY division");
 $rows = array();
 
 if ($query->num_rows > 0) {
