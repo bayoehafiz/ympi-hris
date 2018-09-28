@@ -438,8 +438,8 @@ var BasePagesEmployee = function() {
 
             // Read current profile
             var cProf = $('#opened-profile').val();
-            if (cProf == '') var apiUrl = '/php/api/addEmployee.php';
-            else var apiUrl = '/php/api/updateEmployee.php';
+            if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
+            else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
 
             $.ajax({
                 type: "POST",

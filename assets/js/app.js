@@ -1372,66 +1372,67 @@ jQuery(function() {
         // Prevent menu to execute HREF attr
         $('.nav-menu, .logo').on('click', function(e) {
             e.preventDefault;
-            var route = $(this).attr('route');
-            window.location.replace(BASE_URL + route);
+            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
             return false;
         })
 
-        // Authorization init
-        var clientId = AUTH_CLIENT_ID;
-        var domain = AUTH_DOMAIN;
-        var options = {
-            allowShowPassword: true,
-            closable: false,
-            autoclose: true,
-            allowAutocomplete: false,
-            rememberLastLogin: false,
-            redirect: false,
-            theme: {
-                logo: window.location.pathname + '../assets/img/yamaha-logo-pd.png',
-                primaryColor: '#a48ad4'
-            },
-            languageDictionary: {
-                title: "Silahkan login",
-                error: {
-                    login: {
-                        "lock.invalid_email_password": "Email atau password yang dimasukkan salah",
-                        "lock.network": "Sedang terjadi network error! Silahkan coba lagi nanti",
-                        "lock.unauthorized": "Login gagal",
-                        "too_many_attempts": "Anda telah gagal login."
-                    },
-                    signUp: {
-                        "invalid_password": "Password salah!",
-                        "user_exists": "User ini sudah tersedia"
+        if (AUTH_ENABLED) {
+            // Authorization init
+            var clientId = AUTH_CLIENT_ID;
+            var domain = AUTH_DOMAIN;
+            var options = {
+                allowShowPassword: true,
+                closable: false,
+                autoclose: true,
+                allowAutocomplete: false,
+                rememberLastLogin: false,
+                redirect: false,
+                theme: {
+                    logo: window.location.pathname + '../assets/img/yamaha-logo-pd.png',
+                    primaryColor: '#a48ad4'
+                },
+                languageDictionary: {
+                    title: "Silahkan login",
+                    error: {
+                        login: {
+                            "lock.invalid_email_password": "Email atau password yang dimasukkan salah",
+                            "lock.network": "Sedang terjadi network error! Silahkan coba lagi nanti",
+                            "lock.unauthorized": "Login gagal",
+                            "too_many_attempts": "Anda telah gagal login."
+                        },
+                        signUp: {
+                            "invalid_password": "Password salah!",
+                            "user_exists": "User ini sudah tersedia"
+                        }
                     }
-                }
-            },
-        };
-        var lock = new Auth0Lock(clientId, domain, options);
+                },
+            };
+            var lock = new Auth0Lock(clientId, domain, options);
 
-        // On authenticated login
-        lock.on("authenticated", function(authResult) {
-            lock.hide();
-            lock.getUserInfo(authResult.accessToken, function(error, profile) {
-                if (error) {
-                    console.log('Error:', error);
-                    return;
-                }
+            // On authenticated login
+            lock.on("authenticated", function(authResult) {
+                lock.hide();
+                lock.getUserInfo(authResult.accessToken, function(error, profile) {
+                    if (error) {
+                        console.log('Error:', error);
+                        return;
+                    }
 
-                if (window.sessionStorage) {
-                    sessionStorage.setItem('accessToken', authResult.accessToken);
-                    sessionStorage.setItem('profile', JSON.stringify(profile));
-                    location.reload();
-                }
+                    if (window.sessionStorage) {
+                        sessionStorage.setItem('accessToken', authResult.accessToken);
+                        sessionStorage.setItem('profile', JSON.stringify(profile));
+                        location.reload();
+                    }
+                });
             });
-        });
 
-        // check if user is authenticated
-        var token = sessionStorage.getItem('accessToken');
-        if (!token || token == undefined) {
-            // lock.show();
-        } else {
-            console.log(token);
+            // check if user is authenticated
+            var token = sessionStorage.getItem('accessToken');
+            if (!token || token == undefined) {
+                lock.show();
+            } else {
+                console.log(token);
+            }
         }
 
         // Our application inititation
