@@ -1369,11 +1369,17 @@ var OneUI = App;
 // Initialize app when page loads
 jQuery(function() {
     if (typeof angular == 'undefined') {
-        App.init();
+        // Prevent menu to execute HREF attr
+        $('.nav-menu, .logo').on('click', function(e) {
+            e.preventDefault;
+            var route = $(this).attr('route');
+            window.location.replace(BASE_URL + route);
+            return false;
+        })
 
         // Authorization init
-        var clientId = "6TTb24k3ZF1po9mKwmsi49TQuanpC9H0";
-        var domain = "ympi.auth0.com";
+        var clientId = AUTH_CLIENT_ID;
+        var domain = AUTH_DOMAIN;
         var options = {
             allowShowPassword: true,
             closable: false,
@@ -1403,6 +1409,7 @@ jQuery(function() {
         };
         var lock = new Auth0Lock(clientId, domain, options);
 
+        // On authenticated login
         lock.on("authenticated", function(authResult) {
             lock.hide();
             lock.getUserInfo(authResult.accessToken, function(error, profile) {
@@ -1426,5 +1433,8 @@ jQuery(function() {
         } else {
             console.log(token);
         }
+
+        // Our application inititation
+        App.init();
     }
 });

@@ -17,7 +17,7 @@ var BasePagesEmployee = function() {
         // Init an error alert on button click
         $.ajax({
             type: "GET",
-            url: '/php/api/getEmployeeNumber.php',
+            url: BASE_URL + '/php/api/getEmployeeNumber.php',
             dataType: 'json',
             success: function(res) {
                 var data = res.data;
@@ -287,7 +287,7 @@ var BasePagesEmployee = function() {
                 [10, 20, 50, 100]
             ],
             ajax: {
-                url: '/php/api/getEmployee.php',
+                url: BASE_URL + '/php/api/getEmployee.php',
                 dataSrc: function(json) {
                     var data = json.data;
                     var resultData = [];
@@ -318,7 +318,7 @@ var BasePagesEmployee = function() {
                         return '<div class="btn-group text-center">' +
                             '<button class="btn btn-xs btn-default" type="button" id="btn-view"><i class="fa fa-eye"></i></button>' +
                             '<button class="btn btn-xs btn-default btn-edit" type="button"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-xs btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -364,7 +364,7 @@ var BasePagesEmployee = function() {
                         return new Promise(function(resolve) {
                             $.ajax({
                                     type: "POST",
-                                    url: "/php/api/deleteEmployee.php",
+                                    url: BASE_URL + "/php/api/deleteEmployee.php",
                                     dataType: 'json',
                                     data: {
                                         nik: $('#opened-profile').val()
@@ -464,7 +464,7 @@ var BasePagesEmployee = function() {
         });
 
         // When DELETE button is clicked
-        $('#btn-remove')
+        $(document).on()
     }
 
     return {

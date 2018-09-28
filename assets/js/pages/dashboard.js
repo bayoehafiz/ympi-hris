@@ -1,15 +1,14 @@
 var BasePagesDashboard = function() {
-    // Chart.js Chart, for more examples you can check out http://www.chartjs.org/docs
     var initDashboard = function() {
-        $('#btn-logout').click(function(){
+        $('#btn-logout').click(function() {
             sessionStorage.clear();
             location.reload();
         })
     };
 
-    var sweetAlert = function(){
+    var sweetAlert = function() {
         // Init an error alert on button click
-        jQuery('.js-swal-error').on('click', function(){
+        jQuery('.js-swal-error').on('click', function() {
             swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
         });
     };
