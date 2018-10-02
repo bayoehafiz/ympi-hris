@@ -37,6 +37,7 @@ var BasePagesDivision = function() {
             url: BASE_URL + '/php/api/getDivisionNumber.php',
             dataType: 'json',
             success: function(res) {
+                console.log(res);
                 if (res.status == 'ok') {
                     var data = res.data;
                 } else {
