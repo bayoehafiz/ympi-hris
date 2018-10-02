@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>YMPI HRIS - Divisi</title>
+    <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Stylesheets -->
+    <!-- Web fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
+    <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <!-- Bootstrap and OneUI CSS framework -->
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
+    <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
+    <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
+    <!-- END Stylesheets -->
+</head>
+
+<body>
+    <!-- Page Container -->
+    <!--
+            Available Classes:
+
+            'enable-cookies'             Remembers active color theme between pages (when set through color theme list)
+
+            'sidebar-l'                  Left Sidebar and right Side Overlay
+            'sidebar-r'                  Right Sidebar and left Side Overlay
+            'sidebar-mini'               Mini hoverable Sidebar (> 991px)
+            'sidebar-o'                  Visible Sidebar by default (> 991px)
+            'sidebar-o-xs'               Visible Sidebar by default (< 992px)
+
+            'side-overlay-hover'         Hoverable Side Overlay (> 991px)
+            'side-overlay-o'             Visible Side Overlay by default (> 991px)
+
+            'side-scroll'                Enables custom scrolling on Sidebar and Side Overlay instead of native scrolling (> 991px)
+
+            'header-navbar-fixed'        Enables fixed header
+        -->
+    <div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <!-- Sidebar Scroll Container -->
+            <div id="sidebar-scroll">
+                <!-- Sidebar Content -->
+                <!-- Adding .sidebar-mini-hide to an element will hide it when the sidebar is in mini mode -->
+                <div class="sidebar-content">
+                    <!-- Side Header -->
+                    <div class="side-header side-content bg-white-op">
+                        <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
+                        <a class="h5 text-white logo" href="#" route="/"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive pb-5"></a>
+                    </div>
+                    <!-- END Side Header -->
+                    <!-- Side Content -->
+                    <div class="side-content">
+                        <ul class="nav-main">
+                            <a class="nav-menu" route="/" href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
+                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
+                            <a class="nav-menu" route="/employee" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
+                            <a class="nav-menu active" route="/division" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Divisi</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
+                        </ul>
+                    </div>
+                    <!-- END Side Content -->
+                </div>
+                <!-- Sidebar Content -->
+            </div>
+            <!-- END Sidebar Scroll Container -->
+        </nav>
+        <!-- END Sidebar -->
+        <!-- Header -->
+        <header id="header-navbar" class="content-mini content-mini-full">
+            <!-- Header Navigation Right -->
+            <ul class="nav-header pull-right">
+                <li>
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
+                            <img src="../assets/img/avatars/avatar10.jpg" alt="Avatar">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Profile</li>
+                            <li>
+                                <a class="js-swal-error" tabindex="-1" href="#">
+                                        <i class="si si-user pull-right"></i>Profile
+                                    </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a tabindex="-1" href="#" id="btn-logout">
+                                        <i class="si si-logout pull-right"></i>Log out
+                                    </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <!-- END Header Navigation Right -->
+            <!-- Header Navigation Left -->
+            <ul class="nav-header pull-left">
+                <li class="hidden-md hidden-lg">
+                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
+                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button">
+                        <i class="fa fa-navicon"></i>
+                    </button>
+                </li>
+                <li class="hidden-xs hidden-sm">
+                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
+                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
+                        <i class="fa fa-ellipsis-v"></i>
+                    </button>
+                </li>
+                <li class="js-header-search header-search">
+                    <span class="current-time"></span>
+                </li>
+            </ul>
+            <!-- END Header Navigation Left -->
+        </header>
+        <!-- END Header -->
+        <!-- Main Container -->
+        <main id="main-container">
+            <!-- Page Header -->
+            <div class="content bg-gray-lighter">
+                <div class="row items-push">
+                    <div class="col-sm-7">
+                        <h1 class="page-heading">Data Divisi</h1>
+                    </div>
+                    <div class="col-sm-5 text-right hidden-xs">
+                        <ol class="breadcrumb push-10-t">
+                            <li>Data Master</li>
+                            <li><a class="link-effect" href="">Divisi</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- END Page Header -->
+            <!-- Stats -->
+            <div class="content bg-white border-b">
+                <div class="row items-push text-uppercase text-center" id="stat-divisi"></div>
+            </div>
+            <!-- END Stats -->
+            <!-- Page Content -->
+            <div class="content">
+                <!-- Block Tabs Animated Fade -->
+                <div class="block">
+                    <ul class="nav nav-tabs nav-tabs-alt nav-justified" data-toggle="tabs">
+                        <li class="active">
+                            <a href="#btabs-animated-fade-divisi">Divisi</a>
+                        </li>
+                        <li>
+                            <a href="#btabs-animated-fade-departemen">Departemen</a>
+                        </li>
+                        <li>
+                            <a href="#btabs-animated-fade-section">Section</a>
+                        </li>
+                        <li>
+                            <a href="#btabs-animated-fade-sub-section">Sub Section</a>
+                        </li>
+                        <li>
+                            <a href="#btabs-animated-fade-grup">Grup</a>
+                        </li>
+                    </ul>
+                    <div class="block-content tab-content">
+                        <div class="tab-pane fade in active" id="btabs-animated-fade-divisi">
+                            <div class="block">
+                                <div class="block-header text-right">
+                                    <button class="btn btn-primary btn-add" type="button" data="Divisi"><i class="si si-plus"></i> Tambah Divisi</button>
+                                </div>
+                                <div class="block-content">
+                                    <!-- Table Division -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-division">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th>Nama Divisi</th>
+                                                <th class="hidden-xs text-center">Created</th>
+                                                <th class="text-center">Updated</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Division -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="btabs-animated-fade-departemen">
+                             <div class="block">
+                                <div class="block-header text-right">
+                                    <button class="btn btn-primary btn-add" type="button" data="Departemen"><i class="si si-plus"></i> Tambah Departemen</button>
+                                </div>
+                                <div class="block-content">
+                                    <!-- Table Division -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-department">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th>Nama Divisi</th>
+                                                <th class="hidden-xs text-center">Created</th>
+                                                <th class="text-center">Updated</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Division -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="btabs-animated-fade-section">
+                             <div class="block">
+                                <div class="block-header text-right">
+                                    <button class="btn btn-primary btn-add" type="button" data="Section"><i class="si si-plus"></i> Tambah Section</button>
+                                </div>
+                                <div class="block-content">
+                                    <!-- Table Division -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-section">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th>Nama Divisi</th>
+                                                <th class="hidden-xs text-center">Created</th>
+                                                <th class="text-center">Updated</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Division -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="btabs-animated-fade-sub-section">
+                             <div class="block">
+                                <div class="block-header text-right">
+                                    <button class="btn btn-primary btn-add" type="button" data="Sub Section"><i class="si si-plus"></i> Tambah Sub Section</button>
+                                </div>
+                                <div class="block-content">
+                                    <!-- Table Division -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-sub-section">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th>Nama Divisi</th>
+                                                <th class="hidden-xs text-center">Created</th>
+                                                <th class="text-center">Updated</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Division -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="btabs-animated-fade-grup">
+                             <div class="block">
+                                <div class="block-header text-right">
+                                    <button class="btn btn-primary btn-add" type="button" data="Grup"><i class="si si-plus"></i> Tambah Grup</button>
+                                </div>
+                                <div class="block-content">
+                                    <!-- Table Division -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th>Nama Divisi</th>
+                                                <th class="hidden-xs text-center">Created</th>
+                                                <th class="text-center">Updated</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Division -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Block Tabs Animated Fade -->
+            </div>
+            <!-- END Page Content -->
+        </main>
+        </main>
+        <!-- END Main Container -->
+        <!-- Modal -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-popin">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block-header bg-primary-dark">
+                            <ul class="block-options">
+                                <li>
+                                    <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                                </li>
+                            </ul>
+                            <h3 class="block-title" id="modal-title"></h3>
+                        </div>
+                        <div class="block-content bg-gray-lighter" id="modal-content">
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
+                            <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
+                            <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Modal -->
+        <!-- Footer -->
+        <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
+            <div class="pull-right">
+                &copy; 2018 <a class="font-w600" href="#" target="_blank">Yamaha Musical Products Indonesia</a>
+            </div>
+        </footer>
+        <!-- END Footer -->
+        <input type="hidden" id="opened-profile">
+        <input type="hidden" id="origin">
+        <input type="hidden" id="form-scope">
+    </div>
+    <!-- END Page Container -->
+    <!-- END Apps Modal -->
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+    <script src="../assets/js/core/jquery.min.js"></script>
+    <script src="../assets/js/core/bootstrap.min.js"></script>
+    <script src="../assets/js/core/jquery.slimscroll.min.js"></script>
+    <script src="../assets/js/core/jquery.scrollLock.min.js"></script>
+    <script src="../assets/js/core/jquery.appear.min.js"></script>
+    <script src="../assets/js/core/jquery.countTo.min.js"></script>
+    <script src="../assets/js/core/jquery.placeholder.min.js"></script>
+    <script src="../assets/js/core/js.cookie.min.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <!-- Auth plugin -->
+    <script src="../assets/js/core/lock.min.js"></script>
+    <script src="../assets/js/core/storage.min.js"></script>
+    <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../assets/js/plugins/sweetalert2/es6-promise.auto.min.js"></script>
+    <script src="../assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js"></script>
+    <!-- Main script -->
+    <script src="../config.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <!-- Page JS Plugins -->
+    <script src="../assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datetimepicker/moment.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
+    <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
+    <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
+    <script src="../assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+    <script src="../assets/js/plugins/dropzonejs/dropzone.min.js"></script>
+    <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
+    <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
+    <!-- Page JS Code -->
+    <script src="../assets/js/pages/division.js"></script>
+    <script>
+    jQuery(function() {
+        App.initHelpers(['notify', 'datepicker', 'datetimepicker', 'colorpicker', 'maxlength', 'masked-inputs', 'rangeslider', 'tags-inputs', 'select2']);
+    });
+    </script>
+</body>
+
+</html>

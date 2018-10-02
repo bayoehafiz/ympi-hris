@@ -14,23 +14,27 @@ var BasePagesEmployee = function() {
     };
 
     var initStat = function() {
-        // Init an error alert on button click
         $.ajax({
             type: "GET",
             url: BASE_URL + '/php/api/getEmployeeNumber.php',
             dataType: 'json',
             success: function(res) {
-                var data = res.data;
-                var counter = 0;
-                data.forEach(function(d) {
-                    if (d.division == 'Finance Div') $('#total-finance').html(d.total);
-                    if (d.division == 'HRGA Div') $('#total-hrga').html(d.total);
-                    if (d.division == 'Production Div') $('#total-production').html(d.total);
-                    if (d.division == 'Prod Engineering Div') $('#total-prod-engineering').html(d.total);
-                    if (d.division == 'Prod Support Div') $('#total-prod-support').html(d.total);
-                    counter += parseInt(d.total);
-                })
-                $('#total-karyawan').html(counter);
+                if (res.status == 'ok') {
+                    var data = res.data;
+                    var counter = 0;
+                    data.forEach(function(d) {
+                        if (d.division == 'Finance Div') $('#total-tetap').html(d.total);
+                        if (d.division == 'HRGA Div') $('#total-kontrak-1').html(d.total);
+                        if (d.division == 'Production Div') $('#total-kontrak-2').html(d.total);
+                        counter += parseInt(d.total);
+                    })
+                    $('#total-karyawan').html(counter);
+                } else {
+                    $('#total-tetap').html('0');
+                    $('#total-kontrak-1').html('0');
+                    $('#total-kontrak-2').html('0');
+                    $('#total-karyawan').html('0');
+                }
             }
         })
     };
@@ -124,6 +128,8 @@ var BasePagesEmployee = function() {
                 }
             });
         };
+
+        // Function to render elements inside profile-modal
         var renderEditingElement = function(type, data_name, placeholder, label, disabled) { // type = "text", "number", "textarea". "datepicker"
             if (disabled) var disabled = ' disabled';
             else var disabled = '';
@@ -141,13 +147,13 @@ var BasePagesEmployee = function() {
                     '</div>' +
                     '</div></div>'
             } else {
-                var elem = '<div class="form-group"><div class="form-material form-material-primary push-30">' +
+                var elem = '<div class="form-group"><div class="form-material form-material-primary floating push-30">' +
                     '<input class="form-control" type="' + type + '" id="input-' + placeholder + '" name="elem-' + placeholder + '" value="' + data_name + '" placeholder="' + data_name + '"' + disabled + '>' +
                     '<label for="elem-' + placeholder + '">' + label + '</label>' +
                     '</div></div>';
             }
 
-            initValidation();
+            initValidation(); // <-- not working!
 
             return elem;
         };
@@ -289,20 +295,28 @@ var BasePagesEmployee = function() {
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
                 dataSrc: function(json) {
-                    var data = json.data;
-                    var resultData = [];
-                    data.forEach(function(x) {
-                        // Manipulate result data
-                        x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>'
-                        if (x.status == "Tetap") x.statusEdt = '<span class="label label-success">' + x.status + '</span>';
-                        else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-danger">' + x.status + '</span>';
-                        else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status + '</span>';
-                        else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
+                    if (json.status == 'ok') {
+                        var data = json.data;
+                        var resultData = [];
+                        data.forEach(function(x) {
+                            // Manipulate result data
+                            x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>'
+                            if (x.status == "Tetap") x.statusEdt = '<span class="label label-success">' + x.status + '</span>';
+                            else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-danger">' + x.status + '</span>';
+                            else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status + '</span>';
+                            else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
 
-                        resultData.push(x);
-                    })
-
-                    return resultData;
+                            resultData.push(x);
+                        })
+                        return resultData;
+                    } else {
+                        $.notify({
+                            message: 'Data karyawan kosong!'
+                        }, {
+                            type: 'danger'
+                        });
+                        return [];
+                    }
                 }
             },
             deferRender: true,
@@ -462,9 +476,6 @@ var BasePagesEmployee = function() {
                 }
             })
         });
-
-        // When DELETE button is clicked
-        $(document).on()
     }
 
     return {
