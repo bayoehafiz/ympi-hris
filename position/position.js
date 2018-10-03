@@ -347,7 +347,7 @@ var BasePagesPosition = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
                 {
                     className: "hidden-xs text-center",
@@ -410,9 +410,9 @@ var BasePagesPosition = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
-                { className: "hidden-xs text-center", data: "kode" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
+                { className: "hidden-xs text-center", data: "kode" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -474,7 +474,7 @@ var BasePagesPosition = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
                 {
                     className: "hidden-xs text-center",

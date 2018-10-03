@@ -361,16 +361,10 @@ var BasePagesDivision = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
-                { className: "hidden-xs text-center", data: "kode" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                {
-                    className: "hidden-xs text-center",
-                    data: "created",
-                    render: function(data, type, row) {
-                        return moment(data).format('D MMMM YYYY');
-                    }
-                },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "hidden-xs text-center", data: "child" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -432,11 +426,11 @@ var BasePagesDivision = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
-                { className: "hidden-xs text-center", data: "kode" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                { className: "hidden-xs text-center", data: "created", },
-                { className: "hidden-xs text-center", data: "parent", },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "hidden-xs text-center", data: "child"},
+                { className: "hidden-xs", data: "parent"},
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -498,11 +492,11 @@ var BasePagesDivision = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
-                { className: "hidden-xs text-center", data: "kode" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                { className: "hidden-xs text-center", data: "created", },
-                { className: "hidden-xs text-center", data: "parent" },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "hidden-xs text-center", data: "child" },
+                { className: "hidden-xs", data: "parent" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -564,10 +558,10 @@ var BasePagesDivision = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                { className: "hidden-xs text-center", data: "created", },
-                { className: "hidden-xs text-center", data: "parent" },
+                { className: "hidden-xs text-center", data: "child", },
+                { className: "hidden-xs", data: "parent" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -629,10 +623,9 @@ var BasePagesDivision = function() {
                 "targets": 0
             }],
             columns: [
-                { data: "created" },
+                { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                // { className: "hidden-xs text-center", data: "created" },
-                { className: "hidden-xs text-center", data: "parent" },
+                { className: "hidden-xs", data: "parent" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
