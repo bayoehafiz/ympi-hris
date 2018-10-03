@@ -3,10 +3,13 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (!empty($_POST['table'])) {
-    $table = 'tbl_' . $_POST['table'];
-
-    $query = $db->query("SELECT * FROM " . $table);
+    $table = "tbl_" . $_POST['table'];
+    
+    $sql = "SELECT * FROM " . $table . " WHERE active = 1 ORDER BY nama";
+    $query = $db->query($sql);
     $rows = array();
+
+    // ChromePhp::log($sql);
 
     if ($query->num_rows > 0) {
         while ($r = mysqli_fetch_assoc($query)) {
@@ -20,7 +23,6 @@ if (!empty($_POST['table'])) {
         $data['data'] = '';
     }
 
+    //returns data as JSON format
     echo json_encode($data);
 }
-
-

@@ -157,38 +157,39 @@
             <div class="content">
                 <!-- Block Tabs Animated Fade -->
                 <div class="block">
-                    <ul class="nav nav-tabs nav-tabs-alt nav-justified" data-toggle="tabs">
+                    <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
-                            <a href="#btabs-animated-fade-divisi">Divisi</a>
+                            <a href="#btabs-animated-fade-divisi" class="tab-btn" data="division">Divisi</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-departemen">Departemen</a>
+                            <a href="#btabs-animated-fade-departemen" class="tab-btn" data="department">Departemen</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-section">Section</a>
+                            <a href="#btabs-animated-fade-section" class="tab-btn" data="section">Section</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-sub-section">Sub Section</a>
+                            <a href="#btabs-animated-fade-sub-section" class="tab-btn" data="sub_section">Sub Section</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-grup">Grup</a>
+                            <a href="#btabs-animated-fade-grup" class="tab-btn" data="group">Grup</a>
                         </li>
                     </ul>
                     <div class="block-content tab-content">
                         <div class="tab-pane fade in active" id="btabs-animated-fade-divisi">
                             <div class="block">
                                 <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-add" type="button" data="Divisi"><i class="si si-plus"></i> Tambah Divisi</button>
+                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Divisi" data-type="division"><i class="si si-plus"></i> Tambah Divisi</button>
                                 </div>
                                 <div class="block-content">
                                     <!-- Table Division -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-division">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-division" style="width: 100%!important;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th>Nama Divisi</th>
-                                                <th class="hidden-xs text-center">Created</th>
-                                                <th class="text-center">Updated</th>
+                                                <th></th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                <th class="text-center">Jml. Dept.</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
@@ -199,19 +200,21 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-departemen">
-                             <div class="block">
+                            <div class="block">
                                 <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-add" type="button" data="Departemen"><i class="si si-plus"></i> Tambah Departemen</button>
+                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Departemen" data-type="department"><i class="si si-plus"></i> Tambah Departemen</button>
                                 </div>
                                 <div class="block-content">
                                     <!-- Table Division -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-department">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-department" style="width: 100%!important;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th>Nama Divisi</th>
-                                                <th class="hidden-xs text-center">Created</th>
-                                                <th class="text-center">Updated</th>
+                                                <th></th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                <th class="hidden-xs text-center">Jml. Section</th>
+                                                <th class="text-center">Divisi Induk</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
@@ -222,19 +225,21 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-section">
-                             <div class="block">
+                            <div class="block">
                                 <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-add" type="button" data="Section"><i class="si si-plus"></i> Tambah Section</button>
+                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Section" data-type="section"><i class="si si-plus"></i> Tambah Section</button>
                                 </div>
                                 <div class="block-content">
                                     <!-- Table Division -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-section">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-section" style="width: 100%!important;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th>Nama Divisi</th>
-                                                <th class="hidden-xs text-center">Created</th>
-                                                <th class="text-center">Updated</th>
+                                                <th></th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                <th class="hidden-xs text-center">Jml. Sub Section</th>
+                                                <th class="text-center">Dept. Induk</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
@@ -245,19 +250,20 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-sub-section">
-                             <div class="block">
+                            <div class="block">
                                 <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-add" type="button" data="Sub Section"><i class="si si-plus"></i> Tambah Sub Section</button>
+                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Sub Section" data-type="sub_section"><i class="si si-plus"></i> Tambah Sub Section</button>
                                 </div>
                                 <div class="block-content">
                                     <!-- Table Division -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-sub-section">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-sub-section" style="width: 100%!important;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th>Nama Divisi</th>
-                                                <th class="hidden-xs text-center">Created</th>
-                                                <th class="text-center">Updated</th>
+                                                <th></th>
+                                                <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                <th class="hidden-xs text-center">Jml. Group</th>
+                                                <th class="text-center">Section Induk</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
@@ -268,19 +274,19 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-grup">
-                             <div class="block">
+                            <div class="block">
                                 <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-add" type="button" data="Grup"><i class="si si-plus"></i> Tambah Grup</button>
+                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Grup" data-type="group"><i class="si si-plus"></i> Tambah Grup</button>
                                 </div>
                                 <div class="block-content">
                                     <!-- Table Division -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group" style="width: 100%!important;">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th>Nama Divisi</th>
-                                                <th class="hidden-xs text-center">Created</th>
-                                                <th class="text-center">Updated</th>
+                                                <th></th>
+                                                <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                <th class="text-center">Sub Section Induk</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
@@ -302,25 +308,34 @@
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
                 <div class="modal-content">
-                    <div class="block block-themed block-transparent remove-margin-b">
-                        <div class="block-header bg-primary-dark">
-                            <ul class="block-options">
-                                <li>
-                                    <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                                </li>
-                            </ul>
-                            <h3 class="block-title" id="modal-title"></h3>
+                    <form class="js-validation-material" action="" method="post" id="form-modal">
+                        <div class="block block-themed block-transparent remove-margin-b">
+                            <div class="block-header bg-primary-dark">
+                                <ul class="block-options">
+                                    <li>
+                                        <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                                    </li>
+                                </ul>
+                                <h3 class="block-title" id="modal-title"></h3>
+                            </div>
+                            <div class="block-content bg-gray-lighter" id="modal-content">
+                                <span id="generated-container">All generated elements will be here</span>
+                                <div class="form-group hide-me" id="hidden-select">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
+                                        <label for="elem-parent" id="label-parent"></label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
+                                    <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
+                                    <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
+                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
+                                    <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="block-content bg-gray-lighter" id="modal-content">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
-                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
-                            <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
-                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
-                            <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -332,9 +347,8 @@
             </div>
         </footer>
         <!-- END Footer -->
-        <input type="hidden" id="opened-profile">
-        <input type="hidden" id="origin">
-        <input type="hidden" id="form-scope">
+        <input type="hidden" id="hidden-type">
+        <input type="hidden" id="hidden-active-type">
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->

@@ -1,9 +1,283 @@
 var BasePagesDivision = function() {
     var initDivisionPage = function() {
+        // Logout button
         $('#btn-logout').click(function() {
             sessionStorage.clear();
             location.reload();
         });
+
+        // Function to render elements inside the modal :: ADD
+        var renderAddElement = function(type, name, label) {
+            var elem = '';
+
+            if (type == 'select') {
+                // reset the selct elemnt first
+                $('#input-parent').empty();
+
+                // get the source DB table to populate parent's select
+                if (label == 'Divisi Induk') var source_table = 'division';
+                else if (label == 'Departemen Induk') var source_table = 'department';
+                else if (label == 'Section Induk') var source_table = 'section';
+                else var source_table = 'sub_section';
+
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/getDivisionData.php',
+                    dataType: 'json',
+                    data: {
+                        table: source_table
+                    }
+                }).done(function(res) {
+                    if (res.status == 'ok') {
+                        var data = res.data;
+
+                        $('#hidden-select').removeClass('hide-me');
+                        $('#input-parent').append('<option></option>');
+                        $('#label-parent').html(label);
+
+                        data.forEach(function(v) {
+                            $('#input-parent').append('<option value="' + v.id + '">' + v.nama + '</option>')
+                        })
+                    }
+                })
+            } else {
+                elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
+                    '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
+                    '<label for="elem-' + name + '">' + label + '</label>' +
+                    '</div></div>';
+            }
+
+            // console.log(elem);
+            return elem;
+        };
+
+        // set default hidden value for ACTIVE type
+        $('#hidden-active-type').val('division');
+
+        // when tabs clicked
+        $(document).on('click', '.tab-btn', function() {
+            var t = $(this).attr('data');
+            $('#hidden-active-type').val(t);
+            switch (t) {
+                case 'department':
+                    initTableDepartment();
+                    break;
+                case 'section':
+                    initTableSection();
+                    break;
+                case 'sub_section':
+                    initTableSubSection();
+                    break;
+                case 'group':
+                    initTableGroup();
+                    break;
+                default:
+                    initTableDivision();
+                    break;
+            }
+        })
+
+        // when ADD button is clicked
+        $(document).on('click', '.btn-add', function() {
+            // reset the modal first!
+            $('#modal-title, #generated-container').html('');
+            $('#hidden-select').addClass('hide-me');
+
+            var html = '';
+            data_type = $(this).attr('data-type');
+            $('#hidden-type').val(data_type);
+
+            switch (data_type) {
+                case "department":
+                    html += renderAddElement('text', 'nama', 'Nama Departemen');
+                    html += renderAddElement('text', 'kode', 'Kode Departemen');
+                    html += renderAddElement('select', 'parent', 'Divisi Induk');
+                    break;
+                case "section":
+                    html += renderAddElement('text', 'nama', 'Nama Section');
+                    html += renderAddElement('text', 'kode', 'Kode Section');
+                    html += renderAddElement('select', 'parent', 'Departemen Induk');
+                    break;
+                case "sub_section":
+                    html += renderAddElement('text', 'nama', 'Nama Sub Section');
+                    html += renderAddElement('select', 'parent', 'Section Induk');
+                    break;
+                case "group":
+                    html += renderAddElement('text', 'nama', 'Nama Grup');
+                    html += renderAddElement('select', 'parent', 'Sub Section induk');
+                    break;
+                default:
+                    html += renderAddElement('text', 'nama', 'Nama Divisi');
+                    html += renderAddElement('text', 'kode', 'Kode Divisi');
+            }
+
+            $('#modal-title').html('Tambah Data ' + data_type);
+            $('#generated-container').html(html);
+
+            // hide unrelated buttons
+            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+            $('#modal').modal('show');
+        });
+
+        // When SAVE button is clicked
+        $(document).on('submit', '#form-modal', function(e) {
+            e.preventDefault();
+
+            //$('#profile-form').validate(); // <- This one is not working!
+
+            var data = [];
+            $('[id^="input-"]').filter(
+                function() {
+                    var elem = this;
+                    // cleaning empty data [TEMP!]
+                    if (elem['value'] != '') {
+                        return data.push({
+                            "key": elem['id'].replace('input-', ''),
+                            "value": elem['value']
+                        });
+                    }
+                });
+
+            // Read current data type
+            var dType = $('#hidden-active-type').val();
+
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + '/php/api/addDivisionData.php',
+                dataType: 'json',
+                data: {
+                    obj: data,
+                    table: dType
+                },
+                success: function(res) {
+                    if (res.status == 'err') {
+                        swal("Error!", res.message, "error");
+                    } else {
+                        $('#modal').modal('hide');
+                        $.notify({
+                            "icon": "fa fa-check-circle",
+                            "message": "Data berhasil ditambahkan"
+                        }, {
+                            "type": "success"
+                        })
+                        // reload the table
+                        var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                        table.ajax.reload();
+                    }
+
+                }
+            })
+        });
+
+        // When ACTION buttons clicked
+        $(document).on('click', '.js-dataTable-full tbody button', function() {
+            var act = $(this).attr('act');
+            var active_table_id = $(this).parents("table").attr('id');
+            var table = $('#' + active_table_id).DataTable();
+            var data = table.row($(this).parents('tr')).data();
+
+            // Lets decide which button is clicked:
+            if (act == 'edit') { // edit the data
+                // 
+            } else if (act == 'remove') { // remove the data
+                swal({
+                    title: "Konfirmasi",
+                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Hapus!",
+                    cancelButtonText: "Batal",
+                    showLoaderOnConfirm: true,
+                    preConfirm: function() {
+                        var dType = $('#hidden-active-type').val();
+                        $.ajax({
+                                type: "POST",
+                                url: BASE_URL + "/php/api/deleteDivisionData.php",
+                                dataType: 'json',
+                                data: {
+                                    id: data.id,
+                                    table: dType
+                                }
+                            }).done(function(response) {
+                                if (response.status == 'err') {
+                                    swal('Error', response.message, 'error');
+                                } else {
+                                    swal.close();
+                                    $.notify({
+                                        "icon": "fa fa-check-circle",
+                                        "message": response.message
+                                    }, {
+                                        "type": "success"
+                                    })
+
+                                    // reload the table
+                                    var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                                    table.ajax.reload();
+                                }
+                            })
+                            .fail(function() {
+                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                            });
+                    },
+                    allowOutsideClick: false
+                })
+            } else { // set active / non-active status
+                var current_status = data.active;
+                if (current_status == 1) {
+                    var txt = "Set " + data.nama.toUpperCase() + " menjadi non-aktif?";
+                } else {
+                    var txt = "Set " + data.nama.toUpperCase() + " menjadi aktif?";
+                }
+
+                swal({
+                    title: "Konfirmasi",
+                    text: txt,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ya",
+                    cancelButtonText: "Batal",
+                    showLoaderOnConfirm: true,
+                    preConfirm: function() {
+                        var dType = $('#hidden-active-type').val();
+                        $.ajax({
+                                type: "POST",
+                                url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
+                                dataType: 'json',
+                                data: {
+                                    id: data.id,
+                                    table: dType,
+                                    status: current_status
+                                }
+                            }).done(function(response) {
+                                if (response.status == 'err') {
+                                    swal('Error', response.message, 'error');
+                                } else {
+                                    swal.close();
+                                    $.notify({
+                                        "icon": "fa fa-check-circle",
+                                        "message": response.message
+                                    }, {
+                                        "type": "success"
+                                    })
+
+                                    // reload the table
+                                    var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                                    table.ajax.reload();
+                                }
+                            })
+                            .fail(function() {
+                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                            });
+                    },
+                    allowOutsideClick: false
+                })
+            }
+        });
+
+        // Lets init our first table :: Division Table
+        initTableDivision();
     };
 
     var sweetAlert = function() {
@@ -31,13 +305,13 @@ var BasePagesDivision = function() {
 
             return html;
         }
+
         // Get division datas
         $.ajax({
             type: "GET",
             url: BASE_URL + '/php/api/getDivisionNumber.php',
             dataType: 'json',
             success: function(res) {
-                console.log(res);
                 if (res.status == 'ok') {
                     var data = res.data;
                 } else {
@@ -47,71 +321,12 @@ var BasePagesDivision = function() {
                 $('#stat-divisi').html(elem);
             }
         })
-    }
+    };
 
     var initTableDivision = function() {
-        // Function to render elements inside the modal :: ADD
-        var renderAddElement = function(type, name, label) {
-            if (type == 'select') {
-                var elem = '<div class="form-group"><div class="form-material form-material-primary floating push-30">' +
-                    '<textarea class="form-control" id="input-' + name + '" name="elem-' + name + '"></textarea>' +
-                    '<label for="elem-' + name + '">' + label + '</label>' +
-                    '</div></div>';
-            } else {
-                var elem = '<div class="form-group"><div class="form-material form-material-primary floating push-30">' +
-                    '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
-                    '<label for="elem-' + name + '">' + label + '</label>' +
-                    '</div></div>';
-            }
-            //initValidation(); // <-- not working!
-            return elem;
-        };
-
-        // when ADD button is clicked
-        $(document).on('click', '.btn-add', function() {
-            // reset the modal first!
-            $('#modal-content').html('');
-
-            var html = '';
-            data_type = $(this).attr('data');
-
-            switch (data_type) {
-                case "Departemen":
-                    html += renderAddElement('input', 'nama', 'Nama Departemen');
-                    html += renderAddElement('input', 'kode', 'Kode Departemen');
-                    html += renderAddElement('select', 'parent', 'Divisi Induk');
-                    break;
-                case "Section":
-                    html += renderAddElement('input', 'nama', 'Nama Section');
-                    html += renderAddElement('input', 'kode', 'Kode Section');
-                    html += renderAddElement('select', 'parent', 'Departemen Induk');
-                    break;
-                case "Sub Section":
-                    html += renderAddElement('input', 'nama', 'Nama Sub Section');
-                    html += renderAddElement('select', 'parent', 'Section Induk');
-                    break;
-                case "Grup":
-                    html += renderAddElement('input', 'nama', 'Nama Grup');
-                    html += renderAddElement('select', 'parent', 'Sub Section induk');
-                    break;
-                default:
-                    html += renderAddElement('input', 'nama', 'Nama Divisi');
-                    html += renderAddElement('input', 'kode', 'Kode Divisi');
-            }
-
-            $('#modal-title').html('Tambah Data ' + data_type);
-            $('#modal-content').html(html);
-            // hide unrelated buttons
-            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-            $('#modal').modal('show');
-        })
-
         // Table initiation
         var table = $('#table-division').DataTable({
-            order: [
-                [0, "asc"]
-            ],
-            columnDefs: [{ orderable: true }],
+            destroy: true, // destroy it first, if there is an active table instance
             pageLength: 10,
             lengthMenu: [
                 [10, 20, 50, 100],
@@ -119,180 +334,332 @@ var BasePagesDivision = function() {
             ],
             ajax: {
                 url: BASE_URL + '/php/api/getDivision.php',
-                dataSrc: function(response) {
-                    if (response.status == 'ok') {
-                        var data = response.data;
-                        var resultData = [];
-                        data.forEach(function(x) {
-                            resultData.push(x);
-                        })
-                        return resultData;
-                    } else {
+                type: "POST",
+                data: {
+                    table: 'division'
+                },
+                dataSrc: function(json) {
+                    if (json.status == 'err') {
                         $.notify({
+                            "icon": "fa fa-exclamation-circle",
                             "message": "Data divisi kosong"
                         }, {
                             "type": "danger"
                         });
                         return [];
+                    } else {
+                        return json.data;
                     }
                 }
             },
             deferRender: true,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
             columns: [
-                { data: "id" },
-                { className: "font-w600", data: "nama" },
-                { className: "hidden-xs", data: "created" },
-                { className: "hidden-xs", data: "updated" },
+                { data: "created" },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "created",
+                    render: function(data, type, row) {
+                        return moment(data).format('D MMMM YYYY');
+                    }
+                },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
                 {
                     data: null,
+                    className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" id="btn-view"><i class="fa fa-eye"></i></button>' +
-                            '<button class="btn btn-xs btn-default btn-edit" type="button"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
                             '</div>';
                     }
                 }
             ]
         });
+    };
 
-        // When employee name is clicked
-        $('.js-dataTable-full tbody').on('click', 'a, #btn-view', function() {
-            var data = table.row($(this).parents('tr')).data();
-
-            // Open the popup modal
-            $('#modal-profile').modal('show');
-            $('#opened-profile').val(data.nik);
-
-            renderProfile(data);
-
-            // Edit profile button
-            $('#btn-edit-profile').click(function() {
-                renderProfileEdit(data);
-                $('#origin').val('modal');
-            });
-
-            // When Cancelling editing
-            $('#btn-cancel-profile').on('click', function() {
-                var origin = $('#origin').val();
-                if (origin == 'modal') {
-                    renderProfile(data);
-                }
-            });
-
-            // When DELETE button is clicked
-            $('#btn-remove-profile').on('click', function() {
-                swal({
-                    title: "Konfirmasi",
-                    text: "Yakin akan menghapus data karyawan?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        return new Promise(function(resolve) {
-                            $.ajax({
-                                    type: "POST",
-                                    url: BASE_URL + "/php/api/deleteEmployee.php",
-                                    dataType: 'json',
-                                    data: {
-                                        nik: $('#opened-profile').val()
-                                    }
-                                }).done(function(response) {
-                                    if (response.status == 'err') {
-                                        swal('Error', response.message, 'error');
-                                    } else {
-                                        swal('Selesai', response.message, 'success');
-                                        $('#modal-profile').modal('hide');
-                                        // reload the table
-                                        table.ajax.reload();
-                                    }
-                                })
-                                .fail(function() {
-                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                                });
-                        });
-                    },
-                    allowOutsideClick: false
-                })
-            })
-        });
-
-        // when CANCEL button clicked
-        $(document).on('click', '#btn-cancel-profile', function() {
-            var origin = $('#origin').val();
-            if (origin != 'modal') {
-                $('#modal-profile').modal('hide');
-            }
-        })
-
-        // When EDIT button is clicked
-        $(document).on('click', '.btn-edit', function() {
-            var $btn = $(this);
-            var $tr = $btn.closest('tr');
-            var dataTableRow = table.row($tr[0]);
-            var data = dataTableRow.data();
-            $('#modal-profile').modal('show');
-            $('#opened-profile').val(data.nik);
-            renderProfileEdit(data);
-
-            $('#origin').val('direct');
-        });
-
-        // When SAVE button is clicked
-        $(document).on('submit', '#profile-form', function(e) {
-            e.preventDefault();
-
-            $('#profile-form').validate(); // <- This one is not working!
-
-            var data = [];
-            $('[id^="input-"]').filter(
-                function() {
-                    var elem = this;
-                    // cleaning empty data [TEMP!]
-                    if (elem['value'] != '') {
-                        return data.push({
-                            "key": elem['id'].replace('input-', ''),
-                            "value": elem['value']
-                        });
-                    }
-                });
-
-            // Read current profile
-            var cProf = $('#opened-profile').val();
-            if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
-            else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
-
-            $.ajax({
+    var initTableDepartment = function() {
+        // Table initiation
+        var table = $('#table-department').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            ajax: {
+                url: BASE_URL + '/php/api/getDivision.php',
                 type: "POST",
-                url: apiUrl,
-                dataType: 'json',
                 data: {
-                    obj: data,
-                    nik: $('#opened-profile').val()
+                    table: 'department'
                 },
-                success: function(res) {
-                    if (res.status == 'err') {
-                        swal("Error!", res.message, "error");
+                dataSrc: function(json) {
+                    if (json.status == 'err') {
+                        $.notify({
+                            "icon": "fa fa-exclamation-circle",
+                            "message": "Data department kosong"
+                        }, {
+                            "type": "danger"
+                        });
+                        return [];
                     } else {
-                        $('#modal-profile').modal('hide');
-                        swal("Berhasil!", "Data karyawan berhasil disimpan", "success");
-                        // reload the table
-                        table.ajax.reload();
+                        return json.data;
                     }
-
                 }
-            })
+            },
+            deferRender: true,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            columns: [
+                { data: "created" },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "font-w600 ", data: "nama" },
+                { className: "hidden-xs text-center", data: "created", },
+                { className: "hidden-xs text-center", data: "parent", },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
         });
-    }
+    };
+
+    var initTableSection = function() {
+        // Table initiation
+        var table = $('#table-section').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            ajax: {
+                url: BASE_URL + '/php/api/getDivision.php',
+                type: "POST",
+                data: {
+                    table: 'section'
+                },
+                dataSrc: function(json) {
+                    if (json.status == 'err') {
+                        $.notify({
+                            "icon": "fa fa-exclamation-circle",
+                            "message": "Data section kosong"
+                        }, {
+                            "type": "danger"
+                        });
+                        return [];
+                    } else {
+                        return json.data;
+                    }
+                }
+            },
+            deferRender: true,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            columns: [
+                { data: "created" },
+                { className: "hidden-xs text-center", data: "kode" },
+                { className: "font-w600 ", data: "nama" },
+                { className: "hidden-xs text-center", data: "created", },
+                { className: "hidden-xs text-center", data: "parent" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
+
+    var initTableSubSection = function() {
+        // Table initiation
+        var table = $('#table-sub-section').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            ajax: {
+                url: BASE_URL + '/php/api/getDivision.php',
+                type: "POST",
+                data: {
+                    table: 'sub_section'
+                },
+                dataSrc: function(json) {
+                    if (json.status == 'err') {
+                        $.notify({
+                            "icon": "fa fa-exclamation-circle",
+                            "message": "Data sub-section kosong"
+                        }, {
+                            "type": "danger"
+                        });
+                        return [];
+                    } else {
+                        return json.data;
+                    }
+                }
+            },
+            deferRender: true,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            columns: [
+                { data: "created" },
+                { className: "font-w600 ", data: "nama" },
+                { className: "hidden-xs text-center", data: "created", },
+                { className: "hidden-xs text-center", data: "parent" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
+
+    var initTableGroup = function() {
+        // Table initiation
+        var table = $('#table-group').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            ajax: {
+                url: BASE_URL + '/php/api/getDivision.php',
+                type: "POST",
+                data: {
+                    table: 'group'
+                },
+                dataSrc: function(json) {
+                    if (json.status == 'err') {
+                        $.notify({
+                            "icon": "fa fa-exclamation-circle",
+                            "message": "Data group kosong"
+                        }, {
+                            "type": "danger"
+                        });
+                        return [];
+                    } else {
+                        return json.data;
+                    }
+                }
+            },
+            deferRender: true,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            columns: [
+                { data: "created" },
+                { className: "font-w600 ", data: "nama" },
+                // { className: "hidden-xs text-center", data: "created" },
+                { className: "hidden-xs text-center", data: "parent" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
 
     return {
         init: function() {
             sweetAlert();
             initStat();
-            initTableDivision();
             initDivisionPage();
         }
     };
