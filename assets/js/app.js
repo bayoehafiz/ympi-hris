@@ -1429,7 +1429,7 @@ jQuery(function() {
             // check if user is authenticated
             var token = sessionStorage.getItem('accessToken');
             if (!token || token == undefined) {
-                lock.show();
+                // lock.show();
             } else {
                 console.log(token);
             }
