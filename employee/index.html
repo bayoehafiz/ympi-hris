@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
@@ -182,8 +183,7 @@
                 <!-- Dynamic Table Full Pagination -->
                 <div class="block">
                     <div class="block-content">
-                        <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality initialized in js/pages/base_tables_datatables.js -->
-                        <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee">
+                        <table class="table table-bordered table-striped js-dataTable-full-pagination table-hover" id="table-employee">
                             <thead>
                                 <tr>
                                     <th class="text-center">NIK</th>
@@ -241,27 +241,29 @@
                                                         <a href="#btabs-static-kerja">Data Kerja</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-pribadi">Data Pribadi</a>
+                                                        <a href="#btabs-static-pribadi">Pribadi</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-pendidikan">Data Pendidikan</a>
+                                                        <a href="#btabs-static-pendidikan">Pendidikan</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-admin">Data Admin</a>
+                                                        <a href="#btabs-static-admin">Administrasi</a>
                                                     </li>
                                                 </ul>
                                                 <div class="block-content tab-content">
                                                     <div class="tab-pane active" id="btabs-static-kerja">
                                                         <div class="row push-5-t">
                                                             <div class="col-md-6">
-                                                                <div class="push-10" id="profile-status"></div>
-                                                                <div class="push-10" id="profile-nik"></div>
                                                                 <div class="push-10" id="profile-department"></div>
                                                                 <div class="push-10" id="profile-section"></div>
-                                                            </div>
-                                                            <div class="col-md-6">
                                                                 <div class="push-10" id="profile-sub-section"></div>
                                                                 <div class="push-10" id="profile-group"></div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="push-10" id="profile-grade"></div>
+                                                                <div class="push-10" id="profile-penugasan"></div>
+                                                                <div class="push-10" id="profile-status"></div>
+                                                                <div class="push-10" id="profile-nik"></div>
                                                                 <div class="push-10" id="profile-tgl-masuk"></div>
                                                                 <div class="push-10" id="profile-masa-kerja"></div>
                                                             </div>
