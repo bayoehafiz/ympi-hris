@@ -3,7 +3,7 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (!empty($_POST['table'])) {
-    $table = 'tbl_' . $_POST['table'];
+    $table = $_POST['table'];
 
     $query = $db->query("SELECT * FROM " . $table);
     $rows = array();

@@ -656,7 +656,6 @@ var BasePagesPosition = function() {
             bsDataTables();
             sweetAlert();
             // initStat();
-            // 
             initPositionPage();
         }
     };

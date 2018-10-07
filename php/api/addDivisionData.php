@@ -2,9 +2,11 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
+ChromePhp::log($_POST['obj']);
+
 if (!empty($_POST['obj'])) {
     $data = $_POST['obj'];    
-    $table = "tbl_" . $_POST['table']; 
+    $table = $_POST['table']; 
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);

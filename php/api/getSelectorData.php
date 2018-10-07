@@ -3,7 +3,7 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (!empty($_POST['table'])) {
-    $table = 'tbl_' . $_POST['table'];
+    $table = $_POST['table'];
 
     if ($_POST['parent']) {
         $sql = "SELECT id, nama FROM " . $table . " WHERE active = 1 AND parent = " . $_POST['parent'] . " ORDER BY nama";

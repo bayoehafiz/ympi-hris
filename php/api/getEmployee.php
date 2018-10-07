@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT * FROM employee");
+$query = $db->query("SELECT * FROM tbl_employee");
 $rows = array();
 
 if ($query->num_rows > 0) {

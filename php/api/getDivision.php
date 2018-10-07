@@ -3,17 +3,18 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (!empty($_POST['table'])) {
-    $table = 'tbl_' . $_POST['table'];
+    $table = $_POST['table'];
+    // ChromePhp::log($table);
 
-    if ($table == 'tbl_division') $sql = "SELECT a.id, a.nama, a.kode, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM tbl_division a LEFT JOIN tbl_department b ON a.id = b.parent GROUP BY b.parent";
+    if ($table == 'division') $sql = "SELECT a.id, a.nama, a.kode, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM `division` a LEFT JOIN `department` b ON a.id = b.parent GROUP BY a.id";
 
-    else if ($table == 'tbl_department') $sql = "SELECT a.id, a.nama, a.kode, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM tbl_department a LEFT JOIN tbl_section b ON a.id  = b.parent LEFT JOIN tbl_division c ON a.parent = c.id GROUP BY b.parent";
+    else if ($table == 'department') $sql = "SELECT a.id, a.nama, a.kode, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM `department` a LEFT JOIN `section` b ON a.id  = b.parent LEFT JOIN `division` c ON a.parent = c.id GROUP BY a.id";
 
-    else if ($table == 'tbl_section') $sql = "SELECT a.id, a.nama, a.kode, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM tbl_section a LEFT JOIN tbl_sub_section b ON a.id  = b.parent LEFT JOIN tbl_department c ON a.parent = c.id GROUP BY b.parent";
+    else if ($table == 'section') $sql = "SELECT a.id, a.nama, a.kode, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM `section` a LEFT JOIN `sub_section` b ON a.id  = b.parent LEFT JOIN `department` c ON a.parent = c.id GROUP BY a.id";
 
-    else if ($table == 'tbl_sub_section') $sql = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM tbl_sub_section a LEFT JOIN tbl_group b ON a.id  = b.parent LEFT JOIN tbl_section c ON a.parent = c.id GROUP BY b.parent";
+    else if ($table == 'sub_section') $sql = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM `sub_section` a LEFT JOIN `group` b ON a.id  = b.parent LEFT JOIN `section` c ON a.parent = c.id GROUP BY a.id";
 
-    else $sql = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated FROM tbl_sub_section a LEFT JOIN tbl_section c ON a.parent = c.id GROUP BY a.parent";
+    else $sql = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated FROM `sub_section` a LEFT JOIN `section` c ON a.parent = c.id GROUP BY a.id";
 
     $query = $db->query($sql);
     $rows = array();

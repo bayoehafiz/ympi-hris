@@ -4,7 +4,7 @@ include "../inc/chromePhp.php";
 
 if (!empty($_POST['id'])) {
     $id = $_POST['id'];
-    $table = 'tbl_' . $_POST['table'];    
+    $table = $_POST['table'];    
     $status = $_POST['status'];
     $sql_val = 1;
     $timestamp = date("Y-m-d H:i:s");

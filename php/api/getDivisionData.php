@@ -3,7 +3,7 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (!empty($_POST['table'])) {
-    $table = "tbl_" . $_POST['table'];
+    $table = $_POST['table'];
     
     $sql = "SELECT * FROM " . $table . " WHERE active = 1 ORDER BY nama";
     $query = $db->query($sql);

@@ -150,6 +150,8 @@ var BasePagesEmployee = function() {
             });
         }
     };
+
+    
     
     var initEmployeePage = function() {
         $('#btn-logout').click(function() {
@@ -375,6 +377,7 @@ var BasePagesEmployee = function() {
                     $('#modal-jabatan').html(selector);
                 }
             });
+            
 
             // fetch data for populating DIVISI selector
             $.ajax({

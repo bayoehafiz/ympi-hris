@@ -4,7 +4,7 @@ include "../inc/chromePhp.php";
 
 if (!empty($_POST['id'])) {
     $id = $_POST['id'];
-    $table = 'tbl_' . $_POST['table'];
+    $table = $_POST['table'];
     
     $sql = "DELETE FROM " . $table . " WHERE id = " . intval($id);
 
