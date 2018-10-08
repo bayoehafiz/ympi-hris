@@ -56,8 +56,7 @@
                 <div class="sidebar-content">
                     <!-- Side Header -->
                     <div class="side-header side-content bg-white-op">
-                        <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
-                        <a class="h5 text-white logo" href="#" route="/"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive pb-5"></a>
+                        <div class="logo push-15-r"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block"></div>
                     </div>
                     <!-- END Side Header -->
                     <!-- Side Content -->
@@ -66,8 +65,8 @@
                             <a class="nav-menu" route="/" href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
                             <a class="nav-menu" route="/employee" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
-                            <a class="nav-menu" route="/division" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Divisi</span></a>
-                            <a class="nav-menu active" route="/position" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                            <a class="nav-menu" route="/division" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Divisi</span></a>
+                            <a class="nav-menu active" route="/position" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
                             <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
                             <a class="nav-menu" route="/shift" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
@@ -89,7 +88,7 @@
                 <li>
                     <div class="btn-group">
                         <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
-                            <img src="../assets/img/avatars/avatar10.jpg" alt="Avatar">
+                            <img src="../assets/img/avatars/avatar.jpg" alt="User Photo">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
@@ -112,43 +111,13 @@
             <!-- END Header Navigation Right -->
             <!-- Header Navigation Left -->
             <ul class="nav-header pull-left">
-                <li class="hidden-md hidden-lg">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button">
-                        <i class="fa fa-navicon"></i>
-                    </button>
-                </li>
-                <li class="hidden-xs hidden-sm">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
-                        <i class="fa fa-ellipsis-v"></i>
-                    </button>
-                </li>
-                <li class="js-header-search header-search">
-                    <span class="current-time"></span>
-                </li>
+                <h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA JABATAN</h3>
             </ul>
             <!-- END Header Navigation Left -->
         </header>
         <!-- END Header -->
         <!-- Main Container -->
         <main id="main-container">
-            <!-- Page Header -->
-            <div class="content bg-gray-lighter">
-                <div class="row items-push">
-                    <div class="col-sm-7">
-                        <h1 class="page-heading">Data Jabatan
-                            <button class="btn btn-primary push-5-r push-10-l btn-add" type="button" id="btn-add" data="Jabatan" data-type="jabatan"><i class="si si-plus"></i> Tambah Data</button></h1>
-                    </div>
-                    <div class="col-sm-5 text-right hidden-xs">
-                        <ol class="breadcrumb push-10-t">
-                            <li>Data Master</li>
-                            <li><a class="link-effect" href="">Jabatan</a></li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <!-- END Page Header -->
             <!-- Stats -->
             <!-- <div class="content bg-white border-b">
                 <div class="row items-push text-uppercase text-center" id="stat-jabatan"></div>

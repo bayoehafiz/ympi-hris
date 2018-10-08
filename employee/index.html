@@ -57,30 +57,29 @@
                 <div class="sidebar-content">
                     <!-- Side Header -->
                     <div class="side-header side-content bg-white-op">
-                        <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
-                        <a class="h5 text-white logo" href="#" route="/"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive pb-5"></a>
+                        <div class="logo push-15-r"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block"></div>
+                        </div>
+                        <!-- END Side Header -->
+                        <!-- Side Content -->
+                        <div class="side-content">
+                            <ul class="nav-main">
+                                <a class="nav-menu" route="/" href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
+                                <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
+                                <a class="nav-menu active" route="/employee" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
+                                <a class="nav-menu" route="/division" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Divisi</span></a>
+                                <a class="nav-menu" route="/position" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                                <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
+                                <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
+                                <a class="nav-menu" route="/shift" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
+                                <a class="nav-menu js-swal-error" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
+                                <a class="nav-menu js-swal-error" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
+                            </ul>
+                        </div>
+                        <!-- END Side Content -->
                     </div>
-                    <!-- END Side Header -->
-                    <!-- Side Content -->
-                    <div class="side-content">
-                        <ul class="nav-main">
-                            <a class="nav-menu" route="/" href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
-                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
-                            <a class="nav-menu active" route="/employee" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
-                            <a class="nav-menu" route="/division" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Divisi</span></a>
-                            <a class="nav-menu" route="/position" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Jabatan</span></a>
-                            <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
-                            <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
-                            <a class="nav-menu" route="/shift" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
-                            <a class="nav-menu js-swal-error" href="#"><i class="si si-calendar"></i><span class="sidebar-mini-hide">Kalendar Kerja</span></a>
-                            <a class="nav-menu js-swal-error" href="#"><i class="si si-magnifier"></i><span class="sidebar-mini-hide">Laporan</span></a>
-                        </ul>
-                    </div>
-                    <!-- END Side Content -->
+                    <!-- Sidebar Content -->
                 </div>
-                <!-- Sidebar Content -->
-            </div>
-            <!-- END Sidebar Scroll Container -->
+                <!-- END Sidebar Scroll Container -->
         </nav>
         <!-- END Sidebar -->
         <!-- Header -->
@@ -90,7 +89,7 @@
                 <li>
                     <div class="btn-group">
                         <button class="btn btn-default btn-image dropdown-toggle" data-toggle="dropdown" type="button">
-                            <img src="../assets/img/avatars/avatar10.jpg" alt="Avatar">
+                            <img src="../assets/img/avatars/avatar.jpg" alt="User Photo">
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
@@ -113,67 +112,41 @@
             <!-- END Header Navigation Right -->
             <!-- Header Navigation Left -->
             <ul class="nav-header pull-left">
-                <li class="hidden-md hidden-lg">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button">
-                        <i class="fa fa-navicon"></i>
-                    </button>
-                </li>
-                <li class="hidden-xs hidden-sm">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
-                        <i class="fa fa-ellipsis-v"></i>
-                    </button>
-                </li>
-                <li class="js-header-search header-search">
-                    <span class="current-time"></span>
-                </li>
+                <h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>
             </ul>
             <!-- END Header Navigation Left -->
         </header>
         <!-- END Header -->
         <!-- Main Container -->
         <main id="main-container">
-            <!-- Page Header -->
-            <div class="content bg-gray-lighter">
-                <div class="row items-push">
-                    <div class="col-sm-7">
-                        <h1 class="page-heading">
-                                Data Karyawan 
-                                <button class="btn btn-primary push-5-r push-10-l" type="button" id="btn-add"><i class="si si-plus"></i> Tambah Karyawan</button>
-                        </h1>
-                    </div>
-                    <div class="col-sm-5 text-right hidden-xs">
-                        <ol class="breadcrumb push-10-t">
-                            <li>Data Master</li>
-                            <li><a class="link-effect" href="">Karyawan</a></li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <!-- END Page Header -->
             <!-- Stats -->
             <div class="content bg-white border-b" id="employee-stat">
                 <div class="row items-push text-uppercase text-center">
-                    <div class="col-xs-3 col-xs-6">
+                    <div class="col-md-2 col-md-offset-1">
                         <div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-tetap"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
                     </div>
-                    <div class="col-xs-3 col-xs-6">
+                    <div class="col-md-2">
                         <div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-kontrak-1"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
                     </div>
-                    <div class="col-xs-3 col-xs-6">
+                    <div class="col-md-2">
                         <div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-kontrak-2"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
                     </div>
-                    <div class="col-xs-3 col-xs-6">
+                    <div class="col-md-2">
                         <div class="font-w700 text-gray-darker animated fadeIn">Total</div>
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-karyawan"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
+                    </div>
+                    <div class="col-md-2">
+                        <span class="h2 font-w300 text-primary animated flipInX">
+                            <button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>
+                        </span>
+                        <div class="text-muted animated fadeIn"><small>Tambah Data</small></div>
                     </div>
                 </div>
             </div>
@@ -183,13 +156,13 @@
                 <!-- Dynamic Table Full Pagination -->
                 <div class="block">
                     <div class="block-content">
-                        <table class="table table-bordered table-striped js-dataTable-full-pagination table-hover" id="table-employee">
+                        <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee">
                             <thead>
                                 <tr>
-                                    <th class="text-center">NIK</th>
+                                    <th>NIK</th>
                                     <th>Nama Lengkap</th>
+                                    <th class="hidden-xs">Jabatan</th>
                                     <th class="hidden-xs">Divisi</th>
-                                    <th class="hidden-xs">Departemen</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center" style="width: 10%;">Actions</th>
                                 </tr>
@@ -228,7 +201,7 @@
                                                 <div class="text-muted" id="modal-divisi"></div>
                                             </div>
                                             <div class="pull-left">
-                                                <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar13.jpg" alt="">
+                                                <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar.jpg" alt="">
                                             </div>
                                             </div>
                                         </div>
@@ -258,12 +231,12 @@
                                                                 <div class="push-10" id="profile-section"></div>
                                                                 <div class="push-10" id="profile-sub-section"></div>
                                                                 <div class="push-10" id="profile-group"></div>
-                                                            </div>
-                                                            <div class="col-md-6">
                                                                 <div class="push-10" id="profile-grade"></div>
                                                                 <div class="push-10" id="profile-penugasan"></div>
-                                                                <div class="push-10" id="profile-status"></div>
+                                                            </div>
+                                                            <div class="col-md-6">
                                                                 <div class="push-10" id="profile-nik"></div>
+                                                                <div class="push-10" id="profile-status"></div>
                                                                 <div class="push-10" id="profile-tgl-masuk"></div>
                                                                 <div class="push-10" id="profile-masa-kerja"></div>
                                                             </div>
@@ -315,10 +288,11 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button class="btn btn-sm btn-default pull-left" data-toggle="popover" data-placement="top" data-content="Generate random sample data" type="button" id="btn-generate-profile"><i class="fa fa-gear"></i></button>
                                 <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
                                 <button class="btn btn-sm btn-danger" type="button" id="btn-remove-profile"><i class="fa fa-trash"></i> Hapus</button>
                                 <button class="btn btn-sm btn-success" type="submit" id="btn-save-profile"><i class="fa fa-save"></i> Simpan</button>
-                                <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"><i class="fa fa-check"></i> Tutup</button>
+                                <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> Tutup</button>
                                 <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="fa fa-times"></i> Batal</button>
                             </div>
                         </div>
@@ -349,7 +323,7 @@
     <script src="../assets/js/core/jquery.placeholder.min.js"></script>
     <script src="../assets/js/core/js.cookie.min.js"></script>
     <script src="../assets/js/app.js"></script>
-    <!-- Auth plugin -->
+    <!-- Core plugin -->
     <script src="../assets/js/core/lock.min.js"></script>
     <script src="../assets/js/core/storage.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
@@ -376,6 +350,14 @@
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page JS Code -->
+    <script src="helper/generate-random-profile.js"></script>
+    <script src="helper/humanise-date.js"></script>
+    <script src="helper/init-validation.js"></script>
+    <script src="helper/render-editing-element.js"></script>
+    <script src="helper/render-profile-add.js"></script>
+    <script src="helper/render-profile-edit.js"></script>
+    <script src="helper/render-profile-view.js"></script>
+    <script src="helper/repopulate-selector.js"></script>
     <script src="employee.js"></script>
     <script>
     jQuery(function() {

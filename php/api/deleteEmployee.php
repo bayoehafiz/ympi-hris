@@ -2,10 +2,10 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['nik'])) {
-    $nik = $_POST['nik'];
+if (!empty($_POST['id'])) {
+    $id = $_POST['id'];
     
-    $sql = "DELETE FROM `employee` WHERE `nik`=" . intval($nik);
+    $sql = "DELETE FROM employee WHERE id='" . $id . "'";
 
     if($db->query($sql)){
         $res['status'] = 'ok';

@@ -54,8 +54,7 @@
                 <div class="sidebar-content">
                     <!-- Side Header -->
                     <div class="side-header side-content bg-white-op">
-                        <!-- Themes functionality initialized in App() -> uiHandleTheme() -->
-                        <a class="h5 text-white logo" href="#" route="/"><img src="assets/img/yamaha-logo-white.png" class="img-responsive pb-5"></a>
+                        <div class="logo push-15-r"><img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block"></div>
                     </div>
                     <!-- END Side Header -->
                     <!-- Side Content -->
@@ -64,8 +63,8 @@
                             <a class="nav-menu active" route="/" href="#"><i class="si si-speedometer"></i><span class="sidebar-mini-hide">Dashboard</span></a>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Data Master</span></li>
                             <a class="nav-menu" route="/employee" href="#"><i class="si si-users"></i><span class="sidebar-mini-hide">Karyawan</span></a>
-                            <a class="nav-menu" route="/division" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Divisi</span></a>
-                            <a class="nav-menu js-swal-error" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Jabatan</span></a>
+                            <a class="nav-menu" route="/division" href="#"><i class="si si-layers"></i><span class="sidebar-mini-hide">Divisi</span></a>
+                            <a class="nav-menu js-swal-error" href="#"><i class="si si-briefcase"></i><span class="sidebar-mini-hide">Jabatan</span></a>
                             <li class="nav-main-heading"><span class="sidebar-mini-hide">Absensi</span></li>
                             <a class="nav-menu js-swal-error" href="#"><i class="si si-check"></i><span class="sidebar-mini-hide">Data Absensi</span></a>
                             <a class="nav-menu" route="/shift" href="#"><i class="si si-book-open"></i><span class="sidebar-mini-hide">Data Shift Kerja</span></a>
@@ -110,21 +109,7 @@
             <!-- END Header Navigation Right -->
             <!-- Header Navigation Left -->
             <ul class="nav-header pull-left">
-                <li class="hidden-md hidden-lg">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_toggle" type="button">
-                        <i class="fa fa-navicon"></i>
-                    </button>
-                </li>
-                <li class="hidden-xs hidden-sm">
-                    <!-- Layout API, functionality initialized in App() -> uiLayoutApi() -->
-                    <button class="btn btn-default" data-toggle="layout" data-action="sidebar_mini_toggle" type="button">
-                        <i class="fa fa-ellipsis-v"></i>
-                    </button>
-                </li>
-                <li class="js-header-search header-search">
-                    <span class="current-time"></span>
-                </li>
+                <h3 class="push-5-t"><i class="si si-speedometer">&nbsp;&nbsp;</i>DASHBOARD</h3>
             </ul>
             <!-- END Header Navigation Left -->
         </header>

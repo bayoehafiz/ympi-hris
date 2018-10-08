@@ -6,10 +6,10 @@ if (!empty($_POST['table'])) {
     $table = $_POST['table'];
 
     if ($_POST['parent']) {
-        $sql = "SELECT id, nama FROM " . $table . " WHERE active = 1 AND parent = " . $_POST['parent'] . " ORDER BY nama";
+        $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 AND parent = " . $_POST['parent'] . " ORDER BY nama";
     } else {
-        if ($table == 'tbl_grade') $sql = "SELECT id, kode, nama FROM " . $table . " WHERE active = 1 ORDER BY kode";
-        else $sql = "SELECT id, nama FROM " . $table . " WHERE active = 1 ORDER BY nama";
+        if ($table == 'grade') $sql = "SELECT id, kode, nama FROM `" . $table . "` WHERE active = 1 ORDER BY kode";
+        else $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 ORDER BY nama";
     }
 
     $query = $db->query($sql);

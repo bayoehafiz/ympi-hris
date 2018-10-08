@@ -2,7 +2,18 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT COUNT(a.id) as tot_division, COUNT(b.id) as tot_department, COUNT(c.id) as tot_section, COUNT(d.id) as tot_sub_section, COUNT(c.id) as tot_group FROM tbl_division a, tbl_department b, tbl_section c, tbl_sub_section d, tbl_group e ORDER BY a.id");
+$sql = "SELECT 
+            a.nama, a.kode, COUNT(b.id) AS total
+        FROM
+            division a
+                LEFT JOIN
+            employee b ON b.division = a.id
+        WHERE
+            active = 1
+        GROUP BY nama
+        ORDER BY kode";
+
+$query = $db->query($sql);
 $rows = array();
 
 if ($query->num_rows > 0) {

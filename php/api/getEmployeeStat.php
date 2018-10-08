@@ -2,7 +2,13 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT division, COUNT(*) AS total FROM employee GROUP BY division");
+$sql = "SELECT 
+            status, IFNULL(COUNT(*), 0) AS total
+        FROM
+            employee
+        GROUP BY status";
+
+$query = $db->query($sql);
 $rows = array();
 
 if ($query->num_rows > 0) {
@@ -14,7 +20,7 @@ if ($query->num_rows > 0) {
     $data['data'] = $rows;
 } else {
     $data['status'] = 'err';
-    $data['data'] = '';
+    $data['message'] = '';
 }
 
 echo json_encode($data);

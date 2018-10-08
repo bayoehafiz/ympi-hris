@@ -2,8 +2,8 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['obj'])) {
-    $data = $_POST['obj'];    
+if (!empty($_POST['data'])) {
+    $data = $_POST['data'];    
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);
@@ -14,14 +14,10 @@ if (!empty($_POST['obj'])) {
         if ($value['value'] != '') {
             $counter++;
 
-            if ($value['key'] == 'nik') {
-                $sql_sets .= '`' . $value['key'] . '`';
-                $sql_values .= intval($value['value']);
-            } else {
-                $sql_sets .= '`' . $value['key'] . '`';
-                $sql_values .= '"' . $value['value'] . '"';
-            }
+            $sql_sets .= '`' . $value['key'] . '`';
+            $sql_values .= '"' . $value['value'] . '"';
 
+            // Remove comma [,] from last value of the array
             if ($counter != $arr_length) {
                 $sql_sets .= ', '; 
                 $sql_values .= ', ';
@@ -30,7 +26,7 @@ if (!empty($_POST['obj'])) {
     }
     
     $sql = "INSERT INTO `employee` (".$sql_sets.") VALUES (".$sql_values.")";
-
+    // chromePhp::log($sql);
     if($db->query($sql)){
         $res['status'] = 'ok';
     }else{
