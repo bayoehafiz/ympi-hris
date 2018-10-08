@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 07, 2018 at 11:19 AM
+-- Generation Time: Oct 08, 2018 at 10:16 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -89,13 +90,12 @@ TRUNCATE TABLE `division`;
 --
 
 INSERT INTO `division` (`id`, `nama`, `kode`, `active`, `created`, `updated`) VALUES
-(1, 'Finance', 'FNC', 1, '2018-10-02 09:35:45', '2018-10-03 12:17:09'),
-(2, 'HRGA', 'HRG', 1, '2018-10-02 09:47:47', '2018-10-07 03:40:30'),
-(3, 'Production', 'PRD', 1, '2018-10-02 09:48:15', '2018-10-03 13:04:18'),
+(1, 'Finance', 'FNC', 1, '2018-10-02 09:35:45', '2018-10-08 08:29:16'),
+(2, 'HRGA', 'HRG', 1, '2018-10-02 09:47:47', '2018-10-08 08:29:17'),
+(3, 'Production', 'PRD', 1, '2018-10-02 09:48:15', '2018-10-08 08:32:08'),
 (4, 'Production Engineering', 'PEN', 1, '2018-10-02 09:48:41', '2018-10-02 09:48:41'),
 (5, 'Production Support', 'PSU', 1, '2018-10-02 09:48:57', '2018-10-02 09:48:57'),
-(6, 'President Director', 'PDR', 1, '2018-10-02 09:50:18', '2018-10-07 03:40:33'),
-(26, 'Test Lagi', 'hjfds', 0, '2018-10-03 18:34:05', '2018-10-07 04:18:37');
+(6, 'President Director', 'PDR', 0, '2018-10-02 09:50:18', '2018-10-08 08:33:06');
 
 -- --------------------------------------------------------
 
@@ -107,39 +107,36 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
   `id` int(11) NOT NULL,
   `nik` varchar(255) NOT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `pin` varchar(255) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `ktp` varchar(255) NOT NULL,
-  `tgl_masuk` date DEFAULT NULL,
-  `jenis_kelamin` set('L','P') DEFAULT NULL,
+  `tgl_masuk` varchar(255) DEFAULT NULL,
+  `jenis_kelamin` varchar(255) DEFAULT NULL,
   `tempat_lahir` varchar(255) DEFAULT NULL,
-  `tgl_lahir` date DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
-  `rt_rw` varchar(255) DEFAULT NULL,
-  `kelurahan` varchar(255) DEFAULT NULL,
-  `kecamatan` varchar(255) DEFAULT NULL,
-  `kota` varchar(255) DEFAULT NULL,
+  `tgl_lahir` varchar(255) DEFAULT NULL,
+  `agama` varchar(255) DEFAULT NULL,
+  `alamat_lengkap` varchar(255) DEFAULT NULL,
   `alamat_domisili` varchar(255) DEFAULT NULL,
-  `rt_rw_domisili` varchar(255) DEFAULT NULL,
-  `kelurahan_domisili` varchar(255) DEFAULT NULL,
-  `kecamatan_domisili` varchar(255) DEFAULT NULL,
-  `kota_domisili` varchar(255) DEFAULT NULL,
+  `status_keluarga` varchar(255) DEFAULT NULL,
+  `pendidikan` varchar(255) DEFAULT NULL,
   `sekolah_universitas` varchar(255) DEFAULT NULL,
   `jurusan` varchar(255) DEFAULT NULL,
-  `rekening` varchar(255) DEFAULT NULL,
+  `no_ktp` varchar(255) NOT NULL,
+  `no_telepon` varchar(255) DEFAULT NULL,
   `no_bpjstk` varchar(255) DEFAULT NULL,
   `no_bpjskes` varchar(255) DEFAULT NULL,
-  `npwp` varchar(255) DEFAULT NULL,
+  `no_npwp` varchar(255) DEFAULT NULL,
   `no_jp` varchar(255) DEFAULT NULL,
-  `photo_url` varchar(255) DEFAULT 'assets/img/avatars/avatar13.jpg',
-  `id_division` int(11) DEFAULT NULL,
-  `id_department` int(11) DEFAULT NULL,
-  `id_section` int(11) DEFAULT NULL,
-  `id_sub_section` int(11) DEFAULT NULL,
-  `id_group` int(11) DEFAULT NULL,
-  `id_jabatan` int(11) DEFAULT NULL,
-  `id_grade` int(11) DEFAULT NULL,
-  `id_penugasan` int(11) DEFAULT NULL,
+  `rekening` varchar(255) DEFAULT NULL,
+  `photo_url` varchar(255) DEFAULT 'assets/img/avatars/avatar.jpg',
+  `division` int(11) DEFAULT NULL,
+  `department` int(11) DEFAULT NULL,
+  `section` int(11) DEFAULT NULL,
+  `sub_section` int(11) DEFAULT NULL,
+  `group` int(11) DEFAULT NULL,
+  `jabatan` int(11) DEFAULT NULL,
+  `grade` int(11) DEFAULT NULL,
+  `penugasan` int(11) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -193,7 +190,8 @@ INSERT INTO `grade` (`id`, `nama`, `kode`, `active`, `created`, `updated`) VALUE
 (16, 'Junior Specialist', 'M1', 1, '2018-10-03 12:32:59', '2018-10-03 12:32:59'),
 (17, 'Junior Specialist', 'M2', 1, '2018-10-03 12:33:07', '2018-10-03 12:33:07'),
 (18, 'Junior Specialist', 'M3', 1, '2018-10-03 12:33:11', '2018-10-03 12:33:11'),
-(19, 'Specialist', 'M4', 1, '2018-10-03 12:33:21', '2018-10-03 12:33:21');
+(19, 'Specialist', 'M4', 1, '2018-10-03 12:33:21', '2018-10-03 12:33:21'),
+(20, 'Test Grade', NULL, 0, '2018-10-07 04:23:40', '2018-10-07 04:23:43');
 
 -- --------------------------------------------------------
 
@@ -340,7 +338,8 @@ INSERT INTO `jabatan` (`id`, `nama`, `active`, `created`, `updated`) VALUES
 (20, 'Senior Staff', 1, '2018-10-03 12:26:53', '2018-10-03 12:26:53'),
 (21, 'Staff', 1, '2018-10-03 12:27:00', '2018-10-03 12:27:00'),
 (22, 'Sub Leader', 1, '2018-10-03 12:27:07', '2018-10-03 12:27:07'),
-(23, 'test', 1, '2018-10-04 09:00:12', '2018-10-04 09:00:12');
+(23, 'test', 1, '2018-10-04 09:00:12', '2018-10-04 09:00:12'),
+(24, 'Test Jabatan', 0, '2018-10-07 04:23:15', '2018-10-07 04:23:18');
 
 -- --------------------------------------------------------
 
@@ -377,7 +376,7 @@ INSERT INTO `penugasan` (`id`, `nama`, `active`, `created`, `updated`) VALUES
 (8, 'Senior Chief', 1, '2018-10-03 12:36:26', '2018-10-03 12:36:26'),
 (9, 'Senior Foreman', 1, '2018-10-03 12:36:33', '2018-10-03 12:36:33'),
 (10, 'Sub Leader', 1, '2018-10-03 12:36:39', '2018-10-03 12:36:39'),
-(11, 'tst', 0, '2018-10-04 03:29:03', '2018-10-04 03:29:06');
+(12, 'Test Jabatan', 0, '2018-10-07 04:24:01', '2018-10-07 04:24:04');
 
 -- --------------------------------------------------------
 
@@ -613,14 +612,14 @@ ALTER TABLE `division`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_division_idxfk` (`id_division`),
-  ADD KEY `id_department_idxfk` (`id_department`),
-  ADD KEY `id_section_idxfk` (`id_section`),
-  ADD KEY `id_sub_section_idxfk` (`id_sub_section`),
-  ADD KEY `id_group_idxfk` (`id_group`),
-  ADD KEY `id_jabatan_idxfk` (`id_jabatan`),
-  ADD KEY `id_grade_idxfk` (`id_grade`),
-  ADD KEY `id_penugasan_idxfk` (`id_penugasan`);
+  ADD KEY `id_division_idxfk` (`division`),
+  ADD KEY `id_department_idxfk` (`department`),
+  ADD KEY `id_section_idxfk` (`section`),
+  ADD KEY `id_sub_section_idxfk` (`sub_section`),
+  ADD KEY `id_group_idxfk` (`group`),
+  ADD KEY `id_jabatan_idxfk` (`jabatan`),
+  ADD KEY `id_grade_idxfk` (`grade`),
+  ADD KEY `id_penugasan_idxfk` (`penugasan`);
 
 --
 -- Indexes for table `grade`
@@ -697,12 +696,12 @@ ALTER TABLE `division`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `grade`
 --
 ALTER TABLE `grade`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `group`
 --
@@ -717,12 +716,12 @@ ALTER TABLE `group_shift`
 -- AUTO_INCREMENT for table `jabatan`
 --
 ALTER TABLE `jabatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `penugasan`
 --
 ALTER TABLE `penugasan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `presensi`
 --
@@ -757,14 +756,14 @@ ALTER TABLE `department`
 -- Constraints for table `employee`
 --
 ALTER TABLE `employee`
-  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`id_division`) REFERENCES `division` (`id`),
-  ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`id_department`) REFERENCES `department` (`id`),
-  ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`id_section`) REFERENCES `section` (`id`),
-  ADD CONSTRAINT `employee_ibfk_4` FOREIGN KEY (`id_sub_section`) REFERENCES `sub_section` (`id`),
-  ADD CONSTRAINT `employee_ibfk_5` FOREIGN KEY (`id_group`) REFERENCES `group` (`id`),
-  ADD CONSTRAINT `employee_ibfk_6` FOREIGN KEY (`id_jabatan`) REFERENCES `jabatan` (`id`),
-  ADD CONSTRAINT `employee_ibfk_7` FOREIGN KEY (`id_grade`) REFERENCES `grade` (`id`),
-  ADD CONSTRAINT `employee_ibfk_8` FOREIGN KEY (`id_penugasan`) REFERENCES `penugasan` (`id`);
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`division`) REFERENCES `division` (`id`),
+  ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`department`) REFERENCES `department` (`id`),
+  ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`section`) REFERENCES `section` (`id`),
+  ADD CONSTRAINT `employee_ibfk_4` FOREIGN KEY (`sub_section`) REFERENCES `sub_section` (`id`),
+  ADD CONSTRAINT `employee_ibfk_5` FOREIGN KEY (`group`) REFERENCES `group` (`id`),
+  ADD CONSTRAINT `employee_ibfk_6` FOREIGN KEY (`jabatan`) REFERENCES `jabatan` (`id`),
+  ADD CONSTRAINT `employee_ibfk_7` FOREIGN KEY (`grade`) REFERENCES `grade` (`id`),
+  ADD CONSTRAINT `employee_ibfk_8` FOREIGN KEY (`penugasan`) REFERENCES `penugasan` (`id`);
 
 --
 -- Constraints for table `group`
@@ -783,6 +782,7 @@ ALTER TABLE `section`
 --
 ALTER TABLE `sub_section`
   ADD CONSTRAINT `sub_section_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `section` (`id`);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
