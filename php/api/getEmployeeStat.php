@@ -6,7 +6,8 @@ $sql = "SELECT
             status, IFNULL(COUNT(*), 0) AS total
         FROM
             employee
-        GROUP BY status";
+        GROUP BY status
+        ORDER BY status";
 
 $query = $db->query($sql);
 $rows = array();

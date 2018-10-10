@@ -162,24 +162,49 @@ var BasePagesEmployee = function() {
             url: BASE_URL + '/php/api/getEmployeeStat.php',
             dataType: 'json',
             success: function(res) {
+                var container = $('#employee-stat');
+                var html = '';
+                container.empty();
                 if (res.status == 'ok') {
                     var data = res.data;
                     var counter = 0;
                     data.forEach(function(d) {
-                        d.status == "Tetap" ? $('#total-tetap').html(d.total) : $('#total-tetap').html('0');
-                        d.status == "Kontrak 1" ? $('#total-kontrak-1').html(d.total) : $('#total-kontrak-1').html('0');
-                        d.status == "Kontrak 2" ? $('#total-kontrak-2').html(d.total) : $('#total-kontrak-2').html('0');
-                        // console.log(d);
-                        counter += parseInt(d.total);
-                    })
-                    $('#total-karyawan').html(counter);
-                } else {
-                    $('#total-tetap').html('0');
-                    $('#total-kontrak-1').html('0');
-                    $('#total-kontrak-2').html('0');
-                    $('#total-karyawan').html('0');
-                }
+                        if (d.status == "Kontrak 1") {
+                            html += '<div class="col-md-2 col-md-offset-1 col-xs-6">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        } else if (d.status == "Kontrak 2") {
+                            html += '<div class="col-md-2 col-xs-6">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        } else {
+                            html += '<div class="col-md-2 col-xs-6">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        }
 
+                        counter += parseInt(d.total);
+                    })  
+                    html += '<div class="col-md-2 col-xs-6">' +
+                        '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
+                        '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
+                        '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                        '</div>';
+                }
+                html += '<div class="col-md-2">' +
+                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>' +
+                    '</span>' +
+                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    '</div>';
+
+                container.html(html);
             }
         })
     };
