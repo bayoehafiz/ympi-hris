@@ -148,13 +148,6 @@ var BasePagesEmployee = function() {
         }
     };
 
-    var sweetAlert = function() {
-        // Init an error alert on button click
-        $('.js-swal-error').on('click', function() {
-            swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
-        });
-    };
-
     // Init page stat
     var initStat = function() {
         $.ajax({
@@ -622,7 +615,6 @@ var BasePagesEmployee = function() {
     return {
         init: function() {
             bsDataTables();
-            sweetAlert();
             initStat();
             initTable();
             initEmployeePage();

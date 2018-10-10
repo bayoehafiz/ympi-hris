@@ -33,13 +33,6 @@ var BasePagesDashboard = function() {
         })
     };
 
-    var sweetAlert = function() {
-        // Init an error alert on button click
-        jQuery('.js-swal-error').on('click', function() {
-            swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
-        });
-    };
-
     return {
         init: function() {
             initDashboard();

@@ -1369,6 +1369,11 @@ var OneUI = App;
 // Initialize app when page loads
 jQuery(function() {
     if (typeof angular == 'undefined') {
+        // Init an error alert on button click
+        $(document).on('click', '.js-swal-error', function() {
+            swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
+        });
+
         if (AUTH_ENABLED) {
             // Authorization init
             var clientId = AUTH_CLIENT_ID;

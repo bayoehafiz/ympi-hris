@@ -476,13 +476,6 @@ var BasePagesDivision = function() {
         initTableDivision();
     };
 
-    var sweetAlert = function() {
-        // Init an error alert on button click
-        $('.js-swal-error').on('click', function() {
-            swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
-        });
-    };
-
     var initStat = function(type) {
         // clear the container first
         var container = $('#stat-divisi');
@@ -854,7 +847,6 @@ var BasePagesDivision = function() {
     return {
         init: function() {
             bsDataTables();
-            sweetAlert();
             initStat('division');
             initDivisionPage();
         }

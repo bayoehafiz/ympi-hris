@@ -441,13 +441,6 @@ var BasePagesPosition = function() {
         initTableJabatan();
     };
 
-    var sweetAlert = function() {
-        // Init an error alert on button click
-        $('.js-swal-error').on('click', function() {
-            swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
-        });
-    };
-
     var initStat = function() {
         // Get Jabatan datas
         $.ajax({
@@ -677,7 +670,6 @@ var BasePagesPosition = function() {
     return {
         init: function() {
             bsDataTables();
-            sweetAlert();
             initStat();
             initPositionPage();
         }
