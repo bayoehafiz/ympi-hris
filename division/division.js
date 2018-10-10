@@ -149,6 +149,32 @@ var BasePagesDivision = function() {
     };
 
     var initDivisionPage = function() {
+        // load sidebar
+        $('#sidebar').load("../partials/sidebar.html", function() {
+            console.log("Sidebar loaded!");
+        });
+
+        // load header-nav
+        $('#header-navbar').load("../partials/header-nav.html", function() {
+            console.log("Header Navigation loaded!");
+            // Set active class for related menu
+            $('#menu-divisi').addClass('active');
+            // Set the page title
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-layers">&nbsp;&nbsp;</i>DIVISI</h3>');
+        });
+
+        // load footer
+        $('#page-footer').load("../partials/footer.html", function() {
+            console.log("Footer loaded!");
+        });
+
+        // when menu button is clicked
+        $(document).on('click', '.nav-menu, .logo', function(e) {
+            e.preventDefault;
+            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            return false;
+        });
+
         // Logout button
         $('#btn-logout').click(function() {
             sessionStorage.clear();

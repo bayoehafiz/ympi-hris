@@ -495,6 +495,33 @@ var BasePagesEmployee = function() {
     };
 
     var initEmployeePage = function() {
+        // load sidebar
+        $('#sidebar').load("../partials/sidebar.html", function() {
+            console.log("Sidebar loaded!");
+        });
+
+        // load header-nav
+        $('#header-navbar').load("../partials/header-nav.html", function() {
+            console.log("Header Navigation loaded!");
+            // Set the page title
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>KARYAWAN</h3>');
+            // Set active class for related menu
+            $('#menu-karyawan').addClass('active');
+        });
+
+        // load footer
+        $('#page-footer').load("../partials/footer.html", function() {
+            console.log("Footer loaded!");
+        });
+
+        // when menu button is clicked
+        $(document).on('click', '.nav-menu, .logo', function(e) {
+            e.preventDefault;
+            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            return false;
+        });
+
+        // when button LOGOUT is clicked
         $('#btn-logout').click(function() {
             sessionStorage.clear();
             location.reload();

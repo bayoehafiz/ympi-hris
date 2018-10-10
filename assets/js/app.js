@@ -1369,13 +1369,6 @@ var OneUI = App;
 // Initialize app when page loads
 jQuery(function() {
     if (typeof angular == 'undefined') {
-        // Prevent menu to execute HREF attr
-        $('.nav-menu, .logo').on('click', function(e) {
-            e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
-            return false;
-        })
-
         if (AUTH_ENABLED) {
             // Authorization init
             var clientId = AUTH_CLIENT_ID;
