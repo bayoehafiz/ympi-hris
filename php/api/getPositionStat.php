@@ -2,7 +2,18 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$query = $db->query("SELECT COUNT(a.id) as tot_jabatan, COUNT(b.id) as tot_grade, COUNT(c.id) as tot_penugasan FROM tbl_jabatan a, tbl_grade b, tbl_penugasan c ORDER BY a.id");
+$sql = "SELECT 
+            a.nama, COUNT(b.id) AS total
+        FROM
+            jabatan a
+                LEFT JOIN
+            employee b ON b.jabatan = a.id
+        WHERE a.active = 1
+        GROUP BY a.id
+        ORDER BY total DESC
+        LIMIT 5";
+
+$query = $db->query($sql);
 $rows = array();
 
 if ($query->num_rows > 0) {

@@ -120,9 +120,9 @@
         <!-- Main Container -->
         <main id="main-container">
             <!-- Stats -->
-            <div class="content bg-white border-b" id="employee-stat">
-                <div class="row items-push text-uppercase text-center">
-                    <div class="col-md-2 col-md-offset-1">
+            <div class="content bg-white border-b">
+                <div class="row items-push text-uppercase text-center" id="employee-stat">
+                    <div class="col-md-2">
                         <div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-tetap"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
@@ -142,7 +142,7 @@
                         <span class="h2 font-w300 text-primary animated flipInX" id="total-karyawan"></span>
                         <div class="text-muted animated fadeIn"><small>Karyawan</small></div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-md-offset-2">
                         <span class="h2 font-w300 text-primary animated flipInX">
                             <button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>
                         </span>
@@ -156,7 +156,7 @@
                 <!-- Dynamic Table Full Pagination -->
                 <div class="block">
                     <div class="block-content">
-                        <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee">
+                        <table class="table table-bordered table-striped js-dataTable-full table-hover table-responsive" id="table-employee" style="width: 100%!important;">
                             <thead>
                                 <tr>
                                     <th>NIK</th>
@@ -211,16 +211,16 @@
                                             <div class="block bg-gray-lighter">
                                                 <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                                                     <li class="active">
-                                                        <a href="#btabs-static-kerja">Data Kerja</a>
+                                                        <a class="tab-title" href="#btabs-static-kerja">Data Kerja</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-pribadi">Pribadi</a>
+                                                        <a class="tab-title" href="#btabs-static-pribadi">Pribadi</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-pendidikan">Pendidikan</a>
+                                                        <a class="tab-title" href="#btabs-static-pendidikan">Pendidikan</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#btabs-static-admin">Administrasi</a>
+                                                        <a class="tab-title" href="#btabs-static-admin">Administrasi</a>
                                                     </li>
                                                 </ul>
                                                 <div class="block-content tab-content">
@@ -232,13 +232,13 @@
                                                                 <div class="push-10" id="profile-sub-section"></div>
                                                                 <div class="push-10" id="profile-group"></div>
                                                                 <div class="push-10" id="profile-grade"></div>
-                                                                <div class="push-10" id="profile-penugasan"></div>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-nik"></div>
                                                                 <div class="push-10" id="profile-status"></div>
                                                                 <div class="push-10" id="profile-tgl-masuk"></div>
                                                                 <div class="push-10" id="profile-masa-kerja"></div>
+                                                                <div class="push-10" id="profile-penugasan"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -353,7 +353,8 @@
     <script src="helper/generate-random-profile.js"></script>
     <script src="helper/humanise-date.js"></script>
     <script src="helper/init-validation.js"></script>
-    <script src="helper/render-editing-element.js"></script>
+    <script src="helper/render-add-element.js"></script>
+    <script src="helper/render-edit-element.js"></script>
     <script src="helper/render-profile-add.js"></script>
     <script src="helper/render-profile-edit.js"></script>
     <script src="helper/render-profile-view.js"></script>

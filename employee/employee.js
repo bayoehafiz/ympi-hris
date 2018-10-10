@@ -161,18 +161,15 @@ var BasePagesEmployee = function() {
             type: "GET",
             url: BASE_URL + '/php/api/getEmployeeStat.php',
             dataType: 'json',
-
             success: function(res) {
                 if (res.status == 'ok') {
                     var data = res.data;
                     var counter = 0;
                     data.forEach(function(d) {
-                        if (d.status == 'Tetap') $('#total-tetap').html(d.total);
-                        else $('#total-tetap').html('0');
-                        if (d.status == 'Kontrak 1') $('#total-kontrak-1').html(d.total);
-                        else $('#total-kontrak-1').html('0');
-                        if (d.status == 'Kontrak 2') $('#total-kontrak-2').html(d.total);
-                        else $('#total-kontrak-2').html('0');
+                        d.status == "Tetap" ? $('#total-tetap').html(d.total) : $('#total-tetap').html('0');
+                        d.status == "Kontrak 1" ? $('#total-kontrak-1').html(d.total) : $('#total-kontrak-1').html('0');
+                        d.status == "Kontrak 2" ? $('#total-kontrak-2').html(d.total) : $('#total-kontrak-2').html('0');
+                        // console.log(d);
                         counter += parseInt(d.total);
                     })
                     $('#total-karyawan').html(counter);
@@ -209,9 +206,9 @@ var BasePagesEmployee = function() {
                         data.forEach(function(x) {
                             // Manipulate result data
                             x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>'
-                            if (x.status == "Tetap") x.statusEdt = '<span class="label label-success">' + x.status + '</span>';
-                            else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-danger">' + x.status + '</span>';
-                            else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status + '</span>';
+                            if (x.status == "Tetap") x.statusEdt = '<span class="label label-primary">' + x.status.toUpperCase() + '</span>';
+                            else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-info">' + x.status.toUpperCase() + '</span>';
+                            else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status.toUpperCase() + '</span>';
                             else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
 
                             resultData.push(x);
@@ -249,7 +246,7 @@ var BasePagesEmployee = function() {
         });
 
         // when ADD button is clicked
-        $(document).on('click', '#btn-add', function() {  
+        $(document).on('click', '#btn-add', function() {
             $('#modal-profile').modal('show');
             renderProfileAdd();
             $('#opened-profile').val("");
@@ -335,8 +332,25 @@ var BasePagesEmployee = function() {
                 $('#modal-profile').modal('hide');
             } else {
                 var profile = $('#opened-profile').val();
-                console.log('reopen profile ' + profile);
-                // renderProfileView();
+                $.ajax({
+                        type: "POST",
+                        url: BASE_URL + "/php/api/getEmployeeById.php",
+                        dataType: 'json',
+                        data: {
+                            id: profile
+                        }
+                    })
+                    .done(function(response) {
+                        if (response.status == 'err') {
+                            swal('Error', response.message, 'error');
+                        } else {
+                            var profile_data = response.data[0];
+                            renderProfileView(profile_data);
+                        }
+                    })
+                    .fail(function() {
+                        swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                    });
             }
         });
 
@@ -422,7 +436,6 @@ var BasePagesEmployee = function() {
             var cProf = $('#opened-profile').val();
             if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
             else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
-            // console.log(apiUrl);
 
             $.ajax({
                 type: "POST",
@@ -430,7 +443,7 @@ var BasePagesEmployee = function() {
                 dataType: 'json',
                 data: {
                     data: data,
-                    nik: $('#opened-profile').val()
+                    id: $('#opened-profile').val()
                 },
                 success: function(res) {
                     if (res.status == 'err') {

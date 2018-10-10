@@ -58,15 +58,13 @@ var initValidation = function() {
             'elem-tgl_masuk': {
                 required: true
             },
-            'elem-telepon': {
-                required: true,
-                phone: true
+            'elem-no_telepon': {
+                required: true
             },
-            'elem-ktp': {
-                required: true,
-                number: true
+            'elem-no_ktp': {
+                required: true
             },
-            'elem-npwp': {
+            'elem-no_npwp': {
                 required: true
             }
         },
@@ -85,16 +83,10 @@ var initValidation = function() {
             'elem-penugasan': 'Pilih Penugasan',
             'elem-status': 'Pilih Status Karyawan',
             'elem-tgl_masuk': 'Pilih Tanggal',
-            'elem-nik': {
-                required: 'Masukkan NIK',
-                number: 'Masukkan angka saja tanpa huruf'
-            },
-            'elem-telepon': 'Masukkan No. Telepon',
-            'elem-ktp': {
-                required: 'Masukkan No. KTP',
-                number: 'Masukkan angka saja tanpa huruf'
-            },
-            'elem-npwp': 'Masukkan No. NPWP',
+            'elem-nik': 'Masukkan NIK',
+            'elem-no_telepon': 'Masukkan No. Telepon',
+            'elem-no_ktp': 'Masukkan No. KTP',
+            'elem-no_npwp': 'Masukkan No. NPWP',
         }
     });
 };

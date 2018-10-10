@@ -56,9 +56,9 @@ var renderProfileView = function(data) {
     var jenis_kelamin = !data.jenis_kelamin ? '-' : data.jenis_kelamin;
     $('#profile-jenis-kelamin').html('<div class="text-muted">Jenis Kelamin</div>' + jenis_kelamin);
     var alamat_lengkap = !data.alamat_lengkap ? '-' : data.alamat_lengkap;
-    $('#profile-alamat-lengkap').html('<div class="text-muted">Alamat Lengkap</div>' + alamat_lengkap);
+    $('#profile-alamat-lengkap').html('<div class="text-muted">Alamat Lengkap</div><div style="white-space: pre;">' + alamat_lengkap + '</div>');
     var alamat_domisili = !data.alamat_domisili ? '-' : data.alamat_domisili;
-    $('#profile-alamat-domisili').html('<div class="text-muted">Alamat Domisili</div>' + alamat_domisili);
+    $('#profile-alamat-domisili').html('<div class="text-muted">Alamat Domisili</div><div style="white-space: pre;">' + alamat_domisili + '</div>');
     var status_keluarga = !data.status_keluarga ? '-' : data.status_keluarga;
     $('#profile-status-keluarga').html('<div class="text-muted">Status Keluarga</div>' + status_keluarga);
 

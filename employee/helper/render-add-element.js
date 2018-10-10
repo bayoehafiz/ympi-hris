@@ -1,5 +1,5 @@
 // Function to render elements inside profile-modal
-var renderEditingElement = function(type, data_name, placeholder, label, disabled, object) { // type = "text", "number", "textarea". "datepicker"
+var renderAddElement = function(type, data_name, placeholder, label, disabled, object) { // type = "text", "number", "textarea". "datepicker"
     if (disabled) var disabled = ' disabled';
     else var disabled = '';
 

@@ -210,22 +210,27 @@ var BasePagesDivision = function() {
             switch (t) {
                 case 'department':
                     $('#btn-add').attr('data', 'Departemen');
+                    initStat('department');
                     initTableDepartment();
                     break;
                 case 'section':
                     $('#btn-add').attr('data', 'Section');
+                    initStat('section');
                     initTableSection();
                     break;
                 case 'sub_section':
                     $('#btn-add').attr('data', 'Sub Section');
+                    initStat('sub_section');
                     initTableSubSection();
                     break;
                 case 'group':
                     $('#btn-add').attr('data', 'Grup');
+                    initStat('group');
                     initTableGroup();
                     break;
                 default:
                     $('#btn-add').attr('data', 'Divisi');
+                    initStat('division');
                     initTableDivision();
                     break;
             }
@@ -317,12 +322,11 @@ var BasePagesDivision = function() {
                         })
 
                         // reload the stat
-                        initStat();
+                        initStat(dType);
 
                         // reload the table
                         var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
                         table.ajax.reload();
-                        initStat();
                     }
 
                 }
@@ -372,7 +376,7 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    initStat();
+                                    initStat(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
@@ -426,7 +430,7 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    initStat();
+                                    initStat(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
@@ -453,38 +457,38 @@ var BasePagesDivision = function() {
         });
     };
 
-    var initStat = function() {
+    var initStat = function(type) {
         // clear the container first
         var container = $('#stat-divisi');
         container.empty();
         // Get division datas
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: BASE_URL + '/php/api/getDivisionStat.php',
             dataType: 'json',
+            data: {
+                table: type
+            },
             success: function(res) {
                 var html = '';
                 if (res.status == 'ok') {
                     var data = res.data;
-
-                    // set the width of the column
                     var data_length = data.length;
                     if (data_length > 0) {
                         html += '';
-                        var wCounter = parseInt(12 / (data_length + 1));
                         data.forEach(function(d) {
-                            html += '<div class="col-md-' + wCounter + '">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">' + d.kode + '</div>' +
+                            if (d.kode == undefined) d.kode = d.nama;
+                            html += '<div class="col-md-2">' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.kode + '</div>' +
                                 '<span class="h2 font-w300 text-primary animated flipInX">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
-                                '</div>';
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
                         });
                     }
                 }
 
                 html += '<div class="col-md-2">' +
                     '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data="Divisi" data-type="division"><i class="fa fa-plus"></i></button>' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
                     '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
@@ -825,7 +829,7 @@ var BasePagesDivision = function() {
         init: function() {
             bsDataTables();
             sweetAlert();
-            initStat();
+            initStat('division');
             initDivisionPage();
         }
     };

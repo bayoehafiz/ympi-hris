@@ -4,9 +4,8 @@ var BasePagesPosition = function() {
         var $DataTable = jQuery.fn.dataTable;
 
         // Set the defaults for DataTables init
-        jQuery.extend( true, $DataTable.defaults, {
-            dom:
-                "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+        jQuery.extend(true, $DataTable.defaults, {
+            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-6'i><'col-sm-6'p>>",
             renderer: 'bootstrap',
@@ -28,15 +27,15 @@ var BasePagesPosition = function() {
         });
 
         // Bootstrap paging button renderer
-        $DataTable.ext.renderer.pageButton.bootstrap = function (settings, host, idx, buttons, page, pages) {
-            var api     = new $DataTable.Api(settings);
+        $DataTable.ext.renderer.pageButton.bootstrap = function(settings, host, idx, buttons, page, pages) {
+            var api = new $DataTable.Api(settings);
             var classes = settings.oClasses;
-            var lang    = settings.oLanguage.oPaginate;
+            var lang = settings.oLanguage.oPaginate;
             var btnDisplay, btnClass;
 
-            var attach = function (container, buttons) {
+            var attach = function(container, buttons) {
                 var i, ien, node, button;
-                var clickHandler = function (e) {
+                var clickHandler = function(e) {
                     e.preventDefault();
                     if (!jQuery(e.currentTarget).hasClass('disabled')) {
                         api.page(e.data.action).draw(false);
@@ -48,8 +47,7 @@ var BasePagesPosition = function() {
 
                     if (jQuery.isArray(button)) {
                         attach(container, button);
-                    }
-                    else {
+                    } else {
                         btnDisplay = '';
                         btnClass = '';
 
@@ -82,28 +80,27 @@ var BasePagesPosition = function() {
                             default:
                                 btnDisplay = button + 1;
                                 btnClass = page === button ?
-                                        'active' : '';
+                                    'active' : '';
                                 break;
                         }
 
                         if (btnDisplay) {
                             node = jQuery('<li>', {
-                                'class': classes.sPageButton + ' ' + btnClass,
-                                'aria-controls': settings.sTableId,
-                                'tabindex': settings.iTabIndex,
-                                'id': idx === 0 && typeof button === 'string' ?
-                                        settings.sTableId + '_' + button :
-                                        null
-                            })
-                            .append(jQuery('<a>', {
-                                    'href': '#'
+                                    'class': classes.sPageButton + ' ' + btnClass,
+                                    'aria-controls': settings.sTableId,
+                                    'tabindex': settings.iTabIndex,
+                                    'id': idx === 0 && typeof button === 'string' ?
+                                        settings.sTableId + '_' + button : null
                                 })
-                                .html(btnDisplay)
-                            )
-                            .appendTo(container);
+                                .append(jQuery('<a>', {
+                                        'href': '#'
+                                    })
+                                    .html(btnDisplay)
+                                )
+                                .appendTo(container);
 
                             settings.oApi._fnBindAction(
-                                node, {action: button}, clickHandler
+                                node, { action: button }, clickHandler
                             );
                         }
                     }
@@ -224,7 +221,7 @@ var BasePagesPosition = function() {
         })
 
         // when ADD button is clicked
-        $(document).on('click', '.btn-add', function() {
+        $(document).on('click', '#btn-add', function() {
             // reset the modal first!
             $('#modal-title, #generated-container').html('');
             $('#hidden-select').addClass('hide-me');
@@ -425,41 +422,41 @@ var BasePagesPosition = function() {
         });
     };
 
-    // var initStat = function() {
-    //     // Function for rendering Jabatan stat
-    //     var renderStat = function(data) {
-    //         // set the width of the column
-    //         var html = '';
-    //         var data_length = data.length;
-    //         if (data_length > 0) {
-    //             var wCounter = parseInt(12 / data_length);
-    //             data.forEach(function(d) {
-    //                 html += '<div class="col-xs-' + wCounter + ' col-sm-2">' +
-    //                     '<div class="font-w700 text-gray-darker animated fadeIn">Finance</div>' +
-    //                     '<span class="h2 font-w300 text-primary animated flipInX" id="total-finance"></span>' +
-    //                     '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>';
-    //             });
-    //         }
+    var initStat = function() {
+        // Get Jabatan datas
+        $.ajax({
+            type: "GET",
+            url: BASE_URL + '/php/api/getPositionStat.php',
+            dataType: 'json',
+            success: function(res) {
+                var html = '';
+                if (res.status == 'ok') {
+                    var data = res.data;
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        var wCounter = parseInt(12 / data_length); // set the width of the column
+                        data.forEach(function(d) {
+                            html += '<div class="col-md-' + wCounter + '">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">' + d.nama + '</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        });
+                    }
+                }
 
-    //         return html;
-    //     }
+                html += '<div class="col-md-2">' +
+                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data="Jabatan" data-type="jabatan"><i class="fa fa-plus"></i></button>' +
+                    '</span>' +
+                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    '</div>';
 
-    //     // Get Jabatan datas
-    //     $.ajax({
-    //         type: "GET",
-    //         url: BASE_URL + '/php/api/getPositionNumber.php',
-    //         dataType: 'json',
-    //         success: function(res) {
-    //             if (res.status == 'ok') {
-    //                 var data = res.data;
-    //             } else {
-    //                 var data = [];
-    //             }
-    //             var elem = renderStat(data)
-    //             $('#stat-jabatan').html(elem);
-    //         }
-    //     })
-    // };
+                // append the result into container
+                $('#stat-jabatan').html(html);
+            }
+        })
+    };
 
     var initTableJabatan = function() {
         // Table initiation
@@ -515,7 +512,7 @@ var BasePagesPosition = function() {
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
                             '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
                             '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
                             '</div>';
                     }
@@ -579,7 +576,7 @@ var BasePagesPosition = function() {
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
                             '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
                             '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
                             '</div>';
                     }
@@ -642,7 +639,7 @@ var BasePagesPosition = function() {
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
                             '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                           // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
                             '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
                             '</div>';
                     }
@@ -655,8 +652,7 @@ var BasePagesPosition = function() {
         init: function() {
             bsDataTables();
             sweetAlert();
-            // initStat();
-            // 
+            initStat();
             initPositionPage();
         }
     };

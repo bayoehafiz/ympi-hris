@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-ChromePhp::log($_POST['obj']);
+// ChromePhp::log($_POST['obj']);
 
 if (!empty($_POST['obj'])) {
     $data = $_POST['obj'];    

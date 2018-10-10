@@ -151,19 +151,19 @@ var renderProfileAdd = function() {
         }
     });
 
-    $('#profile-status').html(renderEditingElement('select', '', 'status', 'Status Karyawan', false, [
+    $('#profile-status').html(renderAddElement('select', '', 'status', 'Status Karyawan', false, [
         { value: 'Tetap', label: 'Tetap' },
         { value: 'Kontrak 1', label: 'Kontrak 1' },
         { value: 'Kontrak 2', label: 'Kontrak 2' }
     ]));
 
-    $('#profile-nik').html(renderEditingElement('text', '', 'nik', 'NIK', false));
-    $('#profile-tgl-masuk').html(renderEditingElement('datepicker', '', 'tgl_masuk', 'Tanggal Masuk', false));
+    $('#profile-nik').html(renderAddElement('text', '', 'nik', 'NIK', false));
+    $('#profile-tgl-masuk').html(renderAddElement('datepicker', '', 'tgl_masuk', 'Tanggal Masuk', false));
     $('#profile-masa-kerja').html(''); // blank
 
-    $('#profile-tempat-lahir').html(renderEditingElement('text', '', 'tempat_lahir', 'Tempat Lahir', false));
-    $('#profile-tgl-lahir').html(renderEditingElement('datepicker', '', 'tgl_lahir', 'Tanggal Lahir', false));
-    $('#profile-agama').html(renderEditingElement('select', '', 'agama', 'Agama', false, [
+    $('#profile-tempat-lahir').html(renderAddElement('text', '', 'tempat_lahir', 'Tempat Lahir', false));
+    $('#profile-tgl-lahir').html(renderAddElement('datepicker', '', 'tgl_lahir', 'Tanggal Lahir', false));
+    $('#profile-agama').html(renderAddElement('select', '', 'agama', 'Agama', false, [
         { value: 'Islam', label: 'Islam' },
         { value: 'Kristen', label: 'Kristen' },
         { value: 'Katholik', label: 'Katholik' },
@@ -171,13 +171,13 @@ var renderProfileAdd = function() {
         { value: 'Buddha', label: 'Buddha' },
         { value: 'Konghucu', label: 'Konghucu' }
     ]));
-    $('#profile-jenis-kelamin').html(renderEditingElement('select', '', 'jenis_kelamin', 'Jenis Kelamin', false, [
+    $('#profile-jenis-kelamin').html(renderAddElement('select', '', 'jenis_kelamin', 'Jenis Kelamin', false, [
         { value: 'Laki-laki', label: 'Laki-laki' },
         { value: 'Perempuan', label: 'Perempuan' }
     ]));
-    $('#profile-alamat-lengkap').html(renderEditingElement('textarea', '', 'alamat_lengkap', 'Alamat Lengkap', false));
-    $('#profile-alamat-domisili').html(renderEditingElement('textarea', '', 'alamat_domisili', 'Alamat Domisili', false));
-    $('#profile-status-keluarga').html(renderEditingElement('select', '', 'status_keluarga', 'Status Keluarga', false, [
+    $('#profile-alamat-lengkap').html(renderAddElement('textarea', '', 'alamat_lengkap', 'Alamat Lengkap', false));
+    $('#profile-alamat-domisili').html(renderAddElement('textarea', '', 'alamat_domisili', 'Alamat Domisili', false));
+    $('#profile-status-keluarga').html(renderAddElement('select', '', 'status_keluarga', 'Status Keluarga', false, [
         { value: 'K0', label: 'K0' },
         { value: 'K1', label: 'K1' },
         { value: 'K2', label: 'K2' },
@@ -188,7 +188,7 @@ var renderProfileAdd = function() {
         { value: 'Tk', label: 'Tk' },
     ]));
 
-    $('#profile-pendidikan').html(renderEditingElement('select', '', 'pendidikan', 'Pendidikan', false, [
+    $('#profile-pendidikan').html(renderAddElement('select', '', 'pendidikan', 'Pendidikan', false, [
         { value: 'S0', label: 'S0 (SD)' },
         { value: 'S1', label: 'S1 (SMP)' },
         { value: 'S2', label: 'S2 (SMA/SMK)' },
@@ -196,15 +196,15 @@ var renderProfileAdd = function() {
         { value: 'S4', label: 'S4 (Diploma 3)' },
         { value: 'S5', label: 'S5 (Sarjana)' }
     ]));
-    $('#profile-sekolah-universitas').html(renderEditingElement('text', '', 'sekolah_universitas', 'Sekolah / Universitas', false));
-    $('#profile-jurusan').html(renderEditingElement('text', '', 'jurusan', 'Jurusan', false));
+    $('#profile-sekolah-universitas').html(renderAddElement('text', '', 'sekolah_universitas', 'Sekolah / Universitas', false));
+    $('#profile-jurusan').html(renderAddElement('text', '', 'jurusan', 'Jurusan', false));
 
-    $('#profile-telepon').html(renderEditingElement('text', '', 'no_telepon', 'No. Telepon', false));
-    $('#profile-no-ktp').html(renderEditingElement('number', '', 'no_ktp', 'No. KTP', false));
-    $('#profile-no-npwp').html(renderEditingElement('text', '', 'no_npwp', 'No. NPWP', false));
-    $('#profile-no-bpjstk').html(renderEditingElement('text', '', 'no_bpjstk', 'No. BPJS TK', false));
-    $('#profile-no-bpjskes').html(renderEditingElement('text', '', 'no_bpjskes', 'No. BPJS Kes', false));
-    $('#profile-no-jp').html(renderEditingElement('text', '', 'no_jp', 'No. JP', false));
+    $('#profile-telepon').html(renderAddElement('text', '', 'no_telepon', 'No. Telepon', false));
+    $('#profile-no-ktp').html(renderAddElement('number', '', 'no_ktp', 'No. KTP', false));
+    $('#profile-no-npwp').html(renderAddElement('text', '', 'no_npwp', 'No. NPWP', false));
+    $('#profile-no-bpjstk').html(renderAddElement('text', '', 'no_bpjstk', 'No. BPJS TK', false));
+    $('#profile-no-bpjskes').html(renderAddElement('text', '', 'no_bpjskes', 'No. BPJS Kes', false));
+    $('#profile-no-jp').html(renderAddElement('text', '', 'no_jp', 'No. JP', false));
 
     // re-initialize DatePicker
     App.initHelpers(['datepicker']);

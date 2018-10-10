@@ -2,17 +2,38 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$sql = "SELECT 
+$table = $_POST['table'];
+
+// Check if field KODE is exists
+$check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
+$exists = ($check->num_rows > 0) ? TRUE : FALSE;
+if ($exists) {
+        $sql = "SELECT 
             a.nama, a.kode, COUNT(b.id) AS total
         FROM
-            division a
+            `" . $table . "` a
                 LEFT JOIN
-            employee b ON b.division = a.id
+            employee b ON b." . $table . " = a.id
         WHERE
-            active = 1
-        GROUP BY nama
-        ORDER BY kode";
+            a.active = 1
+        GROUP BY a.id
+        ORDER BY total DESC
+        LIMIT 5";
+    } else {
+        $sql = "SELECT 
+            a.nama, COUNT(b.id) AS total
+        FROM
+            `" . $table . "` a
+                LEFT JOIN
+            employee b ON b." . $table . " = a.id
+        WHERE
+            a.active = 1
+        GROUP BY a.id
+        ORDER BY total DESC
+        LIMIT 5";
+    }
 
+// ChromePhp::log($sql);
 $query = $db->query($sql);
 $rows = array();
 
