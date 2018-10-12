@@ -152,6 +152,9 @@ var BasePagesDivision = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
+
+            // load the logo
+            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
         });
 
         // load header-nav

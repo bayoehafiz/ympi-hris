@@ -2,3 +2,7 @@
 config.js
 
 .idea
+
+config\.js\.example
+
+php/config/conn\.php
