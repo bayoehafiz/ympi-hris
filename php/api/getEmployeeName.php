@@ -5,7 +5,7 @@ include "../inc/chromePhp.php";
 if (isset($_POST['table'])) {
     $table = $_POST['table'];
 
-    $query = $db->query("SELECT * FROM " . $table);
+    $query = $db->query("SELECT id, nama FROM `employee`");
     $rows = array();
 
     if ($query->num_rows > 0) {

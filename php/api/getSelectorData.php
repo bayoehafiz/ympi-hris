@@ -2,10 +2,10 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['table'])) {
+if (isset($_POST['table'])) {
     $table = $_POST['table'];
 
-    if ($_POST['parent']) {
+    if (isset($_POST['parent'])) {
         $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 AND parent = " . $_POST['parent'] . " ORDER BY nama";
     } else {
         if ($table == 'grade') $sql = "SELECT id, kode, nama FROM `" . $table . "` WHERE active = 1 ORDER BY kode";

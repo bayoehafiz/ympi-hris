@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['id'])) {
+if (isset($_POST['id'])) {
     $id = $_POST['id'];
     
     $sql = "DELETE FROM employee WHERE id='" . $id . "'";

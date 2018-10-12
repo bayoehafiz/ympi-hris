@@ -9,6 +9,8 @@ $sql = "SELECT
         GROUP BY status
         ORDER BY status";
 
+ChromePhp::log($sql);
+
 $query = $db->query($sql);
 $rows = array();
 

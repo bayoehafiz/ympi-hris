@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['obj'])) {
+if (isset($_POST['obj'])) {
     $data = $_POST['obj'];    
     $table = $_POST['table']; 
     $sql_sets = '';

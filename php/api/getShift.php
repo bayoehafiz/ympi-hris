@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (!empty($_POST['table'])) {
+if (isset($_POST['table'])) {
     $table = $_POST['table'];
 
     $query = $db->query("SELECT * FROM `" . $table . "`");

@@ -674,6 +674,26 @@ var BasePagesPosition = function() {
     // };
 
     var initContentPenugasanShift = function() {
+        // render user list
+        $.ajax({
+            type: "GET",
+            url: BASE_URL + '/php/api/getEmployeeName.php',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response);
+                if (response.status != 'err') {
+                    var container = $('.js-events');
+                    container.empty();
+
+                    var data = response.data;
+                    data.forEach(function(d) {
+                        container.append('<li>' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
+                    });
+                }
+            }
+        });
+        
+        
         // render list of shift events
         $.ajax({
             type: "POST",

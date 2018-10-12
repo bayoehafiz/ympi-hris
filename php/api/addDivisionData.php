@@ -4,7 +4,7 @@ include "../inc/chromePhp.php";
 
 // ChromePhp::log($_POST['obj']);
 
-if (!empty($_POST['obj'])) {
+if (isset($_POST['obj'])) {
     $data = $_POST['obj'];    
     $table = $_POST['table']; 
     $sql_sets = '';

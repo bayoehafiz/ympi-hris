@@ -14,7 +14,7 @@ $sql = "SELECT
         ORDER BY total DESC
         LIMIT 5";
 
-ChromePhp::log($sql);
+// ChromePhp::log($sql);
 
 $query = $db->query($sql);
 $rows  = array();
