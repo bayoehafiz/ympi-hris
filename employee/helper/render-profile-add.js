@@ -24,6 +24,7 @@ var renderProfileAdd = function() {
             table: 'jabatan'
         },
         success: function(res) {
+            console.log(res);
             var selector = '<div class="form-group">' +
                 '<div class="form-material form-material-primary">' +
                 '<select class="form-control text-right" id="input-jabatan" name="elem-jabatan" size="1">' +

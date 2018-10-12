@@ -1,12 +1,12 @@
 var BasePagesDashboard = function() {
     var initDashboard = function() {
         // load sidebar
-        $('#sidebar').load("../partials/sidebar.html", function() {
+        $('#sidebar').load("partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
         });
 
         // load header-nav
-        $('#header-navbar').load("../partials/header-nav.html", function() {
+        $('#header-navbar').load("partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-speedometer">&nbsp;&nbsp;</i>DASHBOARD</h3>');
@@ -15,7 +15,7 @@ var BasePagesDashboard = function() {
         });
 
         // load footer
-        $('#page-footer').load("../partials/footer.html", function() {
+        $('#page-footer').load("partials/footer.html", function() {
             console.log("Footer loaded!");
         });
 

@@ -158,7 +158,7 @@ var BasePagesPosition = function() {
         $('#header-navbar').load("../partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>JABATAN</h3>');
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA JABATAN</h3>');
             // Set active class for related menu
             $('#menu-jabatan').addClass('active');
         });

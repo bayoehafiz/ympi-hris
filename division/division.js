@@ -160,7 +160,7 @@ var BasePagesDivision = function() {
             // Set active class for related menu
             $('#menu-divisi').addClass('active');
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-layers">&nbsp;&nbsp;</i>DIVISI</h3>');
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-layers">&nbsp;&nbsp;</i>DATA DIVISI</h3>');
         });
 
         // load footer

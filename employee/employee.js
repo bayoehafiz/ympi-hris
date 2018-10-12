@@ -497,7 +497,7 @@ var BasePagesEmployee = function() {
         $('#header-navbar').load("../partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>KARYAWAN</h3>');
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>');
             // Set active class for related menu
             $('#menu-karyawan').addClass('active');
         });
@@ -623,6 +623,4 @@ var BasePagesEmployee = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    BasePagesEmployee.init();
-});
+jQuery(function() {  BasePagesEmployee.init(); });

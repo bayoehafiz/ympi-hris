@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>YMPI HRIS - Shift</title>
+    <title>YMPI HRIS - Shift Kerja</title>
     <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
     <meta name="author" content="pixelcave">
     <meta name="robots" content="noindex, nofollow">
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/fullcalendar/fullcalendar.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
@@ -37,26 +38,10 @@
         <!-- END Header -->
         <!-- Main Container -->
         <main id="main-container">
-            <!-- Page Header -->
-            <div class="content bg-gray-lighter">
-                <div class="row items-push">
-                    <div class="col-sm-7">
-                        <h1 class="page-heading">Data Shift Kerja
-                            <button class="btn btn-primary push-5-r push-10-l btn-add" type="button" id="btn-add" data="Shift" data-type="shift"><i class="si si-plus"></i> Tambah Data</button></h1>
-                    </div>
-                    <div class="col-sm-5 text-right hidden-xs">
-                        <ol class="breadcrumb push-10-t">
-                            <li>Absensi</li>
-                            <li><a class="link-effect" href="">Data Shift Kerja</a></li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-            <!-- END Page Header -->
             <!-- Stats -->
-            <!-- <div class="content bg-white border-b">
-                <div class="row items-push text-uppercase text-center" id="stat-jabatan"></div>
-            </div> -->
+            <div class="content bg-white border-b">
+                <div class="row items-push text-uppercase text-center" id="stat-shift"></div>
+            </div>
             <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
@@ -66,41 +51,41 @@
                         <li class="active">
                             <a href="#btabs-animated-fade-shift" class="tab-btn" data="shift">Data Shift</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#btabs-animated-fade-group_shift" class="tab-btn" data="group_shift">Data Group Shift</a>
+                        </li> -->
+                        <li>
+                            <a href="#btabs-animated-fade-penugasan_shift" class="tab-btn" data="penugasan_shift">Penugasan Shift</a>
                         </li>
                     </ul>
                     <div class="block-content tab-content">
                         <div class="tab-pane fade in active" id="btabs-animated-fade-shift">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Jabatan" data-type="jabatan"><i class="si si-plus"></i> Tambah Jabatan</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table jabatan -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-jabatan" style="width: 100%!important;">
+                                    <!-- Table shift -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-shift" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th style="width: 45%;">Nama Jabatan</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 15%;">Actions</th>
+                                                <th class="text-center">Kode</th>
+                                                <th>Nama</th>
+                                                <th class="text-center">Hari Efektif</th>
+                                                <th class="text-center" style="width: 15%;">Jam</th>
+                                                <th class="text-center" style="width: 15%;">Scan Masuk</th>
+                                                <th class="text-center" style="width: 15%;">Scan Keluar</th>
+                                                <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
-                                        </tbody>
                                     </table>
-                                    <!-- END Table jabatan -->
+                                    <!-- END Table shift -->
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-group_shift">
+                        <!-- <div class="tab-pane fade" id="btabs-animated-fade-group_shift">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Grade" data-type="grade"><i class="si si-plus"></i> Tambah Grade</button>
-                                </div> -->
-                                <div class="block-content">
-                                    <!-- Table jabatan -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-grade" style="width: 100%!important;">
+                                <div class="block-content"> -->
+                        <!-- Table group shift -->
+                        <!-- <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group-shift" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -110,9 +95,44 @@
                                                 <th class="text-center" style="width: 10%;">Actions</th>
                                             </tr>
                                         </thead>
-                                        </tbody>
-                                    </table>
-                                    <!-- END Table jabatan -->
+                                    </table> -->
+                        <!-- END Table group shift -->
+                        <!-- </div>
+                            </div>
+                        </div> -->
+                        <div class="tab-pane fade" id="btabs-animated-fade-penugasan_shift">
+                            <div class="block">
+                                <div class="block-content">
+                                    <div class="row items-push">
+                                        <div class="col-md-4 col-lg-2">
+                                            <!-- Add Event Form -->
+                                            <form class="js-form-add-event push-30" action="base_comp_calendar.html" method="post">
+                                                <div class="form-group">
+                                                    <div class="form-material ">
+                                                        <select class="form-control" id="material-select" name="material-select" size="1">
+                                                            <option>...</option>
+                                                            <option value="1">Option #1</option>
+                                                            <option value="2">Option #2</option>
+                                                            <option value="3">Option #3</option>
+                                                        </select>
+                                                        <label for="material-select">Pilih karyawan</label>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <!-- END Add Event Form -->
+                                            <!-- Event List -->
+                                            <ul class="js-events list list-events"></ul>
+                                            <div class="text-center text-muted">
+                                                <small><em><i class="fa fa-arrows"></i> Drag and drop events on the calendar</em></small>
+                                            </div>
+                                            <!-- END Event List -->
+                                        </div>
+                                        <div class="col-md-8 col-lg-10">
+                                            <!-- Calendar Container -->
+                                            <div class="js-calendar"></div>
+                                        </div>
+                                    </div>
+                                    <!-- END Calendar -->
                                 </div>
                             </div>
                         </div>
@@ -121,7 +141,6 @@
                 <!-- END Block Tabs Animated Fade -->
             </div>
             <!-- END Page Content -->
-        </main>
         </main>
         <!-- END Main Container -->
         <!-- Modal -->
@@ -138,15 +157,9 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter" id="modal-content">
+                            <div class="block-content bg-gray-lighter row" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
-                                <!-- <div class="form-group hide-me" id="hidden-select">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
-                                        <label for="elem-parent" id="label-parent"></label>
-                                    </div>
-                                </div> -->
-                                <div class="modal-footer">
+                                <div class="modal-footer col-md-12">
                                     <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
                                     <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
                                     <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
@@ -156,6 +169,8 @@
                             </div>
                         </div>
                     </form>
+                    <input type="hidden" id="act-type">
+                    <input type="hidden" id="data-id">
                 </div>
             </div>
         </div>
@@ -189,6 +204,7 @@
     <script src="../config.js"></script>
     <script src="../assets/js/app.js"></script>
     <!-- Page JS Plugins -->
+    <script src="../assets/js/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="../assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
@@ -204,7 +220,15 @@
     <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="../assets/js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="../assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+    <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
     <!-- Page JS Code -->
+    <script src="helper/render-add-element.js"></script>
+    <script src="helper/render-edit-element.js"></script>
+    <script src="helper/init-events.js"></script>
+    <script src="helper/init-calendar.js"></script>
+    <script src="helper/init-validation.js"></script>
     <script src="shift.js"></script>
     <script>
     jQuery(function() {
