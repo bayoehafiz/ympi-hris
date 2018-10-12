@@ -16,6 +16,7 @@ var renderProfileAdd = function() {
     $('#modal-nama').html('<div class="form-group"><div class="form-material form-material-primary"><input class="form-control text-center font-s20" type="text" id="input-nama" name="elem-nama" placeholder="Nama Lengkap"></div></div>');
 
     // fetch data for populating JABATAN selector
+    console.log("running ajax call..");
     $.ajax({
         type: "POST",
         url: BASE_URL + '/php/api/getSelectorData.php',
