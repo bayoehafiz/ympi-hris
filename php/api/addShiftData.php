@@ -35,9 +35,9 @@ if (isset($_POST['data'])) {
     $sql = "INSERT INTO " . $table . " (".$sql_sets.") VALUES (".$sql_values.")";
 
     if($db->query($sql)){
-        $res['status'] = 'ok';
+        $res['success'] = true;
     }else{
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 

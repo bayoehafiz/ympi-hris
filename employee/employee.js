@@ -1,153 +1,4 @@
 var BasePagesEmployee = function() {
-    // DataTables Bootstrap integration
-    var bsDataTables = function() {
-        var $DataTable = jQuery.fn.dataTable;
-
-        // Set the defaults for DataTables init
-        jQuery.extend(true, $DataTable.defaults, {
-            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-6'i><'col-sm-6'p>>",
-            renderer: 'bootstrap',
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sInfo: "Showing <strong>_START_</strong>-<strong>_END_</strong> of <strong>_TOTAL_</strong>",
-                oPaginate: {
-                    sPrevious: '<i class="fa fa-angle-left"></i>',
-                    sNext: '<i class="fa fa-angle-right"></i>'
-                }
-            }
-        });
-
-        // Default class modification
-        jQuery.extend($DataTable.ext.classes, {
-            sWrapper: "dataTables_wrapper form-inline dt-bootstrap",
-            sFilterInput: "form-control",
-            sLengthSelect: "form-control"
-        });
-
-        // Bootstrap paging button renderer
-        $DataTable.ext.renderer.pageButton.bootstrap = function(settings, host, idx, buttons, page, pages) {
-            var api = new $DataTable.Api(settings);
-            var classes = settings.oClasses;
-            var lang = settings.oLanguage.oPaginate;
-            var btnDisplay, btnClass;
-
-            var attach = function(container, buttons) {
-                var i, ien, node, button;
-                var clickHandler = function(e) {
-                    e.preventDefault();
-                    if (!jQuery(e.currentTarget).hasClass('disabled')) {
-                        api.page(e.data.action).draw(false);
-                    }
-                };
-
-                for (i = 0, ien = buttons.length; i < ien; i++) {
-                    button = buttons[i];
-
-                    if (jQuery.isArray(button)) {
-                        attach(container, button);
-                    } else {
-                        btnDisplay = '';
-                        btnClass = '';
-
-                        switch (button) {
-                            case 'ellipsis':
-                                btnDisplay = '&hellip;';
-                                btnClass = 'disabled';
-                                break;
-
-                            case 'first':
-                                btnDisplay = lang.sFirst;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'previous':
-                                btnDisplay = lang.sPrevious;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'next':
-                                btnDisplay = lang.sNext;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            case 'last':
-                                btnDisplay = lang.sLast;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            default:
-                                btnDisplay = button + 1;
-                                btnClass = page === button ?
-                                    'active' : '';
-                                break;
-                        }
-
-                        if (btnDisplay) {
-                            node = jQuery('<li>', {
-                                    'class': classes.sPageButton + ' ' + btnClass,
-                                    'aria-controls': settings.sTableId,
-                                    'tabindex': settings.iTabIndex,
-                                    'id': idx === 0 && typeof button === 'string' ?
-                                        settings.sTableId + '_' + button : null
-                                })
-                                .append(jQuery('<a>', {
-                                        'href': '#'
-                                    })
-                                    .html(btnDisplay)
-                                )
-                                .appendTo(container);
-
-                            settings.oApi._fnBindAction(
-                                node, { action: button }, clickHandler
-                            );
-                        }
-                    }
-                }
-            };
-
-            attach(
-                jQuery(host).empty().html('<ul class="pagination"/>').children('ul'),
-                buttons
-            );
-        };
-
-        // TableTools Bootstrap compatibility - Required TableTools 2.1+
-        if ($DataTable.TableTools) {
-            // Set the classes that TableTools uses to something suitable for Bootstrap
-            jQuery.extend(true, $DataTable.TableTools.classes, {
-                "container": "DTTT btn-group",
-                "buttons": {
-                    "normal": "btn btn-default",
-                    "disabled": "disabled"
-                },
-                "collection": {
-                    "container": "DTTT_dropdown dropdown-menu",
-                    "buttons": {
-                        "normal": "",
-                        "disabled": "disabled"
-                    }
-                },
-                "print": {
-                    "info": "DTTT_print_info"
-                },
-                "select": {
-                    "row": "active"
-                }
-            });
-
-            // Have the collection use a bootstrap compatible drop down
-            jQuery.extend(true, $DataTable.TableTools.DEFAULTS.oTags, {
-                "collection": {
-                    "container": "ul",
-                    "button": "li",
-                    "liner": "a"
-                }
-            });
-        }
-    };
-
     // Init page stat
     var initStat = function() {
         $.ajax({
@@ -158,7 +9,7 @@ var BasePagesEmployee = function() {
                 var container = $('#employee-stat');
                 var html = '';
                 container.empty();
-                if (res.status == 'ok') {
+                if (res.success) {
                     var data = res.data;
                     var counter = 0;
                     data.forEach(function(d) {
@@ -183,7 +34,7 @@ var BasePagesEmployee = function() {
                         }
 
                         counter += parseInt(d.total);
-                    })  
+                    })
                     html += '<div class="col-md-2 col-xs-6">' +
                         '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
                         '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
@@ -204,6 +55,9 @@ var BasePagesEmployee = function() {
 
     // Init main table
     var initTable = function() {
+        // init style helper
+        bsDataTables();
+
         // Table initiation
         var table = $('.js-dataTable-full').DataTable({
             order: [
@@ -217,13 +71,19 @@ var BasePagesEmployee = function() {
             ],
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
-                dataSrc: function(json) {
-                    if (json.status == 'ok') {
-                        var data = json.data;
+                type: "GET",
+                dataSrc: function(response) {
+                    if (response.success) {
+                        var data = response.data;
                         var resultData = [];
                         data.forEach(function(x) {
-                            // Manipulate result data
-                            x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>'
+                            // Manipulate NAMA link
+                            x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>';
+
+                            // manipulate GRADE
+                            x.level_grade = "[" + x.kode_grade + "] " + x.nama_grade;
+
+                            // manipulate STATUS
                             if (x.status == "Tetap") x.statusEdt = '<span class="label label-primary">' + x.status.toUpperCase() + '</span>';
                             else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-info">' + x.status.toUpperCase() + '</span>';
                             else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status.toUpperCase() + '</span>';
@@ -237,17 +97,20 @@ var BasePagesEmployee = function() {
                             icon: 'fa fa-exclamation-circle',
                             message: '<strong>EMPTY DATA!</strong><br/>Klik tombol TAMBAH DATA untuk membuat data karyawan baru.'
                         }, {
-                            type: 'info'
+                            type: 'warning'
                         });
                         return [];
                     }
                 }
             },
             deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-nik', data.nik);
+            },
             columns: [
                 { data: "nik" },
                 { className: "font-w600", data: "namaEdt" },
-                { className: "hidden-xs", data: "nama_jabatan" },
+                { className: "hidden-xs", data: "level_grade" },
                 { className: "hidden-xs", data: "nama_division" },
                 { className: "hidden-xs text-center", data: "statusEdt" },
                 {
@@ -268,6 +131,7 @@ var BasePagesEmployee = function() {
             $('#modal-profile').modal('show');
             renderProfileAdd();
             $('#opened-profile').val("");
+            $('#opened-nik').val("");
         });
 
         // When employee NAME or TABLE'S VIEW button is clicked
@@ -277,6 +141,7 @@ var BasePagesEmployee = function() {
             // Open the popup modal
             $('#modal-profile').modal('show');
             $('#opened-profile').val(data.id);
+            $('#opened-nik').val(data.nik);
 
             renderProfileView(data);
         });
@@ -288,6 +153,7 @@ var BasePagesEmployee = function() {
             // Open the popup modal
             $('#modal-profile').modal('show');
             $('#opened-profile').val(data.id);
+            $('#opened-nik').val(data.nik);
             $('#origin').val('direct');
 
             renderProfileEdit(data);
@@ -343,7 +209,7 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // when CANCEL button clicked
+        // when modal CANCEL button clicked
         $(document).on('click', '#btn-cancel-profile', function() {
             var origin = $('#origin').val();
             if (origin == 'direct') {
@@ -372,19 +238,20 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // When EDIT button is clicked
+        // When modal EDIT button is clicked
         $(document).on('click', '#btn-edit-profile', function() {
-            var $btn = $(this);
-            var $tr = $btn.closest('tr');
+            var nik = $('#opened-nik').val();
+            var $tr = $('#table-employee').find('tr[data-nik=' + nik + ']');
             var dataTableRow = table.row($tr[0]);
             var data = dataTableRow.data();
+
             $('#modal-profile').modal('show');
-            $('#opened-profile').val(data.id);
             $('#origin').val('modal');
+
             renderProfileEdit(data);
         });
 
-        // When DELETE button is clicked
+        // When modal DELETE button is clicked
         $(document).on('click', '#btn-remove-profile', function() {
             swal({
                 title: "Hapus data?",
@@ -438,13 +305,17 @@ var BasePagesEmployee = function() {
             e.preventDefault();
 
             var data = [];
+            var tgl_masuk, status;
             $('[id^="input-"]').filter(
                 function() {
                     var elem = this;
                     // cleaning empty data [TEMP!]
                     if (elem['value'] != '') {
+                        var key = elem['id'].replace('input-', '');
+                        if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
+                        if (key == 'status') status = elem['value']; // save status for NIK generation
                         return data.push({
-                            "key": elem['id'].replace('input-', ''),
+                            "key": key,
                             "value": elem['value']
                         });
                     }
@@ -455,38 +326,80 @@ var BasePagesEmployee = function() {
             if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
             else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
 
-            $.ajax({
-                type: "POST",
-                url: apiUrl,
-                dataType: 'json',
-                data: {
-                    data: data,
-                    id: $('#opened-profile').val()
-                },
-                success: function(res) {
-                    if (res.status == 'err') {
-                        swal("Error!", res.message, "error");
-                    } else {
-                        $('#modal-profile').modal('hide');
-                        $.notify({
-                            "icon": "si si-check",
-                            "message": "Data karyawan berhasil disimpan"
-                        }, {
-                            "type": "success"
-                        });
+            // theng generate new NIK
+            $.when(getLatestNik()).done(function(response) {
+                var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
+                var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
+                var month = moment(tgl_masuk, 'DD-MM-YYYY').format('MM');
 
-                        // reload the stat
-                        initStat();
-
-                        // reload the table
-                        table.ajax.reload();
+                // Generate latest 4 digits
+                if (response.success) {
+                    var existing_nik = $('#opened-nik').val();
+                    if (existing_nik.length == 0) { // if freshly new data :: ADD
+                        var latest = parseInt(response.data) + 1;
+                    } else { // if EDIT data
+                        var latest = parseInt(existing_nik.substr(existing_nik.length - 4));
                     }
-
+                    var pin = pad(latest, 4);
+                } else { // if empty database!
+                    var pin = "0001";
                 }
-            })
+
+                // Generate the Year Letter
+                var letter = "";
+                if (status == 'Tetap') {
+                    var match_obj = $letters.find(obj => {
+                        return obj.year == year;
+                    });
+                    letter = match_obj.letter;
+                }
+
+                var new_nik = letter + short_year + month + pin;
+                data.push({
+                    "key": "nik",
+                    "value": new_nik
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: apiUrl,
+                    dataType: 'json',
+                    data: {
+                        data: data,
+                        id: $('#opened-profile').val()
+                    },
+                    success: function(res) {
+                        if (res.status == 'err') {
+                            swal("Error!", res.message, "error");
+                        } else {
+                            $('#modal-profile').modal('hide');
+                            $.notify({
+                                "icon": "si si-check",
+                                "message": "Data karyawan berhasil disimpan"
+                            }, {
+                                "type": "success"
+                            });
+
+                            // reload the stat
+                            initStat();
+
+                            // reload the table
+                            table.ajax.reload();
+                        }
+
+                    }
+                }); // end of $.ajax
+            }); // end of $.when
         });
+
+        // when modal on close
+        $('#modal-profile').on('hidden.bs.modal', function() {
+            console.log("clearing hidden values...");
+            $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
+        })
     };
 
+    // init the page
     var initEmployeePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -546,7 +459,7 @@ var BasePagesEmployee = function() {
                     parent: valueSelected
                 },
                 success: function(res) {
-                    if (res.status == 'ok') repopulateSelector('input-department', res.data);
+                    if (res.success) repopulateSelector('input-department', res.data);
                     $('#input-section, #input-sub_section, #input-group').empty();
                 }
             });
@@ -567,7 +480,7 @@ var BasePagesEmployee = function() {
                     parent: valueSelected
                 },
                 success: function(res) {
-                    if (res.status == 'ok') repopulateSelector('input-section', res.data);
+                    if (res.success) repopulateSelector('input-section', res.data);
                     $('#input-sub_section, #input-group').empty();
                 }
             });
@@ -588,7 +501,7 @@ var BasePagesEmployee = function() {
                     parent: valueSelected
                 },
                 success: function(res) {
-                    if (res.status == 'ok') repopulateSelector('input-sub_section', res.data);
+                    if (res.success) repopulateSelector('input-sub_section', res.data);
                     $('#input-group').empty();
                 }
             });
@@ -609,7 +522,7 @@ var BasePagesEmployee = function() {
                     parent: valueSelected
                 },
                 success: function(res) {
-                    if (res.status == 'ok') repopulateSelector('input-group', res.data);
+                    if (res.success) repopulateSelector('input-group', res.data);
                 }
             });
         });
@@ -617,7 +530,6 @@ var BasePagesEmployee = function() {
 
     return {
         init: function() {
-            bsDataTables();
             initStat();
             initTable();
             initEmployeePage();
@@ -626,4 +538,4 @@ var BasePagesEmployee = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {  BasePagesEmployee.init(); });
+jQuery(function() { BasePagesEmployee.init(); });

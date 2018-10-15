@@ -15,33 +15,9 @@ var renderProfileAdd = function() {
     // Set value in modal
     $('#modal-nama').html('<div class="form-group"><div class="form-material form-material-primary"><input class="form-control text-center font-s20" type="text" id="input-nama" name="elem-nama" placeholder="Nama Lengkap"></div></div>');
 
-    // fetch data for populating JABATAN selector
+    $('#modal-nik').html("");
+    
     console.log("running ajax call..");
-    $.ajax({
-        type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'jabatan'
-        },
-        success: function(res) {
-            console.log(res);
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary">' +
-                '<select class="form-control text-right" id="input-jabatan" name="elem-jabatan" size="1">' +
-                '<option value="">Pilih Jabatan</option>';
-
-            res.data.forEach(function(o) {
-                selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-            })
-
-            selector += '</select>' +
-                '</div>' +
-                '</div>';
-
-            $('#modal-jabatan').html(selector);
-        }
-    });
 
     // fetch data for populating DIVISI selector
     $.ajax({
@@ -159,7 +135,6 @@ var renderProfileAdd = function() {
         { value: 'Kontrak 2', label: 'Kontrak 2' }
     ]));
 
-    $('#profile-nik').html(renderAddElement('text', '', 'nik', 'NIK', false));
     $('#profile-tgl-masuk').html(renderAddElement('datepicker', '', 'tgl_masuk', 'Tanggal Masuk', false));
     $('#profile-masa-kerja').html(''); // blank
 
@@ -202,6 +177,7 @@ var renderProfileAdd = function() {
     $('#profile-jurusan').html(renderAddElement('text', '', 'jurusan', 'Jurusan', false));
 
     $('#profile-telepon').html(renderAddElement('text', '', 'no_telepon', 'No. Telepon', false));
+    $('#profile-no-rekening').html(renderAddElement('text', '', 'no_rekening', 'No. Rekening', false));
     $('#profile-no-ktp').html(renderAddElement('number', '', 'no_ktp', 'No. KTP', false));
     $('#profile-no-npwp').html(renderAddElement('text', '', 'no_npwp', 'No. NPWP', false));
     $('#profile-no-bpjstk').html(renderAddElement('text', '', 'no_bpjstk', 'No. BPJS TK', false));

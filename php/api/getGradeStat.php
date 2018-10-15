@@ -9,13 +9,12 @@ $check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
 $exists = ($check->num_rows > 0) ? TRUE : FALSE;
 if ($exists) {
         $sql = "SELECT 
-            a.nama, a.kode, COUNT(b.id) AS total
+            a.kode, a.nama, COUNT(b.id) AS total
         FROM
-            `" . $table . "` a
+            `{$table}` a
                 LEFT JOIN
-            employee b ON b." . $table . " = a.id
-        WHERE
-            a.active = 1
+            `employee` b ON b.{$table} = a.id
+        WHERE a.active = 1
         GROUP BY a.id
         ORDER BY total DESC
         LIMIT 5";
@@ -23,17 +22,16 @@ if ($exists) {
         $sql = "SELECT 
             a.nama, COUNT(b.id) AS total
         FROM
-            `" . $table . "` a
+            `{$table}` a
                 LEFT JOIN
-            employee b ON b." . $table . " = a.id
-        WHERE
-            a.active = 1
+            `employee` b ON b.{$table} = a.id
+        WHERE a.active = 1
         GROUP BY a.id
         ORDER BY total DESC
         LIMIT 5";
     }
 
-// ChromePhp::log($sql);
+
 $query = $db->query($sql);
 $rows = array();
 
@@ -46,6 +44,7 @@ if ($query->num_rows > 0) {
     $data['data'] = $rows;
 } else {
     $data['success'] = false;
+
     $data['message'] = 'Data kosong!';
 }
 

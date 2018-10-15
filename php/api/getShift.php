@@ -13,10 +13,10 @@ if (isset($_POST['table'])) {
             $rows[] = $r;
         };
 
-        $data['status'] = 'ok';
+        $data['success'] = true;
         $data['data'] = $rows;
     } else {
-        $data['status'] = 'err';
+        $data['success'] = false;
         $data['data'] = '';
     }
 

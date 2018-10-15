@@ -3,7 +3,7 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 if (isset($_POST['data'])) {
-    $data = $_POST['data'];    
+    $data = $_POST['data'];
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);
@@ -19,18 +19,18 @@ if (isset($_POST['data'])) {
 
             // Remove comma [,] from last value of the array
             if ($counter != $arr_length) {
-                $sql_sets .= ', '; 
+                $sql_sets .= ', ';
                 $sql_values .= ', ';
             }
         }
     }
-    
+
     $sql = "INSERT INTO `employee` (".$sql_sets.") VALUES (".$sql_values.")";
     // chromePhp::log($sql);
     if($db->query($sql)){
-        $res['status'] = 'ok';
+        $res['success'] = true;
     }else{
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 

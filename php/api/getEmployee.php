@@ -2,7 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$sql = "SELECT 
+$sql = "SELECT
             a.*,
             b.nama AS nama_division,
             c.nama AS nama_department,
@@ -41,10 +41,10 @@ if ($query->num_rows > 0) {
         $rows[] = $r;
     };
 
-    $data['status'] = 'ok';
+    $data['success'] = true;
     $data['data'] = $rows;
 } else {
-    $data['status'] = 'err';
+    $data['success'] = false;
     $data['data'] = '';
 }
 

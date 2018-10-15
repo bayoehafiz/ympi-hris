@@ -508,7 +508,7 @@ var BasePagesPosition = function() {
             },
             success: function(res) {
                 var html = '';
-                if (res.status == 'ok') {
+                if (res.success) {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {

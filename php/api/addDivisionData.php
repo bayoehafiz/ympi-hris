@@ -5,8 +5,8 @@ include "../inc/chromePhp.php";
 // ChromePhp::log($_POST['obj']);
 
 if (isset($_POST['obj'])) {
-    $data = $_POST['obj'];    
-    $table = $_POST['table']; 
+            $data = $_POST['obj'];
+    $table = $_POST['table'];
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);
@@ -26,18 +26,18 @@ if (isset($_POST['obj'])) {
             }
 
             if ($counter != $arr_length) {
-                $sql_sets .= ', '; 
+                $sql_sets .= ', ';
                 $sql_values .= ', ';
             }
         }
     }
-    
+
     $sql = "INSERT INTO " . $table . " (".$sql_sets.") VALUES (".$sql_values.")";
 
     if($db->query($sql)){
-        $res['status'] = 'ok';
+        $res['success'] = true;
     }else{
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 

@@ -34,9 +34,6 @@ var initValidation = function() {
             'elem-status': {
                 required: true
             },
-            'elem-nik': {
-                required: true,
-            },
             // 'elem-department': {
             //     required: true
             // },
@@ -52,9 +49,9 @@ var initValidation = function() {
             'elem-grade': {
                 required: true
             },
-            'elem-penugasan': {
-                required: true
-            },
+            // 'elem-penugasan': {
+            //     required: true
+            // },
             'elem-tgl_masuk': {
                 required: true
             },
@@ -83,7 +80,6 @@ var initValidation = function() {
             'elem-penugasan': 'Pilih Penugasan',
             'elem-status': 'Pilih Status Karyawan',
             'elem-tgl_masuk': 'Pilih Tanggal',
-            'elem-nik': 'Masukkan NIK',
             'elem-no_telepon': 'Masukkan No. Telepon',
             'elem-no_ktp': 'Masukkan No. KTP',
             'elem-no_npwp': 'Masukkan No. NPWP',

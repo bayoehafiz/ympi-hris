@@ -209,7 +209,7 @@ var BasePagesDivision = function() {
                         table: source_table
                     }
                 }).done(function(res) {
-                    if (res.status == 'ok') {
+                    if (res.success) {
                         var data = res.data;
 
                         $('#hidden-select').removeClass('hide-me');
@@ -493,7 +493,7 @@ var BasePagesDivision = function() {
             },
             success: function(res) {
                 var html = '';
-                if (res.status == 'ok') {
+                if (res.success) {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {

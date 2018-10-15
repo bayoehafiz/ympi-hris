@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>YMPI HRIS - Jabatan</title>
+    <title>YMPI HRIS - Grade</title>
     <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
     <meta name="author" content="pixelcave">
     <meta name="robots" content="noindex, nofollow">
@@ -39,7 +39,7 @@
         <main id="main-container">
             <!-- Stats -->
             <div class="content bg-white border-b">
-                <div class="row items-push text-uppercase text-center center-block" id="stat-jabatan"></div>
+                <div class="row items-push text-uppercase text-center center-block" id="stat-grade"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
@@ -48,9 +48,6 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
-                            <a href="#btabs-animated-fade-jabatan" class="tab-btn" data="jabatan">Jabatan</a>
-                        </li>
-                        <li>
                             <a href="#btabs-animated-fade-grade" class="tab-btn" data="grade">Grade</a>
                         </li>
                         <li>
@@ -58,32 +55,10 @@
                         </li>
                     </ul>
                     <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-jabatan">
+                        <div class="tab-pane fade in active" id="btabs-animated-fade-grade">
                             <div class="block">
                                 <div class="block-content">
-                                    <!-- Table jabatan -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-jabatan" style="width: 100%!important;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th style="width: 45%;">Nama Jabatan</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 15%;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        </tbody>
-                                    </table>
-                                    <!-- END Table jabatan -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-grade">
-                            <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Grade" data-type="grade"><i class="si si-plus"></i> Tambah Grade</button>
-                                </div> -->
-                                <div class="block-content">
-                                    <!-- Table jabatan -->
+                                    <!-- Table grade -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-grade" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -96,17 +71,14 @@
                                         </thead>
                                         </tbody>
                                     </table>
-                                    <!-- END Table jabatan -->
+                                    <!-- END Table grade -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-penugasan">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Penugasan" data-type="penugasan"><i class="si si-plus"></i> Tambah Penugasan</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table jabatan -->
+                                    <!-- Table penugasan -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-penugasan" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -118,7 +90,7 @@
                                         </thead>
                                         </tbody>
                                     </table>
-                                    <!-- END Table jabatan -->
+                                    <!-- END Table penugasan -->
                                 </div>
                             </div>
                         </div>
@@ -146,12 +118,6 @@
                             </div>
                             <div class="block-content bg-gray-lighter" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
-                                <!-- <div class="form-group hide-me" id="hidden-select">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
-                                        <label for="elem-parent" id="label-parent"></label>
-                                    </div>
-                                </div> -->
                                 <div class="modal-footer">
                                     <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
                                     <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
@@ -211,7 +177,7 @@
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page JS Code -->
-    <script src="position.js"></script>
+    <script src="grade.js"></script>
     <script>
     jQuery(function() {
         App.initHelpers(['notify', 'datepicker', 'datetimepicker', 'colorpicker', 'maxlength', 'masked-inputs', 'rangeslider', 'tags-inputs', 'select2']);

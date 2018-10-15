@@ -1,4 +1,4 @@
-var BasePagesPosition = function() {
+var BasePagesGrade = function() {
     // DataTables Bootstrap integration
     var bsDataTables = function() {
         var $DataTable = jQuery.fn.dataTable;
@@ -148,7 +148,7 @@ var BasePagesPosition = function() {
         }
     };
 
-    var initPositionPage = function() {
+    var initGradePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
@@ -161,9 +161,9 @@ var BasePagesPosition = function() {
         $('#header-navbar').load("../partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA JABATAN</h3>');
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA GRADE</h3>');
             // Set active class for related menu
-            $('#menu-jabatan').addClass('active');
+            $('#menu-grade').addClass('active');
         });
 
         // load footer
@@ -193,20 +193,20 @@ var BasePagesPosition = function() {
                 $('#input-parent').empty();
 
                 // get the source DB table to populate parent's select
-                if (label == 'Divisi Induk') var source_table = 'Jabatan';
-                else if (label == 'Departemen Induk') var source_table = 'department';
-                else if (label == 'Section Induk') var source_table = 'section';
-                else var source_table = 'sub_section';
+                // if (label == 'Divisi Induk') var source_table = 'Jabatan';
+                // else if (label == 'Departemen Induk') var source_table = 'department';
+                // else if (label == 'Section Induk') var source_table = 'section';
+                // else var source_table = 'sub_section';
 
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getJabatanData.php',
+                    url: BASE_URL + '/php/api/getGradeData.php',
                     dataType: 'json',
                     data: {
                         table: source_table
                     }
                 }).done(function(res) {
-                    if (res.status == 'ok') {
+                    if (res.success) {
                         var data = res.data;
 
                         $('#hidden-select').removeClass('hide-me');
@@ -229,22 +229,18 @@ var BasePagesPosition = function() {
             return elem;
         };
 
-        // set default hidden value for ACTIVE type
-        $('#hidden-active-type').val('jabatan');
-
         // when tabs clicked
         $(document).on('click', '.tab-btn', function() {
             var t = $(this).attr('data');
             $('#hidden-active-type').val(t);
             switch (t) {
-                case 'grade':
-                    initTableGrade();
-                    break;
                 case 'penugasan':
+                    initStat('penugasan');
                     initTablePenugasan();
                     break;
                 default:
-                    initTableJabatan();
+                    initStat('grade');
+                    initTableGrade();
                     break;
             }
         })
@@ -260,17 +256,14 @@ var BasePagesPosition = function() {
             $('#hidden-type').val(data_type);
 
             switch (data_type) {
-                case "grade":
-                    html += renderAddElement('text', 'nama', 'Nama Grade');
-                    html += renderAddElement('text', 'kode', 'Kode');
-                    break;
                 case "penugasan":
                     html += renderAddElement('text', 'nama', 'Nama Penugasan');
                     // html += renderAddElement('text', 'kode', 'Kode');
                     break;
                 default:
-                    html += renderAddElement('text', 'nama', 'Nama Jabatan');
-                    // html += renderAddElement('text', 'kode', 'Kode');
+                    html += renderAddElement('text', 'nama', 'Nama Grade');
+                    html += renderAddElement('text', 'kode', 'Kode');
+                    break;
             }
 
             $('#modal-title').html('Tambah Data ' + data_type);
@@ -307,7 +300,7 @@ var BasePagesPosition = function() {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/addPositionData.php',
+                url: BASE_URL + '/php/api/addGradeData.php',
                 dataType: 'json',
                 data: {
                     obj: data,
@@ -324,9 +317,10 @@ var BasePagesPosition = function() {
                         }, {
                             "type": "success"
                         })
-                        // reload the table
+                        // reload the table & stat
                         var table = $('#table-' + dType.replace('_', '-')).DataTable();
                         table.ajax.reload();
+                        initStat(table);
                     }
 
                 }
@@ -357,7 +351,7 @@ var BasePagesPosition = function() {
                         var dType = $('#hidden-active-type').val();
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deletePositionData.php",
+                                url: BASE_URL + "/php/api/deleteGradeData.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id,
@@ -375,9 +369,10 @@ var BasePagesPosition = function() {
                                         "type": "success"
                                     })
 
-                                    // reload the table
+                                    // reload the table & stat
                                     var table = $('#table-' + dType).DataTable();
                                     table.ajax.reload();
+                                    initStat(table);
                                 }
                             })
                             .fail(function() {
@@ -407,7 +402,7 @@ var BasePagesPosition = function() {
                         var dType = $('#hidden-active-type').val();
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/updatePositionDataStatus.php",
+                                url: BASE_URL + "/php/api/updateGradeDataStatus.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id,
@@ -426,9 +421,10 @@ var BasePagesPosition = function() {
                                         "type": "success"
                                     })
 
-                                    // reload the table
+                                    // reload the table & stat
                                     var table = $('#table-' + dType).DataTable();
                                     table.ajax.reload();
+                                    initStat(table);
                                 }
                             })
                             .fail(function() {
@@ -440,26 +436,38 @@ var BasePagesPosition = function() {
             }
         });
 
-        // Lets init our first table :: Jabatan Table
-        initTableJabatan();
+        // set default hidden value for ACTIVE type
+        $('#hidden-active-type').val('grade');
+
+        // Lets init our stat & table :: Grade Table
+        initStat('grade');
+        initTableGrade();
     };
 
-    var initStat = function() {
-        // Get Jabatan datas
+    var initStat = function(table) {
+        // Get Grade stat
         $.ajax({
-            type: "GET",
-            url: BASE_URL + '/php/api/getPositionStat.php',
+            type: "POST",
+            url: BASE_URL + '/php/api/getGradeStat.php',
             dataType: 'json',
+            data: {
+                table: table
+            },
             success: function(res) {
                 var html = '';
-                if (res.status == 'ok') {
+                if (res.success) {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {
                         var wCounter = parseInt(12 / data_length); // set the width of the column
                         data.forEach(function(d) {
+                            if (d.kode == null)
+                                var title = d.nama;
+                            else
+                                var title = '[' + d.kode + '] ' + d.nama;
+
                             html += '<div class="col-md-' + wCounter + '">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">' + d.nama + '</div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">' + title + '</div>' +
                                 '<span class="h2 font-w300 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
@@ -469,78 +477,15 @@ var BasePagesPosition = function() {
 
                 html += '<div class="col-md-2">' +
                     '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data="Jabatan" data-type="jabatan"><i class="fa fa-plus"></i></button>' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + table + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
                     '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container
-                $('#stat-jabatan').html(html);
+                $('#stat-grade').html(html);
             }
         })
-    };
-
-    var initTableJabatan = function() {
-        // Table initiation
-        var table = $('#table-jabatan').DataTable({
-            destroy: true, // destroy it first, if there is an active table instance
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            ajax: {
-                url: BASE_URL + '/php/api/getPosition.php',
-                type: "POST",
-                data: {
-                    table: 'jabatan'
-                },
-                dataSrc: function(json) {
-                    if (json.status == 'err') {
-                        $.notify({
-                            "icon": "fa fa-exclamation-circle",
-                            "message": "Data jabatan kosong"
-                        }, {
-                            "type": "danger"
-                        });
-                        return [];
-                    } else {
-                        return json.data;
-                    }
-                }
-            },
-            deferRender: true,
-            order: [
-                [0, 'desc']
-            ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
-            columns: [
-                { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
-                {
-                    className: "hidden-xs text-center",
-                    data: "active",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success">Aktif</span>';
-                        else return '<span class="label label-default">Non Aktif</span>';
-                    }
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
-                            '</div>';
-                    }
-                }
-            ]
-        });
     };
 
     var initTableGrade = function() {
@@ -553,26 +498,27 @@ var BasePagesPosition = function() {
                 [10, 20, 50, 100]
             ],
             ajax: {
-                url: BASE_URL + '/php/api/getPosition.php',
+                url: BASE_URL + '/php/api/getGrade.php',
                 type: "POST",
                 data: {
                     table: 'grade'
                 },
-                dataSrc: function(json) {
-                    if (json.status == 'err') {
+                dataSrc: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        return response.data;
+                    } else {
                         $.notify({
                             "icon": "fa fa-exclamation-circle",
                             "message": "Data grade kosong"
                         }, {
-                            "type": "danger"
+                            "type": "warning"
                         });
                         return [];
-                    } else {
-                        return json.data;
                     }
                 }
             },
-            deferRender: true,
+            cache: false,
             order: [
                 [0, 'desc']
             ],
@@ -617,13 +563,13 @@ var BasePagesPosition = function() {
                 [10, 20, 50, 100]
             ],
             ajax: {
-                url: BASE_URL + '/php/api/getPosition.php',
+                url: BASE_URL + '/php/api/getGrade.php',
                 type: "POST",
                 data: {
                     table: 'penugasan'
                 },
                 dataSrc: function(json) {
-                    if (json.status == 'err') {
+                    if (!json.success) {
                         $.notify({
                             "icon": "fa fa-exclamation-circle",
                             "message": "Data penugasan kosong"
@@ -674,10 +620,10 @@ var BasePagesPosition = function() {
         init: function() {
             bsDataTables();
             initStat();
-            initPositionPage();
+            initGradePage();
         }
     };
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesPosition.init(); });
+jQuery(function() { BasePagesGrade.init(); });

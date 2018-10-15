@@ -9,10 +9,10 @@ if (isset($_POST['id'])) {
     $sql = "DELETE FROM " . $table . " WHERE id = " . intval($id);
 
     if($db->query($sql)){
-        $res['status'] = 'ok';
+        $res['success'] = true;
         $res['message'] = 'Data berhasil dihapus';
     }else{
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 

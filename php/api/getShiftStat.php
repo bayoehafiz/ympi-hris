@@ -25,7 +25,7 @@ if ($query->num_rows > 0) {
     }
     ;
     
-    $data['status'] = 'ok';
+    $data['success'] = true;
     $data['data']   = $rows;
 } else {
     $data['status']  = 'err';

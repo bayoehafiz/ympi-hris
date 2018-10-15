@@ -15,8 +15,11 @@ var renderProfileView = function(data) {
     // Set value in modal
     $('.img-avatar128').attr('src', "../" + data.photo_url)
     $('#modal-nama').html(data.nama);
-    $('#modal-jabatan').html(data.nama_jabatan);
+    $('#modal-nik').html(data.nik);
     $('#modal-divisi').html(data.nama_division);
+
+    // unhide NIK element
+    $('#modal-nik').removeClass('hide-me');
 
     // Tab DATA_KERJA ::
     // Manipulate values first
@@ -30,7 +33,6 @@ var renderProfileView = function(data) {
     $('#profile-group').html('<div class="text-muted">Grup</div>' + nama_group);
     $('#profile-grade').html('<div class="text-muted">Grade</div>[' + data.kode_grade + '] ' + data.nama_grade);
     $('#profile-penugasan').html('<div class="text-muted">Penugasan</div>' + data.nama_penugasan);
-    $('#profile-nik').html('<div class="text-muted">NIK</div>' + data.nik);
     $('#profile-status').html('<div class="text-muted">Status Karyawan</div>' + data.statusEdt);
     $('#profile-tgl-masuk').html('<div class="text-muted">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
     // Manipulate MASA-KERJA

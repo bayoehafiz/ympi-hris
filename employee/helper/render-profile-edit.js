@@ -12,35 +12,11 @@ var renderProfileEdit = function(data) {
     $('ul.nav-tabs').children(':first').addClass('active');
     $(".tab-pane:first").addClass('active');
 
+    // hide NIK element
+    $('#modal-nik').addClass('hide-me');
+
     // Set value in modal
     $('#modal-nama').html('<div class="form-material form-material-primary"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
-
-    // fetch data for populating JABATAN selector
-    $.ajax({
-        type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'jabatan'
-        },
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary">' +
-                '<select class="form-control text-right" id="input-jabatan" name="elem-jabatan" size="1">' +
-                '<option value="">Pilih Jabatan</option>';
-
-            res.data.forEach(function(o) {
-                if (o.id == data.jabatan) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-            })
-
-            selector += '</select>' +
-                '</div>' +
-                '</div>';
-
-            $('#modal-jabatan').html(selector);
-        }
-    });
 
     // fetch data for populating DIVISI selector
     $.ajax({

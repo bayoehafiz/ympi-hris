@@ -9,7 +9,7 @@ $sql = "SELECT
         GROUP BY status
         ORDER BY status";
 
-ChromePhp::log($sql);
+// ChromePhp::log($sql);
 
 $query = $db->query($sql);
 $rows = array();
@@ -19,10 +19,10 @@ if ($query->num_rows > 0) {
         $rows[] = $r;
     };
 
-    $data['status'] = 'ok';
+    $data['success'] = true;
     $data['data'] = $rows;
 } else {
-    $data['status'] = 'err';
+    $data['success'] = false;
     $data['message'] = '';
 }
 

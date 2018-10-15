@@ -1,12 +1,10 @@
 // Function to generate random profile
 var generateRandomProfile = function() {
     $('#input-nama').val('Jack Sparrow');
-    $('#input-jabatan').val('12');
     $('#input-division').val('3');
     $('#input-grade').val('13');
     $('#input-penugasan').val('5');
     $('#input-status').val('Tetap');
-    $('#input-nik').val('ABC123456');
     $('#input-tgl_masuk').val('20-06-2010');
 
     $('#input-tempat_lahir').val('Surabaya');
@@ -22,6 +20,7 @@ var generateRandomProfile = function() {
     $('#input-jurusan').val('Teknik Mesin');
 
     $('#input-no_telepon').val('081123456789');
+    $('#input-no_rekening').val('1111-22-3333-44');
     $('#input-no_ktp').val('350700100010001');
     $('#input-no_npwp').val('1234-5678-9');
     $('#input-no_bpjstk').val('1111-2222-3333');

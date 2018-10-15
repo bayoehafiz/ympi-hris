@@ -53,7 +53,7 @@
                                 <tr>
                                     <th>NIK</th>
                                     <th>Nama Lengkap</th>
-                                    <th class="hidden-xs">Jabatan</th>
+                                    <th class="hidden-xs">Grade</th>
                                     <th class="hidden-xs">Divisi</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center" style="width: 10%;">Actions</th>
@@ -89,7 +89,7 @@
                                         <div class="block-content block-content-full clearfix">
                                             <div class="text-right pull-right push-5-t">
                                                 <div class="lead" id="modal-nama"></div>
-                                                <div class="font-w600 push-5" id="modal-jabatan"></div>
+                                                <div class="font-w600 push-5 hide-me" id="modal-nik"></div>
                                                 <div class="text-muted" id="modal-divisi"></div>
                                             </div>
                                             <div class="pull-left">
@@ -123,13 +123,12 @@
                                                                 <div class="push-10" id="profile-section"></div>
                                                                 <div class="push-10" id="profile-sub-section"></div>
                                                                 <div class="push-10" id="profile-group"></div>
-                                                                <div class="push-10" id="profile-grade"></div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="push-10" id="profile-nik"></div>
                                                                 <div class="push-10" id="profile-status"></div>
                                                                 <div class="push-10" id="profile-tgl-masuk"></div>
                                                                 <div class="push-10" id="profile-masa-kerja"></div>
+                                                                <div class="push-10" id="profile-grade"></div>
                                                                 <div class="push-10" id="profile-penugasan"></div>
                                                             </div>
                                                         </div>
@@ -163,6 +162,7 @@
                                                         <div class="row push-5-t">
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-telepon"></div>
+                                                                <div class="push-10" id="profile-no-rekening"></div>
                                                                 <div class="push-10" id="profile-no-ktp"></div>
                                                                 <div class="push-10" id="profile-no-npwp"></div>
                                                             </div>
@@ -196,6 +196,7 @@
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
         <input type="hidden" id="opened-profile">
+        <input type="hidden" id="opened-nik">
         <input type="hidden" id="origin">
         <input type="hidden" id="form-scope">
     </div>
@@ -238,6 +239,8 @@
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page JS Code -->
+    <script src="helper/bs-datatables.js"></script>
+    <script src="helper/generate-nik.js"></script>
     <script src="helper/generate-random-profile.js"></script>
     <script src="helper/humanise-date.js"></script>
     <script src="helper/init-validation.js"></script>

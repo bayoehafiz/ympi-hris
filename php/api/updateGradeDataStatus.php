@@ -16,10 +16,10 @@ if (isset($_POST['id'])) {
     // ChromePhp::log($sql);
 
     if ($db->query($sql)) {
-        $res['status'] = 'ok';
+        $res['success'] = true;
         $res['message'] = 'Status berhasil dirubah';
     } else {
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 

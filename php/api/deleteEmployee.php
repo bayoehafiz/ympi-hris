@@ -8,10 +8,10 @@ if (isset($_POST['id'])) {
     $sql = "DELETE FROM employee WHERE id='" . $id . "'";
 
     if($db->query($sql)){
-        $res['status'] = 'ok';
+        $res['success'] = true;
         $res['message'] = 'Data berhasil dihapus';
     }else{
-        $res['status'] = 'err';
+        $res['success'] = false;
         $res['message'] = '('. $db->errno .') '. $db->error;
     }
 
