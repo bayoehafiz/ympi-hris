@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 10, 2018 at 06:39 PM
+-- Generation Time: Oct 15, 2018 at 11:18 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -61,8 +62,7 @@ INSERT INTO `department` (`id`, `nama`, `kode`, `parent`, `active`, `created`, `
 (12, 'Welding-Surface Treatment', 'WST', 3, 1, '2018-10-03 07:49:53', '2018-10-03 07:49:53'),
 (13, 'Assembling', 'WIA', 3, 1, '2018-10-03 07:50:12', '2018-10-03 07:50:12'),
 (14, 'Educational INstrument', 'EDI', 3, 1, '2018-10-03 07:52:03', '2018-10-03 07:52:03'),
-(15, 'Quality Assurance', 'QAS', 3, 1, '2018-10-03 07:52:20', '2018-10-03 07:52:20'),
-(16, 'Test Department', 'TDP', 29, 1, '2018-10-09 09:28:58', '2018-10-09 09:28:58');
+(15, 'Quality Assurance', 'QAS', 3, 1, '2018-10-03 07:52:20', '2018-10-03 07:52:20');
 
 -- --------------------------------------------------------
 
@@ -95,8 +95,7 @@ INSERT INTO `division` (`id`, `nama`, `kode`, `active`, `created`, `updated`) VA
 (3, 'Production', 'PRD', 1, '2018-10-02 09:48:15', '2018-10-08 08:32:08'),
 (4, 'Production Engineering', 'PEN', 1, '2018-10-02 09:48:41', '2018-10-02 09:48:41'),
 (5, 'Production Support', 'PSU', 1, '2018-10-02 09:48:57', '2018-10-02 09:48:57'),
-(6, 'President Director', 'PDR', 0, '2018-10-02 09:50:18', '2018-10-08 08:33:06'),
-(29, 'Test Division', 'TDV', 1, '2018-10-09 09:27:59', '2018-10-09 09:28:41');
+(6, 'President Director', 'PDR', 0, '2018-10-02 09:50:18', '2018-10-08 08:33:06');
 
 -- --------------------------------------------------------
 
@@ -128,7 +127,7 @@ CREATE TABLE `employee` (
   `no_bpjskes` varchar(255) DEFAULT NULL,
   `no_npwp` varchar(255) DEFAULT NULL,
   `no_jp` varchar(255) DEFAULT NULL,
-  `rekening` varchar(255) DEFAULT NULL,
+  `no_rekening` varchar(255) DEFAULT NULL,
   `photo_url` varchar(255) DEFAULT 'assets/img/avatars/avatar.jpg',
   `division` int(11) DEFAULT NULL,
   `department` int(11) DEFAULT NULL,
@@ -168,7 +167,7 @@ TRUNCATE TABLE `grade`;
 --
 
 INSERT INTO `grade` (`id`, `nama`, `kode`, `active`, `created`, `updated`) VALUES
-(1, 'Japan Staff', '-', 1, '2018-10-03 12:30:11', '2018-10-03 13:05:50'),
+(1, 'Japan Staff', '-', 0, '2018-10-03 12:30:11', '2018-10-15 16:11:23'),
 (2, 'Expert', 'D3', 1, '2018-10-03 12:30:25', '2018-10-03 12:30:25'),
 (3, 'OP Contract', 'E0', 1, '2018-10-03 12:30:38', '2018-10-03 12:30:38'),
 (4, 'Junior Operator', 'E1', 1, '2018-10-03 12:30:48', '2018-10-03 12:30:48'),
@@ -273,70 +272,6 @@ INSERT INTO `group` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `group_shift`
---
-
-DROP TABLE IF EXISTS `group_shift`;
-CREATE TABLE `group_shift` (
-  `id` int(11) NOT NULL,
-  `id_employee` int(11) DEFAULT NULL,
-  `id_shift` int(11) DEFAULT NULL,
-  `tanggal` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Truncate table before insert `group_shift`
---
-
-TRUNCATE TABLE `group_shift`;
--- --------------------------------------------------------
-
---
--- Table structure for table `jabatan`
---
-
-DROP TABLE IF EXISTS `jabatan`;
-CREATE TABLE `jabatan` (
-  `id` int(11) NOT NULL,
-  `nama` varchar(255) DEFAULT NULL,
-  `active` tinyint(1) DEFAULT '1',
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Truncate table before insert `jabatan`
---
-
-TRUNCATE TABLE `jabatan`;
---
--- Dumping data for table `jabatan`
---
-
-INSERT INTO `jabatan` (`id`, `nama`, `active`, `created`, `updated`) VALUES
-(4, 'Chief', 1, '2018-10-03 12:24:13', '2018-10-03 12:24:13'),
-(5, 'Coordinator', 1, '2018-10-03 12:24:32', '2018-10-03 12:24:32'),
-(6, 'Direktur', 1, '2018-10-03 12:24:40', '2018-10-03 12:24:40'),
-(7, 'Foreman', 1, '2018-10-03 12:24:46', '2018-10-03 12:24:46'),
-(8, 'General Manager', 1, '2018-10-03 12:24:54', '2018-10-03 12:24:54'),
-(9, 'Junior Operator', 1, '2018-10-03 12:25:02', '2018-10-03 12:25:02'),
-(10, 'Junior Specialist', 1, '2018-10-03 12:25:18', '2018-10-03 12:25:18'),
-(11, 'Junior Staff', 1, '2018-10-03 12:25:27', '2018-10-03 12:25:27'),
-(12, 'Leader', 1, '2018-10-03 12:25:34', '2018-10-03 12:25:34'),
-(13, 'Manager', 1, '2018-10-03 12:25:42', '2018-10-03 12:25:42'),
-(14, 'OP Contract', 1, '2018-10-03 12:25:51', '2018-10-03 12:25:51'),
-(15, 'Operator', 1, '2018-10-03 12:25:59', '2018-10-03 13:05:34'),
-(16, 'President Director', 1, '2018-10-03 12:26:24', '2018-10-03 13:05:39'),
-(17, 'Senior Chief', 1, '2018-10-03 12:26:31', '2018-10-03 12:27:23'),
-(18, 'Senior Coordinator', 1, '2018-10-03 12:26:38', '2018-10-03 12:26:38'),
-(19, 'Senior Foreman', 1, '2018-10-03 12:26:45', '2018-10-03 12:26:45'),
-(20, 'Senior Staff', 1, '2018-10-03 12:26:53', '2018-10-03 12:26:53'),
-(21, 'Staff', 1, '2018-10-03 12:27:00', '2018-10-03 12:27:00'),
-(22, 'Sub Leader', 1, '2018-10-03 12:27:07', '2018-10-03 12:27:07');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `penugasan`
 --
 
@@ -370,6 +305,26 @@ INSERT INTO `penugasan` (`id`, `nama`, `active`, `created`, `updated`) VALUES
 (9, 'Senior Foreman', 1, '2018-10-03 12:36:33', '2018-10-03 12:36:33'),
 (10, 'Sub Leader', 1, '2018-10-03 12:36:39', '2018-10-03 12:36:39');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `penugasan_shift`
+--
+
+DROP TABLE IF EXISTS `penugasan_shift`;
+CREATE TABLE `penugasan_shift` (
+  `id` int(11) NOT NULL,
+  `employee` int(11) DEFAULT NULL,
+  `shift` int(11) DEFAULT NULL,
+  `group_shift` int(11) DEFAULT NULL,
+  `tanggal` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Truncate table before insert `penugasan_shift`
+--
+
+TRUNCATE TABLE `penugasan_shift`;
 -- --------------------------------------------------------
 
 --
@@ -463,7 +418,9 @@ CREATE TABLE `shift` (
   `awal_scan_masuk` varchar(255) DEFAULT NULL,
   `akhir_scan_masuk` varchar(255) DEFAULT NULL,
   `awal_scan_keluar` varchar(255) DEFAULT NULL,
-  `akhir_scan_keluar` varchar(255) DEFAULT NULL
+  `akhir_scan_keluar` varchar(255) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -475,8 +432,10 @@ TRUNCATE TABLE `shift`;
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`) VALUES
-(1, NULL, 'hjfkdshjkfdshjkfds', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `created`, `updated`) VALUES
+(3, 'S1', 'Shift 1', 'Senin,Selasa,Rabu,Kamis,Jumat', '05:53', '17:53', '05:53', '17:54', '05:54', '17:54', '2018-10-11 13:54:21', '2018-10-11 13:54:21'),
+(4, 'S2', 'Shift 2', 'Kamis,Jumat,Sabtu,Minggu', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 14:43:58', '2018-10-11 14:43:58'),
+(5, 'S3', 'Shift 3', 'Senin,Rabu,Jumat', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 16:08:53', '2018-10-11 16:27:49');
 
 -- --------------------------------------------------------
 
@@ -627,21 +586,15 @@ ALTER TABLE `group`
   ADD KEY `parent_idxfk_3` (`parent`);
 
 --
--- Indexes for table `group_shift`
---
-ALTER TABLE `group_shift`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `jabatan`
---
-ALTER TABLE `jabatan`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `penugasan`
 --
 ALTER TABLE `penugasan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `penugasan_shift`
+--
+ALTER TABLE `penugasan_shift`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -678,17 +631,17 @@ ALTER TABLE `sub_section`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `division`
 --
 ALTER TABLE `division`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `grade`
 --
@@ -700,20 +653,15 @@ ALTER TABLE `grade`
 ALTER TABLE `group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
--- AUTO_INCREMENT for table `group_shift`
---
-ALTER TABLE `group_shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `jabatan`
---
-ALTER TABLE `jabatan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
---
 -- AUTO_INCREMENT for table `penugasan`
 --
 ALTER TABLE `penugasan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `penugasan_shift`
+--
+ALTER TABLE `penugasan_shift`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `presensi`
 --
@@ -728,7 +676,7 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
@@ -774,6 +722,7 @@ ALTER TABLE `section`
 --
 ALTER TABLE `sub_section`
   ADD CONSTRAINT `sub_section_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `section` (`id`);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
