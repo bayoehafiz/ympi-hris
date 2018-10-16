@@ -504,7 +504,6 @@ var BasePagesGrade = function() {
                     table: 'grade'
                 },
                 dataSrc: function(response) {
-                    console.log(response);
                     if (response.success) {
                         return response.data;
                     } else {

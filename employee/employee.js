@@ -75,6 +75,7 @@ var BasePagesEmployee = function() {
                 dataSrc: function(response) {
                     if (response.success) {
                         var data = response.data;
+                        console.log(data);
                         var resultData = [];
                         data.forEach(function(x) {
                             // Manipulate NAMA link

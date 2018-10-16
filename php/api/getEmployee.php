@@ -9,10 +9,9 @@ $sql = "SELECT
             d.nama AS nama_section,
             e.nama AS nama_sub_section,
             f.nama AS nama_group,
-            g.nama AS nama_jabatan,
-            h.nama AS nama_grade,
-            h.kode AS kode_grade,
-            i.nama AS nama_penugasan
+            g.nama AS nama_grade,
+            g.kode AS kode_grade,
+            h.nama AS nama_penugasan
         FROM
             employee a
                 LEFT JOIN
@@ -26,11 +25,9 @@ $sql = "SELECT
                 LEFT JOIN
                     `group` f ON f.id = a.group
                 LEFT JOIN
-                    jabatan g ON g.id = a.jabatan
+                    grade g ON g.id = a.grade
                 LEFT JOIN
-                    grade h ON h.id = a.grade
-                LEFT JOIN
-                    penugasan i ON i.id = a.penugasan
+                    penugasan h ON h.id = a.penugasan
         GROUP BY a.id";
 
 $query = $db->query($sql);
