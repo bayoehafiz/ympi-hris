@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 15, 2018 at 11:18 PM
+-- Generation Time: Oct 17, 2018 at 04:40 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
@@ -320,11 +320,6 @@ CREATE TABLE `penugasan_shift` (
   `tanggal` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncate table before insert `penugasan_shift`
---
-
-TRUNCATE TABLE `penugasan_shift`;
 -- --------------------------------------------------------
 
 --
@@ -342,11 +337,6 @@ CREATE TABLE `presensi` (
   `jam_keluar` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Truncate table before insert `presensi`
---
-
-TRUNCATE TABLE `presensi`;
 -- --------------------------------------------------------
 
 --
@@ -419,23 +409,10 @@ CREATE TABLE `shift` (
   `akhir_scan_masuk` varchar(255) DEFAULT NULL,
   `awal_scan_keluar` varchar(255) DEFAULT NULL,
   `akhir_scan_keluar` varchar(255) DEFAULT NULL,
+  `color` varchar(255) DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Truncate table before insert `shift`
---
-
-TRUNCATE TABLE `shift`;
---
--- Dumping data for table `shift`
---
-
-INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `created`, `updated`) VALUES
-(3, 'S1', 'Shift 1', 'Senin,Selasa,Rabu,Kamis,Jumat', '05:53', '17:53', '05:53', '17:54', '05:54', '17:54', '2018-10-11 13:54:21', '2018-10-11 13:54:21'),
-(4, 'S2', 'Shift 2', 'Kamis,Jumat,Sabtu,Minggu', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 14:43:58', '2018-10-11 14:43:58'),
-(5, 'S3', 'Shift 3', 'Senin,Rabu,Jumat', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 16:08:53', '2018-10-11 16:27:49');
 
 -- --------------------------------------------------------
 
@@ -631,12 +608,12 @@ ALTER TABLE `sub_section`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `division`
 --
 ALTER TABLE `division`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `employee`
 --
@@ -656,7 +633,7 @@ ALTER TABLE `group`
 -- AUTO_INCREMENT for table `penugasan`
 --
 ALTER TABLE `penugasan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `penugasan_shift`
 --
@@ -676,7 +653,7 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
