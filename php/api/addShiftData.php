@@ -2,9 +2,7 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-// ChromePhp::log($_POST['obj']);
-
-if (isset($_POST['data'])) {
+if (isset($_POST['table'])) {
     $data = $_POST['data'];    
     $table = $_POST['table']; 
     $sql_sets = '';
@@ -33,6 +31,8 @@ if (isset($_POST['data'])) {
     }
     
     $sql = "INSERT INTO " . $table . " (".$sql_sets.") VALUES (".$sql_values.")";
+
+// ChromePhp::log($sql);
 
     if($db->query($sql)){
         $res['success'] = true;

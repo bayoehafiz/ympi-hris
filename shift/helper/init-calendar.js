@@ -5,7 +5,7 @@ var initCalendar = function() {
     var $m = $date.getMonth();
     var $y = $date.getFullYear();
 
-    jQuery('.js-calendar').fullCalendar({
+    $('#shift-calendar').fullCalendar({
         firstDay: 1,
         editable: true,
         droppable: true,
@@ -104,7 +104,6 @@ var initCalendar = function() {
                 url: 'http://twitter.com/pixelcave',
                 color: '#32ccfe'
             }*/
-            
         ]
     });
 };

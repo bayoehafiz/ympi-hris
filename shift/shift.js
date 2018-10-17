@@ -1,153 +1,4 @@
 var BasePagesPosition = function() {
-    // DataTables Bootstrap integration
-    var bsDataTables = function() {
-        var $DataTable = jQuery.fn.dataTable;
-
-        // Set the defaults for DataTables init
-        jQuery.extend(true, $DataTable.defaults, {
-            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-6'i><'col-sm-6'p>>",
-            renderer: 'bootstrap',
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sInfo: "Showing <strong>_START_</strong>-<strong>_END_</strong> of <strong>_TOTAL_</strong>",
-                oPaginate: {
-                    sPrevious: '<i class="fa fa-angle-left"></i>',
-                    sNext: '<i class="fa fa-angle-right"></i>'
-                }
-            }
-        });
-
-        // Default class modification
-        jQuery.extend($DataTable.ext.classes, {
-            sWrapper: "dataTables_wrapper form-inline dt-bootstrap",
-            sFilterInput: "form-control",
-            sLengthSelect: "form-control"
-        });
-
-        // Bootstrap paging button renderer
-        $DataTable.ext.renderer.pageButton.bootstrap = function(settings, host, idx, buttons, page, pages) {
-            var api = new $DataTable.Api(settings);
-            var classes = settings.oClasses;
-            var lang = settings.oLanguage.oPaginate;
-            var btnDisplay, btnClass;
-
-            var attach = function(container, buttons) {
-                var i, ien, node, button;
-                var clickHandler = function(e) {
-                    e.preventDefault();
-                    if (!jQuery(e.currentTarget).hasClass('disabled')) {
-                        api.page(e.data.action).draw(false);
-                    }
-                };
-
-                for (i = 0, ien = buttons.length; i < ien; i++) {
-                    button = buttons[i];
-
-                    if (jQuery.isArray(button)) {
-                        attach(container, button);
-                    } else {
-                        btnDisplay = '';
-                        btnClass = '';
-
-                        switch (button) {
-                            case 'ellipsis':
-                                btnDisplay = '&hellip;';
-                                btnClass = 'disabled';
-                                break;
-
-                            case 'first':
-                                btnDisplay = lang.sFirst;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'previous':
-                                btnDisplay = lang.sPrevious;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'next':
-                                btnDisplay = lang.sNext;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            case 'last':
-                                btnDisplay = lang.sLast;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            default:
-                                btnDisplay = button + 1;
-                                btnClass = page === button ?
-                                    'active' : '';
-                                break;
-                        }
-
-                        if (btnDisplay) {
-                            node = jQuery('<li>', {
-                                    'class': classes.sPageButton + ' ' + btnClass,
-                                    'aria-controls': settings.sTableId,
-                                    'tabindex': settings.iTabIndex,
-                                    'id': idx === 0 && typeof button === 'string' ?
-                                        settings.sTableId + '_' + button : null
-                                })
-                                .append(jQuery('<a>', {
-                                        'href': '#'
-                                    })
-                                    .html(btnDisplay)
-                                )
-                                .appendTo(container);
-
-                            settings.oApi._fnBindAction(
-                                node, { action: button }, clickHandler
-                            );
-                        }
-                    }
-                }
-            };
-
-            attach(
-                jQuery(host).empty().html('<ul class="pagination"/>').children('ul'),
-                buttons
-            );
-        };
-
-        // TableTools Bootstrap compatibility - Required TableTools 2.1+
-        if ($DataTable.TableTools) {
-            // Set the classes that TableTools uses to something suitable for Bootstrap
-            jQuery.extend(true, $DataTable.TableTools.classes, {
-                "container": "DTTT btn-group",
-                "buttons": {
-                    "normal": "btn btn-default",
-                    "disabled": "disabled"
-                },
-                "collection": {
-                    "container": "DTTT_dropdown dropdown-menu",
-                    "buttons": {
-                        "normal": "",
-                        "disabled": "disabled"
-                    }
-                },
-                "print": {
-                    "info": "DTTT_print_info"
-                },
-                "select": {
-                    "row": "active"
-                }
-            });
-
-            // Have the collection use a bootstrap compatible drop down
-            jQuery.extend(true, $DataTable.TableTools.DEFAULTS.oTags, {
-                "collection": {
-                    "container": "ul",
-                    "button": "li",
-                    "liner": "a"
-                }
-            });
-        }
-    };
-
     var initShiftPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -312,30 +163,39 @@ var BasePagesPosition = function() {
             var actType = $('#act-type').val();
             if (actType == 'add') {
                 var api_url = BASE_URL + '/php/api/addShiftData.php';
-                var data = {
+
+                // add random color for drag & drop shifts
+                data.push({
+                    key: "color",
+                    value: generateColor()
+                })
+
+                var payload = {
                     data: data,
                     table: dType
                 };
+
                 var msg = "Data berhasil ditambahkan";
             } else {
                 var api_url = BASE_URL + '/php/api/updateShiftData.php';
-                var data = {
+                var payload = {
                     data: data,
                     table: dType,
                     id: $('#data-id').val()
                 };
+
                 var msg = "Data berhasil di-update";
             }
 
+            // Saving...
+            console.log("Saving...", );
             $.ajax({
-                type: "POST",
+                method: "POST",
                 url: api_url,
                 dataType: 'json',
-                data: data,
+                data: payload,
                 success: function(res) {
-                    if (res.status == 'err') {
-                        swal("Error!", res.message, "error");
-                    } else {
+                    if (res.success) {
                         $('#modal').modal('hide');
                         $.notify({
                             "icon": "fa fa-check-circle",
@@ -344,8 +204,10 @@ var BasePagesPosition = function() {
                             "type": "success"
                         })
                         // reload the table
-                        var table = $('#table-' + dType.replace('_', '-')).DataTable();
+                        var table = $('#table-' + dType).DataTable();
                         table.ajax.reload();
+                    } else {
+                        swal("Error!", res.message, "error");
                     }
 
                 }
@@ -537,6 +399,9 @@ var BasePagesPosition = function() {
     };
 
     var initTableShift = function() {
+        // init table BS style
+        bsDataTables();
+
         // Table initiation
         var table = $('#table-shift').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
@@ -552,12 +417,12 @@ var BasePagesPosition = function() {
                     table: 'shift'
                 },
                 dataSrc: function(json) {
-                    if (json.status == 'err') {
+                    if (!json.success) {
                         $.notify({
                             "icon": "fa fa-exclamation-circle",
                             "message": "Data Shift kosong"
                         }, {
-                            "type": "danger"
+                            "type": "warning"
                         });
                         return [];
                     } else {
@@ -677,26 +542,32 @@ var BasePagesPosition = function() {
     // };
 
     var initContentPenugasanShift = function() {
-        // render user list
-        $.ajax({
-            type: "GET",
-            url: BASE_URL + '/php/api/getEmployeeName.php',
-            dataType: 'json',
-            success: function(response) {
-                console.log(response);
-                if (response.status != 'err') {
-                    var container = $('.js-events');
-                    container.empty();
+        // Init jQuery AutoComplete example, for more examples you can check out https://github.com/Pixabay/jQuery-autoComplete
+        var initAutoComplete = function() {
+            // Init autocomplete functionality
+            $('#employee-selector').autoComplete({
+                minChars: 1,
+                // source: function(term, response) {
+                //     $.getJSON(BASE_URL + '/php/api/getEmployeeName.php', { q: term }, function(data) { response(data); });
+                // },
+                source: function(term, suggest) {
+                    term = term.toLowerCase();
 
-                    var data = response.data;
-                    data.forEach(function(d) {
-                        container.append('<li>' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
-                    });
+                    var $countriesList = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Anguilla', 'Antigua &amp; Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia &amp; Herzegovina', 'Botswana', 'Brazil', 'British Virgin Islands', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Cape Verde', 'Cayman Islands', 'Chad', 'Chile', 'China', 'Colombia', 'Congo', 'Cook Islands', 'Costa Rica', 'Cote D Ivoire', 'Croatia', 'Cruise Ship', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Estonia', 'Ethiopia', 'Falkland Islands', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Polynesia', 'French West Indies', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Kyrgyz Republic', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Namibia', 'Nepal', 'Netherlands', 'Netherlands Antilles', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Reunion', 'Romania', 'Russia', 'Rwanda', 'Saint Pierre &amp; Miquelon', 'Samoa', 'San Marino', 'Satellite', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka', 'St Kitts &amp; Nevis', 'St Lucia', 'St Vincent', 'St. Lucia', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor L\'Este', 'Togo', 'Tonga', 'Trinidad &amp; Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks &amp; Caicos', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Virgin Islands (US)', 'Yemen', 'Zambia', 'Zimbabwe'];
+                    var $suggestions = [];
+
+                    for ($i = 0; $i < $countriesList.length; $i++) {
+                        if (~$countriesList[$i].toLowerCase().indexOf(term)) $suggestions.push($countriesList[$i]);
+                    }
+
+                    suggest($suggestions);
+                },
+                onSelect: function(term) {
+                    console.log(term + ' selected!');
                 }
-            }
-        });
-        
-        
+            });
+        };
+
         // render list of shift events
         $.ajax({
             type: "POST",
@@ -706,19 +577,25 @@ var BasePagesPosition = function() {
                 table: 'shift'
             },
             success: function(response) {
-                if (response.status != 'err') {
+                if (response.success) {
                     var container = $('.js-events');
                     container.empty();
 
                     var data = response.data;
                     data.forEach(function(d) {
-                        container.append('<li>' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
+                        container.append('<li style="background-color: ' + d.color + '">' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
                     })
+
+                    // enable shift-list footer
+                    $('#shift-list-footer').removeClass('hide-me');
 
                     initEvents();
                 }
             }
         });
+
+        // Init employee selector
+        initAutoComplete();
 
         // FullCalendar, for more examples you can check out http://fullcalendar.io/
         initCalendar();
@@ -726,7 +603,6 @@ var BasePagesPosition = function() {
 
     return {
         init: function() {
-            bsDataTables();
             initStat('shift');
             initShiftPage();
         }

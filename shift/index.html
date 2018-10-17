@@ -105,26 +105,24 @@
                                 <div class="block-content">
                                     <div class="row items-push">
                                         <div class="col-md-4 col-lg-2">
-                                            <!-- Add Event Form -->
-                                            <form class="js-form-add-event push-30" action="base_comp_calendar.html" method="post">
-                                                <div class="form-group">
-                                                    <div class="form-material ">
-                                                        <select class="form-control" id="select-employee" name="material-select" size="1"></select>
-                                                        <label for="material-select">Pilih karyawan</label>
-                                                    </div>
+                                            <!-- Select employee -->
+                                            <div class="form-group">
+                                                <div class="form-material form-material-primary push-50">
+                                                    <input class="js-autocomplete form-control" type="text" id="employee-selector" name="elem-employee-selector" placeholder="Ketik nama karyawan...">
+                                                    <label for="elem-employee-selector">Karyawan</label>
                                                 </div>
-                                            </form>
-                                            <!-- END Add Event Form -->
+                                            </div>
+                                            <!-- END Select employee -->
                                             <!-- Event List -->
                                             <ul class="js-events list list-events"></ul>
-                                            <div class="text-center text-muted">
+                                            <div class="text-center text-muted hide-me" id="shift-list-footer">
                                                 <small><em><i class="fa fa-arrows"></i> Drag and drop events on the calendar</em></small>
                                             </div>
                                             <!-- END Event List -->
                                         </div>
                                         <div class="col-md-8 col-lg-10">
                                             <!-- Calendar Container -->
-                                            <div class="js-calendar"></div>
+                                            <div class="js-calendar" id="shift-calendar"></div>
                                         </div>
                                     </div>
                                     <!-- END Calendar -->
@@ -219,11 +217,13 @@
     <script src="../assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
     <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
     <!-- Page JS Code -->
+    <script src="helper/bs-datatables.js"></script>
     <script src="helper/render-add-element.js"></script>
     <script src="helper/render-edit-element.js"></script>
     <script src="helper/init-events.js"></script>
     <script src="helper/init-calendar.js"></script>
     <script src="helper/init-validation.js"></script>
+    <script src="helper/generate-color.js"></script>
     <script src="shift.js"></script>
     <script>
     jQuery(function() {
