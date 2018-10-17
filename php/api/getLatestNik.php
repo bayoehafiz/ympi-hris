@@ -9,7 +9,7 @@ $query = $db->query($sql);
 if ($query->num_rows > 0) {
     $max = 0;
     while ($r = mysqli_fetch_assoc($query)) {
-        $no = intval(substr($r[nik], -4));
+        $no = intval(substr($r['nik'], -4));
         if ($no > $max) $max = $no;
     }
     
