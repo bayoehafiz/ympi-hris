@@ -2,7 +2,35 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-$sql = "SELECT
+## Read value
+$draw            = $_POST['draw'];
+$row             = $_POST['start'];
+$rowperpage      = $_POST['length']; // Rows display per page
+$columnIndex     = $_POST['order'][0]['column']; // Column index
+$columnName      = $_POST['columns'][$columnIndex]['data']; // Column name
+$columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
+$searchValue     = $_POST['search']['value']; // Search value
+
+## Search 
+$searchQuery = " ";
+if ($searchValue != '') {
+    $searchQuery = " and (nama like '%" . $searchValue . "%' or 
+        nama_division like '%" . $searchValue . "%' or 
+        nama_department like'%" . $searchValue . "%' ) ";
+}
+
+## Total number of records without filtering
+$sel          = mysqli_query($db, "select count(*) as allcount from employee");
+$records      = mysqli_fetch_assoc($sel);
+$totalRecords = $records['allcount'];
+
+## Total number of record with filtering
+$sel                   = mysqli_query($db, "select count(*) as allcount from employee WHERE 1 " . $searchQuery);
+$records               = mysqli_fetch_assoc($sel);
+$totalRecordwithFilter = $records['allcount'];
+
+## Fetch records
+$empQuery = "SELECT
             a.*,
             b.nama AS nama_division,
             c.nama AS nama_department,
@@ -27,22 +55,26 @@ $sql = "SELECT
                 LEFT JOIN
                     grade g ON g.id = a.grade
                 LEFT JOIN
-                    penugasan h ON h.id = a.penugasan
-        GROUP BY a.id";
+                    penugasan h ON h.id = a.penugasan 
+        WHERE 1 {$searchQuery} 
+        ORDER BY {$columnName} {$columnSortOrder} 
+        LIMIT {$row},{$rowperpage}";
 
-$query = $db->query($sql);
-$rows = array();
+// ChromePhp::log($empQuery);
 
-if ($query->num_rows > 0) {
-    while ($r = mysqli_fetch_assoc($query)) {
-        $rows[] = $r;
-    };
+$empRecords = mysqli_query($db, $empQuery);
+$rows       = array();
 
-    $data['success'] = true;
-    $data['data'] = $rows;
-} else {
-    $data['success'] = false;
-    $data['data'] = '';
+while ($r = mysqli_fetch_assoc($empRecords)) {
+    $rows[] = $r;
 }
 
-echo json_encode($data);
+## Response
+$response = array(
+    "draw" => intval($draw),
+    "iTotalRecords" => $totalRecordwithFilter,
+    "iTotalDisplayRecords" => $totalRecords,
+    "aaData" => $rows
+);
+
+echo json_encode($response);

@@ -63,44 +63,43 @@ var BasePagesEmployee = function() {
             order: [
                 [0, "asc"]
             ],
-            columnDefs: [{ orderable: true }],
+            columnDefs: [
+                { orderable: true },
+                { "targets": [5], "searchable": false, "orderable": false, "visible": true }
+            ],
             pageLength: 10,
             lengthMenu: [
                 [10, 20, 50, 100],
                 [10, 20, 50, 100]
             ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
-                type: "GET",
                 dataSrc: function(response) {
-                    if (response.success) {
-                        var data = response.data;
-                        var resultData = [];
-                        data.forEach(function(x) {
-                            // Manipulate NAMA link
-                            x.namaEdt = '<a data-id="' + x.nik + '" href="javascript:void(0)">' + x.nama + '</a>';
+                    // if (response.success) {
+                    var data = response.aaData;
+                    var resultData = [];
+                    data.forEach(function(x) {
+                        // manipulate STATUS
+                        if (x.status == "Tetap") x.statusEdt = '<span class="label label-primary">' + x.status.toUpperCase() + '</span>';
+                        else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-info">' + x.status.toUpperCase() + '</span>';
+                        else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status.toUpperCase() + '</span>';
+                        else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
 
-                            // manipulate GRADE
-                            x.level_grade = "[" + x.kode_grade + "] " + x.nama_grade;
-
-                            // manipulate STATUS
-                            if (x.status == "Tetap") x.statusEdt = '<span class="label label-primary">' + x.status.toUpperCase() + '</span>';
-                            else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-info">' + x.status.toUpperCase() + '</span>';
-                            else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status.toUpperCase() + '</span>';
-                            else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
-
-                            resultData.push(x);
-                        })
-                        return resultData;
-                    } else {
-                        $.notify({
-                            icon: 'fa fa-exclamation-circle',
-                            message: '<strong>EMPTY DATA!</strong><br/>Klik tombol TAMBAH DATA untuk membuat data karyawan baru.'
-                        }, {
-                            type: 'warning'
-                        });
-                        return [];
-                    }
+                        resultData.push(x);
+                    })
+                    return resultData;
+                    // } else {
+                    //     $.notify({
+                    //         icon: 'fa fa-exclamation-circle',
+                    //         message: '<strong>EMPTY DATA!</strong><br/>Klik tombol TAMBAH DATA untuk membuat data karyawan baru.'
+                    //     }, {
+                    //         type: 'warning'
+                    //     });
+                    //     return [];
+                    // }
                 }
             },
             deferRender: true,
@@ -109,10 +108,35 @@ var BasePagesEmployee = function() {
             },
             columns: [
                 { data: "nik" },
-                { className: "font-w600", data: "namaEdt" },
-                { className: "hidden-xs", data: "level_grade" },
+                {
+                    className: "font-w600",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>'
+                    }
+                },
+                {
+                    className: "hidden-xs",
+                    data: "grade",
+                    render: function(data, type, row) {
+                        return row.nama_grade == null ? "-" : "[" + row.kode_grade + "] " + row.nama_grade
+                    }
+                },
                 { className: "hidden-xs", data: "nama_division" },
-                { className: "hidden-xs text-center", data: "statusEdt" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "status",
+                    render: function(data, type, row) {
+                        var statusEdt = '';
+
+                        if (data == "Tetap") statusEdt = '<span class="label label-primary">' + data.toUpperCase() + '</span>';
+                        else if (data == "Kontrak 1") statusEdt = '<span class="label label-info">' + data.toUpperCase() + '</span>';
+                        else if (data == "Kontrak 2") statusEdt = '<span class="label label-warning">' + data.toUpperCase() + '</span>';
+                        else data = '<span class="label label-default">' + data + '</span>';
+
+                        return statusEdt;
+                    }
+                },
                 {
                     data: null,
                     render: function(data, type, row) {
