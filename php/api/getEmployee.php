@@ -16,7 +16,8 @@ $searchQuery = " ";
 if ($searchValue != '') {
     $searchQuery = " and (nama like '%" . $searchValue . "%' or 
         nama_division like '%" . $searchValue . "%' or 
-        nama_department like'%" . $searchValue . "%' ) ";
+        nama_department like '%" . $searchValue . "%' or 
+        nik like'%" . $searchValue . "%' ) ";
 }
 
 ## Total number of records without filtering

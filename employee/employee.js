@@ -115,13 +115,7 @@ var BasePagesEmployee = function() {
                         return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>'
                     }
                 },
-                {
-                    className: "hidden-xs",
-                    data: "grade",
-                    render: function(data, type, row) {
-                        return row.nama_grade == null ? "-" : "[" + row.kode_grade + "] " + row.nama_grade
-                    }
-                },
+                { className: "hidden-xs", data: "nama_department" },
                 { className: "hidden-xs", data: "nama_division" },
                 {
                     className: "hidden-xs text-center",
