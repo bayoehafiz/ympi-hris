@@ -64,8 +64,8 @@ var BasePagesEmployee = function() {
                 [0, "asc"]
             ],
             columnDefs: [
-                // { orderable: true },
-                { "targets": [5], "searchable": false, "orderable": false, "visible": true }
+                { orderable: true },
+                { "targets": [9], "searchable": false, "orderable": false, "visible": true }
             ],
             pageLength: 10,
             lengthMenu: [
@@ -100,7 +100,7 @@ var BasePagesEmployee = function() {
                 {
                     data: "tgl_masuk",
                     render: function(data, type, row) {
-                        return moment(data).format('DD MMM YYYY');
+                        return moment(data, 'DD-MM-YYYY').format('DD MMM YYYY');
                     }
                 },
                 {
@@ -220,7 +220,7 @@ var BasePagesEmployee = function() {
                 $('#modal-profile').modal('hide');
             } else {
                 var nik = $('#opened-nik').val();
-                var $tr = $('#table-employee').find('tr[data-nik=' + nik + ']');
+                var $tr = $('#table-employee').find('tr[data-nik="' + nik + '"]');
                 var dataTableRow = table.row($tr[0]);
                 var data = dataTableRow.data();
                 renderProfileView(data);
@@ -230,7 +230,7 @@ var BasePagesEmployee = function() {
         // When modal EDIT button is clicked
         $(document).on('click', '#btn-edit-profile', function() {
             var nik = $('#opened-nik').val();
-            var $tr = $('#table-employee').find('tr[data-nik=' + nik + ']');
+            var $tr = $('#table-employee').find('tr[data-nik="' + nik + '"]');
             var dataTableRow = table.row($tr[0]);
             var data = dataTableRow.data();
 
@@ -341,6 +341,8 @@ var BasePagesEmployee = function() {
                         return obj.year == year;
                     });
                     letter = match_obj.letter;
+                } else {
+                    letter = "*";
                 }
 
                 var new_nik = letter + short_year + month + pin;
