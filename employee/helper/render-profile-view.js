@@ -13,7 +13,7 @@ var renderProfileView = function(data) {
     $(".tab-pane:first").addClass('active');
 
     // Set value in modal
-    $('.img-avatar128').attr('src', "../" + data.photo_url)
+    $('.img-avatar128').attr('src', "../" + data.photo_url);
     $('#modal-nama').html(data.nama);
     $('#modal-nik').html(data.nik);
     $('#modal-divisi').html(data.nama_division);

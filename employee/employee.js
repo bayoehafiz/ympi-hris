@@ -64,7 +64,7 @@ var BasePagesEmployee = function() {
                 [0, "asc"]
             ],
             columnDefs: [
-                { orderable: true },
+                // { orderable: true },
                 { "targets": [5], "searchable": false, "orderable": false, "visible": true }
             ],
             pageLength: 10,
@@ -72,35 +72,12 @@ var BasePagesEmployee = function() {
                 [10, 20, 50, 100],
                 [10, 20, 50, 100]
             ],
+            scrollX: true,
             processing: true,
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getEmployee.php',
-                dataSrc: function(response) {
-                    // if (response.success) {
-                    var data = response.aaData;
-                    var resultData = [];
-                    data.forEach(function(x) {
-                        // manipulate STATUS
-                        if (x.status == "Tetap") x.statusEdt = '<span class="label label-primary">' + x.status.toUpperCase() + '</span>';
-                        else if (x.status == "Kontrak 1") x.statusEdt = '<span class="label label-info">' + x.status.toUpperCase() + '</span>';
-                        else if (x.status == "Kontrak 2") x.statusEdt = '<span class="label label-warning">' + x.status.toUpperCase() + '</span>';
-                        else x.statusEdt = '<span class="label label-default">' + x.status + '</span>';
-
-                        resultData.push(x);
-                    })
-                    return resultData;
-                    // } else {
-                    //     $.notify({
-                    //         icon: 'fa fa-exclamation-circle',
-                    //         message: '<strong>EMPTY DATA!</strong><br/>Klik tombol TAMBAH DATA untuk membuat data karyawan baru.'
-                    //     }, {
-                    //         type: 'warning'
-                    //     });
-                    //     return [];
-                    // }
-                }
+                url: BASE_URL + '/php/api/getEmployee.php'
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
@@ -112,13 +89,22 @@ var BasePagesEmployee = function() {
                     className: "font-w600",
                     data: "nama",
                     render: function(data, type, row) {
-                        return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>'
+                        return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
                     }
                 },
-                { className: "hidden-xs", data: "nama_department" },
-                { className: "hidden-xs", data: "nama_division" },
+                { data: "nama_division" },
+                { data: "nama_department" },
+                { data: "nama_section" },
+                { data: "nama_sub_section" },
+                { data: "nama_group" },
                 {
-                    className: "hidden-xs text-center",
+                    data: "tgl_masuk",
+                    render: function(data, type, row) {
+                        return moment(data).format('DD MMM YYYY');
+                    }
+                },
+                {
+                    className: "text-center",
                     data: "status",
                     render: function(data, type, row) {
                         var statusEdt = '';
@@ -233,26 +219,11 @@ var BasePagesEmployee = function() {
             if (origin == 'direct') {
                 $('#modal-profile').modal('hide');
             } else {
-                var profile = $('#opened-profile').val();
-                $.ajax({
-                        type: "POST",
-                        url: BASE_URL + "/php/api/getEmployeeById.php",
-                        dataType: 'json',
-                        data: {
-                            id: profile
-                        }
-                    })
-                    .done(function(response) {
-                        if (response.status == 'err') {
-                            swal('Error', response.message, 'error');
-                        } else {
-                            var profile_data = response.data[0];
-                            renderProfileView(profile_data);
-                        }
-                    })
-                    .fail(function() {
-                        swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                    });
+                var nik = $('#opened-nik').val();
+                var $tr = $('#table-employee').find('tr[data-nik=' + nik + ']');
+                var dataTableRow = table.row($tr[0]);
+                var data = dataTableRow.data();
+                renderProfileView(data);
             }
         });
 
