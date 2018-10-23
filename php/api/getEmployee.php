@@ -14,10 +14,9 @@ $searchValue     = $_POST['search']['value']; // Search value
 ## Search 
 $searchQuery = " ";
 if ($searchValue != '') {
-    $searchQuery = " and (nama like '%" . $searchValue . "%' or 
-        nama_division like '%" . $searchValue . "%' or 
-        nama_department like '%" . $searchValue . "%' or 
-        nik like'%" . $searchValue . "%' ) ";
+    $searchQuery = " and (a.nama like '%" . $searchValue . "%' or 
+        a.nik like '%" . $searchValue . "%' or
+        a.status like'%" . $searchValue . "%' ) ";
 }
 
 ## Total number of records without filtering
