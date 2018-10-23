@@ -12,6 +12,8 @@ if (isset($_POST['table'])) {
         else $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 ORDER BY nama";
     }
 
+    // ChromePhp::log($sql);
+
     $query = $db->query($sql);
     $rows = array();
 

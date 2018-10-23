@@ -72,7 +72,7 @@ var BasePagesEmployee = function() {
                 [10, 20, 50, 100],
                 [10, 20, 50, 100]
             ],
-            scrollX: true,
+            // scrollX: true,
             processing: true,
             serverSide: true,
             serverMethod: 'post',

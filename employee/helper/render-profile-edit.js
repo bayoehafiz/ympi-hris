@@ -58,17 +58,20 @@ var renderProfileEdit = function(data) {
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-department" name="elem-department" size="1">';
 
-            if (data.department != null) { // if employee has no department
-                selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.division) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            } else { // if employee has a department
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
+            if (res.success) {
+                if (data.department != null) { // if employee has a department
+                    selector += '<option value=""></option>';
+                    var odata = res.data;
+                    odata.forEach(function(o) {
+                        if (o.id == data.department) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
+                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                } else { // if employee has no department
+                    selector += '<option value="" selected></option>';
+                    res.data.forEach(function(o) {
+                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                }
             }
 
             selector += '</select>' +
@@ -95,17 +98,20 @@ var renderProfileEdit = function(data) {
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-section" name="elem-section" size="1">';
 
-            if (data.section != null) { // if employee has no section
-                selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            } else { // if employee has a section
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
+            if (res.success) {
+                if (data.section != null) { // if employee has no section
+                    selector += '<option value=""></option>';
+                    var odata = res.data;
+                    odata.forEach(function(o) {
+                        if (o.id == data.section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
+                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                } else { // if employee has a section
+                    selector += '<option value="" selected></option>';
+                    res.data.forEach(function(o) {
+                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                }
             }
 
             selector += '</select>' +
@@ -131,17 +137,20 @@ var renderProfileEdit = function(data) {
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-sub_section" name="elem-sub_section" size="1">';
 
-            if (data.section != null) { // if employee has no section
-                selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.sub_section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            } else { // if employee has a section
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
+            if (res.success) {
+                if (data.sub_section != null) { // if employee has a sub_section
+                    selector += '<option value=""></option>';
+                    var odata = res.data;
+                    odata.forEach(function(o) {
+                        if (o.id == data.sub_section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
+                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                } else { // if employee has no sectsub_sectionion
+                    selector += '<option value="" selected></option>';
+                    res.data.forEach(function(o) {
+                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                }
             }
 
             selector += '</select>' +
@@ -167,17 +176,20 @@ var renderProfileEdit = function(data) {
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-group" name="elem-group" size="1">';
 
-            if (data.section != null) { // if employee has no section
-                selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.group) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            } else { // if employee has a section
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
+            if (res.success) {
+                if (data.group != null) { // if employee has a group
+                    selector += '<option value=""></option>';
+                    var odata = res.data;
+                    odata.forEach(function(o) {
+                        if (o.id == data.group) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
+                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                } else { // if employee has no group
+                    selector += '<option value="" selected></option>';
+                    res.data.forEach(function(o) {
+                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
+                    })
+                }
             }
 
             selector += '</select>' +
@@ -204,7 +216,8 @@ var renderProfileEdit = function(data) {
 
             if (data.grade != null) { // if employee has no section
                 selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
+                var odata = res.data;
+                odata.forEach(function(o) {
                     if (o.id == data.grade) selector += '<option value="' + o.id + '" selected>[' + o.kode + '] ' + o.nama + '</option>';
                     else selector += '<option value="' + o.id + '">[' + o.kode + '] ' + o.nama + '</option>';
                 })

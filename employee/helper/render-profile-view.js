@@ -33,7 +33,7 @@ var renderProfileView = function(data) {
     $('#profile-group').html('<div class="text-muted">Grup</div>' + nama_group);
     $('#profile-grade').html('<div class="text-muted">Grade</div>[' + data.kode_grade + '] ' + data.nama_grade);
     $('#profile-penugasan').html('<div class="text-muted">Penugasan</div>' + data.nama_penugasan);
-    $('#profile-status').html('<div class="text-muted">Status Karyawan</div>' + data.statusEdt);
+    $('#profile-status').html('<div class="text-muted">Status Karyawan</div>' + data.status.toUpperCase());
     $('#profile-tgl-masuk').html('<div class="text-muted">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
     // Manipulate MASA-KERJA
     var now = moment().format('YYYY-MM-DD');
