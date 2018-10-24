@@ -1,6 +1,10 @@
 // Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
 var initValidation = function(data_type) {
     switch (data_type) {
+        case 'division':
+            var nama = 'Divisi';
+            var parent = '';
+            break;
         case 'department':
             var nama = 'Departemen';
             var parent = 'Divisi';
@@ -18,7 +22,7 @@ var initValidation = function(data_type) {
             var parent = 'Sub Section';
             break;
         default:
-            var nama = 'Divisi';
+            var nama = 'Kode Bagian';
             var parent = '';
             break;
     }
@@ -48,11 +52,14 @@ var initValidation = function(data_type) {
                 required: true,
                 minlength: 3
             },
+            'elem-parent': {
+                required: true
+            },
             'elem-kode': {
                 required: true,
                 minlength: 3
             },
-            'elem-parent': {
+            'elem-division': {
                 required: true
             }
         },
@@ -61,12 +68,15 @@ var initValidation = function(data_type) {
                 required: 'Isikan Nama ' + nama,
                 minlength: 'Minimal 3 karakter'
             },
-            'elem-kode': {
-                required: 'Isikan Kode ' + nama,
-                minlength: 'Minimal 3 karakter'
-            },
             'elem-parent': { 
                 required: 'Pilih ' + parent + ' induk'
+            },
+            'elem-kode': {
+                required: 'Isikan Kode',
+                minlength: 'Minimal 3 karakter'
+            },
+            'elem-division': { 
+                required: 'Pilih Divisi'
             }
         }
     });

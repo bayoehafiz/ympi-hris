@@ -39,7 +39,8 @@ $empQuery = "SELECT
             f.nama AS nama_group,
             g.nama AS nama_grade,
             g.kode AS kode_grade,
-            h.nama AS nama_penugasan
+            h.nama AS nama_penugasan,
+            i.kode AS nama_kode_bagian
         FROM
             employee a
                 LEFT JOIN
@@ -56,6 +57,8 @@ $empQuery = "SELECT
                     grade g ON g.id = a.grade
                 LEFT JOIN
                     penugasan h ON h.id = a.penugasan 
+                LEFT JOIN
+                    kode_bagian i ON i.id = a.kode_bagian 
         WHERE 1 {$searchQuery} 
         ORDER BY {$columnName} {$columnSortOrder} 
         LIMIT {$row},{$rowperpage}";

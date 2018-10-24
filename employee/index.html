@@ -52,7 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>NIK</th>
-                                    <th>Nama Lengkap</th>
+                                    <th style="width: 15%";>Nama Lengkap</th>
                                     <th>Divisi</th>
                                     <th>Departemen</th>
                                     <th>Section</th>
@@ -91,10 +91,10 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-12">
                                         <div class="block-content block-content-full clearfix">
-                                            <div class="text-right pull-right push-5-t">
-                                                <div class="lead" id="modal-nama"></div>
-                                                <div class="font-w600 push-5 hide-me" id="modal-nik"></div>
-                                                <div class="text-muted" id="modal-divisi"></div>
+                                            <div class="text-right pull-right push-10-t">
+                                                <div class="lead" id="modal-nama" style="margin-bottom: 5px!important;"></div>
+                                                <div class="font-w600 push-5 hide-me text-primary font-s20" id="modal-nik"></div>
+                                                <div id="modal-kode-bagian"></div>
                                             </div>
                                             <div class="pull-left">
                                                 <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar.jpg" alt="">
@@ -123,6 +123,7 @@
                                                     <div class="tab-pane active" id="btabs-static-kerja">
                                                         <div class="row push-5-t">
                                                             <div class="col-md-6">
+                                                                <div class="push-10" id="profile-division"></div>
                                                                 <div class="push-10" id="profile-department"></div>
                                                                 <div class="push-10" id="profile-section"></div>
                                                                 <div class="push-10" id="profile-sub-section"></div>
@@ -245,6 +246,7 @@
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
     <script src="helper/generate-nik.js"></script>
+    <script src="helper/generate-selectors.js"></script>
     <script src="helper/generate-random-profile.js"></script>
     <script src="helper/humanise-date.js"></script>
     <script src="helper/init-validation.js"></script>

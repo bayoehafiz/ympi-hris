@@ -91,11 +91,26 @@ var BasePagesEmployee = function() {
                         return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
                     }
                 },
-                { data: "nama_division" },
-                { data: "nama_department" },
-                { data: "nama_section" },
-                { data: "nama_sub_section" },
-                { data: "nama_group" },
+                {
+                    className: "d-inline-block text-truncate",
+                    data: "nama_division"
+                },
+                {
+                    className: "d-inline-block text-truncate",
+                    data: "nama_department"
+                },
+                {
+                    className: "d-inline-block text-truncate",
+                    data: "nama_section"
+                },
+                {
+                    className: "d-inline-block text-truncate",
+                    data: "nama_sub_section"
+                },
+                {
+                    className: "d-inline-block text-truncate",
+                    data: "nama_group"
+                },
                 {
                     data: "tgl_masuk",
                     render: function(data, type, row) {
@@ -384,7 +399,6 @@ var BasePagesEmployee = function() {
 
         // when modal on close
         $('#modal-profile').on('hidden.bs.modal', function() {
-            console.log("clearing hidden values...");
             $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
         })
     };
@@ -435,6 +449,20 @@ var BasePagesEmployee = function() {
         });
 
         // when division selector changed
+        $(document).on('change', '#input-kode_bagian', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            if (valueSelected != '') {
+                $('#input-division, #input-department, #input-section, #input-sub_section, #input-group').val('')
+                generateSelectors(valueSelected);
+            } else {
+                // Clearing all selectors!
+                $('#input-division, #input-department, #input-section, #input-sub_section, #input-group').val('').removeAttr('disabled');
+            }
+        });
+
+        // when division selector changed
         $(document).on('change', '#input-division', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -460,7 +488,7 @@ var BasePagesEmployee = function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
 
-            // fetch data for populating DEPARTEMEN selector
+            // fetch data for populating SECTION selector
             $.ajax({
                 type: "POST",
                 url: BASE_URL + '/php/api/getSelectorData.php',
@@ -481,7 +509,7 @@ var BasePagesEmployee = function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
 
-            // fetch data for populating DEPARTEMEN selector
+            // fetch data for populating SUB SECTION selector
             $.ajax({
                 type: "POST",
                 url: BASE_URL + '/php/api/getSelectorData.php',
@@ -502,7 +530,7 @@ var BasePagesEmployee = function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
 
-            // fetch data for populating DEPARTEMEN selector
+            // fetch data for populating GROUP selector
             $.ajax({
                 type: "POST",
                 url: BASE_URL + '/php/api/getSelectorData.php',

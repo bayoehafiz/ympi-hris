@@ -16,7 +16,34 @@ var renderProfileEdit = function(data) {
     $('#modal-nik').addClass('hide-me');
 
     // Set value in modal
-    $('#modal-nama').html('<div class="form-material form-material-primary"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
+    $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
+
+    // fetch data for populating KODE BAGIAN selector
+    $.ajax({
+        type: "POST",
+        url: BASE_URL + '/php/api/getSelectorData.php',
+        dataType: 'json',
+        data: {
+            table: 'kode_bagian'
+        },
+        success: function(res) {
+            var selector = '<div class="form-group">' +
+                '<div class="form-material form-material-primary push-30 text-right">' +
+                '<select class="form-control" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
+                '<option value="">Kode Bagian</option>';
+
+            res.data.forEach(function(o) {
+                if (o.id == data.kode_bagian) selector += '<option value="' + o.id + '" selected>' + o.kode + '</option>';
+                else selector += '<option value="' + o.id + '">' + o.kode + '</option>';
+            })
+
+            selector += '</select>' +
+                '</div>' +
+                '</div>';
+
+            $('#modal-kode-bagian').html(selector);
+        }
+    });
 
     // fetch data for populating DIVISI selector
     $.ajax({
@@ -28,7 +55,7 @@ var renderProfileEdit = function(data) {
         },
         success: function(res) {
             var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary">' +
+                '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-division" name="elem-division" size="1">' +
                 '<option value="">Pilih Divisi</option>';
 
@@ -38,10 +65,16 @@ var renderProfileEdit = function(data) {
             })
 
             selector += '</select>' +
+                '<label for="elem-division">Divisi</label>' +
                 '</div>' +
                 '</div>';
 
-            $('#modal-divisi').html(selector);
+            $('#profile-division').html(selector);
+
+            // Disable selector if kode_bagian not null
+            if (data.kode_bagian != null) {
+                $('#input-division').attr('disabled', 'disabled');
+            }
         }
     });
 
@@ -80,6 +113,11 @@ var renderProfileEdit = function(data) {
                 '</div>';
 
             $('#profile-department').html(selector);
+
+            // Disable selector if kode_bagian not null
+            if (data.kode_bagian != null) {
+                $('#input-department').attr('disabled', 'disabled');
+            }
         }
     });
 
@@ -87,7 +125,6 @@ var renderProfileEdit = function(data) {
     // fetch data for populating SECTION selector
     if (data.section != null) var dataObj = { table: 'section', parent: data.department };
     else var dataObj = { table: 'section' };
-
     $.ajax({
         type: "POST",
         url: BASE_URL + '/php/api/getSelectorData.php',
@@ -120,13 +157,17 @@ var renderProfileEdit = function(data) {
                 '</div>';
 
             $('#profile-section').html(selector);
+
+            // Disable selector if kode_bagian not null
+            if (data.kode_bagian != null) {
+                $('#input-section').attr('disabled', 'disabled');
+            }
         }
     });
 
     // fetch data for populating SUB SECTION selector
     if (data.sub_section != null) var dataObj = { table: 'sub_section', parent: data.section };
     else var dataObj = { table: 'sub_section' };
-
     $.ajax({
         type: "POST",
         url: BASE_URL + '/php/api/getSelectorData.php',
@@ -159,13 +200,17 @@ var renderProfileEdit = function(data) {
                 '</div>';
 
             $('#profile-sub-section').html(selector);
+
+            // Disable selector if kode_bagian not null
+            if (data.kode_bagian != null) {
+                $('#input-sub_section').attr('disabled', 'disabled');
+            }
         }
     });
 
     // fetch data for populating GRUP selector
     if (data.group != null) var dataObj = { table: 'group', parent: data.sub_section };
     else var dataObj = { table: 'group' };
-
     $.ajax({
         type: "POST",
         url: BASE_URL + '/php/api/getSelectorData.php',
@@ -198,6 +243,11 @@ var renderProfileEdit = function(data) {
                 '</div>';
 
             $('#profile-group').html(selector);
+
+            // Disable selector if kode_bagian not null
+            if (data.kode_bagian != null) {
+                $('#input-group').attr('disabled', 'disabled');
+            }
         }
     });
 
@@ -327,6 +377,7 @@ var renderProfileEdit = function(data) {
 
     $('#profile-telepon').html(renderEditElement('text', data.no_telepon, 'no_telepon', 'No. Telepon', false));
     $('#profile-no-ktp').html(renderEditElement('text', data.no_ktp, 'no_ktp', 'No. KTP', false));
+    $('#profile-no-rekening').html(renderEditElement('text', data.no_rekening, 'no_rekening', 'No. Rekening', false));
     $('#profile-no-npwp').html(renderEditElement('text', data.no_npwp, 'no_npwp', 'No. NPWP', false));
     $('#profile-no-bpjstk').html(renderEditElement('text', data.no_bpjstk, 'no_bpjstk', 'No. BPJS TK', false));
     $('#profile-no-bpjskes').html(renderEditElement('text', data.no_bpjskes, 'no_bpjskes', 'No. BPJS Kes', false));

@@ -16,7 +16,9 @@ var renderProfileView = function(data) {
     $('.img-avatar128').attr('src', "../" + data.photo_url);
     $('#modal-nama').html(data.nama);
     $('#modal-nik').html(data.nik);
-    $('#modal-divisi').html(data.nama_division);
+
+    var nama_kode_bagian = data.nama_kode_bagian == null ? '-' : '<span class="label label-default label-lg">Kode: ' + data.nama_kode_bagian + '</span>';
+    $('#modal-kode-bagian').html(nama_kode_bagian);
 
     // unhide NIK element
     $('#modal-nik').removeClass('hide-me');
@@ -27,14 +29,20 @@ var renderProfileView = function(data) {
     var nama_section = data.nama_section == null ? '-' : data.nama_section;
     var nama_sub_section = data.nama_sub_section == null ? '-' : data.nama_sub_section;
     var nama_group = data.nama_group == null ? '-' : data.nama_group;
+
+    $('#profile-division').html('<div class="text-muted">Divisi</div>' + data.nama_division);
     $('#profile-department').html('<div class="text-muted">Departemen</div>' + nama_department);
     $('#profile-section').html('<div class="text-muted">Section</div>' + nama_section);
     $('#profile-sub-section').html('<div class="text-muted">Sub Section</div>' + nama_sub_section);
     $('#profile-group').html('<div class="text-muted">Grup</div>' + nama_group);
+    $('#profile-kode-bagian').html('<div class="text-muted">Kode Bagian</div>' + nama_kode_bagian);
+
     $('#profile-grade').html('<div class="text-muted">Grade</div>[' + data.kode_grade + '] ' + data.nama_grade);
-    $('#profile-penugasan').html('<div class="text-muted">Penugasan</div>' + data.nama_penugasan);
     $('#profile-status').html('<div class="text-muted">Status Karyawan</div>' + data.status.toUpperCase());
     $('#profile-tgl-masuk').html('<div class="text-muted">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
+    var penugasan = data.penugasan == null ? '-' : data.nama_penugasan;
+    $('#profile-penugasan').html('<div class="text-muted">Penugasan</div>' + penugasan);
+
     // Manipulate MASA-KERJA
     var now = moment().format('YYYY-MM-DD');
     var start = moment(data.tgl_masuk, 'YYYY-MM-DD');
@@ -77,6 +85,8 @@ var renderProfileView = function(data) {
     $('#profile-telepon').html('<div class="text-muted">No. Telepon</div>' + no_telepon);
     var no_ktp = !data.no_ktp ? '-' : data.no_ktp;
     $('#profile-no-ktp').html('<div class="text-muted">No. KTP</div>' + no_ktp);
+    var no_rekening = !data.no_rekening ? '-' : data.no_rekening;
+    $('#profile-no-rekening').html('<div class="text-muted">No. Rekening</div>' + no_rekening);
     var no_npwp = !data.no_npwp ? '-' : data.no_npwp;
     $('#profile-no-npwp').html('<div class="text-muted">No. NPWP</div>' + no_npwp);
     var no_bpjstk = !data.no_bpjstk ? '-' : data.no_bpjstk;

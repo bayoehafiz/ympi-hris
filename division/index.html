@@ -48,6 +48,9 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
+                            <a href="#btabs-animated-fade-kode-bagian" class="tab-btn" data="kode_bagian">Kode Bagian</a>
+                        </li>
+                        <li>
                             <a href="#btabs-animated-fade-divisi" class="tab-btn" data="division">Divisi</a>
                         </li>
                         <li>
@@ -64,11 +67,32 @@
                         </li>
                     </ul>
                     <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-divisi">
+                        <div class="tab-pane fade in active" id="btabs-animated-fade-kode-bagian">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Divisi" data-type="division"><i class="si si-plus"></i> Tambah Divisi</button>
-                                </div> -->
+                                <div class="block-content">
+                                    <!-- Table Detail Bagian -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-kode-bagian" style="width: 100%!important;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="text-center">Kode</th>
+                                                <th class="text-center">Divisi</th>
+                                                <th class="text-center">Departemen</th>
+                                                <th class="text-center">Section</th>
+                                                <th class="text-center">Sub Section</th>
+                                                <th class="text-center">Grup</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <!-- END Table Detail Bagian -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="btabs-animated-fade-divisi">
+                            <div class="block">
                                 <div class="block-content">
                                     <!-- Table Division -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-division" style="width: 100%!important;">
@@ -76,7 +100,6 @@
                                             <tr>
                                                 <th></th>
                                                 <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                <th class="text-center">Kode</th>
                                                 <th class="text-center">Jml. Dept.</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 10%;">Actions</th>
@@ -89,17 +112,13 @@
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-departemen">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Departemen" data-type="department"><i class="si si-plus"></i> Tambah Departemen</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table Division -->
+                                    <!-- Table Department -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-department" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                <th class="text-center">Kode</th>
                                                 <th class="hidden-xs text-center">Jml. Section</th>
                                                 <th class="hidden-xs text-center">Divisi Induk</th>
                                                 <th class="text-center">Status</th>
@@ -107,23 +126,19 @@
                                             </tr>
                                         </thead>
                                     </table>
-                                    <!-- END Table Division -->
+                                    <!-- END Table Department -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-section">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Section" data-type="section"><i class="si si-plus"></i> Tambah Section</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table Division -->
+                                    <!-- Table Section -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-section" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                <th class="text-center">Kode</th>
                                                 <th class="hidden-xs text-center">Jml. Sub Section</th>
                                                 <th class="text-center">Dept. Induk</th>
                                                 <th class="text-center">Status</th>
@@ -131,17 +146,14 @@
                                             </tr>
                                         </thead>
                                     </table>
-                                    <!-- END Table Division -->
+                                    <!-- END Table Section -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-sub-section">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Sub Section" data-type="sub_section"><i class="si si-plus"></i> Tambah Sub Section</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table Division -->
+                                    <!-- Table Sub Section -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-sub-section" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -155,17 +167,14 @@
                                         </thead>
                                         </tbody>
                                     </table>
-                                    <!-- END Table Division -->
+                                    <!-- END Table Sub Section -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-grup">
                             <div class="block">
-                                <!-- <div class="block-header text-right">
-                                    <button class="btn btn-primary btn-sm btn-add" type="button" data="Grup" data-type="group"><i class="si si-plus"></i> Tambah Grup</button>
-                                </div> -->
                                 <div class="block-content">
-                                    <!-- Table Division -->
+                                    <!-- Table Group -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -178,7 +187,7 @@
                                         </thead>
                                         </tbody>
                                     </table>
-                                    <!-- END Table Division -->
+                                    <!-- END Table Group -->
                                 </div>
                             </div>
                         </div>
@@ -206,7 +215,37 @@
                             </div>
                             <div class="block-content bg-gray-lighter" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
-                                <div class="form-group hide-me" id="hidden-select">
+                                <div class="form-group hide-me" id="hidden-division">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-division" name="elem-division" size="1"></select>
+                                        <label for="elem-division" id="label-division"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group hide-me" id="hidden-department">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-department" name="elem-department" size="1"></select>
+                                        <label for="elem-department" id="label-department"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group hide-me" id="hidden-section">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-section" name="elem-section" size="1"></select>
+                                        <label for="elem-section" id="label-section"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group hide-me" id="hidden-sub_section">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-sub_section" name="elem-sub_section" size="1"></select>
+                                        <label for="elem-sub_section" id="label-sub_section"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group hide-me" id="hidden-group">
+                                    <div class="form-material form-material-primary push-30">
+                                        <select class="form-control" id="input-group" name="elem-group" size="1"></select>
+                                        <label for="elem-group" id="label-group"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group hide-me" id="hidden-parent">
                                     <div class="form-material form-material-primary push-30">
                                         <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
                                         <label for="elem-parent" id="label-parent"></label>
@@ -272,6 +311,7 @@
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
+    <script src="helper/repopulate-selector.js"></script>
     <script src="helper/render-add-element.js"></script>
     <script src="helper/init-validation.js"></script>
     <script src="division.js"></script>

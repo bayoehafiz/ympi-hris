@@ -16,8 +16,32 @@ var renderProfileAdd = function() {
     $('#modal-nama').html('<div class="form-group"><div class="form-material form-material-primary"><input class="form-control text-center font-s20" type="text" id="input-nama" name="elem-nama" placeholder="Nama Lengkap"></div></div>');
 
     $('#modal-nik').html("");
-    
-    console.log("running ajax call..");
+
+    // fetch data for populating KODE BAGIAN selector
+    $.ajax({
+        type: "POST",
+        url: BASE_URL + '/php/api/getSelectorData.php',
+        dataType: 'json',
+        data: {
+            table: 'kode_bagian'
+        },
+        success: function(res) {
+            var selector = '<div class="form-group">' +
+                '<div class="form-material form-material-primary push-30">' +
+                '<select class="form-control text-right" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
+                '<option value="" class="text-muted">Kode Bagian</option>';
+
+            res.data.forEach(function(o) {
+                selector += '<option value="' + o.id + '">' + o.kode + '</option>';
+            })
+
+            selector += '</select>' +
+                '</div>' +
+                '</div>';
+
+            $('#modal-kode-bagian').html(selector);
+        }
+    });
 
     // fetch data for populating DIVISI selector
     $.ajax({
@@ -29,19 +53,20 @@ var renderProfileAdd = function() {
         },
         success: function(res) {
             var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary">' +
+                '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-division" name="elem-division" size="1">' +
-                '<option value="">Pilih Divisi</option>';
+                '<option value=""></option>';
 
             res.data.forEach(function(o) {
                 selector += '<option value="' + o.id + '">' + o.nama + '</option>';
             })
 
             selector += '</select>' +
+                '<label for="elem-division">Divisi</label>' +
                 '</div>' +
                 '</div>';
 
-            $('#modal-divisi').html(selector);
+            $('#profile-division').html(selector);
         }
     });
 

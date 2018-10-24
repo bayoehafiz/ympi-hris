@@ -9,7 +9,7 @@ $check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
 $exists = ($check->num_rows > 0) ? TRUE : FALSE;
 if ($exists) {
         $sql = "SELECT 
-            a.nama, a.kode, COUNT(b.id) AS total
+            a.kode, COUNT(b.id) AS total
         FROM
             `" . $table . "` a
                 LEFT JOIN
