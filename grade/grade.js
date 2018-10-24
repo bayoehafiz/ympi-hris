@@ -1,153 +1,4 @@
 var BasePagesGrade = function() {
-    // DataTables Bootstrap integration
-    var bsDataTables = function() {
-        var $DataTable = jQuery.fn.dataTable;
-
-        // Set the defaults for DataTables init
-        jQuery.extend(true, $DataTable.defaults, {
-            dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-6'i><'col-sm-6'p>>",
-            renderer: 'bootstrap',
-            oLanguage: {
-                sLengthMenu: "_MENU_",
-                sInfo: "Showing <strong>_START_</strong>-<strong>_END_</strong> of <strong>_TOTAL_</strong>",
-                oPaginate: {
-                    sPrevious: '<i class="fa fa-angle-left"></i>',
-                    sNext: '<i class="fa fa-angle-right"></i>'
-                }
-            }
-        });
-
-        // Default class modification
-        jQuery.extend($DataTable.ext.classes, {
-            sWrapper: "dataTables_wrapper form-inline dt-bootstrap",
-            sFilterInput: "form-control",
-            sLengthSelect: "form-control"
-        });
-
-        // Bootstrap paging button renderer
-        $DataTable.ext.renderer.pageButton.bootstrap = function(settings, host, idx, buttons, page, pages) {
-            var api = new $DataTable.Api(settings);
-            var classes = settings.oClasses;
-            var lang = settings.oLanguage.oPaginate;
-            var btnDisplay, btnClass;
-
-            var attach = function(container, buttons) {
-                var i, ien, node, button;
-                var clickHandler = function(e) {
-                    e.preventDefault();
-                    if (!jQuery(e.currentTarget).hasClass('disabled')) {
-                        api.page(e.data.action).draw(false);
-                    }
-                };
-
-                for (i = 0, ien = buttons.length; i < ien; i++) {
-                    button = buttons[i];
-
-                    if (jQuery.isArray(button)) {
-                        attach(container, button);
-                    } else {
-                        btnDisplay = '';
-                        btnClass = '';
-
-                        switch (button) {
-                            case 'ellipsis':
-                                btnDisplay = '&hellip;';
-                                btnClass = 'disabled';
-                                break;
-
-                            case 'first':
-                                btnDisplay = lang.sFirst;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'previous':
-                                btnDisplay = lang.sPrevious;
-                                btnClass = button + (page > 0 ? '' : ' disabled');
-                                break;
-
-                            case 'next':
-                                btnDisplay = lang.sNext;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            case 'last':
-                                btnDisplay = lang.sLast;
-                                btnClass = button + (page < pages - 1 ? '' : ' disabled');
-                                break;
-
-                            default:
-                                btnDisplay = button + 1;
-                                btnClass = page === button ?
-                                    'active' : '';
-                                break;
-                        }
-
-                        if (btnDisplay) {
-                            node = jQuery('<li>', {
-                                    'class': classes.sPageButton + ' ' + btnClass,
-                                    'aria-controls': settings.sTableId,
-                                    'tabindex': settings.iTabIndex,
-                                    'id': idx === 0 && typeof button === 'string' ?
-                                        settings.sTableId + '_' + button : null
-                                })
-                                .append(jQuery('<a>', {
-                                        'href': '#'
-                                    })
-                                    .html(btnDisplay)
-                                )
-                                .appendTo(container);
-
-                            settings.oApi._fnBindAction(
-                                node, { action: button }, clickHandler
-                            );
-                        }
-                    }
-                }
-            };
-
-            attach(
-                jQuery(host).empty().html('<ul class="pagination"/>').children('ul'),
-                buttons
-            );
-        };
-
-        // TableTools Bootstrap compatibility - Required TableTools 2.1+
-        if ($DataTable.TableTools) {
-            // Set the classes that TableTools uses to something suitable for Bootstrap
-            jQuery.extend(true, $DataTable.TableTools.classes, {
-                "container": "DTTT btn-group",
-                "buttons": {
-                    "normal": "btn btn-default",
-                    "disabled": "disabled"
-                },
-                "collection": {
-                    "container": "DTTT_dropdown dropdown-menu",
-                    "buttons": {
-                        "normal": "",
-                        "disabled": "disabled"
-                    }
-                },
-                "print": {
-                    "info": "DTTT_print_info"
-                },
-                "select": {
-                    "row": "active"
-                }
-            });
-
-            // Have the collection use a bootstrap compatible drop down
-            jQuery.extend(true, $DataTable.TableTools.DEFAULTS.oTags, {
-                "collection": {
-                    "container": "ul",
-                    "button": "li",
-                    "liner": "a"
-                }
-            });
-        }
-    };
-
     var initGradePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -183,51 +34,6 @@ var BasePagesGrade = function() {
             sessionStorage.clear();
             location.reload();
         });
-
-        // Function to render elements inside the modal :: ADD
-        var renderAddElement = function(type, name, label) {
-            var elem = '';
-
-            if (type == 'select') {
-                // reset the selct elemnt first
-                $('#input-parent').empty();
-
-                // get the source DB table to populate parent's select
-                // if (label == 'Divisi Induk') var source_table = 'Jabatan';
-                // else if (label == 'Departemen Induk') var source_table = 'department';
-                // else if (label == 'Section Induk') var source_table = 'section';
-                // else var source_table = 'sub_section';
-
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL + '/php/api/getGradeData.php',
-                    dataType: 'json',
-                    data: {
-                        table: source_table
-                    }
-                }).done(function(res) {
-                    if (res.success) {
-                        var data = res.data;
-
-                        $('#hidden-select').removeClass('hide-me');
-                        $('#input-parent').append('<option></option>');
-                        $('#label-parent').html(label);
-
-                        data.forEach(function(v) {
-                            $('#input-parent').append('<option value="' + v.id + '">' + v.nama + '</option>')
-                        })
-                    }
-                })
-            } else {
-                elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
-                    '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
-                    '<label for="elem-' + name + '">' + label + '</label>' +
-                    '</div></div>';
-            }
-
-            // console.log(elem);
-            return elem;
-        };
 
         // when tabs clicked
         $(document).on('click', '.tab-btn', function() {
@@ -265,6 +71,8 @@ var BasePagesGrade = function() {
                     html += renderAddElement('text', 'kode', 'Kode');
                     break;
             }
+
+            initValidation(data_type);
 
             $('#modal-title').html('Tambah Data ' + data_type);
             $('#generated-container').html(html);
@@ -439,6 +247,9 @@ var BasePagesGrade = function() {
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('grade');
 
+        // init Datatable BS style
+        bsDataTables();
+
         // Lets init our stat & table :: Grade Table
         initStat('grade');
         initTableGrade();
@@ -492,32 +303,6 @@ var BasePagesGrade = function() {
         // Table initiation
         var table = $('#table-grade').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            ajax: {
-                url: BASE_URL + '/php/api/getGrade.php',
-                type: "POST",
-                data: {
-                    table: 'grade'
-                },
-                dataSrc: function(response) {
-                    if (response.success) {
-                        return response.data;
-                    } else {
-                        $.notify({
-                            "icon": "fa fa-exclamation-circle",
-                            "message": "Data grade kosong"
-                        }, {
-                            "type": "warning"
-                        });
-                        return [];
-                    }
-                }
-            },
-            cache: false,
             order: [
                 [0, 'desc']
             ],
@@ -525,6 +310,24 @@ var BasePagesGrade = function() {
                 "visible": false,
                 "targets": 0
             }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: BASE_URL + '/php/api/getGrade.php',
+                data: {
+                    table: 'grade'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
             columns: [
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
@@ -556,32 +359,6 @@ var BasePagesGrade = function() {
         // Table initiation
         var table = $('#table-penugasan').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            ajax: {
-                url: BASE_URL + '/php/api/getGrade.php',
-                type: "POST",
-                data: {
-                    table: 'penugasan'
-                },
-                dataSrc: function(json) {
-                    if (!json.success) {
-                        $.notify({
-                            "icon": "fa fa-exclamation-circle",
-                            "message": "Data penugasan kosong"
-                        }, {
-                            "type": "danger"
-                        });
-                        return [];
-                    } else {
-                        return json.data;
-                    }
-                }
-            },
-            deferRender: true,
             order: [
                 [0, 'desc']
             ],
@@ -589,6 +366,24 @@ var BasePagesGrade = function() {
                 "visible": false,
                 "targets": 0
             }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: BASE_URL + '/php/api/getGrade.php',
+                data: {
+                    table: 'penugasan'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
             columns: [
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
