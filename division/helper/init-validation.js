@@ -64,8 +64,10 @@ var initValidation = function(data_type) {
             'elem-kode': {
                 required: 'Isikan Kode ' + nama,
                 minlength: 'Minimal 3 karakter'
+            },
+            'elem-parent': { 
+                required: 'Pilih ' + parent + ' induk'
             }
-            'elem-parent': 'Pilih ' + parent + ' induk'
         }
     });
 };
