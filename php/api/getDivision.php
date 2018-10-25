@@ -49,7 +49,7 @@ if (isset($_POST['table'])) {
     } else if ($table == 'sub_section') {
         $empQuery = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated, IFNULL(COUNT(b.id),0) as child FROM `sub_section` a LEFT JOIN `group` b ON a.id  = b.parent LEFT JOIN `section` c ON a.parent = c.id WHERE 1 {$searchQuery} GROUP BY a.id ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
     } else if ($table == 'group') {
-        $empQuery = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated FROM `sub_section` a LEFT JOIN `section` c ON a.parent = c.id WHERE 1 {$searchQuery} GROUP BY a.id ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
+        $empQuery = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated FROM `group` a LEFT JOIN `sub_section` c ON a.parent = c.id WHERE 1 {$searchQuery} GROUP BY a.id ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
     } else {
         $empQuery = "SELECT
             a.*,
