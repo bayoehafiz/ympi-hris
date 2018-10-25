@@ -217,6 +217,7 @@ var renderProfileEdit = function(data) {
         dataType: 'json',
         data: dataObj,
         success: function(res) {
+            console.log(res);
             var selector = '<div class="form-group">' +
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-group" name="elem-group" size="1">';

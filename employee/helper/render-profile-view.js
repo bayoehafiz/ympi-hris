@@ -37,16 +37,17 @@ var renderProfileView = function(data) {
     $('#profile-group').html('<div class="text-muted">Grup</div>' + nama_group);
     $('#profile-kode-bagian').html('<div class="text-muted">Kode Bagian</div>' + nama_kode_bagian);
 
-    $('#profile-grade').html('<div class="text-muted">Grade</div>[' + data.kode_grade + '] ' + data.nama_grade);
+    var grade = data.kode_grade == null ? '-' : '[' + data.kode_grade + '] ' + data.nama_grade;
+    $('#profile-grade').html('<div class="text-muted">Grade</div>' + grade);
     $('#profile-status').html('<div class="text-muted">Status Karyawan</div>' + data.status.toUpperCase());
     $('#profile-tgl-masuk').html('<div class="text-muted">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
     var penugasan = data.penugasan == null ? '-' : data.nama_penugasan;
     $('#profile-penugasan').html('<div class="text-muted">Penugasan</div>' + penugasan);
 
     // Manipulate MASA-KERJA
-    var now = moment().format('YYYY-MM-DD');
-    var start = moment(data.tgl_masuk, 'YYYY-MM-DD');
-    var diff = Math.abs(moment.duration(start.diff(now)).asDays());
+    var now = moment(moment(), 'DD-MM-YYYY');
+    var start = moment(data.tgl_masuk, 'DD-MM-YYYY');
+    var diff = now.diff(start, 'days');
     $('#profile-masa-kerja').html('<div class="text-muted">Masa Kerja</div>' + humaniseMasaKerja(diff));
 
     // Tab PRIBADI::
@@ -56,7 +57,7 @@ var renderProfileView = function(data) {
         $('#profile-tgl-lahir').html('<div class="text-muted">Tanggal Lahir</div>-');
     } else {
         var lahir = moment(data.tgl_lahir, 'DD-MM-YYYY');
-        var usia = Math.abs(moment.duration(lahir.diff(now)).asDays());
+        var usia = now.diff(lahir, 'days');
         var tgl_lahir = moment(data.tgl_lahir, 'DD-MM-YYYY').format('DD MMM YYYY') + " (" + humaniseUsia(usia) + ")";
         $('#profile-tgl-lahir').html('<div class="text-muted">Tanggal Lahir</div>' + tgl_lahir);
     }
