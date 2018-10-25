@@ -503,7 +503,6 @@ var BasePagesDivision = function() {
             switch (data_type) {
                 case "division":
                     html += renderAddElement('text', 'nama', 'Nama Divisi');
-                    html += renderAddElement('text', 'kode', 'Kode Divisi');
                     break;
                 case "department":
                     $('#hidden-parent').removeClass('hide-me');
@@ -545,58 +544,6 @@ var BasePagesDivision = function() {
             // hide unrelated buttons
             $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
             $('#modal').modal('show');
-        });
-
-        // When SAVE button is clicked
-        $('#form-modal').submit(function(e) {
-            e.preventDefault();
-
-            var data = [];
-            $('[id^="input-"]').filter(
-                function() {
-                    var elem = this;
-                    // cleaning empty data [TEMP!]
-                    if (elem['value'] != '') {
-                        return data.push({
-                            "key": elem['id'].replace('input-', ''),
-                            "value": elem['value']
-                        });
-                    }
-                });
-
-            // Read current data type
-            var dType = $('#hidden-active-type').val();
-
-            $.ajax({
-                type: "POST",
-                url: BASE_URL + '/php/api/addDivisionData.php',
-                dataType: 'json',
-                data: {
-                    obj: data,
-                    table: dType
-                },
-                success: function(res) {
-                    if (res.status == 'err') {
-                        swal("Error!", res.message, "error");
-                    } else {
-                        $('#modal').modal('hide');
-                        $.notify({
-                            "icon": "fa fa-check-circle",
-                            "message": "Data berhasil ditambahkan"
-                        }, {
-                            "type": "success"
-                        })
-
-                        // reload the stat
-                        initStat(dType);
-
-                        // reload the table
-                        var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
-                        table.ajax.reload();
-                    }
-
-                }
-            })
         });
 
         // When ACTION buttons clicked
@@ -770,6 +717,18 @@ var BasePagesDivision = function() {
                 });
             }
         });
+
+        // when modal on close
+        $('#modal').on('hidden.bs.modal', function() {
+            console.log('Destroying validator and resetting elements...');
+            window.$validator.destroy();
+
+            // reset all elements
+            $('[id^=input-]').empty();
+            
+            // hide all hidden elements
+            $('[id^=hidden-]').addClass('hide-me');
+        })
 
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('kode_bagian');

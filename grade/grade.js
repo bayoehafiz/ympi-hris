@@ -82,59 +82,6 @@ var BasePagesGrade = function() {
             $('#modal').modal('show');
         });
 
-        // When SAVE button is clicked
-        $(document).on('submit', '#form-modal', function(e) {
-            e.preventDefault();
-
-            //$('#profile-form').validate(); // <- This one is not working!
-
-            var data = [];
-            $('[id^="input-"]').filter(
-                function() {
-                    var elem = this;
-                    // cleaning empty data [TEMP!]
-                    if (elem['value'] != '') {
-                        return data.push({
-                            "key": elem['id'].replace('input-', ''),
-                            "value": elem['value']
-                        });
-                    }
-                });
-
-            // Read current data type
-            var dType = $('#hidden-active-type').val();
-
-            console.log("sending data to table " + dType);
-
-            $.ajax({
-                type: "POST",
-                url: BASE_URL + '/php/api/addGradeData.php',
-                dataType: 'json',
-                data: {
-                    obj: data,
-                    table: dType
-                },
-                success: function(res) {
-                    if (res.status == 'err') {
-                        swal("Error!", res.message, "error");
-                    } else {
-                        $('#modal').modal('hide');
-                        $.notify({
-                            "icon": "fa fa-check-circle",
-                            "message": "Data berhasil ditambahkan"
-                        }, {
-                            "type": "success"
-                        })
-                        // reload the table & stat
-                        var table = $('#table-' + dType.replace('_', '-')).DataTable();
-                        table.ajax.reload();
-                        initStat(table);
-                    }
-
-                }
-            })
-        });
-
         // When ACTION buttons clicked
         $(document).on('click', '.js-dataTable-full tbody button', function() {
             var act = $(this).attr('act');
@@ -243,6 +190,18 @@ var BasePagesGrade = function() {
                 })
             }
         });
+
+        // when modal on close
+        $('#modal').on('hidden.bs.modal', function() {
+            console.log('Destroying validator and resetting elements...');
+            window.$validator.destroy();
+
+            // reset all elements
+            $('[id^=input-]').html('').empty();
+
+            // hide all hidden elements
+            $('[id^=hidden-]').addClass('hide-me');
+        })
 
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('grade');

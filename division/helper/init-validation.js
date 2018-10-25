@@ -4,30 +4,132 @@ var initValidation = function(data_type) {
         case 'division':
             var nama = 'Divisi';
             var parent = '';
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                }
+            };
+            var messages = {
+                'elem-nama': {
+                    required: 'Isikan Nama ' + nama,
+                    minlength: 'Minimal 3 karakter'
+                }
+            };
             break;
         case 'department':
             var nama = 'Departemen';
             var parent = 'Divisi';
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-parent': {
+                    required: true
+                }
+            };
+            var messages = {
+                'elem-nama': {
+                    required: 'Isikan Nama ' + nama,
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-parent': {
+                    required: 'Pilih ' + parent + ' induk'
+                }
+            };
             break;
         case 'section':
             var nama = 'Section';
             var parent = 'Departemen';
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-parent': {
+                    required: true
+                }
+            };
+            var messages = {
+                'elem-nama': {
+                    required: 'Isikan Nama ' + nama,
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-parent': {
+                    required: 'Pilih ' + parent + ' induk'
+                }
+            };
             break;
         case 'sub_section':
             var nama = 'Sub Section';
             var parent = 'Section';
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-parent': {
+                    required: true
+                }
+            };
+            var messages = {
+                'elem-nama': {
+                    required: 'Isikan Nama ' + nama,
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-parent': {
+                    required: 'Pilih ' + parent + ' induk'
+                }
+            };
             break;
         case 'group':
             var nama = 'Grup';
             var parent = 'Sub Section';
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-parent': {
+                    required: true
+                }
+            };
+            var messages = {
+                'elem-nama': {
+                    required: 'Isikan Nama ' + nama,
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-parent': {
+                    required: 'Pilih ' + parent + ' induk'
+                }
+            };
             break;
         default:
             var nama = 'Kode Bagian';
             var parent = '';
+            var rules = {
+                'elem-kode': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-division': {
+                    required: true
+                }
+            };
+            var messages = {
+                'elem-kode': {
+                    required: 'Isikan Kode',
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-division': {
+                    required: 'Pilih Divisi'
+                }
+            };
             break;
     }
 
-    $('.js-validation-material').validate({
+    window.$validator = $('.js-validation-material').validate({
         debug: true,
         ignore: [],
         errorClass: 'help-block text-right animated fadeInDown',
@@ -47,37 +149,55 @@ var initValidation = function(data_type) {
             elem.closest('.form-group').removeClass('has-error');
             elem.closest('.help-block').remove();
         },
-        rules: {
-            'elem-nama': {
-                required: true,
-                minlength: 3
-            },
-            'elem-parent': {
-                required: true
-            },
-            'elem-kode': {
-                required: true,
-                minlength: 3
-            },
-            'elem-division': {
-                required: true
-            }
-        },
-        messages: {
-            'elem-nama': {
-                required: 'Isikan Nama ' + nama,
-                minlength: 'Minimal 3 karakter'
-            },
-            'elem-parent': { 
-                required: 'Pilih ' + parent + ' induk'
-            },
-            'elem-kode': {
-                required: 'Isikan Kode',
-                minlength: 'Minimal 3 karakter'
-            },
-            'elem-division': { 
-                required: 'Pilih Divisi'
-            }
+        rules: rules,
+        messages: messages,
+        submitHandler: function(form) {
+            var data = [];
+            $('[id^="input-"]').filter(
+                function() {
+                    var elem = this;
+                    // cleaning empty data [TEMP!]
+                    if (elem['value'] != '') {
+                        return data.push({
+                            "key": elem['id'].replace('input-', ''),
+                            "value": elem['value']
+                        });
+                    }
+                });
+
+            // Read current data type
+            var dType = $('#hidden-active-type').val();
+
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + '/php/api/addDivisionData.php',
+                dataType: 'json',
+                data: {
+                    obj: data,
+                    table: dType
+                },
+                success: function(res) {
+                    if (res.status == 'err') {
+                        swal("Error!", res.message, "error");
+                    } else {
+                        $('#modal').modal('hide');
+                        $.notify({
+                            "icon": "fa fa-check-circle",
+                            "message": "Data berhasil ditambahkan"
+                        }, {
+                            "type": "success"
+                        })
+
+                        // reload the stat
+                        initStat(dType);
+
+                        // reload the table
+                        var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                        table.ajax.reload();
+                    }
+
+                }
+            })
         }
     });
 };
