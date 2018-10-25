@@ -1,4 +1,4 @@
-var BasePagesPosition = function() {
+var BasePagesShift = function() {
     // Init jQuery AutoComplete example, for more examples you can check out https://github.com/Pixabay/jQuery-autoComplete
     var initAutoComplete = function() {
         // Init autocomplete functionality
@@ -610,4 +610,4 @@ var BasePagesPosition = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesPosition.init(); });
+jQuery(function() { BasePagesShift.init(); });
