@@ -63,7 +63,7 @@ $empQuery = "SELECT
         ORDER BY {$columnName} {$columnSortOrder} 
         LIMIT {$row},{$rowperpage}";
 
-// ChromePhp::log($empQuery);
+ChromePhp::log($empQuery);
 
 $empRecords = mysqli_query($db, $empQuery);
 $rows       = array();
