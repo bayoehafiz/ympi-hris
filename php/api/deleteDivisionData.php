@@ -6,7 +6,7 @@ if (isset($_POST['id'])) {
     $id = $_POST['id'];
     $table = $_POST['table'];
     
-    $sql = "DELETE FROM " . $table . " WHERE id = " . intval($id);
+    $sql = "DELETE FROM `{$table}` WHERE id = " . intval($id);
 
     if($db->query($sql)){
         $res['success'] = true;

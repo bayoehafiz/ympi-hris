@@ -11,7 +11,7 @@ if (isset($_POST['id'])) {
 
     if ($status == '1' || $status == 1) $sql_val = 0;
     
-    $sql = "UPDATE " . $table . " SET active=" . $sql_val . ", updated='" . $timestamp . "' WHERE id = " . $id;
+    $sql = "UPDATE `{$table}` SET active=" . $sql_val . ", updated='" . $timestamp . "' WHERE id = " . $id;
 
     // ChromePhp::log($sql);
 
