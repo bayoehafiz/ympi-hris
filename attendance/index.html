@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>YMPI HRIS - Shift Kerja</title>
+    <title>YMPI HRIS - Data Absensi</title>
     <meta name="description" content="OneUI - Admin Dashboard Template &amp; UI Framework created by pixelcave and published on Themeforest">
     <meta name="author" content="pixelcave">
     <meta name="robots" content="noindex, nofollow">
@@ -40,7 +40,7 @@
         <main id="main-container">
             <!-- Stats -->
             <div class="content bg-white border-b">
-                <div class="row items-push text-uppercase text-center" id="stat-shift"></div>
+                <div class="row items-push text-uppercase text-center" id="stat-attendance"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
@@ -49,30 +49,26 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
-                            <a href="#btabs-animated-fade-shift" class="tab-btn" data="shift">Data Shift</a>
+                            <a href="#btabs-animated-fade-attendance" class="tab-btn" data="shift">Data Cuti & Absensi</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-group_shift" class="tab-btn" data="group_shift">Data Group Shift</a>
-                        </li>
-                        <li>
-                            <a href="#btabs-animated-fade-penugasan_shift" class="tab-btn" data="penugasan_shift">Penugasan Shift</a>
+                            <a href="#btabs-animated-fade-employee_attendance" class="tab-btn" data="group_shift">Absensi Karyawan</a>
                         </li>
                     </ul>
                     <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-shift">
+                        <div class="tab-pane fade in active" id="btabs-animated-fade-attendance">
                             <div class="block">
                                 <div class="block-content">
                                     <!-- Table shift -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-shift" style="width: 100%!important;">
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-attendance" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th class="text-center">Kode</th>
-                                                <th>Nama</th>
-                                                <th class="text-center">Hari Efektif</th>
-                                                <th class="text-center" style="width: 15%;">Jam</th>
-                                                <th class="text-center" style="width: 15%;">Scan Masuk</th>
-                                                <th class="text-center" style="width: 15%;">Scan Keluar</th>
+                                                <th>Jenis</th>
+                                                <th class="text-center">Potongan Cuti</th>
+                                                <th class="text-center">Keterangan</th>
+                                                <th class="text-center">Status</th>
                                                 <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
@@ -81,11 +77,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-group_shift">
+                        <div class="tab-pane fade" id="btabs-animated-fade-employee_attendance">
                             <div class="block">
                                 <div class="block-content">
-                        <!-- Table group shift -->
-                        <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-group-shift" style="width: 100%!important;">
+                                    <!-- Table group shift -->
+                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee-attendance" style="width: 100%!important;">
                                         <thead>
                                             <tr>
                                                 <th></th>
@@ -96,36 +92,7 @@
                                             </tr>
                                         </thead>
                                     </table>
-                        <!-- END Table group shift -->
-                        </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-penugasan_shift">
-                            <div class="block">
-                                <div class="block-content">
-                                    <div class="row items-push">
-                                        <div class="col-md-4 col-lg-2">
-                                            <!-- Select employee -->
-                                            <div class="form-group">
-                                                <div class="form-material form-material-primary push-50">
-                                                    <input class="js-autocomplete form-control" type="text" id="employee-selector" name="elem-employee-selector" placeholder="Ketik nama karyawan...">
-                                                    <label for="elem-employee-selector">Karyawan</label>
-                                                </div>
-                                            </div>
-                                            <!-- END Select employee -->
-                                            <!-- Event List -->
-                                            <ul class="js-events list list-events"></ul>
-                                            <div class="text-center text-muted hide-me" id="shift-list-footer">
-                                                <small><em><i class="fa fa-arrows"></i> Drag and drop events on the calendar</em></small>
-                                            </div>
-                                            <!-- END Event List -->
-                                        </div>
-                                        <div class="col-md-8 col-lg-10">
-                                            <!-- Calendar Container -->
-                                            <div class="js-calendar" id="shift-calendar"></div>
-                                        </div>
-                                    </div>
-                                    <!-- END Calendar -->
+                                    <!-- END Table group shift -->
                                 </div>
                             </div>
                         </div>
@@ -218,6 +185,8 @@
     <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
+    <script src="helper/render-add-element.js"></script>
+    <script src="helper/render-edit-element.js"></script>
     <script src="helper/init-validation.js"></script>
     <script src="attendance.js"></script>
     <script>

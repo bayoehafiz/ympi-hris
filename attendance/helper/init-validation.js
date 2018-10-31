@@ -1,33 +1,27 @@
 // Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
 var initValidation = function(data_type) {
     switch (data_type) {
-        case 'division':
-            var nama = 'Divisi';
-            var parent = '';
-            break;
-        case 'department':
-            var nama = 'Departemen';
-            var parent = 'Divisi';
-            break;
-        case 'section':
-            var nama = 'Section';
-            var parent = 'Departemen';
-            break;
-        case 'sub_section':
-            var nama = 'Sub Section';
-            var parent = 'Section';
-            break;
-        case 'group':
-            var nama = 'Grup';
-            var parent = 'Sub Section';
+        case 'attendance':
+            var nama = 'Absensi';
+            var rules = {
+            'elem-jenis': {
+                required: true,
+            },
+            'elem-kode': {
+                required: true
+            }
+        }
+
+        var messages = {
+            'elem-jenis': 'Masukkan Jenis ' + nama,
+            'elem-kode': 'Masukkan Kode ' + nama
+        }
             break;
         default:
-            var nama = 'Kode Bagian';
-            var parent = '';
             break;
     }
 
-    $('.js-validation-material').validate({
+    window.$validator = $('.js-validation-material').validate({
         debug: true,
         ignore: [],
         errorClass: 'help-block text-right animated fadeInDown',
@@ -47,37 +41,90 @@ var initValidation = function(data_type) {
             elem.closest('.form-group').removeClass('has-error');
             elem.closest('.help-block').remove();
         },
-        rules: {
-            'elem-nama': {
-                required: true,
-                minlength: 3
-            },
-            'elem-parent': {
-                required: true
-            },
-            'elem-kode': {
-                required: true,
-                minlength: 3
-            },
-            'elem-division': {
-                required: true
+        rules: rules,
+        messages: messages,
+        submitHandler: function(form) {
+            var data = [];
+            if ($('#input-potongan_cuti').length) {
+                if ($('#input-potongan_cuti').is(':checked')) {
+                    data.push({
+                        "key": "potongan_cuti",
+                        "value": 1
+                    });
+                } else {
+                    data.push({
+                        "key": "potongan_cuti",
+                        "value": 0
+                    });
+                }
             }
-        },
-        messages: {
-            'elem-nama': {
-                required: 'Isikan Nama ' + nama,
-                minlength: 'Minimal 3 karakter'
-            },
-            'elem-parent': { 
-                required: 'Pilih ' + parent + ' induk'
-            },
-            'elem-kode': {
-                required: 'Isikan Kode',
-                minlength: 'Minimal 3 karakter'
-            },
-            'elem-division': { 
-                required: 'Pilih Divisi'
+
+            $('[id^="input-"]:not(#input-potongan_cuti)').filter(function() {
+                var elem = this;
+                // cleaning empty data [TEMP!]
+                if (elem['value'] != '') {
+                    return data.push({
+                        "key": elem['id'].replace('input-', ''),
+                        "value": elem['value']
+                    });
+                }
+            });
+
+            // Read current data-type and act-type
+            var dType = $('#hidden-active-type').val();
+            var actType = $('#act-type').val();
+            if (actType == 'add') {
+                var api_url = BASE_URL + '/php/api/addAttendanceData.php';
+
+                // add random color for drag & drop attendances
+                // data.push({
+                //     key: "color",
+                //     value: generateColor()
+                // })
+
+                var payload = {
+                    data: data,
+                    table: dType
+                };
+
+                var msg = "Data berhasil ditambahkan";
+            } else {
+                var api_url = BASE_URL + '/php/api/updateAttendanceData.php';
+                var payload = {
+                    data: data,
+                    table: dType,
+                    id: $('#data-id').val()
+                };
+
+                var msg = "Data berhasil di-update";
             }
+
+            // Saving...
+            console.log("Saving...", payload);
+            
+            $.ajax({
+                method: "POST",
+                url: api_url,
+                dataType: 'json',
+                data: payload,
+                success: function(res) {
+                    if (res.success) {
+                        $('#modal').modal('hide');
+                        $.notify({
+                            "icon": "fa fa-check-circle",
+                            "message": msg
+                        }, {
+                            "type": "success"
+                        })
+                        // reload the table
+                        var table = $('#table-' + dType).DataTable();
+                        table.ajax.reload();
+                    } else {
+                        swal("Error!", res.message, "error");
+                    }
+
+                }
+            })
         }
     });
 };

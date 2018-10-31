@@ -46,19 +46,16 @@
             <!-- Page Content -->
             <div class="content">
                 <!-- Dynamic Table Full Pagination -->
-                <div class="block">
+                <div class="block col-md-9">
                     <div class="block-content">
                         <table class="table table-bordered table-striped js-dataTable-full table-hover table-responsive display nowrap" id="table-employee" style="width: 100%!important;">
                             <thead>
                                 <tr>
-                                    <th>NIK</th>
-                                    <th style="width: 15%";>Nama Lengkap</th>
-                                    <th>Divisi</th>
-                                    <th>Departemen</th>
-                                    <th>Section</th>
-                                    <th>Sub Section</th>
-                                    <th>Grup</th>
-                                    <th>Tgl Masuk</th>
+                                    <th class="text-center">NIK</th>
+                                    <th class="text-center" style="width: 25%;">Nama</th>
+                                    <th class="text-center" style="width: 20%;">Bagian</th>
+                                    <th class="text-center">Grade</th>
+                                    <!-- <th class="text-center">Tgl Masuk</th> -->
                                     <th class="text-center">Status</th>
                                     <th class="text-center" style="width: 10%;">Actions</th>
                                 </tr>
@@ -68,6 +65,26 @@
                     </div>
                 </div>
                 <!-- END Dynamic Table Full Pagination -->
+                <!-- Data Filtering -->
+                <div class="col-md-3">
+                    <div class="block bg-gray-lighter block-themed" id="filter-block">
+                        <div class="block-header bg-amethyst">
+                            <h3 class="block-title"><i class="fa fa-filter"></i> Filter</h3>
+                        </div>
+                        <div class="block-content text-muted">
+                            <form action="" method="post" id="filter-form">
+                                <div id="filter-container" class="push-50">Filter components will be here</div>
+                                <div class="push-30">
+                                    <div class="btn-group right-align">
+                                        <button class="btn btn-md btn-default" type="button" id="btn-reset-filter"><i class="si si-refresh"></i> Clear</button>
+                                        <!-- <button class="btn btn-md btn-primary" type="submit" id="btn-sbmit-filter">Cari <i class="si si-action-redo"></i></button> -->
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Data Filtering -->
             </div>
             <!-- END Page Content -->
         </main>
@@ -93,7 +110,7 @@
                                         <div class="block-content block-content-full clearfix">
                                             <div class="text-right pull-right push-10-t">
                                                 <div class="lead" id="modal-nama" style="margin-bottom: 5px!important;"></div>
-                                                <div class="font-w600 push-5 hide-me text-primary font-s20" id="modal-nik"></div>
+                                                <div class="font-w600 push-5 hide-me font-s20" id="modal-nik"></div>
                                                 <div id="modal-kode-bagian"></div>
                                             </div>
                                             <div class="pull-left">

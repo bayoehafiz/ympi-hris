@@ -15,7 +15,11 @@ var renderProfileView = function(data) {
     // Set value in modal
     $('.img-avatar128').attr('src', "../" + data.photo_url);
     $('#modal-nama').html(data.nama);
-    $('#modal-nik').html(data.nik);
+
+    if (data.status == "Tetap") var snik = '<span class="text-primary">' + data.nik + '</span>';
+    else if (data.status == "Kontrak 1") var snik = '<span class="text-info">' + data.nik + '</span>';
+    else var snik = '<span class="text-warning">' + data.nik + '</span>';
+    $('#modal-nik').html(snik);
 
     var nama_kode_bagian = data.nama_kode_bagian == null ? '-' : '<span class="label label-default label-lg">Kode: ' + data.nama_kode_bagian + '</span>';
     $('#modal-kode-bagian').html(nama_kode_bagian);

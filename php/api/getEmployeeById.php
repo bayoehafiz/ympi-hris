@@ -12,7 +12,6 @@ if (isset($_POST['id'])) {
                 d.nama AS nama_section,
                 e.nama AS nama_sub_section,
                 f.nama AS nama_group,
-                g.nama AS nama_jabatan,
                 h.nama AS nama_grade,
                 h.kode AS kode_grade,
                 i.nama AS nama_penugasan
@@ -29,13 +28,13 @@ if (isset($_POST['id'])) {
                     LEFT JOIN
                         `group` f ON f.id = a.group
                     LEFT JOIN
-                        jabatan g ON g.id = a.jabatan
-                    LEFT JOIN
                         grade h ON h.id = a.grade
                     LEFT JOIN
                         penugasan i ON i.id = a.penugasan
-            WHERE a.id = {$id}
+            WHERE a.nik = '{$id}'
             LIMIT 1";
+
+    // ChromePhp::log($sql);
 
     $query = $db->query($sql);
     $rows = array();
@@ -46,7 +45,7 @@ if (isset($_POST['id'])) {
         };
 
         $data['success'] = true;
-        $data['data'] = $rows;
+        $data['data'] = $rows[0];
     } else {
         $data['success'] = false;
         $data['data'] = '';

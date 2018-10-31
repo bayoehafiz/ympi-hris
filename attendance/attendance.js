@@ -1,30 +1,4 @@
 var BasePagesAttendance = function() {
-    // Init jQuery AutoComplete example, for more examples you can check out https://github.com/Pixabay/jQuery-autoComplete
-    var initAutoComplete = function() {
-        // Init autocomplete functionality
-        $('#employee-selector').autoComplete({
-            minChars: 1,
-            // source: function(term, response) {
-            //     $.getJSON(BASE_URL + '/php/api/getEmployeeName.php', { q: term }, function(data) { response(data); });
-            // },
-            source: function(term, suggest) {
-                term = term.toLowerCase();
-
-                var $countriesList = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Anguilla', 'Antigua &amp; Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia &amp; Herzegovina', 'Botswana', 'Brazil', 'British Virgin Islands', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Cape Verde', 'Cayman Islands', 'Chad', 'Chile', 'China', 'Colombia', 'Congo', 'Cook Islands', 'Costa Rica', 'Cote D Ivoire', 'Croatia', 'Cruise Ship', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Estonia', 'Ethiopia', 'Falkland Islands', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Polynesia', 'French West Indies', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Kyrgyz Republic', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Namibia', 'Nepal', 'Netherlands', 'Netherlands Antilles', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Reunion', 'Romania', 'Russia', 'Rwanda', 'Saint Pierre &amp; Miquelon', 'Samoa', 'San Marino', 'Satellite', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka', 'St Kitts &amp; Nevis', 'St Lucia', 'St Vincent', 'St. Lucia', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor L\'Este', 'Togo', 'Tonga', 'Trinidad &amp; Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks &amp; Caicos', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Virgin Islands (US)', 'Yemen', 'Zambia', 'Zimbabwe'];
-                var $suggestions = [];
-
-                for ($i = 0; $i < $countriesList.length; $i++) {
-                    if (~$countriesList[$i].toLowerCase().indexOf(term)) $suggestions.push($countriesList[$i]);
-                }
-
-                suggest($suggestions);
-            },
-            onSelect: function(term) {
-                console.log(term + ' selected!');
-            }
-        });
-    };
-
     var initAttendancePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -38,7 +12,7 @@ var BasePagesAttendance = function() {
         $('#header-navbar').load("../partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-book-open">&nbsp;&nbsp;</i>DATA ABSENSI</h3>');
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-ban">&nbsp;&nbsp;</i>DATA ABSENSI</h3>');
             // Set active class for related menu
             $('#menu-attendance').addClass('active');
         });
@@ -66,17 +40,12 @@ var BasePagesAttendance = function() {
             var t = $(this).attr('data');
             $('#hidden-active-type').val(t);
             switch (t) {
-                // case 'group_attendance':
-                //     $('#btn-add').attr('data', 'Group Attendance');
-                //     initStat('group_attendance');
-                //     initTableGroupAttendance();
-                //     break;
-                case 'penugasan_attendance':
-                    $('#btn-add').attr('data', 'Penugasan Attendance');
-                    initContentPenugasanAttendance();
+                case 'employee_attendance':
+                    $('#btn-add').attr('data', 'Absensi Karyawan');
+                    // initTableEmployeeAttendance();
                     break;
                 default:
-                    $('#btn-add').attr('data', 'Attendance');
+                    $('#btn-add').attr('data', 'Absensi');
                     initTableAttendance();
                     break;
             };
@@ -93,51 +62,17 @@ var BasePagesAttendance = function() {
             $('#hidden-type').val(data_type);
 
             switch (data_type) {
-                case "group_attendance":
-                    html += renderAddElement('text', 'nama', 'Nama Group Attendance');
-                    html += renderAddElement('text', 'kode', 'Kode');
-                    break;
-                case "penugasan_attendance":
-                    // html += renderAddElement('text', 'nama', 'Nama Penugasan');
-                    // html += renderAddElement('text', 'kode', 'Kode');
+                case "attendance":
+                    html += renderAddElement('text', 'kode', 'Kode', 4);
+                    html += renderAddElement('text', 'jenis', 'Jenis Absensi / Cuti', 8);
+                    html += renderAddElement('textarea', 'keterangan', 'Keterangan', 12);
+                    html += renderAddElement('check', 'potongan_cuti', 'Potongan Cuti?', 6);
                     break;
                 default:
-                    html += renderAddElement('text', 'nama', 'Nama Attendance', null, 8);
-                    html += renderAddElement('text', 'kode', 'Kode', null, 4);
-                    html += renderAddElement('multi-select', 'hari_efektif', 'Hari Efektif', [{
-                        label: 'Senin',
-                        value: 'Senin'
-                    }, {
-                        label: 'Selasa',
-                        value: 'Selasa'
-                    }, {
-                        label: 'Rabu',
-                        value: 'Rabu'
-                    }, {
-                        label: 'Kamis',
-                        value: 'Kamis'
-                    }, {
-                        label: 'Jumat',
-                        value: 'Jumat'
-                    }, {
-                        label: 'Sabtu',
-                        value: 'Sabtu'
-                    }, {
-                        label: 'Minggu',
-                        value: 'Minggu'
-                    }], 6);
-                    html += renderAddElement('time-picker', 'jam_masuk', 'Jam Masuk', null, 3);
-                    html += renderAddElement('time-picker', 'jam_keluar', 'Jam Keluar', null, 3);
-
-                    html += renderAddElement('time-picker', 'awal_scan_masuk', 'Scan Masuk', null, 3);
-                    html += renderAddElement('time-picker', 'akhir_scan_masuk', '', null, 3);
-
-                    html += renderAddElement('time-picker', 'awal_scan_keluar', 'Scan Keluar', null, 3);
-                    html += renderAddElement('time-picker', 'akhir_scan_keluar', '', null, 3);
                     break;
             }
 
-            $('#modal-title').html('Tambah Data ' + data_type);
+            $('#modal-title').html('Tambah Data: ' + data_type);
             $('#generated-container').html(html);
 
             // hide unrelated buttons
@@ -151,93 +86,10 @@ var BasePagesAttendance = function() {
             App.initHelpers(['datetimepicker']);
 
             // reinitiate validation
-            initValidation();
+            initValidation(data_type);
 
             // set the action type
             $('#act-type').val('add');
-        });
-
-        // When SAVE button is clicked
-        $(document).on('submit', '#form-modal', function(e) {
-            e.preventDefault();
-
-            var data = [];
-            if ($('#input-hari_efektif').length) {
-                var selected = $('#input-hari_efektif').val();
-                if (selected != null) {
-                    array = selected + "";
-                    data.push({
-                        "key": "hari_efektif",
-                        "value": array
-                    });
-                }
-            }
-
-            $('[id^="input-"]:not(#input-hari_efektif)').filter(function() {
-                var elem = this;
-                // cleaning empty data [TEMP!]
-                if (elem['value'] != '') {
-                    return data.push({
-                        "key": elem['id'].replace('input-', ''),
-                        "value": elem['value']
-                    });
-                }
-            });
-
-            // Read current data-type and act-type
-            var dType = $('#hidden-active-type').val();
-            var actType = $('#act-type').val();
-            if (actType == 'add') {
-                var api_url = BASE_URL + '/php/api/addAttendanceData.php';
-
-                // add random color for drag & drop attendances
-                data.push({
-                    key: "color",
-                    value: generateColor()
-                })
-
-                var payload = {
-                    data: data,
-                    table: dType
-                };
-
-                var msg = "Data berhasil ditambahkan";
-            } else {
-                var api_url = BASE_URL + '/php/api/updateAttendanceData.php';
-                var payload = {
-                    data: data,
-                    table: dType,
-                    id: $('#data-id').val()
-                };
-
-                var msg = "Data berhasil di-update";
-            }
-
-            // Saving...
-            console.log("Saving...", );
-            $.ajax({
-                method: "POST",
-                url: api_url,
-                dataType: 'json',
-                data: payload,
-                success: function(res) {
-                    if (res.success) {
-                        $('#modal').modal('hide');
-                        $.notify({
-                            "icon": "fa fa-check-circle",
-                            "message": msg
-                        }, {
-                            "type": "success"
-                        })
-                        // reload the table
-                        var table = $('#table-' + dType).DataTable();
-                        table.ajax.reload();
-                    } else {
-                        swal("Error!", res.message, "error");
-                    }
-
-                }
-            })
         });
 
         // When ACTION buttons clicked
@@ -253,52 +105,18 @@ var BasePagesAttendance = function() {
                 $('#modal-title, #generated-container').html('');
 
                 var html = '';
-                data_type = $(this).attr('data-type');
+                data_type = $(this).attr('data-active-type');
                 $('#hidden-type').val(data_type);
+                console.log(data_type);
 
                 switch (data_type) {
-                    case "group_attendance":
-                        html += renderEditElement('text', 'nama', 'Nama Group Attendance');
-                        html += renderEditElement('text', 'kode', 'Kode');
-                        break;
-                    case "penugasan_attendance":
-                        // html += renderAddElement('text', 'nama', 'Nama Penugasan');
-                        // html += renderAddElement('text', 'kode', 'Kode');
+                    case "attendance":
+                        html += renderEditElement('text', 'kode', 'Kode', data.kode, 4);
+                        html += renderEditElement('text', 'jenis', 'Jenis Absensi / Cuti', data.jenis, 8);
+                        html += renderEditElement('textarea', 'keterangan', 'Keterangan', data.keterangan, 12);
+                        html += renderEditElement('check', 'potongan_cuti', 'Potongan Cuti?', data.potongan_cuti, 6);
                         break;
                     default:
-                        html += renderEditElement('text', 'nama', 'Nama Attendance', data.nama, null, 8);
-                        html += renderEditElement('text', 'kode', 'Kode', data.kode, null, 4);
-                        html += renderEditElement('multi-select', 'hari_efektif', 'Hari Efektif', data.hari_efektif, [{
-                            label: 'Senin',
-                            value: 'Senin'
-                        }, {
-                            label: 'Selasa',
-                            value: 'Selasa'
-                        }, {
-                            label: 'Rabu',
-                            value: 'Rabu'
-                        }, {
-                            label: 'Kamis',
-                            value: 'Kamis'
-                        }, {
-                            label: 'Jumat',
-                            value: 'Jumat'
-                        }, {
-                            label: 'Sabtu',
-                            value: 'Sabtu'
-                        }, {
-                            label: 'Minggu',
-                            value: 'Minggu'
-                        }], 6);
-
-                        html += renderEditElement('time-picker', 'jam_masuk', 'Jam Masuk', data.jam_masuk, null, 3);
-                        html += renderEditElement('time-picker', 'jam_keluar', 'Jam Keluar', data.jam_keluar, null, 3);
-
-                        html += renderEditElement('time-picker', 'awal_scan_masuk', 'Scan Masuk', data.awal_scan_masuk, null, 3);
-                        html += renderEditElement('time-picker', 'akhir_scan_masuk', '', data.akhir_scan_masuk, null, 3);
-
-                        html += renderEditElement('time-picker', 'awal_scan_keluar', 'Scan Keluar', data.awal_scan_keluar, null, 3);
-                        html += renderEditElement('time-picker', 'akhir_scan_keluar', '', data.akhir_scan_keluar, null, 3);
                         break;
                 }
 
@@ -324,7 +142,7 @@ var BasePagesAttendance = function() {
                 App.initHelpers(['datetimepicker']);
 
                 // reinitiate validation
-                initValidation();
+                initValidation(data_type);
 
                 // set the action-type and data-id
                 $('#act-type').val('edit');
@@ -374,6 +192,18 @@ var BasePagesAttendance = function() {
                 })
             }
         });
+
+        // when modal on close
+        $('#modal').on('hidden.bs.modal', function() {
+            console.log('Destroying validator and resetting elements...');
+            window.$validator.destroy();
+
+            // reset all elements
+            $('[id^=input-]').html('').empty();
+
+            // hide all hidden elements
+            $('[id^=hidden-]').addClass('hide-me');
+        })
 
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('attendance');
@@ -431,48 +261,6 @@ var BasePagesAttendance = function() {
         // Table initiation
         var table = $('#table-attendance').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            ajax: {
-                url: BASE_URL + '/php/api/getAttendance.php',
-                type: "POST",
-                data: {
-                    table: 'attendance'
-                },
-                dataSrc: function(json) {
-                    if (!json.success) {
-                        $.notify({
-                            "icon": "fa fa-exclamation-circle",
-                            "message": "Data Attendance kosong"
-                        }, {
-                            "type": "warning"
-                        });
-                        return [];
-                    } else {
-                        var data = json.data;
-                        var resultData = [];
-                        data.forEach(function(x) {
-                            // Manipulate result data
-                            var raw_string = x.hari_efektif;
-                            var splitted_string = raw_string.split(',');
-                            x.hari = '';
-                            splitted_string.forEach(function(s) {
-                                x.hari += '<span class="label label-primary push-5-r">' + s + '</span>';
-                            });
-
-                            x.jam = x.jam_masuk + ' - ' + x.jam_keluar;
-                            x.scan_masuk = x.awal_scan_masuk + ' - ' + x.akhir_scan_masuk;
-                            x.scan_keluar = x.awal_scan_keluar + ' - ' + x.akhir_scan_keluar;
-                            resultData.push(x);
-                        })
-                        return resultData;
-                    }
-                }
-            },
-            deferRender: true,
             order: [
                 [0, 'desc']
             ],
@@ -480,20 +268,51 @@ var BasePagesAttendance = function() {
                 "visible": false,
                 "targets": 0
             }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: BASE_URL + '/php/api/getAttendance.php',
+                data: {
+                    table: 'attendance'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
             columns: [
                 { data: "updated" },
                 { className: "text-center", data: "kode" },
-                { className: "font-w600", data: "nama" },
-                { data: "hari" },
-                { className: "text-center", data: "jam" },
-                { className: "text-center", data: "scan_masuk" },
-                { className: "text-center", data: "scan_keluar" },
+                { className: "font-w600", data: "jenis" },
+                {
+                    className: "text-center",
+                    data: "potongan_cuti",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<i class="fa fa-lg fa-check text-success"></i>';
+                        else return '<i class="fa fa-lg fa-close text-muted"></i>'
+                    }
+                },
+                { data: "keterangan" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
                 {
                     data: null,
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
                             '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
                             '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
                             '</div>';

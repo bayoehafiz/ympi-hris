@@ -54,18 +54,15 @@ var BasePagesEmployee = function() {
     };
 
     // Init main table
-    var initTable = function() {
-        // init style helper
-        bsDataTables();
-
+    var initTable = function(filterData) {
         // Table initiation
         var table = $('.js-dataTable-full').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
             order: [
                 [0, "asc"]
             ],
             columnDefs: [
-                { orderable: true },
-                { "targets": [9], "searchable": false, "orderable": false, "visible": true }
+                { targets: 0, type: 'nik-formatted' }
             ],
             pageLength: 10,
             lengthMenu: [
@@ -76,47 +73,85 @@ var BasePagesEmployee = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getEmployee.php'
+                url: BASE_URL + '/php/api/getEmployee.php',
+                data: {
+                    filter: filterData
+                },
+                // Error handler
+                dataSrc: function(res) {
+                    if (res.error) {
+                        swal("Error!", res.message, "error");
+                        return [];
+                    } else {
+                        // format the Date into correct one!
+                        var tableData = [];
+                        res.aaData.forEach(function(val) {
+                            // validate Nama (remove special character)
+                            var nama = val.nama;
+                            val.nama = nama.replace(/[^\w\s]/gi, '');
+
+                            // Tgl_masuk formatting
+                            var dTglMasuk = val.tgl_masuk;
+                            if (dTglMasuk.length < 10) dTglMasuk = moment(dTglMasuk, 'DD-MM-YY').format('DD-MM-YYYY');
+                            val.tgl_masuk = dTglMasuk;
+
+                            // Tgl_lahir formatting
+                            var dTglLahir = val.tgl_lahir;
+                            if (dTglLahir.length < 10) dTglLahir = moment(dTglLahir, 'DD-MM-YY').format('DD-MM-YYYY');
+                            val.tgl_lahir = dTglLahir;
+
+                            tableData.push(val);
+                        })
+
+                        return tableData;
+                    }
+                }
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-nik', data.nik);
             },
-            columns: [
-                { data: "nik" },
-                {
+            columns: [{
+                    className: "text-center",
+                    data: "nik"
+                }, {
                     className: "font-w600",
                     data: "nama",
                     render: function(data, type, row) {
                         return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
                     }
-                },
-                {
-                    className: "d-inline-block text-truncate",
-                    data: "nama_division"
-                },
-                {
-                    className: "d-inline-block text-truncate",
-                    data: "nama_department"
-                },
-                {
-                    className: "d-inline-block text-truncate",
-                    data: "nama_section"
-                },
-                {
-                    className: "d-inline-block text-truncate",
-                    data: "nama_sub_section"
-                },
-                {
-                    className: "d-inline-block text-truncate",
-                    data: "nama_group"
-                },
-                {
-                    data: "tgl_masuk",
+                }, {
+                    className: "text-center d-inline-block text-truncate",
+                    data: "nama_group",
                     render: function(data, type, row) {
-                        return moment(data, 'DD-MM-YYYY').format('DD MMM YYYY');
+                        // Show employee's GROUP
+                        if (data == null) { // if empty, show SUB_SECTION instead
+                            if (row.nama_sub_section == null) { // if empty, show SECTION instead
+                                if (row.nama_section.length == null) { // if empty, show DEPTARTMENT instead
+                                    if (row.nama_department.length == null) return "<small class=\"text-muted\">Divisi</small> " + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
+                                    return "<small class=\"text-muted\">Departemen</small> " + row.nama_department.toUpperCase();
+                                }
+                                return "<small class=\"text-muted\">Section</small> " + row.nama_section.toUpperCase();
+                            }
+                            return "<small class=\"text-muted\">Sub Section</small> " + row.nama_sub_section.toUpperCase();
+                        }
+                        return "<small class=\"text-muted\">Grup</small> " + data.toUpperCase();
+                    }
+                }, {
+                    className: "text-center d-inline-block text-truncate",
+                    data: "kode_grade",
+                    render: function(data, type, row) {
+                        if (data == null) return "-";
+                        else return data + " <small class=\"text-muted\">(" + row.nama_grade + ")</small>";
                     }
                 },
+                // {
+                //     className: "text-center",
+                //     data: "tgl_masuk",
+                //     render: function(data, type, row) {
+                //         return moment(data, "DD-MM-YYYY").format("D MMM YYYY");
+                //     }
+                // }, 
                 {
                     className: "text-center",
                     data: "status",
@@ -130,8 +165,8 @@ var BasePagesEmployee = function() {
 
                         return statusEdt;
                     }
-                },
-                {
+                }, {
+                    className: "text-center",
                     data: null,
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
@@ -139,9 +174,402 @@ var BasePagesEmployee = function() {
                             '<button class="btn btn-xs btn-default btn-edit" type="button"><i class="fa fa-pencil"></i></button>' +
                             '<button class="btn btn-xs btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>' +
                             '</div>';
-                    }
+                    },
+                    searchable: false,
+                    orderable: false
                 }
-            ]
+            ],
+            fnInitComplete: function() {
+                // console.log("Table loaded!");
+            }
+        });
+
+        // Extend sorting Fn for NIK column
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "nik-formatted-pre": function(a) {
+                // console.log(a);
+            },
+            "nik-formatted-asc": function(a, b) {
+                //
+            },
+            "nik-formatted-desc": function(a, b) {
+                //
+            }
+        });
+    };
+
+    // Init table filtering
+    var initFilter = function(data) {
+        var container = $('#filter-container');
+        container.html('');
+
+        // Populate FILTER selectors :: Status
+        var data = [{
+            id: 'Tetap',
+            label: 'Tetap'
+        }, {
+            id: 'Kontrak 1',
+            label: 'Kontrak 1'
+        }, {
+            id: 'Kontrak 2',
+            label: 'Kontrak 2'
+        }];
+
+        var bag_elems = '<div class="form-group">' +
+            '<div class="form-material form-material-primary push-30 push-30-t">' +
+            '<select class="form-control" id="input-filter-status" name="elem-filter-status" size="1">' +
+            '<option val=""></option>';
+
+        data.forEach(function(dt) {
+            bag_elems += '<option value="' + dt.id + '">' + dt.label + '</option>';
+        });
+
+        bag_elems += '</select>' +
+            '<label for="elem-filter-status">By Status</label>' +
+            '</div>' +
+            '</div>';
+
+        container.append(bag_elems);
+
+        // Populate FILTER selectors :: Kode_bagian
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: BASE_URL + '/php/api/getSelectorData.php',
+            data: { table: 'kode_bagian' },
+            success: function(res) {
+                if (res.success) {
+                    var bag_elems = '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-kode_bagian" name="elem-filter-kode_bagian" size="1">' +
+                        '<option val=""></option>';
+
+                    res.data.forEach(function(dt) {
+                        bag_elems += '<option value="' + dt.id + '">' + dt.kode + '</option>';
+                    });
+
+                    bag_elems += '</select>' +
+                        '<label for="elem-filter-kode_bagian">By Kode Bagian</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    container.append(bag_elems);
+                }
+            }
+        });
+
+        // Populate FILTER selectors :: Dept/Sec/Sub Sec/Grup
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: BASE_URL + '/php/api/getSelectorData.php',
+            data: { table: 'division' },
+            success: function(res) {
+                if (res.success) {
+                    var bag_elems = '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-division" name="elem-filter-division" size="1">' +
+                        '<option val=""></option>';
+
+                    res.data.forEach(function(dt) {
+                        bag_elems += '<option value="' + dt.id + '">' + dt.nama + '</option>';
+                    });
+
+                    bag_elems += '</select>' +
+                        '<label for="elem-filter-division">By Divisi</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    // Generate another components
+                    bag_elems += '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-department" name="elem-filter-department" size="1">' +
+                        '<option val=""></option>' +
+                        '</select>' +
+                        '<label for="elem-filter-department">By Departemen</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    bag_elems += '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-section" name="elem-filter-section" size="1">' +
+                        '<option val=""></option>' +
+                        '</select>' +
+                        '<label for="elem-filter-section">By Section</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    bag_elems += '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-sub_section" name="elem-filter-sub_section" size="1">' +
+                        '<option val=""></option>' +
+                        '</select>' +
+                        '<label for="elem-filter-sub_section">By Sub Section</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    bag_elems += '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-group" name="elem-filter-group" size="1">' +
+                        '<option val=""></option>' +
+                        '</select>' +
+                        '<label for="elem-filter-group">By Grup</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    container.append(bag_elems);
+                }
+            }
+        });
+
+        // Populate FILTER selectors :: Grade
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: BASE_URL + '/php/api/getSelectorData.php',
+            data: { table: 'grade' },
+            success: function(res) {
+                if (res.success) {
+                    var bag_elems = '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-grade" name="elem-filter-grade" size="1">' +
+                        '<option val=""></option>';
+
+                    res.data.forEach(function(dt) {
+                        bag_elems += '<option value="' + dt.id + '">[' + dt.kode + '] ' + dt.nama + '</option>';
+                    });
+
+                    bag_elems += '</select>' +
+                        '<label for="elem-filter-grade">By Grade</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    container.append(bag_elems);
+                }
+            }
+        });
+
+        // Function to populate all data (regardless the parent)
+        var populateAll = function(table) {
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + '/php/api/getSelectorDataClean.php',
+                dataType: 'json',
+                data: {
+                    table: table
+                },
+                success: function(res) {
+                    if (res.success) repopulateSelector('input-filter-' + table, res.data);
+                }
+            });
+        }
+
+        // 
+        // Filter selector on change functions
+        // 
+        // when filter kode_bagian selector changed
+        $(document).on('change', '#input-filter-kode_bagian', function() {
+            var val = this.value;
+            if (val != '') {
+                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').attr('disabled', 'disabled');
+            } else {
+                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').removeAttr('disabled');
+            }
+            $('#input-filter-division, #input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').val('');
+        });
+
+        // when filter division selector changed
+        $(document).on('change', '#input-filter-division', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            if (valueSelected != '') {
+                $('#input-filter-kode_bagian').val('');
+                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').removeAttr('disabled');
+
+                // fetch data for populating DEPARTEMEN selector
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    dataType: 'json',
+                    data: {
+                        table: 'department',
+                        parent: valueSelected
+                    },
+                    success: function(res) {
+                        if (res.success) repopulateSelector('input-filter-department', res.data);
+                        $('#input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
+                    }
+                });
+            } else {
+                $('#input-filter-kode_bagian').removeAttr('disabled');
+                // $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
+                populateAll('department');
+                populateAll('section');
+                populateAll('sub_section');
+                populateAll('group');
+            }
+        });
+
+        // when filter department selector changed
+        $(document).on('change', '#input-filter-department', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            if (valueSelected != '') {
+                // fetch data for populating DEPARTEMEN selector
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    dataType: 'json',
+                    data: {
+                        table: 'section',
+                        parent: valueSelected
+                    },
+                    success: function(res) {
+                        if (res.success) repopulateSelector('input-filter-section', res.data);
+                        $('#input-filter-sub_section, #input-filter-group').empty();
+                    }
+                });
+            } else {
+                $('#input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
+            }
+        });
+
+        // when filter section selector changed
+        $(document).on('change', '#input-filter-section', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            if (valueSelected != '') {
+                // fetch data for populating DEPARTEMEN selector
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    dataType: 'json',
+                    data: {
+                        table: 'sub_section',
+                        parent: valueSelected
+                    },
+                    success: function(res) {
+                        if (res.success) repopulateSelector('input-filter-sub_section', res.data);
+                        $('#input-filter-group').empty();
+                    }
+                });
+            } else {
+                $('#input-filter-sub_section, #input-filter-group').empty();
+            }
+        });
+
+        // when filter section selector changed
+        $(document).on('change', '#input-filter-sub_section', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            if (valueSelected != '') {
+                // fetch data for populating DEPARTEMEN selector
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    dataType: 'json',
+                    data: {
+                        table: 'group',
+                        parent: valueSelected
+                    },
+                    success: function(res) {
+                        if (res.success) repopulateSelector('input-filter-group', res.data);
+                    }
+                });
+            } else {
+                $('#input-filter-group').empty();
+            }
+        });
+
+        // Button RESET action
+        $(document).on('click', '#btn-reset-filter', function() {
+            // send filters data to table & reinitiate table
+            initTable();
+
+            // reset all components
+            $('[id^=input-filter-]').val('');
+            $('#input-filter-kode_bagian, #input-filter-division').trigger('change');
+            populateAll('department');
+            populateAll('section');
+            populateAll('sub_section');
+            populateAll('group');
+        });
+
+        // Filter on change action
+        $(document).on('change', '[id^=input-filter-]', function() {
+            $('#filter-form').trigger('submit');
+        });
+
+        // FILTER SUBMIT action
+        $(document).on('submit', '#filter-form', function(e) {
+            e.preventDefault();
+
+            var data = [];
+            $('[id^="input-filter-"]').filter(
+                function() {
+                    var elem = this;
+                    // cleaning empty data [TEMP!]
+                    if (elem['value'] != '') {
+                        var key = elem['id'].replace('input-filter-', '');
+                        if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
+                        if (key == 'status') status = elem['value']; // save status for NIK generation
+                        return data.push({
+                            "key": key,
+                            "value": elem['value']
+                        });
+                    }
+                });
+
+            // send filters data to table & reinitiate table
+            initTable(data);
+        })
+
+        // Fill all BAGIAN selectors
+        populateAll('department');
+        populateAll('section');
+        populateAll('sub_section');
+        populateAll('group');
+    };
+
+    // init the page
+    var initEmployeePage = function() {
+        // load sidebar
+        $('#sidebar').load("../partials/sidebar.html", function() {
+            console.log("Sidebar loaded!");
+
+            // load the logo
+            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+        });
+
+        // load header-nav
+        $('#header-navbar').load("../partials/header-nav.html", function() {
+            console.log("Header Navigation loaded!");
+            // Set the page title
+            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>');
+            // Set active class for related menu
+            $('#menu-karyawan').addClass('active');
+        });
+
+        // load footer
+        $('#page-footer').load("../partials/footer.html", function() {
+            console.log("Footer loaded!");
+        });
+
+        // when menu button is clicked
+        $(document).on('click', '.nav-menu, .logo', function(e) {
+            e.preventDefault;
+            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            return false;
+        });
+
+        // when button LOGOUT is clicked
+        $('#btn-logout').click(function() {
+            sessionStorage.clear();
+            location.reload();
         });
 
         // when ADD button is clicked
@@ -152,16 +580,33 @@ var BasePagesEmployee = function() {
             $('#opened-nik').val("");
         });
 
+        // This is OUR TABLE!
+        var table = $('.js-dataTable-full').DataTable();
+
         // When employee NAME or TABLE'S VIEW button is clicked
         $('.js-dataTable-full tbody').on('click', 'a, #btn-view', function() {
-            var data = table.row($(this).parents('tr')).data();
+            var nik = $(this).parents('tr').attr('data-nik');
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + "/php/api/getEmployeeById.php",
+                dataType: 'json',
+                data: {
+                    id: nik
+                }
+            }).done(function(res) {
+                var data = res.data;
 
-            // Open the popup modal
-            $('#modal-profile').modal('show');
-            $('#opened-profile').val(data.id);
-            $('#opened-nik').val(data.nik);
+                // Open the popup modal
+                $('#modal-profile').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
 
-            renderProfileView(data);
+                $('#opened-profile').val(data.id);
+                $('#opened-nik').val(data.nik);
+                renderProfileView(data);
+            });
         });
 
         // When TABLE'S EDIT button is clicked
@@ -169,7 +614,12 @@ var BasePagesEmployee = function() {
             var data = table.row($(this).parents('tr')).data();
 
             // Open the popup modal
-            $('#modal-profile').modal('show');
+            $('#modal-profile').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+
             $('#opened-profile').val(data.id);
             $('#opened-nik').val(data.nik);
             $('#origin').val('direct');
@@ -248,7 +698,13 @@ var BasePagesEmployee = function() {
             var dataTableRow = table.row($tr[0]);
             var data = dataTableRow.data();
 
-            $('#modal-profile').modal('show');
+            // Open the popup modal
+            $('#modal-profile').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+
             $('#origin').val('modal');
 
             renderProfileEdit(data);
@@ -401,44 +857,6 @@ var BasePagesEmployee = function() {
         $('#modal-profile').on('hidden.bs.modal', function() {
             $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
         })
-    };
-
-    // init the page
-    var initEmployeePage = function() {
-        // load sidebar
-        $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
-        });
-
-        // load header-nav
-        $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
-            // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>');
-            // Set active class for related menu
-            $('#menu-karyawan').addClass('active');
-        });
-
-        // load footer
-        $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
-        });
-
-        // when menu button is clicked
-        $(document).on('click', '.nav-menu, .logo', function(e) {
-            e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
-            return false;
-        });
-
-        // when button LOGOUT is clicked
-        $('#btn-logout').click(function() {
-            sessionStorage.clear();
-            location.reload();
-        });
 
 
         // ADD PROFILE functions ::
@@ -549,11 +967,15 @@ var BasePagesEmployee = function() {
     return {
         init: function() {
             initStat();
+            bsDataTables();
             initTable();
             initEmployeePage();
+            initFilter();
         }
     };
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesEmployee.init(); });
+jQuery(function() {
+    BasePagesEmployee.init();
+});
