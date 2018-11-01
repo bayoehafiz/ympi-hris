@@ -16,6 +16,15 @@ var renderProfileEdit = function(data) {
     $('#modal-nik').addClass('hide-me');
 
     // Set value in modal
+    var photo_container = $('#photo_container');
+    var photo_url = "../" + data.photo_url;
+    photo_container.html('<a href="" id="preview-photo_url">' +
+        '<img id="avatar" class="img-avatar img-avatar128 photo-avatar" src="' + photo_url + '">' +
+        '<div class="img-avatar img-avatar128 photo-overlay">' +
+        '<div class="photo-text">Upload Foto</div>' +
+        '</div>' +
+        '</a>');
+
     $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
 
     // fetch data for populating KODE BAGIAN selector
@@ -217,14 +226,14 @@ var renderProfileEdit = function(data) {
         dataType: 'json',
         data: dataObj,
         success: function(res) {
-            console.log(res);
+            // console.log(res);
             var selector = '<div class="form-group">' +
                 '<div class="form-material form-material-primary push-30">' +
                 '<select class="form-control text-right" id="input-group" name="elem-group" size="1">';
+            selector += '<option value=""></option>';
 
             if (res.success) {
                 if (data.group != null) { // if employee has a group
-                    selector += '<option value=""></option>';
                     var odata = res.data;
                     odata.forEach(function(o) {
                         if (o.id == data.group) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
@@ -326,7 +335,8 @@ var renderProfileEdit = function(data) {
     $('#profile-status').html(renderEditElement('select', '', 'status', 'Status Karyawan', false, [
         { value: 'Tetap', label: 'Tetap' },
         { value: 'Kontrak 1', label: 'Kontrak 1' },
-        { value: 'Kontrak 2', label: 'Kontrak 2' }
+        { value: 'Kontrak 2', label: 'Kontrak 2' },
+        { value: 'Percobaan', label: 'Percobaan' }
     ], data.status));
 
     $('#profile-nik').html(renderEditElement('text', data.nik, 'nik', 'NIK', false));

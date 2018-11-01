@@ -2,7 +2,7 @@
 var generateRandomProfile = function() {
     $('#input-nama').val('Jack Sparrow');
     $('#input-division').val('3');
-    $('#input-grade').val('13');
+    $('#input-grade').val('35');
     $('#input-penugasan').val('5');
     $('#input-status').val('Tetap');
     $('#input-tgl_masuk').val('20-06-2010');

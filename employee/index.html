@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/cropperjs/cropper.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
@@ -114,85 +115,86 @@
                                                 <div id="modal-kode-bagian"></div>
                                             </div>
                                             <div class="pull-left">
-                                                <img class="img-avatar img-avatar128" src="../assets/img/avatars/avatar.jpg" alt="">
-                                            </div>
+                                                <div class="photo-container" id="photo-container"></div>
+                                                <input type="file" id="profile-photo_url" name="profile-photo_url" class="hide-me" />
+                                                <input type="hidden" id="input-photo_url" name="input-photo_url" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-12 col-lg-12">
-                                            <div class="block bg-gray-lighter">
-                                                <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
-                                                    <li class="active">
-                                                        <a class="tab-title" href="#btabs-static-kerja">Data Kerja</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="tab-title" href="#btabs-static-pribadi">Pribadi</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="tab-title" href="#btabs-static-pendidikan">Pendidikan</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="tab-title" href="#btabs-static-admin">Administrasi</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="block-content tab-content">
-                                                    <div class="tab-pane active" id="btabs-static-kerja">
-                                                        <div class="row push-5-t">
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-division"></div>
-                                                                <div class="push-10" id="profile-department"></div>
-                                                                <div class="push-10" id="profile-section"></div>
-                                                                <div class="push-10" id="profile-sub-section"></div>
-                                                                <div class="push-10" id="profile-group"></div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-status"></div>
-                                                                <div class="push-10" id="profile-tgl-masuk"></div>
-                                                                <div class="push-10" id="profile-masa-kerja"></div>
-                                                                <div class="push-10" id="profile-grade"></div>
-                                                                <div class="push-10" id="profile-penugasan"></div>
-                                                            </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-lg-12">
+                                        <div class="block bg-gray-lighter">
+                                            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+                                                <li class="active">
+                                                    <a class="tab-title" href="#btabs-static-kerja">Data Kerja</a>
+                                                </li>
+                                                <li>
+                                                    <a class="tab-title" href="#btabs-static-pribadi">Pribadi</a>
+                                                </li>
+                                                <li>
+                                                    <a class="tab-title" href="#btabs-static-pendidikan">Pendidikan</a>
+                                                </li>
+                                                <li>
+                                                    <a class="tab-title" href="#btabs-static-admin">Administrasi</a>
+                                                </li>
+                                            </ul>
+                                            <div class="block-content tab-content">
+                                                <div class="tab-pane active" id="btabs-static-kerja">
+                                                    <div class="row push-5-t">
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-division"></div>
+                                                            <div class="push-10" id="profile-department"></div>
+                                                            <div class="push-10" id="profile-section"></div>
+                                                            <div class="push-10" id="profile-sub-section"></div>
+                                                            <div class="push-10" id="profile-group"></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-status"></div>
+                                                            <div class="push-10" id="profile-tgl-masuk"></div>
+                                                            <div class="push-10" id="profile-masa-kerja"></div>
+                                                            <div class="push-10" id="profile-grade"></div>
+                                                            <div class="push-10" id="profile-penugasan"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="btabs-static-pribadi">
-                                                        <div class="row push-5-t">
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-tempat-lahir"></div>
-                                                                <div class="push-10" id="profile-tgl-lahir"></div>
-                                                                <div class="push-10" id="profile-agama"></div>
-                                                                <div class="push-10" id="profile-jenis-kelamin"></div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="push-10 text-justify" id="profile-alamat-lengkap"></div>
-                                                                <div class="push-10 text-justify" id="profile-alamat-domisili"></div>
-                                                                <div class="push-10" id="profile-status-keluarga"></div>
-                                                            </div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-pribadi">
+                                                    <div class="row push-5-t">
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-tempat-lahir"></div>
+                                                            <div class="push-10" id="profile-tgl-lahir"></div>
+                                                            <div class="push-10" id="profile-agama"></div>
+                                                            <div class="push-10" id="profile-jenis-kelamin"></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="push-10 text-justify" id="profile-alamat-lengkap"></div>
+                                                            <div class="push-10 text-justify" id="profile-alamat-domisili"></div>
+                                                            <div class="push-10" id="profile-status-keluarga"></div>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane" id="btabs-static-pendidikan">
-                                                        <div class="row push-5-t">
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-pendidikan"></div>
-                                                                <div class="push-10" id="profile-sekolah-universitas"></div>
-                                                                <div class="push-10" id="profile-jurusan"></div>
-                                                            </div>
-                                                            <div class="col-md-6"></div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-pendidikan">
+                                                    <div class="row push-5-t">
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-pendidikan"></div>
+                                                            <div class="push-10" id="profile-sekolah-universitas"></div>
+                                                            <div class="push-10" id="profile-jurusan"></div>
                                                         </div>
+                                                        <div class="col-md-6"></div>
                                                     </div>
-                                                    <div class="tab-pane" id="btabs-static-admin">
-                                                        <div class="row push-5-t">
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-telepon"></div>
-                                                                <div class="push-10" id="profile-no-rekening"></div>
-                                                                <div class="push-10" id="profile-no-ktp"></div>
-                                                                <div class="push-10" id="profile-no-npwp"></div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="push-10" id="profile-no-bpjstk"></div>
-                                                                <div class="push-10" id="profile-no-bpjskes"></div>
-                                                                <div class="push-10" id="profile-no-jp"></div>
-                                                            </div>
+                                                </div>
+                                                <div class="tab-pane" id="btabs-static-admin">
+                                                    <div class="row push-5-t">
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-telepon"></div>
+                                                            <div class="push-10" id="profile-no-rekening"></div>
+                                                            <div class="push-10" id="profile-no-ktp"></div>
+                                                            <div class="push-10" id="profile-no-npwp"></div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="push-10" id="profile-no-bpjstk"></div>
+                                                            <div class="push-10" id="profile-no-bpjskes"></div>
+                                                            <div class="push-10" id="profile-no-jp"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -201,19 +203,58 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-sm btn-default pull-left" data-toggle="popover" data-placement="top" data-content="Generate random sample data" type="button" id="btn-generate-profile"><i class="fa fa-gear"></i></button>
-                                <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
-                                <button class="btn btn-sm btn-danger" type="button" id="btn-remove-profile"><i class="fa fa-trash"></i> Hapus</button>
-                                <button class="btn btn-sm btn-success" type="submit" id="btn-save-profile"><i class="fa fa-save"></i> Simpan</button>
-                                <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> Tutup</button>
-                                <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="fa fa-times"></i> Batal</button>
-                            </div>
                         </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-default pull-left" data-toggle="popover" data-placement="top" data-content="Generate random sample data" type="button" id="btn-generate-profile"><i class="fa fa-gear"></i></button>
+                            <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-remove-profile"><i class="fa fa-trash"></i> Hapus</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-save-profile"><i class="fa fa-save"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> Tutup</button>
+                            <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="fa fa-times"></i> Batal</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
         <!-- END Profile Modal -->
+        <!-- Photo Upload Modal -->
+        <div class="modal fade" id="modal-uploader" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-popin">
+                <div class="modal-content">
+                    <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block-header bg-primary-dark">
+                            <ul class="block-options">
+                                <li>
+                                    <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                                </li>
+                            </ul>
+                            <h3 class="block-title" id="modal-title">Data Karyawan: Upload Foto</h3>
+                        </div>
+                        <div class="block-content bg-gray-lighter">
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 push-30">
+                                    <div class="img-container">
+                                        <img id="image">
+                                    </div>
+                                    <div class="help-block text-right">* Klik 2 kali pada foto untuk menggeser</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn-group pull-left">
+                                <button class="btn btn-default" id="rotate-left"><i class="si si-action-undo"></i></button>
+                                <button class="btn btn-default" id="rotate-right"><i class="si si-action-redo"></i></button>
+                                <button class="btn btn-default" id="zoom-in"><i class="si si-magnifier-add"></i></button>
+                                <button class="btn btn-default" id="zoom-out"><i class="si si-magnifier-remove"></i></button>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-primary" id="crop">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Photo Upload Modal -->
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
@@ -221,6 +262,7 @@
         <input type="hidden" id="opened-nik">
         <input type="hidden" id="origin">
         <input type="hidden" id="form-scope">
+        <input type="hidden" id="uploader-opened">
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->
@@ -256,10 +298,11 @@
     <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
     <script src="../assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
-    <script src="../assets/js/plugins/dropzonejs/dropzone.min.js"></script>
     <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
+    <script src="../assets/js/plugins/cropperjs/cropper.min.js"></script>
+    <script src="../assets/js/plugins/jquery-cropper/jquery-cropper.min.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
     <script src="helper/generate-nik.js"></script>
@@ -273,6 +316,7 @@
     <script src="helper/render-profile-edit.js"></script>
     <script src="helper/render-profile-view.js"></script>
     <script src="helper/repopulate-selector.js"></script>
+    <script src="helper/init-uploader.js"></script>
     <script src="employee.js"></script>
     <script>
     jQuery(function() {

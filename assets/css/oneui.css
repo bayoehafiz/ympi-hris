@@ -14393,5 +14393,49 @@ div.tagsinput span.tag a:hover {
     border-radius: 35px;
 }
 
-optgroup { font-size:12px; }
+optgroup {
+    font-size: 12px;
+}
 
+.photo-container {
+    position: relative;
+    width: 50%;
+}
+
+.photo-avatar {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #a48ad4;
+}
+
+.photo-container:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.img-container img {
+    max-width: 100%;
+}

@@ -13,7 +13,9 @@ var renderProfileView = function(data) {
     $(".tab-pane:first").addClass('active');
 
     // Set value in modal
-    $('.img-avatar128').attr('src', "../" + data.photo_url);
+    var photo_url = "../" + data.photo_url;
+    $('#photo_container').html('<img id="avatar" class="img-avatar img-avatar128 photo-avatar" src="' + photo_url + '">');
+
     $('#modal-nama').html(data.nama);
 
     if (data.status == "Tetap") var snik = '<span class="text-primary">' + data.nik + '</span>';

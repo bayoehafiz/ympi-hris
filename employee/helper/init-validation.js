@@ -61,6 +61,9 @@ var initValidation = function() {
             'elem-no_ktp': {
                 required: true
             },
+            'elem-no_rekening': {
+                required: true
+            },
             'elem-no_npwp': {
                 required: true
             }
@@ -82,6 +85,7 @@ var initValidation = function() {
             'elem-tgl_masuk': 'Pilih Tanggal',
             'elem-no_telepon': 'Masukkan No. Telepon',
             'elem-no_ktp': 'Masukkan No. KTP',
+            'elem-no_rekening': 'Masukkan No. Rekening',
             'elem-no_npwp': 'Masukkan No. NPWP',
         }
     });

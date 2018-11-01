@@ -13,6 +13,9 @@ var renderProfileAdd = function() {
     $(".tab-pane:first").addClass('active');
 
     // Set value in modal
+    var photo_url = "../assets/img/avatars/avatar.jpg";
+    $('.img-avatar128').attr('src', photo_url);
+
     $('#modal-nama').html('<div class="form-group"><div class="form-material form-material-primary"><input class="form-control text-center font-s20" type="text" id="input-nama" name="elem-nama" placeholder="Nama Lengkap"></div></div>');
 
     $('#modal-nik').html("");
@@ -157,7 +160,8 @@ var renderProfileAdd = function() {
     $('#profile-status').html(renderAddElement('select', '', 'status', 'Status Karyawan', false, [
         { value: 'Tetap', label: 'Tetap' },
         { value: 'Kontrak 1', label: 'Kontrak 1' },
-        { value: 'Kontrak 2', label: 'Kontrak 2' }
+        { value: 'Kontrak 2', label: 'Kontrak 2' },
+        { value: 'Percobaan', label: 'Percobaan' }
     ]));
 
     $('#profile-tgl-masuk').html(renderAddElement('datepicker', '', 'tgl_masuk', 'Tanggal Masuk', false));

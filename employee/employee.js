@@ -25,9 +25,15 @@ var BasePagesEmployee = function() {
                                 '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
-                        } else {
+                        } else if (d.status == "Tetap") {
                             html += '<div class="col-md-2 col-xs-6">' +
                                 '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        } else {
+                            html += '<div class="col-md-2 col-xs-6">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
                                 '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
@@ -84,7 +90,7 @@ var BasePagesEmployee = function() {
                         return [];
                     } else {
                         // format the Date into correct one!
-                        var tableData = [];  
+                        var tableData = [];
 
                         res.aaData.forEach(function(val) {
                             // create TEMP variable (temporary) for ordering purpose
@@ -138,8 +144,8 @@ var BasePagesEmployee = function() {
                         // Show employee's GROUP
                         if (data == null) { // if empty, show SUB_SECTION instead
                             if (row.nama_sub_section == null) { // if empty, show SECTION instead
-                                if (row.nama_section.length == null) { // if empty, show DEPTARTMENT instead
-                                    if (row.nama_department.length == null) return "<small class=\"text-muted\">Divisi</small> " + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
+                                if (row.nama_section == null) { // if empty, show DEPTARTMENT instead
+                                    if (row.nama_department == null) return "<small class=\"text-muted\">Divisi</small> " + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
                                     return "<small class=\"text-muted\">Departemen</small> " + row.nama_department.toUpperCase();
                                 }
                                 return "<small class=\"text-muted\">Section</small> " + row.nama_section.toUpperCase();
@@ -640,11 +646,21 @@ var BasePagesEmployee = function() {
 
         // when ADD button is clicked
         $(document).on('click', '#btn-add', function() {
-            $('#modal-profile').modal('show');
+            console.log("Clearing all inputs first...");
+            $('[id^="input-"]').val('');
+            // $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
+
+            $('#modal-profile').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+
             renderProfileAdd();
             $('#opened-profile').val("");
             $('#opened-nik').val("");
         });
+
 
         // This is OUR TABLE!
         var table = $('.js-dataTable-full').DataTable();
@@ -662,6 +678,9 @@ var BasePagesEmployee = function() {
             }).done(function(res) {
                 var data = res.data;
 
+                console.log("Clearing all inputs first...");
+                $('[id^="input-"]').val('');
+
                 // Open the popup modal
                 $('#modal-profile').modal({
                     show: true,
@@ -677,20 +696,34 @@ var BasePagesEmployee = function() {
 
         // When TABLE'S EDIT button is clicked
         $('.js-dataTable-full tbody').on('click', '.btn-edit', function() {
-            var data = table.row($(this).parents('tr')).data();
+            var nik = $(this).parents('tr').attr('data-nik');
 
-            // Open the popup modal
-            $('#modal-profile').modal({
-                show: true,
-                keyboard: false,
-                backdrop: 'static'
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + "/php/api/getEmployeeById.php",
+                dataType: 'json',
+                data: {
+                    id: nik
+                }
+            }).done(function(res) {
+                var data = res.data;
+
+                console.log("Clearing all inputs first...");
+                $('[id^="input-"]').val('');
+
+                // Open the popup modal
+                $('#modal-profile').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+
+                $('#opened-profile').val(data.id);
+                $('#opened-nik').val(data.nik);
+                $('#origin').val('direct');
+
+                renderProfileEdit(data);
             });
-
-            $('#opened-profile').val(data.id);
-            $('#opened-nik').val(data.nik);
-            $('#origin').val('direct');
-
-            renderProfileEdit(data);
         });
 
         // When TABLE'S DELETE button is clicked
@@ -743,6 +776,10 @@ var BasePagesEmployee = function() {
             });
         });
 
+
+        //
+        // MODAL ACTIONS !!!
+        //
         // when modal CANCEL button clicked
         $(document).on('click', '#btn-cancel-profile', function() {
             var origin = $('#origin').val();
@@ -750,30 +787,53 @@ var BasePagesEmployee = function() {
                 $('#modal-profile').modal('hide');
             } else {
                 var nik = $('#opened-nik').val();
-                var $tr = $('#table-employee').find('tr[data-nik="' + nik + '"]');
-                var dataTableRow = table.row($tr[0]);
-                var data = dataTableRow.data();
-                renderProfileView(data);
+
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + "/php/api/getEmployeeById.php",
+                    dataType: 'json',
+                    data: {
+                        id: nik
+                    }
+                }).done(function(res) {
+                    var data = res.data;
+
+                    console.log("Clearing all inputs first...");
+                    $('[id^="input-"]').val('');
+
+                    renderProfileView(data);
+                });
             }
         });
 
         // When modal EDIT button is clicked
         $(document).on('click', '#btn-edit-profile', function() {
             var nik = $('#opened-nik').val();
-            var $tr = $('#table-employee').find('tr[data-nik="' + nik + '"]');
-            var dataTableRow = table.row($tr[0]);
-            var data = dataTableRow.data();
 
-            // Open the popup modal
-            $('#modal-profile').modal({
-                show: true,
-                keyboard: false,
-                backdrop: 'static'
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + "/php/api/getEmployeeById.php",
+                dataType: 'json',
+                data: {
+                    id: nik
+                }
+            }).done(function(res) {
+                var data = res.data;
+
+                console.log("Clearing all inputs first...");
+                $('[id^="input-"]').val('');
+
+                // Open the popup modal
+                $('#modal-profile').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+
+                $('#origin').val('modal');
+
+                renderProfileEdit(data);
             });
-
-            $('#origin').val('modal');
-
-            renderProfileEdit(data);
         });
 
         // When modal DELETE button is clicked
@@ -851,7 +911,7 @@ var BasePagesEmployee = function() {
             if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
             else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
 
-            // theng generate new NIK
+            // then generate new NIK
             $.when(getLatestNik()).done(function(response) {
                 var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
                 var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
@@ -887,12 +947,14 @@ var BasePagesEmployee = function() {
                     "value": new_nik
                 });
 
+                // Send the final data!!!
                 $.ajax({
                     type: "POST",
                     url: apiUrl,
                     dataType: 'json',
                     data: {
                         data: data,
+                        new_nik: new_nik,
                         id: $('#opened-profile').val()
                     },
                     success: function(res) {
@@ -910,7 +972,8 @@ var BasePagesEmployee = function() {
                             // reload the stat
                             initStat();
 
-                            // reload the table
+                            // destroy the table and reinitiate it
+                            table.clear();
                             table.ajax.reload();
                         }
 
@@ -919,18 +982,11 @@ var BasePagesEmployee = function() {
             }); // end of $.when
         });
 
-        // when modal on close
-        $('#modal-profile').on('hidden.bs.modal', function() {
-            $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
-        })
-
-
-        // ADD PROFILE functions ::
-        // 
-        // when gear button clicked
+        // when GEAR button clicked
         $(document).on('click', '#btn-generate-profile', function() {
             generateRandomProfile();
         });
+
 
         // when division selector changed
         $(document).on('change', '#input-kode_bagian', function() {
@@ -1028,6 +1084,17 @@ var BasePagesEmployee = function() {
                 }
             });
         });
+
+        // when modal on close
+        // $('#modal-profile').on('hidden.bs.modal', function() {
+        //     console.log("Clearing all inputs...");
+        //     $('[id^="input-"]').val('');
+        //     $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
+        // })
+
+        // 
+        // Eof MODAL ACTIONS !!!
+        // 
     };
 
     return {
@@ -1037,6 +1104,7 @@ var BasePagesEmployee = function() {
             initTable();
             initEmployeePage();
             initFilter();
+            initUploader();
         }
     };
 }();
