@@ -51,6 +51,7 @@
                         <table class="table table-bordered table-striped js-dataTable-full table-hover table-responsive display nowrap" id="table-employee" style="width: 100%!important;">
                             <thead>
                                 <tr>
+                                    <!-- <th></th> -->
                                     <th class="text-center">NIK</th>
                                     <th class="text-center" style="width: 25%;">Nama</th>
                                     <th class="text-center" style="width: 20%;">Bagian</th>
@@ -67,19 +68,18 @@
                 <!-- END Dynamic Table Full Pagination -->
                 <!-- Data Filtering -->
                 <div class="col-md-3">
-                    <div class="block bg-gray-lighter block-themed" id="filter-block">
+                    <div class="block bg-gray-lighter block-themed block-rounded" id="filter-block">
                         <div class="block-header bg-amethyst">
+                            <ul class="block-options">
+                                <li>
+                                    <button type="button" id="btn-reset-filter"><i class="si si-refresh"></i> Clear</button>
+                                </li>
+                            </ul>
                             <h3 class="block-title"><i class="fa fa-filter"></i> Filter</h3>
                         </div>
                         <div class="block-content text-muted">
                             <form action="" method="post" id="filter-form">
                                 <div id="filter-container" class="push-50">Filter components will be here</div>
-                                <div class="push-30">
-                                    <div class="btn-group right-align">
-                                        <button class="btn btn-md btn-default" type="button" id="btn-reset-filter"><i class="si si-refresh"></i> Clear</button>
-                                        <!-- <button class="btn btn-md btn-primary" type="submit" id="btn-sbmit-filter">Cari <i class="si si-action-redo"></i></button> -->
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>

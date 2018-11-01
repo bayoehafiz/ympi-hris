@@ -84,8 +84,13 @@ var BasePagesEmployee = function() {
                         return [];
                     } else {
                         // format the Date into correct one!
-                        var tableData = [];
+                        var tableData = [];  
+
                         res.aaData.forEach(function(val) {
+                            // create TEMP variable (temporary) for ordering purpose
+                            // var tmp = moment(val.tgl_masuk, 'DD-MM-YY').format('YYYYMMDD');
+                            // val.tmp = tmp;
+
                             // validate Nama (remove special character)
                             var nama = val.nama;
                             val.nama = nama.replace(/[^\w\s]/gi, '');
@@ -111,7 +116,13 @@ var BasePagesEmployee = function() {
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-nik', data.nik);
             },
-            columns: [{
+            columns: [
+                // {
+                //     visible: false,
+                //     searchable: false,
+                //     data: "tmp"
+                // },
+                {
                     className: "text-center",
                     data: "nik"
                 }, {
@@ -185,9 +196,9 @@ var BasePagesEmployee = function() {
         });
 
         // Extend sorting Fn for NIK column
-        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        jQuery.extend(jQuery.fn.dataTableExt.sort, {
             "nik-formatted-pre": function(a) {
-                // console.log(a);
+                console.log(a);
             },
             "nik-formatted-asc": function(a, b) {
                 //
@@ -203,7 +214,7 @@ var BasePagesEmployee = function() {
         var container = $('#filter-container');
         container.html('');
 
-        // Populate FILTER selectors :: Status
+        // Populate FILTER selectors :: BY STATUS
         var data = [{
             id: 'Tetap',
             label: 'Tetap'
@@ -213,6 +224,9 @@ var BasePagesEmployee = function() {
         }, {
             id: 'Kontrak 2',
             label: 'Kontrak 2'
+        }, {
+            id: 'Percobaan',
+            label: 'Percobaan'
         }];
 
         var bag_elems = '<div class="form-group">' +
@@ -231,7 +245,32 @@ var BasePagesEmployee = function() {
 
         container.append(bag_elems);
 
-        // Populate FILTER selectors :: Kode_bagian
+        // Populate FILTER selectors :: BY JENIS_KELAMIN
+        var data = [{
+            id: 'Laki-laki',
+            label: 'Laki-laki'
+        }, {
+            id: 'Perempuan',
+            label: 'Perempuan'
+        }];
+
+        var bag_elems = '<div class="form-group">' +
+            '<div class="form-material form-material-primary push-30 push-30-t">' +
+            '<select class="form-control" id="input-filter-jenis_kelamin" name="elem-filter-jenis_kelamin" size="1">' +
+            '<option val=""></option>';
+
+        data.forEach(function(dt) {
+            bag_elems += '<option value="' + dt.id + '">' + dt.label + '</option>';
+        });
+
+        bag_elems += '</select>' +
+            '<label for="elem-filter-jenis_kelamin">By Jenis Kelamin</label>' +
+            '</div>' +
+            '</div>';
+
+        container.append(bag_elems);
+
+        // Populate FILTER selectors :: BY KODE_BAGIAN
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -258,7 +297,7 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // Populate FILTER selectors :: Dept/Sec/Sub Sec/Grup
+        // Populate FILTER selectors :: BY DEPT/SEC/SUB SEC/GRUP
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -322,7 +361,7 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // Populate FILTER selectors :: Grade
+        // Populate FILTER selectors :: BY GRADE
         $.ajax({
             type: 'POST',
             dataType: 'json',
@@ -341,6 +380,33 @@ var BasePagesEmployee = function() {
 
                     bag_elems += '</select>' +
                         '<label for="elem-filter-grade">By Grade</label>' +
+                        '</div>' +
+                        '</div>';
+
+                    container.append(bag_elems);
+                }
+            }
+        });
+
+        // Populate FILTER selectors :: BY JABATAN
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: BASE_URL + '/php/api/getSelectorData.php',
+            data: { table: 'penugasan' },
+            success: function(res) {
+                if (res.success) {
+                    var bag_elems = '<div class="form-group">' +
+                        '<div class="form-material form-material-primary push-30">' +
+                        '<select class="form-control" id="input-filter-penugasan" name="elem-filter-penugasan" size="1">' +
+                        '<option val=""></option>';
+
+                    res.data.forEach(function(dt) {
+                        bag_elems += '<option value="' + dt.id + '">' + dt.nama + '</option>';
+                    });
+
+                    bag_elems += '</select>' +
+                        '<label for="elem-filter-penugasan">By Jabatan</label>' +
                         '</div>' +
                         '</div>';
 
