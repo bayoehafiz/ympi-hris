@@ -644,11 +644,17 @@ var BasePagesEmployee = function() {
             location.reload();
         });
 
-        // when ADD button is clicked
+
+        // This is OUR TABLE!
+        var table = $('.js-dataTable-full').DataTable();
+
+        // when ADD BUTTON is clicked
         $(document).on('click', '#btn-add', function() {
             console.log("Clearing all inputs first...");
             $('[id^="input-"]').val('');
-            // $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
+
+            $('#photo-container-edit').removeClass('hide-me');
+            $('#photo-container-view').addClass('hide-me');
 
             $('#modal-profile').modal({
                 show: true,
@@ -661,10 +667,6 @@ var BasePagesEmployee = function() {
             $('#opened-nik').val("");
         });
 
-
-        // This is OUR TABLE!
-        var table = $('.js-dataTable-full').DataTable();
-
         // When employee NAME or TABLE'S VIEW button is clicked
         $('.js-dataTable-full tbody').on('click', 'a, #btn-view', function() {
             var nik = $(this).parents('tr').attr('data-nik');
@@ -676,10 +678,13 @@ var BasePagesEmployee = function() {
                     id: nik
                 }
             }).done(function(res) {
+                console.log("Resetting all inputs...");
                 var data = res.data;
+                renderProfileView(data);
 
-                console.log("Clearing all inputs first...");
                 $('[id^="input-"]').val('');
+                $('#photo-container-view').removeClass('hide-me');
+                $('#photo-container-edit').addClass('hide-me');
 
                 // Open the popup modal
                 $('#modal-profile').modal({
@@ -690,7 +695,6 @@ var BasePagesEmployee = function() {
 
                 $('#opened-profile').val(data.id);
                 $('#opened-nik').val(data.nik);
-                renderProfileView(data);
             });
         });
 
@@ -708,8 +712,10 @@ var BasePagesEmployee = function() {
             }).done(function(res) {
                 var data = res.data;
 
-                console.log("Clearing all inputs first...");
+                console.log("Resetting all inputs...");
                 $('[id^="input-"]').val('');
+                $('#photo-container-edit').removeClass('hide-me');
+                $('#photo-container-view').addClass('hide-me');
 
                 // Open the popup modal
                 $('#modal-profile').modal({
@@ -798,8 +804,10 @@ var BasePagesEmployee = function() {
                 }).done(function(res) {
                     var data = res.data;
 
-                    console.log("Clearing all inputs first...");
+                    console.log("Resetting all inputs...");
                     $('[id^="input-"]').val('');
+                    $('#photo-container-view').removeClass('hide-me');
+                    $('#photo-container-edit').addClass('hide-me');
 
                     renderProfileView(data);
                 });
@@ -820,8 +828,10 @@ var BasePagesEmployee = function() {
             }).done(function(res) {
                 var data = res.data;
 
-                console.log("Clearing all inputs first...");
+                console.log("Resetting all inputs...");
                 $('[id^="input-"]').val('');
+                $('#photo-container-edit').removeClass('hide-me');
+                $('#photo-container-view').addClass('hide-me');
 
                 // Open the popup modal
                 $('#modal-profile').modal({
@@ -946,7 +956,7 @@ var BasePagesEmployee = function() {
                     "key": "nik",
                     "value": new_nik
                 });
-
+                
                 // Send the final data!!!
                 $.ajax({
                     type: "POST",

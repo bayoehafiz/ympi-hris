@@ -16,14 +16,9 @@ var renderProfileEdit = function(data) {
     $('#modal-nik').addClass('hide-me');
 
     // Set value in modal
-    var photo_container = $('#photo_container');
     var photo_url = "../" + data.photo_url;
-    photo_container.html('<a href="" id="preview-photo_url">' +
-        '<img id="avatar" class="img-avatar img-avatar128 photo-avatar" src="' + photo_url + '">' +
-        '<div class="img-avatar img-avatar128 photo-overlay">' +
-        '<div class="photo-text">Upload Foto</div>' +
-        '</div>' +
-        '</a>');
+    $('#photo_container-edit').removeClass('hide-me');
+    $('#avatar').attr('src', photo_url);
 
     $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
 

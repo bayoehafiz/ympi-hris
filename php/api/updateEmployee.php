@@ -53,27 +53,32 @@ if (isset($_POST['data'])) {
             // delete photo file
             $photoPath = '../../' . $rows[0]['photo_url'];
             if (file_exists($photoPath)) {
-                if (unlink($photoPath)) {
+                // if it's not default photo placeholder
+                if ($photoPath != '../../assets/img/avatars/avatar.jpg') {
+                    if (unlink($photoPath)) {
+                        // then save the new one
+                        saveBase64ImagePng($rows[0]['nik'], $photoData, $path);
+                    }
+                } else {
                     // then save the new one
                     saveBase64ImagePng($rows[0]['nik'], $photoData, $path);
                 }
             }
 
-            $sql_sets .= '`' . $value['key'] . '`';
-            $sql_values .= '"assets/img/avatars/' . $rows[0]['nik'] . '.jpg"';
+            $sql_sets .= "`" . $value['key'] . "` = 'assets/img/avatars/" . $rows[0]['nik'] . ".jpg'";
         } else {
-            $sql_sets .= '`' . $value['key'] . '`';
-            $sql_values .= '"' . $value['value'] . '"';
+            $sql_sets .= "`" . $value['key'] . "` = '" . $value['value'] . "'";
         }
 
-        $sql_sets .= "`" . $value['key'] . "` = '" . $value['value'] . "'";
-
+        // Decide the comma addition to stop!
         if ($counter != $arr_length) {
             $sql_sets .= ", ";
         }
     }
     $sql = "UPDATE `employee` SET {$sql_sets}  WHERE id = '{$id}'";
+
     // ChromePhp::log($sql);
+    
     if ($db->query($sql)) {
         $res['success'] = true;
     } else {
