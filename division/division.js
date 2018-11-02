@@ -373,9 +373,8 @@ var BasePagesDivision = function() {
         });
     };
 
-    var initStat = function(type) {
-        // clear the container first
-        var container = $('#stat-divisi');
+    var initSidebar = function(type) {
+        var container = $('#sidebar-data-' + type);
         container.empty();
         // Get division datas
         $.ajax({
@@ -391,20 +390,88 @@ var BasePagesDivision = function() {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {
+                        html += '<tr class="push-20">' +
+                            '<td class="bg-primary">' +
+                            '<div class="block-title text-uppercase">Stat Karyawan</div>' +
+                            '</td>' +
+                            '</tr>';
+                        var counter = 0;
+                        data.forEach(function(d) {
+                            counter++;
+                            if (d.kode == undefined) d.kode = d.nama;
+
+                            if (d.active == 0) {
+                                var text_color_1 = " text-danger";
+                                var text_color_2 = " text-danger";
+                            } else {
+                                var text_color_1 = " text-muted";
+                                var text_color_2 = "";
+                            }
+
+                            if (counter == 1) {
+                                html += '<tr>' +
+                                    '<td class="bg-gray-lighter">' +
+                                    '<div class="' + text_color_1 + ' push-10-t">' + d.kode + '</div>' +
+                                    '<div class="h2 font-w500' + text_color_2 + '">' + d.total + '</div>' +
+                                    '</td>' +
+                                    '</tr>';
+                            } else if (counter == data.length) {
+                                html += '<tr>' +
+                                    '<td class="bg-gray-lighter">' +
+                                    '<div class="' + text_color_1 + '">' + d.kode + '</div>' +
+                                    '<div class="h2 font-w500 push-10' + text_color_2 + '">' + d.total + '</div>' +
+                                    '</td>' +
+                                    '</tr>';
+                            } else {
+                                html += '<tr>' +
+                                    '<td class="bg-gray-lighter">' +
+                                    '<div class="' + text_color_1 + '">' + d.kode + '</div>' +
+                                    '<div class="h2 font-w500' + text_color_2 + '">' + d.total + '</div>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                        });
+                    }
+                }
+
+                // append the result into container
+                container.append(html);
+            }
+        });
+    }
+
+    var initStat = function() {
+        // clear the container first
+        var container = $('#stat-divisi');
+        container.empty();
+        // Get division datas
+        $.ajax({
+            type: "POST",
+            url: BASE_URL + '/php/api/getDivisionStat.php',
+            dataType: 'json',
+            data: {
+                table: 'kode_bagian'
+            },
+            success: function(res) {
+                var html = '';
+                if (res.success) {
+                    var data = res.data;
+                    var data_length = data.length;
+                    if (data_length > 0) {
                         html += '';
                         data.forEach(function(d) {
                             if (d.kode == undefined) d.kode = d.nama;
                             html += '<div class="col-md-2">' +
                                 '<div class="font-w700 text-gray-darker animated fadIn">' + d.kode + '</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX">' + d.total + '</span>' +
+                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.total + '</span>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
                         });
                     }
                 }
 
-                html += '<div class="col-md-2">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
+                html += '<div class="col-md-2 pull-right push-5-t">' +
+                    '<span class="h1 font-w700 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
                     '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
@@ -412,23 +479,20 @@ var BasePagesDivision = function() {
                 // append the result into container
                 container.html(html);
             }
-        })
+        });
     };
 
     var initDivisionPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+            // Set active class for related menu
+            $('#menu-divisi').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
             console.log("Header Navigation loaded!");
-            // Set active class for related menu
-            $('#menu-divisi').addClass('active');
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-layers">&nbsp;&nbsp;</i>DATA DIVISI</h3>');
         });
@@ -458,32 +522,32 @@ var BasePagesDivision = function() {
             switch (t) {
                 case 'division':
                     $('#btn-add').attr('data', 'Divisi');
-                    initStat('division');
+                    initSidebar('division');
                     initTableDivision();
                     break;
                 case 'department':
                     $('#btn-add').attr('data', 'Departemen');
-                    initStat('department');
+                    initSidebar('department');
                     initTableDepartment();
                     break;
                 case 'section':
                     $('#btn-add').attr('data', 'Section');
-                    initStat('section');
+                    initSidebar('section');
                     initTableSection();
                     break;
                 case 'sub_section':
                     $('#btn-add').attr('data', 'Sub Section');
-                    initStat('sub_section');
+                    initSidebar('sub_section');
                     initTableSubSection();
                     break;
                 case 'group':
                     $('#btn-add').attr('data', 'Grup');
-                    initStat('group');
+                    initSidebar('group');
                     initTableGroup();
                     break;
                 default:
                     $('#btn-add').attr('data', 'Kode Bagian');
-                    initStat('kode_bagian');
+                    // initStat('kode_bagian');
                     initTableKodeBagian();
                     break;
             }
@@ -594,7 +658,8 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    initStat(dType);
+                                    if (dType == 'kode_bagian') initStat();
+                                    else initSidebar(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
@@ -654,7 +719,8 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    initStat(dType);
+                                    if (dType == 'kode_bagian') initStat();
+                                    else initSidebar(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
@@ -725,7 +791,7 @@ var BasePagesDivision = function() {
 
             // reset all elements
             $('[id^=input-]').empty();
-            
+
             // hide all hidden elements
             $('[id^=hidden-]').addClass('hide-me');
         })
@@ -742,7 +808,7 @@ var BasePagesDivision = function() {
 
     return {
         init: function() {
-            initStat('kode_bagian');
+            initStat();
             initDivisionPage();
         }
     };

@@ -13,28 +13,28 @@ var BasePagesEmployee = function() {
                     var data = res.data;
                     var counter = 0;
                     data.forEach(function(d) {
-                        if (d.status == "Kontrak 1") {
-                            html += '<div class="col-md-2 col-md-offset-1 col-xs-6">' +
+                        if (d.status == "Percobaan") {
+                            html += '<div class="col-md-2 col-xs-6">' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
+                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '</div>';
+                        } else if (d.status == "Kontrak 1") {
+                            html += '<div class="col-md-2 col-xs-6">' +
                                 '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         } else if (d.status == "Kontrak 2") {
                             html += '<div class="col-md-2 col-xs-6">' +
                                 '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
-                                '</div>';
-                        } else if (d.status == "Tetap") {
-                            html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         } else {
                             html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + d.total + '</span>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
+                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         }
@@ -43,12 +43,12 @@ var BasePagesEmployee = function() {
                     })
                     html += '<div class="col-md-2 col-xs-6">' +
                         '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
-                        '<span class="h2 font-w300 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
+                        '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
                         '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                         '</div>';
                 }
-                html += '<div class="col-md-2">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                html += '<div class="col-md-2 pull-right push-5-t">' +
+                    '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
                     '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
@@ -178,7 +178,7 @@ var BasePagesEmployee = function() {
                         if (data == "Tetap") statusEdt = '<span class="label label-primary">' + data.toUpperCase() + '</span>';
                         else if (data == "Kontrak 1") statusEdt = '<span class="label label-info">' + data.toUpperCase() + '</span>';
                         else if (data == "Kontrak 2") statusEdt = '<span class="label label-warning">' + data.toUpperCase() + '</span>';
-                        else data = '<span class="label label-default">' + data + '</span>';
+                        else statusEdt = '<span class="label label-default">' + data.toUpperCase() + '</span>';
 
                         return statusEdt;
                     }
@@ -612,9 +612,8 @@ var BasePagesEmployee = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+            // Set active class for related menu
+            $('#menu-karyawan').addClass('active');
         });
 
         // load header-nav
@@ -622,8 +621,6 @@ var BasePagesEmployee = function() {
             console.log("Header Navigation loaded!");
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>');
-            // Set active class for related menu
-            $('#menu-karyawan').addClass('active');
         });
 
         // load footer
@@ -632,8 +629,8 @@ var BasePagesEmployee = function() {
         });
 
         // when menu button is clicked
-        $(document).on('click', '.nav-menu, .logo', function(e) {
-            e.preventDefault;
+        $(document).on('click', '.nav-menu', function(e) {
+            e.preventDefault();
             if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
             return false;
         });
@@ -883,6 +880,7 @@ var BasePagesEmployee = function() {
                                     initStat();
 
                                     // reload the table
+                                    table.clear();
                                     table.ajax.reload();
                                 }
                             })
@@ -956,7 +954,7 @@ var BasePagesEmployee = function() {
                     "key": "nik",
                     "value": new_nik
                 });
-                
+
                 // Send the final data!!!
                 $.ajax({
                     type: "POST",
@@ -1105,6 +1103,13 @@ var BasePagesEmployee = function() {
         // 
         // Eof MODAL ACTIONS !!!
         // 
+
+        // When STAT NUMBER is clicked
+        $(document).on('click', 'a.stat-filter', function(e) {
+            e.preventDefault();
+            var data = $(this).attr('data');
+            $('#input-filter-status').val(data).trigger('change');
+        })
     };
 
     return {

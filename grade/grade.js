@@ -3,9 +3,8 @@ var BasePagesGrade = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+            // Set active class for related menu
+            $('#menu-grade').addClass('active');
         });
 
         // load header-nav
@@ -13,8 +12,6 @@ var BasePagesGrade = function() {
             console.log("Header Navigation loaded!");
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA GRADE</h3>');
-            // Set active class for related menu
-            $('#menu-grade').addClass('active');
         });
 
         // load footer
@@ -238,15 +235,15 @@ var BasePagesGrade = function() {
 
                             html += '<div class="col-md-' + wCounter + '">' +
                                 '<div class="font-w700 text-gray-darker animated fadeIn">' + title + '</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
+                                '<span class="h1 font-w700 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
                                 '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         });
                     }
                 }
 
-                html += '<div class="col-md-2">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                html += '<div class="col-md-2 pull-right push-5-t">' +
+                    '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + table + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
                     '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +

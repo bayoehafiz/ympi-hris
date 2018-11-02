@@ -3,9 +3,8 @@ var BasePagesDashboard = function() {
         // load sidebar
         $('#sidebar').load("partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+            // Set active class for related menu
+            $('#menu-dashboard').addClass('active');
         });
 
         // load header-nav
@@ -13,8 +12,6 @@ var BasePagesDashboard = function() {
             console.log("Header Navigation loaded!");
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-speedometer">&nbsp;&nbsp;</i>DASHBOARD</h3>');
-            // Set active class for related menu
-            $('#menu-dashboard').addClass('active');
         });
 
         // load footer
@@ -23,7 +20,7 @@ var BasePagesDashboard = function() {
         });
 
         // when menu button is clicked
-        $(document).on('click', '.nav-menu, .logo', function(e) {
+        $(document).on('click', '.nav-menu', function(e) {
             e.preventDefault;
             if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
             return false;
@@ -39,7 +36,6 @@ var BasePagesDashboard = function() {
     return {
         init: function() {
             initDashboard();
-            sweetAlert();
         }
     };
 }();

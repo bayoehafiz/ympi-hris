@@ -189,7 +189,7 @@ var initValidation = function(data_type) {
                         })
 
                         // reload the stat
-                        initStat(dType);
+                        if (dType == 'kode_bagian') initStat();
 
                         // reload the table
                         var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"

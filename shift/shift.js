@@ -28,17 +28,15 @@ var BasePagesShift = function() {
     var initShiftPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
             console.log("Sidebar loaded!");
+            // Set active class for related menu
+            $('#menu-shift-kerja').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-book-open">&nbsp;&nbsp;</i>DATA SHIFT KERJA</h3>');
-            // Set active class for related menu
-            $('#menu-shift-kerja').addClass('active');
             console.log("Header Navigation loaded!");
         });
 

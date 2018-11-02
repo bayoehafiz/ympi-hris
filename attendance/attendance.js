@@ -3,9 +3,8 @@ var BasePagesAttendance = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
             console.log("Sidebar loaded!");
-
-            // load the logo
-            $('.logo').html('<img src="../assets/img/yamaha-logo-white.png" class="img-responsive center-block">');
+            // Set active class for related menu
+            $('#menu-attendance').addClass('active');
         });
 
         // load header-nav
@@ -13,8 +12,6 @@ var BasePagesAttendance = function() {
             console.log("Header Navigation loaded!");
             // Set the page title
             $('#header-title').html('<h3 class="push-5-t"><i class="si si-ban">&nbsp;&nbsp;</i>DATA ABSENSI</h3>');
-            // Set active class for related menu
-            $('#menu-attendance').addClass('active');
         });
 
         // load footer
