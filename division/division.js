@@ -1,4 +1,209 @@
 var BasePagesDivision = function() {
+    // Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
+    var initValidation = function(data_type) {
+        switch (data_type) {
+            case 'division':
+                var nama = 'Divisi';
+                var parent = '';
+                var rules = {
+                    'elem-nama': {
+                        required: true,
+                        minlength: 3
+                    }
+                };
+                var messages = {
+                    'elem-nama': {
+                        required: 'Isikan Nama ' + nama,
+                        minlength: 'Minimal 3 karakter'
+                    }
+                };
+                break;
+            case 'department':
+                var nama = 'Departemen';
+                var parent = 'Divisi';
+                var rules = {
+                    'elem-nama': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'elem-parent': {
+                        required: true
+                    }
+                };
+                var messages = {
+                    'elem-nama': {
+                        required: 'Isikan Nama ' + nama,
+                        minlength: 'Minimal 3 karakter'
+                    },
+                    'elem-parent': {
+                        required: 'Pilih ' + parent + ' induk'
+                    }
+                };
+                break;
+            case 'section':
+                var nama = 'Section';
+                var parent = 'Departemen';
+                var rules = {
+                    'elem-nama': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'elem-parent': {
+                        required: true
+                    }
+                };
+                var messages = {
+                    'elem-nama': {
+                        required: 'Isikan Nama ' + nama,
+                        minlength: 'Minimal 3 karakter'
+                    },
+                    'elem-parent': {
+                        required: 'Pilih ' + parent + ' induk'
+                    }
+                };
+                break;
+            case 'sub_section':
+                var nama = 'Sub Section';
+                var parent = 'Section';
+                var rules = {
+                    'elem-nama': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'elem-parent': {
+                        required: true
+                    }
+                };
+                var messages = {
+                    'elem-nama': {
+                        required: 'Isikan Nama ' + nama,
+                        minlength: 'Minimal 3 karakter'
+                    },
+                    'elem-parent': {
+                        required: 'Pilih ' + parent + ' induk'
+                    }
+                };
+                break;
+            case 'group':
+                var nama = 'Grup';
+                var parent = 'Sub Section';
+                var rules = {
+                    'elem-nama': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'elem-parent': {
+                        required: true
+                    }
+                };
+                var messages = {
+                    'elem-nama': {
+                        required: 'Isikan Nama ' + nama,
+                        minlength: 'Minimal 3 karakter'
+                    },
+                    'elem-parent': {
+                        required: 'Pilih ' + parent + ' induk'
+                    }
+                };
+                break;
+            default:
+                var nama = 'Kode Bagian';
+                var parent = '';
+                var rules = {
+                    'elem-kode': {
+                        required: true,
+                        minlength: 3
+                    },
+                    'elem-division': {
+                        required: true
+                    }
+                };
+                var messages = {
+                    'elem-kode': {
+                        required: 'Isikan Kode',
+                        minlength: 'Minimal 3 karakter'
+                    },
+                    'elem-division': {
+                        required: 'Pilih Divisi'
+                    }
+                };
+                break;
+        }
+
+        window.$validator = $('.js-validation-material').validate({
+            debug: true,
+            ignore: [],
+            errorClass: 'help-block text-right animated fadeInDown',
+            errorElement: 'div',
+            errorPlacement: function(error, e) {
+                jQuery(e).parents('.form-group > div').append(error);
+            },
+            highlight: function(e) {
+                var elem = jQuery(e);
+
+                elem.closest('.form-group').removeClass('has-error').addClass('has-error');
+                elem.closest('.help-block').remove();
+            },
+            success: function(e) {
+                var elem = jQuery(e);
+
+                elem.closest('.form-group').removeClass('has-error');
+                elem.closest('.help-block').remove();
+            },
+            rules: rules,
+            messages: messages,
+            submitHandler: function(form) {
+                var data = [];
+                $('[id^="input-"]').filter(
+                    function() {
+                        var elem = this;
+                        // cleaning empty data [TEMP!]
+                        if (elem['value'] != '') {
+                            return data.push({
+                                "key": elem['id'].replace('input-', ''),
+                                "value": elem['value']
+                            });
+                        }
+                    });
+
+                // Read current data type
+                var dType = $('#hidden-active-type').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/php/api/addDivisionData.php',
+                    dataType: 'json',
+                    data: {
+                        obj: data,
+                        table: dType
+                    },
+                    success: function(res) {
+                        if (res.status == 'err') {
+                            swal("Error!", res.message, "error");
+                        } else {
+                            $('#modal').modal('hide');
+                            $.notify({
+                                "icon": "fa fa-check-circle",
+                                "message": "Data berhasil ditambahkan"
+                            }, {
+                                "type": "success"
+                            })
+
+                            // reload the stat
+                            initSidebar();
+                            initStat();
+
+                            // reload the table
+                            var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                            table.ajax.reload();
+                        }
+
+                    }
+                })
+            }
+        });
+    };
+
     var initTableKodeBagian = function() {
         // Table initiation
         var table = $('#table-kode-bagian').DataTable({
@@ -379,7 +584,7 @@ var BasePagesDivision = function() {
         // Get division datas
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getDivisionStat.php',
+            url: BASE_URL + '/php/api/getDivisionTableStat.php',
             dataType: 'json',
             data: {
                 table: type
@@ -390,45 +595,28 @@ var BasePagesDivision = function() {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {
-                        html += '<tr class="push-20">' +
-                            '<td class="bg-primary">' +
-                            '<div class="block-title text-uppercase">Stat Karyawan</div>' +
-                            '</td>' +
-                            '</tr>';
                         var counter = 0;
                         data.forEach(function(d) {
-                            counter++;
-                            if (d.kode == undefined) d.kode = d.nama;
+                            if (d.total != 0) {
+                                counter++;
+                                if (d.kode == undefined) d.kode = d.nama;
 
-                            if (d.active == 0) {
-                                var text_color_1 = " text-danger";
-                                var text_color_2 = " text-danger";
-                            } else {
-                                var text_color_1 = " text-muted";
-                                var text_color_2 = "";
-                            }
+                                if (d.active == 0) {
+                                    var text_color_1 = " text-muted";
+                                    var text_color_2 = " text-muted";
+                                    var $a = d.total;
+                                    var $b = d.kode;
+                                } else {
+                                    var text_color_1 = " text-muted";
+                                    var text_color_2 = "";
+                                    var $a = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' + d.total + '</a>';
+                                    var $b = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' + d.kode + '</a>';
+                                }
 
-                            if (counter == 1) {
-                                html += '<tr>' +
-                                    '<td class="bg-gray-lighter">' +
-                                    '<div class="' + text_color_1 + ' push-10-t">' + d.kode + '</div>' +
-                                    '<div class="h2 font-w500' + text_color_2 + '">' + d.total + '</div>' +
-                                    '</td>' +
-                                    '</tr>';
-                            } else if (counter == data.length) {
-                                html += '<tr>' +
-                                    '<td class="bg-gray-lighter">' +
-                                    '<div class="' + text_color_1 + '">' + d.kode + '</div>' +
-                                    '<div class="h2 font-w500 push-10' + text_color_2 + '">' + d.total + '</div>' +
-                                    '</td>' +
-                                    '</tr>';
-                            } else {
-                                html += '<tr>' +
-                                    '<td class="bg-gray-lighter">' +
-                                    '<div class="' + text_color_1 + '">' + d.kode + '</div>' +
-                                    '<div class="h2 font-w500' + text_color_2 + '">' + d.total + '</div>' +
-                                    '</td>' +
-                                    '</tr>';
+                                html += '<div class="block-content block-content-full">' +
+                                    '<div class="h2 font-w500' + text_color_2 + '">' + $a + '</div>' +
+                                    '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
+                                    '</div>';
                             }
                         });
                     }
@@ -455,16 +643,25 @@ var BasePagesDivision = function() {
             success: function(res) {
                 var html = '';
                 if (res.success) {
-                    var data = res.data;
+                    var data = [];
+                    var str = JSON.stringify(res.data[0]); // convert to String
+                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
+                    str.split(',').forEach(function(a) { // split by Comma and make an array
+                        var split = a.split(':'); // split by Colon and push into DATA
+                        data.push({
+                            label: split[0].toString(),
+                            value: split[1]
+                        })
+                    });
+
                     var data_length = data.length;
                     if (data_length > 0) {
                         html += '';
                         data.forEach(function(d) {
-                            if (d.kode == undefined) d.kode = d.nama;
                             html += '<div class="col-md-2">' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.kode + '</div>' +
-                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
+                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
+                                '</div>';
                         });
                     }
                 }
@@ -473,7 +670,7 @@ var BasePagesDivision = function() {
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container
@@ -561,7 +758,7 @@ var BasePagesDivision = function() {
             $('div[id^=hidden-]').addClass('hide-me');
 
             var html = '';
-            data_type = $(this).attr('data-type');
+            data_type = $('#hidden-active-type').val();
             $('#hidden-type').val(data_type);
 
             switch (data_type) {
@@ -658,8 +855,8 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    if (dType == 'kode_bagian') initStat();
-                                    else initSidebar(dType);
+                                    initStat();
+                                    initSidebar(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
@@ -719,8 +916,8 @@ var BasePagesDivision = function() {
                                     })
 
                                     // reload the stat
-                                    if (dType == 'kode_bagian') initStat();
-                                    else initSidebar(dType);
+                                    initStat();
+                                    initSidebar(dType);
 
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"

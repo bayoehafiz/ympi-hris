@@ -15,43 +15,37 @@ var BasePagesEmployee = function() {
                     data.forEach(function(d) {
                         if (d.status == "Percobaan") {
                             html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
                                 '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
                                 '</div>';
                         } else if (d.status == "Kontrak 1") {
                             html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>' +
                                 '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>' +
                                 '</div>';
                         } else if (d.status == "Kontrak 2") {
                             html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>' +
                                 '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>' +
                                 '</div>';
                         } else {
                             html += '<div class="col-md-2 col-xs-6">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
                                 '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
                                 '</div>';
                         }
 
                         counter += parseInt(d.total);
                     })
                     html += '<div class="col-md-2 col-xs-6">' +
-                        '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
                         '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
-                        '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                        '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
                         '</div>';
                 }
                 html += '<div class="col-md-2 pull-right push-5-t">' +
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 container.html(html);
@@ -641,7 +635,6 @@ var BasePagesEmployee = function() {
             location.reload();
         });
 
-
         // This is OUR TABLE!
         var table = $('.js-dataTable-full').DataTable();
 
@@ -1109,7 +1102,7 @@ var BasePagesEmployee = function() {
             e.preventDefault();
             var data = $(this).attr('data');
             $('#input-filter-status').val(data).trigger('change');
-        })
+        });
     };
 
     return {
@@ -1127,4 +1120,13 @@ var BasePagesEmployee = function() {
 // Initialize when page loads
 jQuery(function() {
     BasePagesEmployee.init();
+
+    $(window).load(function() {
+        // Read current URL if there's any parameter given
+        var params = url('?');
+        if (params != undefined) {
+            // console.log(params);
+            $('select#input-filter-' + params.filter).val(params.value).trigger('change');
+        }
+    });
 });
