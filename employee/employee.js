@@ -7,41 +7,40 @@ var BasePagesEmployee = function() {
             dataType: 'json',
             success: function(res) {
                 var container = $('#employee-stat');
-                var html = '';
                 container.empty();
-                if (res.success) {
-                    var data = res.data;
-                    var counter = 0;
-                    data.forEach(function(d) {
-                        if (d.status == "Percobaan") {
-                            html += '<div class="col-md-2 col-xs-6">' +
-                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Percobaan</div>' +
-                                '</div>';
-                        } else if (d.status == "Kontrak 1") {
-                            html += '<div class="col-md-2 col-xs-6">' +
-                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 1</div>' +
-                                '</div>';
-                        } else if (d.status == "Kontrak 2") {
-                            html += '<div class="col-md-2 col-xs-6">' +
-                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Kontrak 2</div>' +
-                                '</div>';
-                        } else {
-                            html += '<div class="col-md-2 col-xs-6">' +
-                                '<a href="" class="stat-filter" data="' + d.status + '"><span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + d.total + '</span></a>' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">Tetap</div>' +
-                                '</div>';
-                        }
 
-                        counter += parseInt(d.total);
-                    })
+                var html = '';
+                if (res.success) {
+                    var data = [];
+                    var str = JSON.stringify(res.data[0]); // convert to String
+                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
+                    str.split(',').forEach(function(a) { // split by Comma and make an array
+                        var split = a.split(':'); // split by Colon and push into DATA
+                        data.push({
+                            label: split[0].toString(),
+                            value: split[1]
+                        })
+                    });
+
+                    var counter = 0;
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        html += '';
+                        data.forEach(function(d) {
+                            html += '<div class="col-md-2">' +
+                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
+                                '</div>';
+                            counter += parseInt(d.value.replace(/\"/g, ""));
+                        });
+                    }
+
                     html += '<div class="col-md-2 col-xs-6">' +
                         '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
                         '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
                         '</div>';
                 }
+
                 html += '<div class="col-md-2 pull-right push-5-t">' +
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>' +

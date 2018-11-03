@@ -3,11 +3,12 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 $sql = "SELECT 
-            status, IFNULL(COUNT(*), 0) AS total
-        FROM
-            employee
-        GROUP BY status
-        ORDER BY status";
+    COUNT(*) AS `Percobaan`,
+    (SELECT COUNT(*) FROM employee WHERE status = 'Kontrak 1') as `Kontrak 1`,
+    (SELECT COUNT(*) FROM employee WHERE status = 'Kontrak 2') as `Kontrak 2`,
+    (SELECT COUNT(*) FROM employee WHERE status = 'Tetap') as `Tetap`
+    FROM employee
+    WHERE status = 'Percobaan'";
 
 // ChromePhp::log($sql);
 
