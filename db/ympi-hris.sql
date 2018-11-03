@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 24, 2018 at 10:05 PM
+-- Generation Time: Nov 03, 2018 at 11:50 AM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
@@ -18,8 +18,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `ympi-hris`
+-- Database: `ympi_hris`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+DROP TABLE IF EXISTS `attendance`;
+CREATE TABLE `attendance` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(255) DEFAULT NULL,
+  `jenis` varchar(255) DEFAULT NULL,
+  `potongan_cuti` tinyint(1) NOT NULL DEFAULT '1',
+  `keterangan` text,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Truncate table before insert `attendance`
+--
+
+TRUNCATE TABLE `attendance`;
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `kode`, `jenis`, `potongan_cuti`, `keterangan`, `active`, `created`, `updated`) VALUES
+(1, 'CT', 'Cuti Tahunan', 1, 'Hari Kerja', 1, '2018-10-25 16:58:56', '2018-10-25 16:58:56'),
+(2, 'CK', 'Cuti Khusus Lainnya', 0, 'Hari Kerja', 1, '2018-10-25 17:07:58', '2018-10-25 17:07:58');
 
 -- --------------------------------------------------------
 
@@ -48,7 +79,7 @@ TRUNCATE TABLE `department`;
 
 INSERT INTO `department` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VALUES
 (1, 'Secretary', 1, 1, '2018-10-03 07:37:25', '2018-10-03 07:37:25'),
-(2, 'Accounting', 1, 1, '2018-10-03 07:37:37', '2018-10-03 07:37:37'),
+(2, 'Accounting', 1, 1, '2018-10-03 07:37:37', '2018-11-02 16:40:55'),
 (3, 'HRGA', 2, 1, '2018-10-03 07:37:55', '2018-10-03 07:37:55'),
 (4, 'MIS', 4, 1, '2018-10-03 07:46:30', '2018-10-03 07:46:30'),
 (5, 'Maintenance', 4, 1, '2018-10-03 07:46:45', '2018-10-03 07:46:45'),
@@ -57,11 +88,11 @@ INSERT INTO `department` (`id`, `nama`, `parent`, `active`, `created`, `updated`
 (8, 'Production Control', 5, 1, '2018-10-03 07:48:07', '2018-10-03 07:48:07'),
 (9, 'Purchasing', 5, 1, '2018-10-03 07:48:31', '2018-10-03 07:48:31'),
 (10, 'Parts Process', 3, 1, '2018-10-03 07:49:13', '2018-10-03 07:49:13'),
-(11, 'Japan Staf', 3, 1, '2018-10-03 07:49:32', '2018-10-03 07:49:32'),
+(11, 'Japan Staf', 3, 1, '2018-10-03 07:49:32', '2018-11-03 04:06:39'),
 (12, 'Welding-Surface Treatment', 3, 1, '2018-10-03 07:49:53', '2018-10-03 07:49:53'),
-(13, 'Assembling', 3, 1, '2018-10-03 07:50:12', '2018-10-03 07:50:12'),
+(13, 'Assembling', 3, 1, '2018-10-03 07:50:12', '2018-10-25 05:58:36'),
 (14, 'Educational INstrument', 3, 1, '2018-10-03 07:52:03', '2018-10-03 07:52:03'),
-(15, 'Quality Assurance', 3, 1, '2018-10-03 07:52:20', '2018-10-03 07:52:20');
+(15, 'Quality Assurance', 3, 1, '2018-10-03 07:52:20', '2018-11-03 04:05:40');
 
 -- --------------------------------------------------------
 
@@ -88,12 +119,13 @@ TRUNCATE TABLE `division`;
 --
 
 INSERT INTO `division` (`id`, `nama`, `active`, `created`, `updated`) VALUES
-(1, 'Finance', 1, '2018-10-02 09:35:45', '2018-10-24 03:01:31'),
-(2, 'HRGA', 1, '2018-10-02 09:47:47', '2018-10-08 08:29:17'),
+(1, 'Finance', 1, '2018-10-02 09:35:45', '2018-11-03 02:38:49'),
+(2, 'HRGA', 0, '2018-10-02 09:47:47', '2018-11-03 02:44:44'),
 (3, 'Production', 1, '2018-10-02 09:48:15', '2018-10-08 08:32:08'),
 (4, 'Production Engineering', 1, '2018-10-02 09:48:41', '2018-10-02 09:48:41'),
 (5, 'Production Support', 1, '2018-10-02 09:48:57', '2018-10-02 09:48:57'),
-(6, 'President Director', 1, '2018-10-02 09:50:18', '2018-10-24 03:01:36');
+(6, 'President Director', 0, '2018-10-02 09:50:18', '2018-11-03 02:40:40'),
+(10, 'TEST 123', 1, '2018-11-03 04:05:02', '2018-11-03 04:05:02');
 
 -- --------------------------------------------------------
 
@@ -481,7 +513,7 @@ INSERT INTO `employee` (`id`, `nik`, `status`, `kode_bagian`, `pin`, `nama`, `tg
 (326, '*18084813', 'Kontrak 1', NULL, '', 'Darmawan', '16-08-18', 'Laki-laki', 'Tuban', '17-05-99', 'Islam', 'Dsn. Gedong-004/001-Margorejo-Kerek-Tuban', 'Dsn. Gedong-004/001-Margorejo-Kerek-Tuban', 'Tk', 'S2', 'SMK Negeri 3 Tuban', 'Teknik Mesin', '3523080705940001', '0895386272968', '0', '0', '0', '0000', '1440017752004', 'assets/img/avatars/avatar.jpg', 3, 13, 3, 11, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:44'),
 (327, '*18084820', 'Kontrak 1', NULL, '', 'Heri Setiawan', '16-08-18', 'Laki-laki', 'Bojonegoro', '14-05-00', 'Islam', 'Sonorejo-005/002-Sonorejo-Padangan-Bojonegoro', 'Sonorejo-005/002-Sonorejo-Padangan-Bojonegoro', 'Tk', 'S2', 'SMK Negeri Purwosari', 'Teknik Otomotif', '3522191405000001', '088238926266', '0', '0', '85.213.271.1-601.000', '0000', '1440017752079', 'assets/img/avatars/avatar.jpg', 3, 13, 3, 12, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:44'),
 (328, '*18084831', 'Kontrak 1', NULL, '', 'Rachmanto', '16-08-18', 'Laki-laki', 'Bogor', '19-11-97', 'Islam', 'Jl. Dr. Wahidin Sudiro Husodo X-A-004/004-Petamanan-Panggungrejo-Pasuruan', 'Jl. Dr. Wahidin Sudiro Husodo X-A-004/004-Petamanan-Panggungrejo-Pasuruan', 'Tk', 'S2', 'SMA Shalahudin Pasuruan', 'IPA', '3575031911970004', '085708945923', '0', '0', '0', '0000', '1440017752186', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 82, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:44'),
-(329, '*18084832', 'Kontrak 1', NULL, '', 'Rizaldy Iqbal Amal Rasuly', '16-08-18', 'Laki-laki', 'Malang', '08-11-99', 'Islam', 'Dsn. Mojorejo-012/003-Pendem-Junrejo-Batu', 'Dsn. Mojorejo-012/003-Pendem-Junrejo-Batu', 'Tk', 'S2', 'SMK PGRI 3 Malang', 'Teknik Komputer dan Jaringan', '3579030811990002', '082257017774', '0', '0', '0', '0000', '1440017752194', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 82, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:44'),
+(329, '*18084832', 'Kontrak 1', NULL, '', 'Rizaldy Iqbal Amal Rasuly', '16-08-2018', 'Laki-laki', 'Malang', '08-11-1999', 'Islam', 'Dsn. Mojorejo-012/003-Pendem-Junrejo-Batu', 'Dsn. Mojorejo-012/003-Pendem-Junrejo-Batu', 'Tk', 'S2', 'SMK PGRI 3 Malang', 'Teknik Komputer dan Jaringan', '3579030811990002', '082257017774', '0', '0', '0', '0000', '1440017752194', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 82, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-31 12:28:36'),
 (330, '*18094861', 'Kontrak 1', NULL, '', 'Lia Sianturi', '03-09-18', 'Perempuan', 'Blitar', '19-09-00', 'Islam', 'Dsn. Sumbermanggis-002/004-Sumberurip-Doko-Blitar', 'Dsn. Sumbermanggis-002/004-Sumberurip-Doko-Blitar', 'Tk', 'S2', 'SMKN 1 Doko', 'Agribisnis', '3505185909000001', '081556745717', '0', '0', '0', '0000', '1440017696292', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 65, 47, NULL, 21, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:44'),
 (331, 'A97080046', 'Tetap', NULL, '', 'Setiawan', '08-08-97', 'Laki-laki', 'Surabaya', '08-08-65', 'Islam', 'Jl. Klampis Semalang I / 10c-1/3-Klampis Ngasem-Sukolilo-Surabaya', 'Jl. Klampis Semalang I / 10c-1/3-Klampis Ngasem-Sukolilo-Surabaya', 'K2', 'S0', 'SDN Pecalukan 4 Prigen', '0', '3575020808650002', '0', '98N40013731', '0001542058841', '48.705.096.5-624.000', '98N40013731000', '1440004826332', 'assets/img/avatars/avatar.jpg', 2, 3, 10, 20, 12, NULL, 26, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:31'),
 (332, 'B98030078', 'Tetap', NULL, '', 'Wendi Sugirianto', '25-03-98', 'Laki-laki', 'Sidoarjo', '18-09-71', 'Islam', 'DS. Sidokerto-6/3-Sidokerto-Sidoarjo-Sidoarjo', 'DS. Sidokerto-6/3-Sidokerto-Sidoarjo-Sidoarjo', 'K2', 'S1', 'SMP Angkasa Singosari', '0', '3515151809710003', '0', '98N40022989', '0001542058918', '48.705.155.9-624.000', '98N40022989000', '1440004826118', 'assets/img/avatars/avatar.jpg', 2, 3, 10, 20, 12, NULL, 28, NULL, '2018-10-18 02:27:22', '2018-10-22 08:16:31'),
@@ -906,7 +938,7 @@ INSERT INTO `employee` (`id`, `nik`, `status`, `kode_bagian`, `pin`, `nama`, `tg
 (747, 'V18054660', 'Kontrak 1', NULL, '', 'Nur Diviya Barti', '28-05-18', 'Perempuan', 'Pasuruan', '17-09-96', 'Islam', 'Jl. Gatot Subroto-04/01-Petahunan-Gadingrejo-Pasuruan', 'Jl. Gatot Subroto-04/01-Petahunan-Gadingrejo-Pasuruan', 'Tk', 'S2', 'SMK Negeri 1 Pasuruan', 'Multimedia', '3575015709960002', '081231923227', '18041831142', '0002046853912', '75.974.595.3-624.000', '18041831142000', '1440017487163', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 81, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
 (748, 'V18054661', 'Kontrak 1', NULL, '', 'Sandra Mardiana', '28-05-18', 'Perempuan', 'Pasuruan', '29-01-97', 'Islam', 'Jl. Arjuno-02/03-Purwosari-Purwosari-Pasuruan', 'Jl. Arjuno-02/03-Purwosari-Purwosari-Pasuruan', 'Tk', 'S2', 'SMK Negeri 1 Purwosari', 'Teknik Komputer dan Informatika', '3514086901970001', '085706879672', '18041830888', '0', '0', '18041830888000', '1440015675066', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 81, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
 (749, 'V18054662', 'Kontrak 1', NULL, '', 'Shofi Kartikasari', '28-05-18', 'Perempuan', 'Pasuruan', '21-04-97', 'Islam', 'Perum Kraton Indah D-27-04/04-Karangketug-Gadingrejo-Pasuruan', 'Perum Kraton Indah D-27-04/04-Karangketug-Gadingrejo-Pasuruan', 'Tk', 'S2', 'SMK Negeri 1 Pasuruan', 'Rekayasa Perangkat Lunak', '3575016104970003', '085730038239', '18041831167', '0000165580558', '0', '18041831167000', '1420015237976', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 81, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
-(750, '*18064663', 'Kontrak 1', NULL, '', 'Agung Prasetyo', '07-06-18', 'Laki-laki', 'Malang', '07-03-00', 'Islam', 'Dsn. Gambiran-01/02-Mojosari-Kepanjen-Malang', 'Dsn. Gambiran-01/02-Mojosari-Kepanjen-Malang', 'Tk', 'S2', 'SMK Negeri 1 Kepanjen', 'Teknik Kendaraan Ringan', '3507130703000003', '085856703644', '18054252509', '0', '0', '18054252509000', '1440017471134', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 72, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
+(750, '*18064663', 'Kontrak 1', NULL, '', 'Agung Prasetyo', '07-06-18', 'Laki-laki', 'Malang', '07-03-00', 'Islam', 'Dsn. Gambiran-01/02\nMojosari Kepanjen\nMalang', 'Dsn. Gambiran-01/02 \nMojosari Kepanjen\nMalang', 'Tk', 'S2', 'SMK Negeri 1 Kepanjen', 'Teknik Kendaraan Ringan', '3507130703000003', '085856703644', '18054252509', '0', '0', '18054252509000', '1440017471134', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 72, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-24 15:08:32'),
 (751, '*18064667', 'Kontrak 1', NULL, '', 'Dias Nur Diana', '07-06-18', 'Perempuan', 'Pasuruan', '03-09-97', 'Islam', 'Dsn. Tanjung-06/03-Kemantrenrejo-Rejoso-Pasuruan', 'Dsn. Tanjung-06/03-Kemantrenrejo-Rejoso-Pasuruan', 'Tk', 'S2', 'SMK Muhammadiyah 1 Pasuruan', 'Akuntansi', '3514234309970001', '082234235031', '18054252640', '0001538985565', '0', '18054252640000', '1420014456551', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 82, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
 (752, '*18064670', 'Kontrak 1', NULL, '', 'Hanum Taru Setyoko', '07-06-18', 'Laki-laki', 'Semarang', '04-05-00', 'Islam', 'Jl. Adi Utomo No. 09-03/02-Ardirejo-Kepanjen-Malang', 'Jl. Adi Utomo No. 09-03/02-Ardirejo-Kepanjen-Malang', 'Tk', 'S2', 'SMK Negeri 1 Kepanjen', 'Rekayasa Perangkat Lunak', '3507130405000006', '083848004360', '18054252517', '0002265730593', '0', '18054252517000', '1440017471209', 'assets/img/avatars/avatar.jpg', 3, 12, 25, 81, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
 (753, '*18064672', 'Kontrak 1', NULL, '', 'Imam Prayitno', '07-06-18', 'Laki-laki', 'Malang', '03-08-00', 'Islam', 'Dsn. Cerme-02/01-Kendalpayak-Pakisaji-Malang', 'Dsn. Cerme-02/01-Kendalpayak-Pakisaji-Malang', 'Tk', 'S2', 'SMK Negeri 1 Kepanjen', 'Teknik Kendaraan Ringan', '3507190308000002', '082338653530', '18054252681', '0', '0', '18054252681000', '1440017471167', 'assets/img/avatars/avatar.jpg', 3, 13, 3, 11, 52, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:43'),
@@ -963,7 +995,7 @@ INSERT INTO `employee` (`id`, `nik`, `status`, `kode_bagian`, `pin`, `nama`, `tg
 (803, 'E01010708', 'Tetap', NULL, '', 'Noval Fariz', '29-01-01', 'Laki-laki', 'Pasuruan', '21-10-80', 'Islam', 'Jl. Dr.Wahidin S.-26/5-Purutrejo-Purworejo-Pasuruan', 'Jl. Dr.Wahidin S.-26/5-Purutrejo-Purworejo-Pasuruan', 'K2', 'S2', 'SMK PGRI 3 Pasuruan', 'Mesin Produksi', '3514172110800001', '0343-420909', '01N40007638', '0001542059155', '68.530.382.8-624.000', '01N40007638000', '1440004835648', 'assets/img/avatars/avatar.jpg', 2, 3, 10, 20, 9, NULL, 22, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:34'),
 (804, 'O11061588', 'Tetap', NULL, '', 'Putri Sukma Riyanti', '13-06-11', 'Perempuan', 'Pasuruan', '23-05-88', 'Islam', 'Jl. Veteran III/4-2/3-Bugul Lor-Bugul Kidul-Pasuruan', 'Jl. Veteran III/4-2/3-Bugul Lor-Bugul Kidul-Pasuruan', 'K1', 'S5', 'Universitas Muhammadiyah Malang', 'S1 Psikologi', '3575036305880000', '427153 - 085646597775', '11018281789', '0001542064318', '88.934.921.3-624.000', '11018281789000', '1440012160021', 'assets/img/avatars/avatar.jpg', 2, 3, 8, 21, 13, NULL, 38, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:36'),
 (805, 'V18024518', 'Kontrak 1', NULL, '', 'Qismiyatus Solichati', '13-02-18', 'Perempuan', 'Pasuruan', '12-04-99', 'Islam', 'Dsn. Putih-02/01-Pohgading-Pasrepan-Pasuruan', 'Dsn. Putih-02/01-Pohgading-Pasrepan-Pasuruan', 'Tk', 'S3', 'Magistra Utama Malang', 'Sekretaris dan Administrasi Perkantoran', '3514055204990001', '085645709447', '18012893162', '0002452999454', '0', '18012893162000', '1440017304301', 'assets/img/avatars/avatar.jpg', 4, 5, 13, 25, 38, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:42'),
-(806, 'V18044615', 'Kontrak 1', NULL, '', 'Caesar Andin Pratama', '12-04-18', 'Laki-laki', 'Pasuruan', '31-10-98', 'Islam', 'Perum. Sekar Asri Blok J-1-03/05-Sekargadung-Purworejo-Pasuruan', 'Perum. Sekar Asri Blok J-1-03/05-Sekargadung-Purworejo-Pasuruan', 'Tk', 'S2', 'SMK Negeri 2 Pasuruan', 'Autotronik', '3575033110980002', '081217606741', '18034069064', '0002237170544', '0', '18034069064000', '1440017256576', 'assets/img/avatars/avatar.jpg', 4, 5, 13, 25, 38, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:42'),
+(806, 'V18044615', 'Kontrak 1', NULL, '', 'Caesar Andin Pratama', '12-04-2018', 'Laki-laki', 'Pasuruan', '31-10-98', 'Islam', 'Perum. Sekar Asri Blok J-1-03/05-Sekargadung-Purworejo-Pasuruan', 'Perum. Sekar Asri Blok J-1-03/05-Sekargadung-Purworejo-Pasuruan', 'Tk', 'S2', 'SMK Negeri 2 Pasuruan', 'Autotronik', '3575033110980002', '081217606741', '18034069064', '0002237170544', '0', '18034069064000', '1440017256576', 'assets/img/avatars/avatar.jpg', 4, 5, 13, 25, 38, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-25 05:00:36'),
 (807, 'M09041333', 'Tetap', NULL, '', 'Karunia Maria', '14-04-09', 'Perempuan', 'Pasuruan', '25-03-86', 'Islam', 'Jl. Ledok III/194-3/6-Kidul Dalem-Bangil-Pasuruan', 'Jl. Ledok III/194-3/6-Kidul Dalem-Bangil-Pasuruan', 'Tk', 'S2', '0', '0', '3514146503860001', '0', '09007689244', '0001542033246', '08.749.862.2-624.000', '09007689244000', '1440009807089', 'assets/img/avatars/avatar.jpg', 3, 15, 23, 50, 38, NULL, 24, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:36'),
 (808, 'S15053064', 'Tetap', NULL, '', 'Eka Oktaviana Putri', '04-05-15', 'Perempuan', 'Pasuruan', '18-10-92', 'Islam', 'Dusun Krajan-03/02-Sukorejo-Sukorejo-Pasuruan', 'Dusun Krajan-03/02-Sukorejo-Sukorejo-Pasuruan', 'K1', 'S3', 'Wearnes Education Center', 'Aplikasi Adm Bisnis', '3514095810920005', '085859867530', '15028517835', '0001148877459', '0', '15028517835000', '9000016512056', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 66, 38, NULL, 22, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:37'),
 (809, 'T16103881', 'Kontrak 2', NULL, '', 'Iftitakhul Laily Maghfiroh', '20-10-16', 'Perempuan', 'Kediri', '21-01-97', 'Islam', 'Dsn. Jatirejo-13/03-Damarwulan-Kepung-Kediri', 'Dsn. Jatirejo-13/03-Damarwulan-Kepung-Kediri', 'Tk', 'S3', 'Wearnes Education Center', 'Komputer Aplikasi Sekretaris Management & Public Relation', '3506186101970001', '085746045610', '16049138213', '0002195119383', '0', '16049138213000', '1440016236843', 'assets/img/avatars/avatar.jpg', 3, 12, 27, 66, 38, NULL, 21, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:38'),
@@ -1016,7 +1048,7 @@ INSERT INTO `employee` (`id`, `nik`, `status`, `kode_bagian`, `pin`, `nama`, `tg
 (856, 'E01030740', 'Tetap', NULL, '', 'Agus Yulianto', '13-03-01', 'Laki-laki', 'Pasuruan', '17-07-75', 'Islam', 'Jl. Raya Kejayan 220-4/3-Kejayan-Kejayan-Pasuruan', 'Jl. Raya Kejayan 220-4/3-Kejayan-Kejayan-Pasuruan', 'K2', 'S4', 'STIKI Malang', 'D3-Informatika', '3514061707750002', '0343-416441', '01N40057369', '0001178273294', '48.710.490.3-624.000', '01N40057369000', '1440004826191', 'assets/img/avatars/avatar.jpg', 4, 4, 14, 41, 25, NULL, 34, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:34'),
 (857, 'J06021069', 'Tetap', NULL, '', 'Much. Buyung Ilham', '01-03-06', 'Laki-laki', 'Medan', '11-12-85', 'Islam', 'Jl. Supriadi 46-5/6-Pogar-Bangil-Pasuruan', 'Jl. Supriadi 46-5/6-Pogar-Bangil-Pasuruan', 'K1', 'S2', 'SMUS Teladan Pematangsiantar', 'IPA', '3514141112850003', '742613', '06N40023287', '0001542030805', '77.951.470.2-624.000', '06N40023287000', '1440004958952', 'assets/img/avatars/avatar.jpg', 4, 4, 14, 41, 25, NULL, 30, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:35'),
 (858, 'M09061339', 'Tetap', NULL, '', 'Anton Budi Santoso', '30-06-09', 'Laki-laki', 'Malang', '25-11-89', 'Islam', 'Jl. Dr. Soetomo-15/3-Wonokerto-Bantur-Malang', 'Jl. Dr. Soetomo-15/3-Wonokerto-Bantur-Malang', 'Tk', 'S5', 'STMIK ASIA Malang', 'Teknik Informatika', '3507032511890002', '081937091008', '09029629426', '0001542064206', '88.934.923.9-654.000', '09029629426000', '1440010027313', 'assets/img/avatars/avatar.jpg', 4, 4, 14, 41, 25, NULL, 30, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:36'),
-(859, 'R14122906', 'Tetap', NULL, '', 'Yoga Aditya Agassi Virgiawan', '08-12-14', 'Laki-laki', 'Malang', '24-08-92', 'Islam', 'Jl. Semeru IV/4 -03/08-Sisir-Batu-Batu', 'Jl. Semeru IV/4 -03/08-Sisir-Batu-Batu', 'Tk', 'S5', 'Politeknik Negeri Malang', 'D4 Teknik Informatika', '3579012408920002', '082244167224', '14042899337', '0001871344438', '72.480.094.1-628.000', '14042899337000', '1440015021329', 'assets/img/avatars/avatar.jpg', 4, 4, 14, 41, 25, NULL, 32, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:37'),
+(859, 'R14122906', 'Tetap', NULL, '', 'Yoga Aditya Agassi Virgiawan', '08-12-14', 'Laki-laki', 'Malang', '24-08-92', 'Islam', 'Jl. Semeru IV/4 -03/08-Sisir-Batu-Batu', 'Jl. Semeru IV/4 -03/08-Sisir-Batu-Batu', 'Tk', 'S5', 'Politeknik Negeri Malang', 'D4 Teknik Informatika', '3579012408920002', '082244167224', '14042899337', '0001871344438', '72.480.094.1-628.000', '14042899337000', '1440015021329', 'assets/img/avatars/avatar.jpg', 4, 4, 14, 41, 25, NULL, 32, NULL, '2018-10-18 02:27:24', '2018-11-02 14:28:26'),
 (860, 'C99040337', 'Tetap', NULL, '', 'Syamsul Hadi', '06-04-99', 'Laki-laki', 'Pasuruan', '12-06-76', 'Islam', 'Jl. Pang. Sudirman-7/4-Purworejo-Purworejo-Pasuruan', 'Jl. Pang. Sudirman-7/4-Purworejo-Purworejo-Pasuruan', 'K3', 'S2', 'STM Untung Suropati Pasuruan', 'Mesin', '3575021206760005', '0', '99N40063718', '0001542037318', '48.708.569.8-624.000', '99N40063718000', '1440004829914', 'assets/img/avatars/avatar.jpg', 4, 6, 18, 43, 27, NULL, 34, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:33'),
 (861, 'E01080815', 'Tetap', NULL, '', 'Nur Wahyudi', '28-08-01', 'Laki-laki', 'Malang', '26-02-78', 'Islam', 'Jl. Masjid Barat 77-5/5-Candirenggo-Singosari-Malang', 'Jl. Masjid Barat 77-5/5-Candirenggo-Singosari-Malang', 'K0', 'S2', 'STMN Singosari', 'Mesin', '3507242603780003', '0341-452778', '01N40113535', '0001542035766', '48.710.974.6-624.000', '01N40113535000', '1440004829872', 'assets/img/avatars/avatar.jpg', 4, 6, 18, 43, 27, NULL, 28, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:35'),
 (862, 'F02020840', 'Tetap', NULL, '', 'Wiwid Widayanto', '14-02-02', 'Laki-laki', 'Pasuruan', '23-09-79', 'Islam', 'Jl. Bader 484-3/4-Kalirejo-Bangil-Pasuruan', 'Jl. Bader 484-3/4-Kalirejo-Bangil-Pasuruan', 'K1', 'S2', 'STMN 1 Sidoarjo', 'Mesin Produksi', '3514142309790001', '0', '02N40024052', '0001542035092', '48.711.008.2-624.000', '02N40024052000', '1440004829898', 'assets/img/avatars/avatar.jpg', 4, 6, 18, 43, 27, NULL, 30, NULL, '2018-10-18 02:27:24', '2018-10-22 08:16:35'),
@@ -2172,14 +2204,48 @@ INSERT INTO `group` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VAL
 (48, 'Sax Tenor', 78, 1, '2018-10-03 09:49:28', '2018-10-03 09:49:28'),
 (49, 'Sekretariat', 56, 1, '2018-10-03 09:49:39', '2018-10-03 09:49:39'),
 (50, 'Interpreter', 56, 1, '2018-10-03 09:49:53', '2018-10-03 09:49:53'),
-(51, 'Standardization', 57, 0, '2018-10-03 09:50:01', '2018-10-04 03:42:14'),
+(51, 'Standardization', 57, 1, '2018-10-03 09:50:01', '2018-10-25 05:58:39'),
 (52, 'Flute', 11, 1, '2018-10-03 09:50:09', '2018-10-03 09:50:09'),
 (53, 'Surface Treatment Process', 63, 1, '2018-10-03 09:50:34', '2018-10-03 09:50:34'),
 (54, 'Sax', 5, 1, '2018-10-03 09:50:43', '2018-10-03 09:50:43'),
 (55, 'Venova', 55, 1, '2018-10-03 09:50:56', '2018-10-03 09:50:56'),
 (56, 'WST - Office', 66, 1, '2018-10-03 09:52:13', '2018-10-03 09:52:13'),
-(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-10-03 09:52:32'),
-(58, 'sajod;sada', 28, 1, '2018-10-03 18:34:31', '2018-10-03 18:34:31');
+(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-10-03 09:52:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group_shift`
+--
+
+DROP TABLE IF EXISTS `group_shift`;
+CREATE TABLE `group_shift` (
+  `id` int(11) NOT NULL,
+  `kode` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `shift` int(11) DEFAULT NULL,
+  `assignation_key` varchar(255) DEFAULT NULL,
+  `assignation_value` int(11) DEFAULT NULL,
+  `date_from` varchar(255) DEFAULT NULL,
+  `date_to` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Truncate table before insert `group_shift`
+--
+
+TRUNCATE TABLE `group_shift`;
+--
+-- Dumping data for table `group_shift`
+--
+
+INSERT INTO `group_shift` (`id`, `kode`, `nama`, `shift`, `assignation_key`, `assignation_value`, `date_from`, `date_to`, `active`, `created`, `updated`) VALUES
+(4, 'S1', 'Shift 1', 9, 'group', 34, '07-11-2018', '30-11-2018', 1, '2018-10-25 10:16:12', '2018-10-25 10:16:53'),
+(6, 'S2', 'Shift 2', 7, 'section', 12, '26-10-2018', '01-11-2018', 1, '2018-10-25 12:30:58', '2018-10-25 14:06:06'),
+(9, '093231', 'Test', 8, 'group', 26, '26-10-2018', '01-11-2018', 0, '2018-10-25 15:09:57', '2018-10-25 15:10:12');
 
 -- --------------------------------------------------------
 
@@ -2211,9 +2277,10 @@ TRUNCATE TABLE `kode_bagian`;
 --
 
 INSERT INTO `kode_bagian` (`id`, `kode`, `division`, `department`, `section`, `sub_section`, `group`, `active`, `created`, `updated`) VALUES
-(1, 'ABC', 3, 14, 4, NULL, NULL, 1, '2018-10-24 09:16:32', '2018-10-24 15:03:42'),
-(2, 'DEF', 1, 2, 2, 1, 1, 1, '2018-10-24 09:31:33', '2018-10-24 09:46:23'),
-(4, '0fc', 1, 1, 24, 56, 49, 1, '2018-10-24 11:07:22', '2018-10-24 11:07:22');
+(5, '0fc', 4, NULL, NULL, NULL, NULL, 1, '2018-10-25 07:18:35', '2018-10-25 07:20:26'),
+(6, '0fc', 5, NULL, NULL, NULL, NULL, 1, '2018-10-25 07:20:01', '2018-10-25 07:20:01'),
+(8, '123', 1, 2, 2, NULL, NULL, 0, '2018-11-03 03:57:34', '2018-11-03 03:59:29'),
+(9, '456', 3, 13, 3, 4, 2, 1, '2018-11-03 04:04:32', '2018-11-03 04:04:32');
 
 -- --------------------------------------------------------
 
@@ -2246,7 +2313,7 @@ INSERT INTO `penugasan` (`id`, `nama`, `active`, `created`, `updated`) VALUES
 (4, 'General Manager', 1, '2018-10-03 12:35:58', '2018-10-03 12:35:58'),
 (5, 'Leader', 1, '2018-10-03 12:36:06', '2018-10-03 12:36:06'),
 (6, 'Manager', 1, '2018-10-03 12:36:12', '2018-10-03 12:36:12'),
-(7, 'President Director', 1, '2018-10-03 12:36:20', '2018-10-03 13:05:54'),
+(7, 'President Director', 0, '2018-10-03 12:36:20', '2018-10-31 12:52:24'),
 (8, 'Senior Chief', 1, '2018-10-03 12:36:26', '2018-10-03 12:36:26'),
 (9, 'Senior Foreman', 1, '2018-10-03 12:36:33', '2018-10-03 12:36:33'),
 (10, 'Sub Leader', 1, '2018-10-03 12:36:39', '2018-10-03 12:36:39');
@@ -2364,6 +2431,7 @@ CREATE TABLE `shift` (
   `akhir_scan_masuk` varchar(255) DEFAULT NULL,
   `awal_scan_keluar` varchar(255) DEFAULT NULL,
   `akhir_scan_keluar` varchar(255) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -2377,10 +2445,11 @@ TRUNCATE TABLE `shift`;
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `created`, `updated`) VALUES
-(3, 'S1', 'Shift 1', 'Senin,Selasa,Rabu,Kamis,Jumat', '05:53', '17:53', '05:53', '17:54', '05:54', '17:54', '2018-10-11 13:54:21', '2018-10-11 13:54:21'),
-(4, 'S2', 'Shift 2', 'Kamis,Jumat,Sabtu,Minggu', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 14:43:58', '2018-10-11 14:43:58'),
-(5, 'S3', 'Shift 3', 'Senin,Rabu,Jumat', '21:43', '05:43', '20:43', '18:43', '19:43', '17:43', '2018-10-11 16:08:53', '2018-10-11 16:27:49');
+INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `active`, `created`, `updated`) VALUES
+(7, 'MLM', 'Shift Malam', 'Senin,Selasa,Rabu,Kamis,Jumat', '17:14', '17:14', '17:14', '17:14', '17:14', '17:14', 1, '2018-10-25 10:14:13', '2018-10-25 10:15:38'),
+(8, 'SPG', 'Shift Pagi', 'Senin,Selasa,Rabu,Kamis,Jumat', '08:14', '17:14', '07:14', '08:14', '17:14', '18:14', 1, '2018-10-25 10:14:36', '2018-10-25 10:18:58'),
+(9, 'SWE', 'Shift Weekend', 'Jumat,Sabtu,Minggu', '09:14', '17:14', '09:14', '09:14', '17:14', '17:14', 1, '2018-10-25 10:14:56', '2018-10-25 13:41:58'),
+(11, 'TLG', 'Test Lagi', 'Sabtu,Minggu', '19:30', '09:30', '19:30', '19:30', '19:30', '19:30', 0, '2018-10-25 12:30:44', '2018-10-25 14:06:51');
 
 -- --------------------------------------------------------
 
@@ -2408,7 +2477,7 @@ TRUNCATE TABLE `sub_section`;
 --
 
 INSERT INTO `sub_section` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VALUES
-(1, 'Accounting', 2, 1, '2018-10-03 08:17:39', '2018-10-03 08:17:39'),
+(1, 'Accounting', 2, 0, '2018-10-03 08:17:39', '2018-11-03 01:46:56'),
 (2, 'Assy', 3, 1, '2018-10-03 08:19:17', '2018-10-03 08:19:17'),
 (3, 'Case', 3, 1, '2018-10-03 08:32:17', '2018-10-03 08:32:17'),
 (4, 'Assembly Process', 3, 1, '2018-10-03 08:32:27', '2018-10-03 08:32:27'),
@@ -2491,6 +2560,12 @@ INSERT INTO `sub_section` (`id`, `nama`, `parent`, `active`, `created`, `updated
 --
 
 --
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `department`
 --
 ALTER TABLE `department`
@@ -2529,6 +2604,12 @@ ALTER TABLE `grade`
 ALTER TABLE `group`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent_idxfk_3` (`parent`);
+
+--
+-- Indexes for table `group_shift`
+--
+ALTER TABLE `group_shift`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `kode_bagian`
@@ -2579,20 +2660,25 @@ ALTER TABLE `sub_section`
 --
 
 --
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `division`
 --
 ALTER TABLE `division`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1871;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1885;
 --
 -- AUTO_INCREMENT for table `grade`
 --
@@ -2602,12 +2688,17 @@ ALTER TABLE `grade`
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+--
+-- AUTO_INCREMENT for table `group_shift`
+--
+ALTER TABLE `group_shift`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `kode_bagian`
 --
 ALTER TABLE `kode_bagian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `penugasan`
 --
@@ -2627,17 +2718,17 @@ ALTER TABLE `presensi`
 -- AUTO_INCREMENT for table `section`
 --
 ALTER TABLE `section`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
 ALTER TABLE `sub_section`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 --
 -- Constraints for dumped tables
 --
