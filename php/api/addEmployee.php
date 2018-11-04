@@ -2,10 +2,20 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-function saveBase64ImagePng($nik, $base64Image, $imageDir)
+function random_string($length)
+{
+    $key = '';
+    $keys = array_merge(range(0, 9), range('a', 'z'));
+    for ($i = 0; $i < $length; $i++) {
+        $key .= $keys[array_rand($keys)];
+    }
+    return $key;
+}
+
+function saveBase64ImagePng($name, $base64Image, $imageDir)
 {
     //set name of the image file
-    $fileName = $nik . '.jpg';
+    $fileName = $name . '.jpg';
     $base64Image = trim($base64Image);
     $base64Image = str_replace('data:image/png;base64,', '', $base64Image);
     $base64Image = str_replace('data:image/jpg;base64,', '', $base64Image);
@@ -27,7 +37,9 @@ if (isset($_POST['data'])) {
     $arr_length = count($data);
     $counter = 0;
 
-    if (isset($_POST['new_nik'])) $nik = $_POST['new_nik'];
+    if (isset($_POST['new_nik'])) {
+        $nik = $_POST['new_nik'];
+    }
 
     foreach ($data as $key => $value) {
         if ($value['value'] != '') {
@@ -36,11 +48,12 @@ if (isset($_POST['data'])) {
             if ($value['key'] == 'photo_url') {
                 // Photo processing
                 $photoData = $value['value'];
-                
-                saveBase64ImagePng($nik, $photoData, $path);
+
+                $file_name = $nik . '-' . random_string(16);
+                saveBase64ImagePng($file_name, $photoData, $path);
 
                 $sql_sets .= '`' . $value['key'] . '`';
-                $sql_values .= '"assets/img/avatars/' . $nik . '.jpg"';
+                $sql_values .= '"assets/img/avatars/' . $file_name . '.jpg"';
             } else {
                 $sql_sets .= '`' . $value['key'] . '`';
                 $sql_values .= '"' . $value['value'] . '"';

@@ -2,10 +2,20 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-function saveBase64ImagePng($nik, $base64Image, $imageDir)
+function random_string($length)
+{
+    $key = '';
+    $keys = array_merge(range(0, 9), range('a', 'z'));
+    for ($i = 0; $i < $length; $i++) {
+        $key .= $keys[array_rand($keys)];
+    }
+    return $key;
+}
+
+function saveBase64ImagePng($name, $base64Image, $imageDir)
 {
     //set name of the image file
-    $fileName = $nik . '.jpg';
+    $fileName = $name . '.jpg';
     $base64Image = trim($base64Image);
     $base64Image = str_replace('data:image/png;base64,', '', $base64Image);
     $base64Image = str_replace('data:image/jpg;base64,', '', $base64Image);
@@ -50,6 +60,8 @@ if (isset($_POST['data'])) {
                 }
             }
 
+            $file_name = $rows[0]['nik'] . '-' . random_string(16);
+
             // delete photo file
             $photoPath = '../../' . $rows[0]['photo_url'];
             if (file_exists($photoPath)) {
@@ -57,15 +69,15 @@ if (isset($_POST['data'])) {
                 if ($photoPath != '../../assets/img/avatars/avatar.jpg') {
                     if (unlink($photoPath)) {
                         // then save the new one
-                        saveBase64ImagePng($rows[0]['nik'], $photoData, $path);
+                        saveBase64ImagePng($file_name, $photoData, $path);
                     }
                 } else {
                     // then save the new one
-                    saveBase64ImagePng($rows[0]['nik'], $photoData, $path);
+                    saveBase64ImagePng($file_name, $photoData, $path);
                 }
             }
 
-            $sql_sets .= "`" . $value['key'] . "` = 'assets/img/avatars/" . $rows[0]['nik'] . ".jpg'";
+            $sql_sets .= "`" . $value['key'] . "` = 'assets/img/avatars/" . $file_name . ".jpg'";
         } else {
             $sql_sets .= "`" . $value['key'] . "` = '" . $value['value'] . "'";
         }
@@ -78,7 +90,7 @@ if (isset($_POST['data'])) {
     $sql = "UPDATE `employee` SET {$sql_sets}  WHERE id = '{$id}'";
 
     // ChromePhp::log($sql);
-    
+
     if ($db->query($sql)) {
         $res['success'] = true;
     } else {
