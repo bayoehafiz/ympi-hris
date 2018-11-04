@@ -25,15 +25,10 @@ if (isset($_POST['table'])) {
         }
     }
 
-    ## Total number of records without filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}`");
-    $records = mysqli_fetch_assoc($sel);
-    $totalRecords = $records['allcount'];
-
-    ## Total number of record with filtering
+    ## Total number of record
     $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1 " . $searchQuery);
     $records = mysqli_fetch_assoc($sel);
-    $totalRecordwithFilter = $records['allcount'];
+    $totalRecords = $records['allcount'];
 
     $empQuery = "SELECT * FROM `{$table}` WHERE 1 {$searchQuery} GROUP BY id ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
 
@@ -49,7 +44,7 @@ if (isset($_POST['table'])) {
     ## Response
     $response = array(
         "draw" => intval($draw),
-        "iTotalRecords" => $totalRecordwithFilter,
+        "iTotalRecords" => $totalRecords,
         "iTotalDisplayRecords" => $totalRecords,
         "aaData" => $rows,
     );

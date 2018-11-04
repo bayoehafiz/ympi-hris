@@ -9,7 +9,7 @@ $check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
 $exists = ($check->num_rows > 0) ? TRUE : FALSE;
 if ($exists) {
         $sql = "SELECT 
-            a.kode, a.nama, COUNT(b.id) AS total
+            a.id, a.kode, a.nama, COUNT(b.id) AS total
         FROM
             `{$table}` a
                 LEFT JOIN
@@ -20,7 +20,7 @@ if ($exists) {
         LIMIT 5";
     } else {
         $sql = "SELECT 
-            a.nama, COUNT(b.id) AS total
+            a.id, a.nama, COUNT(b.id) AS total
         FROM
             `{$table}` a
                 LEFT JOIN

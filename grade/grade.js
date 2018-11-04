@@ -234,9 +234,11 @@ var BasePagesGrade = function() {
                                 var title = '[' + d.kode + '] ' + d.nama;
 
                             html += '<div class="col-md-' + wCounter + '">' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">' + title + '</div>' +
+                                '<a href="' + BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
                                 '<span class="h1 font-w700 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">' + title + '</div>' +
+                                '</a>' +
+                                // '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         });
                     }
@@ -246,7 +248,7 @@ var BasePagesGrade = function() {
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + table + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container

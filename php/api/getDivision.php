@@ -29,15 +29,10 @@ if (isset($_POST['table'])) {
         }
     }
 
-    ## Total number of records without filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}`");
+    ## Total number of record
+    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1" . $searchQuery);
     $records = mysqli_fetch_assoc($sel);
-    $totalRecords = $records['allcount'];
-
-    ## Total number of record with filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1 " . $searchQuery);
-    $records = mysqli_fetch_assoc($sel);
-    $totalRecordwithFilter = $records['allcount'];
+    $totalRecord = $records['allcount'];
 
     ## Fetch records
     if ($table == 'division') {
@@ -82,8 +77,8 @@ if (isset($_POST['table'])) {
     ## Response
     $response = array(
         "draw" => intval($draw),
-        "iTotalRecords" => $totalRecordwithFilter,
-        "iTotalDisplayRecords" => $totalRecords,
+        "iTotalRecords" => $totalRecord,
+        "iTotalDisplayRecords" => $totalRecord,
         "aaData" => $rows,
     );
 

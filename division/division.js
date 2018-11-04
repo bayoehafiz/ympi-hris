@@ -204,6 +204,121 @@ var BasePagesDivision = function() {
         });
     };
 
+    var initStat = function() {
+        // clear the container first
+        var container = $('#stat-divisi');
+        container.empty();
+        // Get division datas
+        $.ajax({
+            type: "POST",
+            url: BASE_URL + '/php/api/getDivisionStat.php',
+            dataType: 'json',
+            data: {
+                table: 'kode_bagian'
+            },
+            success: function(res) {
+                var html = '';
+                if (res.success) {
+                    var data = [];
+                    var str = JSON.stringify(res.data[0]); // convert to String
+                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
+                    str.split(',').forEach(function(a) { // split by Comma and make an array
+                        var split = a.split(':'); // split by Colon and push into DATA
+                        data.push({
+                            label: split[0].toString(),
+                            value: split[1]
+                        })
+                    });
+
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        html += '';
+                        data.forEach(function(d) {
+                            html += '<div class="col-md-2">' +
+                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
+                                '</div>';
+                        });
+                    }
+                }
+
+                html += '<div class="col-md-2 pull-right push-5-t">' +
+                    '<span class="h1 font-w700 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
+                    '</span>' +
+                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    '</div>';
+
+                // append the result into container
+                container.html(html);
+            }
+        });
+    };
+
+    var initSidebar = function(type) {
+        var container = $('#sidebar-data-' + type);
+        container.empty();
+        // Get division datas
+        $.ajax({
+            type: "POST",
+            url: BASE_URL + '/php/api/getDivisionTableStat.php',
+            dataType: 'json',
+            data: {
+                table: type
+            },
+            success: function(res) {
+                var html = '';
+                if (res.success) {
+                    var data = res.data;
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        var counter = 0;
+                        data.forEach(function(d) {
+                            if (d.total != 0) {
+                                counter++;
+                                if (d.kode == undefined) d.kode = d.nama;
+
+                                if (d.active == 0) {
+                                    var text_color_1 = " text-muted";
+                                    var text_color_2 = " text-muted";
+                                    var hotlink_o = '';
+                                    var hotlink_c = '';
+                                    var $a = d.total;
+                                    var $b = d.kode;
+                                } else {
+                                    var text_color_1 = " text-muted";
+                                    var text_color_2 = "";
+                                    var hotlink_o = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">';
+                                    var hotlink_c = '</a>';
+                                    var $a = d.total;
+                                    var $b = d.kode;
+                                }
+
+                                html += '<div class="block-content push-10">' +
+                                    hotlink_o +
+                                    '<div class="h3 font-w600' + text_color_2 + '">' + $a + '</div>' +
+                                    '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
+                                    hotlink_c +
+                                    '</div>';
+                            }
+                        });
+                    }
+                }
+
+                // if there's no data to show at all!
+                if (html == '') {
+                    html += '<div class="alert alert-warning push-20-t">' +
+                        '<h3 class="font-w300 push-5"><i class="si si-info"></i></h3>' +
+                        '<p>Tidak ada data untuk ditampilkan!</p>' +
+                        '</div>';
+                }
+
+                // append the result into container
+                container.append(html);
+            }
+        });
+    };
+
     var initTableKodeBagian = function() {
         // Table initiation
         var table = $('#table-kode-bagian').DataTable({
@@ -488,7 +603,17 @@ var BasePagesDivision = function() {
                 url: BASE_URL + '/php/api/getDivision.php',
                 data: {
                     table: 'sub_section'
-                }
+                },
+                // dataSrc: function(data) {
+                // var json = $.parseJSON(data.d);
+
+                // data.draw = parseInt(json.otherData[0].draw);
+                // data.recordsTotal = parseInt(json.otherData[0].recordsTotal);
+                // data.recordsFiltered = parseInt(json.otherData[0].recordsFiltered);
+                // data.data = json.searchData;
+
+                // return data.data;
+                // }
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
@@ -578,107 +703,6 @@ var BasePagesDivision = function() {
         });
     };
 
-    var initSidebar = function(type) {
-        var container = $('#sidebar-data-' + type);
-        container.empty();
-        // Get division datas
-        $.ajax({
-            type: "POST",
-            url: BASE_URL + '/php/api/getDivisionTableStat.php',
-            dataType: 'json',
-            data: {
-                table: type
-            },
-            success: function(res) {
-                var html = '';
-                if (res.success) {
-                    var data = res.data;
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        var counter = 0;
-                        data.forEach(function(d) {
-                            if (d.total != 0) {
-                                counter++;
-                                if (d.kode == undefined) d.kode = d.nama;
-
-                                if (d.active == 0) {
-                                    var text_color_1 = " text-muted";
-                                    var text_color_2 = " text-muted";
-                                    var $a = d.total;
-                                    var $b = d.kode;
-                                } else {
-                                    var text_color_1 = " text-muted";
-                                    var text_color_2 = "";
-                                    var $a = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' + d.total + '</a>';
-                                    var $b = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' + d.kode + '</a>';
-                                }
-
-                                html += '<div class="block-content block-content-full">' +
-                                    '<div class="h2 font-w500' + text_color_2 + '">' + $a + '</div>' +
-                                    '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
-                                    '</div>';
-                            }
-                        });
-                    }
-                }
-
-                // append the result into container
-                container.append(html);
-            }
-        });
-    }
-
-    var initStat = function() {
-        // clear the container first
-        var container = $('#stat-divisi');
-        container.empty();
-        // Get division datas
-        $.ajax({
-            type: "POST",
-            url: BASE_URL + '/php/api/getDivisionStat.php',
-            dataType: 'json',
-            data: {
-                table: 'kode_bagian'
-            },
-            success: function(res) {
-                var html = '';
-                if (res.success) {
-                    var data = [];
-                    var str = JSON.stringify(res.data[0]); // convert to String
-                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
-                    str.split(',').forEach(function(a) { // split by Comma and make an array
-                        var split = a.split(':'); // split by Colon and push into DATA
-                        data.push({
-                            label: split[0].toString(),
-                            value: split[1]
-                        })
-                    });
-
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        html += '';
-                        data.forEach(function(d) {
-                            html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
-                                '</div>';
-                        });
-                    }
-                }
-
-                html += '<div class="col-md-2 pull-right push-5-t">' +
-                    '<span class="h1 font-w700 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
-                    '</div>';
-
-                // append the result into container
-                container.html(html);
-            }
-        });
-    };
-
     var initDivisionPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -744,7 +768,7 @@ var BasePagesDivision = function() {
                     break;
                 default:
                     $('#btn-add').attr('data', 'Kode Bagian');
-                    // initStat('kode_bagian');
+                    initSidebar('kode_bagian');
                     initTableKodeBagian();
                     break;
             }
@@ -1006,6 +1030,7 @@ var BasePagesDivision = function() {
     return {
         init: function() {
             initStat();
+            initSidebar('kode_bagian');
             initDivisionPage();
         }
     };

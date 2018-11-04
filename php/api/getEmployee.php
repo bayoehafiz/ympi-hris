@@ -35,15 +35,10 @@ if ($filterValue != '') {
     }
 }
 
-## Total number of records without filtering
-$sel = mysqli_query($db, "select count(*) as allcount from employee");
-$records = mysqli_fetch_assoc($sel);
-$totalRecords = $records['allcount'];
-
-## Total number of record with filtering
+## Total number of record
 $sel = mysqli_query($db, "select count(a.id) as allcount from employee a WHERE 1 " . $filterQuery . $searchQuery);
 $records = mysqli_fetch_assoc($sel);
-$totalRecordwithFilter = $records['allcount'];
+$totalRecord = $records['allcount'];
 
 ## Fetch records
 $empQuery = "SELECT
@@ -91,8 +86,8 @@ while ($r = mysqli_fetch_assoc($empRecords)) {
 ## Response
 $response = array(
     "draw" => intval($draw),
-    "iTotalRecords" => $totalRecordwithFilter,
-    "iTotalDisplayRecords" => $totalRecords,
+    "iTotalRecords" => $totalRecord,
+    "iTotalDisplayRecords" => $totalRecord,
     "aaData" => $rows,
 );
 

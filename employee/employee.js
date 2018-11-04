@@ -54,6 +54,9 @@ var BasePagesEmployee = function() {
 
     // Init main table
     var initTable = function(filterData) {
+        if (filterData != undefined) var $filter = filterData
+        else var $filter = '';
+
         // Table initiation
         var table = $('.js-dataTable-full').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
@@ -74,12 +77,12 @@ var BasePagesEmployee = function() {
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
                 data: {
-                    filter: filterData
+                    filter: $filter
                 },
                 // Error handler
                 dataSrc: function(res) {
                     if (res.error) {
-                        swal("Error!", res.message, "error");
+                        $.notify("Error!", res.message, "error");
                         return [];
                     } else {
                         // format the Date into correct one!
@@ -115,21 +118,23 @@ var BasePagesEmployee = function() {
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-nik', data.nik);
             },
-            columns: [
-                // {
-                //     visible: false,
-                //     searchable: false,
-                //     data: "tmp"
-                // },
-                {
+            columns: [{
+                    orderable: false,
+                    searchable: false,
                     className: "text-center",
-                    data: "nik"
+                    data: "photo_url",
+                    render: function(data, type, row) {
+                        return '<img src="../' + data + '" class="img-avatar img-avatar32" />';
+                    }
                 }, {
                     className: "font-w600",
                     data: "nama",
                     render: function(data, type, row) {
                         return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
                     }
+                }, {
+                    className: "text-center",
+                    data: "nik"
                 }, {
                     className: "text-center d-inline-block text-truncate",
                     data: "nama_group",
@@ -138,21 +143,21 @@ var BasePagesEmployee = function() {
                         if (data == null) { // if empty, show SUB_SECTION instead
                             if (row.nama_sub_section == null) { // if empty, show SECTION instead
                                 if (row.nama_section == null) { // if empty, show DEPTARTMENT instead
-                                    if (row.nama_department == null) return "<small class=\"text-muted\">Divisi</small> " + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
-                                    return "<small class=\"text-muted\">Departemen</small> " + row.nama_department.toUpperCase();
+                                    if (row.nama_department == null) return "<small class=\"text-muted\">Divisi</small><br/>" + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
+                                    return "<small class=\"text-muted\">Departemen</small><br/>" + row.nama_department.toUpperCase();
                                 }
-                                return "<small class=\"text-muted\">Section</small> " + row.nama_section.toUpperCase();
+                                return "<small class=\"text-muted\">Section</small><br/>" + row.nama_section.toUpperCase();
                             }
-                            return "<small class=\"text-muted\">Sub Section</small> " + row.nama_sub_section.toUpperCase();
+                            return "<small class=\"text-muted\">Sub Section</small><br/>" + row.nama_sub_section.toUpperCase();
                         }
-                        return "<small class=\"text-muted\">Grup</small> " + data.toUpperCase();
+                        return "<small class=\"text-muted\">Grup</small><br/>" + data.toUpperCase();
                     }
                 }, {
                     className: "text-center d-inline-block text-truncate",
                     data: "kode_grade",
                     render: function(data, type, row) {
                         if (data == null) return "-";
-                        else return data + " <small class=\"text-muted\">(" + row.nama_grade + ")</small>";
+                        else return data + "<br/><small class=\"text-muted\">" + row.nama_grade + "</small>";
                     }
                 },
                 // {
@@ -180,9 +185,9 @@ var BasePagesEmployee = function() {
                     data: null,
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" id="btn-view"><i class="fa fa-eye"></i></button>' +
-                            '<button class="btn btn-xs btn-default btn-edit" type="button"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default btn-remove" type="button"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" id="btn-view"><i class="si si-eye"></i></button>' +
+                            '<button class="btn btn-sm btn-default btn-edit" type="button"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default btn-remove" type="button"><i class="si si-trash"></i></button>' +
                             '</div>';
                     },
                     searchable: false,
@@ -195,17 +200,17 @@ var BasePagesEmployee = function() {
         });
 
         // Extend sorting Fn for NIK column
-        jQuery.extend(jQuery.fn.dataTableExt.sort, {
-            "nik-formatted-pre": function(a) {
-                console.log(a);
-            },
-            "nik-formatted-asc": function(a, b) {
-                //
-            },
-            "nik-formatted-desc": function(a, b) {
-                //
-            }
-        });
+        // jQuery.extend(jQuery.fn.dataTableExt.sort, {
+        //     "nik-formatted-pre": function(a) {
+        //         console.log(a);
+        //     },
+        //     "nik-formatted-asc": function(a, b) {
+        //         //
+        //     },
+        //     "nik-formatted-desc": function(a, b) {
+        //         //
+        //     }
+        // });
     };
 
     // Init table filtering
@@ -550,10 +555,13 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // Button RESET action
+        // Button RESET / CLEAR action
         $(document).on('click', '#btn-reset-filter', function() {
             // send filters data to table & reinitiate table
             initTable();
+            var table = $('.js-dataTable-full').DataTable();
+            // table.ajax.reload();
+            table.columns.adjust().draw(); // readjust the column width
 
             // reset all components
             $('[id^=input-filter-]').val('');
@@ -591,6 +599,10 @@ var BasePagesEmployee = function() {
 
             // send filters data to table & reinitiate table
             initTable(data);
+            var table = $('.js-dataTable-full').DataTable();
+            // table.ajax.reload();
+            table.columns.adjust().draw(); // readjust the column width
+
         })
 
         // Fill all BAGIAN selectors
