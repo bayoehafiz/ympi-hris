@@ -16,6 +16,7 @@ if (isset($_POST['table'])) {
 
     ## Search
     $searchQuery = " ";
+    $totalRecordQuery = " ";
     if ($searchValue != '') {
         if ($table == 'kode_bagian') {
             $searchQuery = " and (a.kode like '%" . $searchValue . "%' or
@@ -30,9 +31,23 @@ if (isset($_POST['table'])) {
     }
 
     ## Total number of record
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1" . $searchQuery);
+    if ($table == 'kode_bagian') {
+        $totalRecordQuery = "select count(*) as allcount
+                            from `kode_bagian` a
+                            left join `division` b on b.id = a.division
+                            left join `department` c on c.id = a.department
+                            left join `section` d on d.id = a.section
+                            left join `sub_section` e on e.id = a.sub_section
+                            left join `group` f on f.id = a.group
+                            WHERE 1" . $searchQuery;
+    } else {
+        $totalRecordQuery = "select count(*) as allcount from `{$table}` a WHERE 1" . $searchQuery;
+    }
+    $sel = mysqli_query($db, $totalRecordQuery);
     $records = mysqli_fetch_assoc($sel);
     $totalRecord = $records['allcount'];
+
+    ChromePhp::log($totalRecordQuery);
 
     ## Fetch records
     if ($table == 'division') {
@@ -46,6 +61,7 @@ if (isset($_POST['table'])) {
     } else if ($table == 'group') {
         $empQuery = "SELECT a.id, a.nama, c.nama as parent, a.active, a.created, a.updated FROM `group` a LEFT JOIN `sub_section` c ON a.parent = c.id WHERE 1 {$searchQuery} GROUP BY a.id ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
     } else {
+        // kode_bagian table
         $empQuery = "SELECT
             a.*,
             b.nama as nama_division,
@@ -64,8 +80,6 @@ if (isset($_POST['table'])) {
         GROUP BY a.id
         ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
     }
-
-    // ChromePhp::log($empQuery);
 
     $empRecords = mysqli_query($db, $empQuery);
     $rows = array();

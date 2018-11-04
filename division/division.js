@@ -400,9 +400,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -456,9 +456,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -513,9 +513,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -570,9 +570,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -604,16 +604,6 @@ var BasePagesDivision = function() {
                 data: {
                     table: 'sub_section'
                 },
-                // dataSrc: function(data) {
-                // var json = $.parseJSON(data.d);
-
-                // data.draw = parseInt(json.otherData[0].draw);
-                // data.recordsTotal = parseInt(json.otherData[0].recordsTotal);
-                // data.recordsFiltered = parseInt(json.otherData[0].recordsFiltered);
-                // data.data = json.searchData;
-
-                // return data.data;
-                // }
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
@@ -637,9 +627,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -693,9 +683,9 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
