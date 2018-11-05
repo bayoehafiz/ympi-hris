@@ -15,6 +15,9 @@ var renderProfileEdit = function(data) {
     // hide NIK element
     $('#modal-nik').addClass('hide-me');
 
+    // Reset all containers
+    $('div.modal-content').find('[id^=profile-]').empty();
+
     // Set value in modal
     var photo_url = "../" + data.photo_url;
     $('#photo_container-edit').removeClass('hide-me');
@@ -31,21 +34,22 @@ var renderProfileEdit = function(data) {
             table: 'kode_bagian'
         },
         success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30 text-right">' +
-                '<select class="form-control" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
-                '<option value="">Kode Bagian</option>';
+            if (res.success) {
+                var selector = '<div class="form-group">' +
+                    '<div class="form-material form-material-primary push-30 text-right">' +
+                    '<select class="form-control" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
+                    '<option value="">Kode Bagian</option>';
+                res.data.forEach(function(o) {
+                    if (o.id == data.kode_bagian) selector += '<option value="' + o.id + '" selected>' + o.kode + '</option>';
+                    else selector += '<option value="' + o.id + '">' + o.kode + '</option>';
+                })
 
-            res.data.forEach(function(o) {
-                if (o.id == data.kode_bagian) selector += '<option value="' + o.id + '" selected>' + o.kode + '</option>';
-                else selector += '<option value="' + o.id + '">' + o.kode + '</option>';
-            })
+                selector += '</select>' +
+                    '</div>' +
+                    '</div>';
 
-            selector += '</select>' +
-                '</div>' +
-                '</div>';
-
-            $('#modal-kode-bagian').html(selector);
+                $('#modal-kode-bagian').html(selector);
+            }
         }
     });
 
@@ -336,7 +340,24 @@ var renderProfileEdit = function(data) {
 
     $('#profile-nik').html(renderEditElement('text', data.nik, 'nik', 'NIK', false));
     $('#profile-tgl-masuk').html(renderEditElement('datepicker', data.tgl_masuk, 'tgl_masuk', 'Tanggal Masuk', false));
-    $('#profile-masa-kerja').html(''); // leave it blank
+
+    if (data.status != 'Tetap') {
+        if (data.status == 'Percobaan') var label = 'Masa Percobaan';
+        else var label = 'Masa Kontrak';
+        $('#profile-masa-kontrak').html(renderEditElement('select', '', 'masa_kontrak', label, false, [
+            { value: 3, label: '3 Bulan' },
+            { value: 6, label: '6 Bulan' },
+            { value: 12, label: '1 Tahun' },
+            { value: 18, label: '18 Bulan' },
+            { value: 24, label: '2 Tahun' }
+        ], data.masa_kontrak));
+    };
+
+    if (data.status != 'Tetap') {
+        if (data.status == 'Percobaan') var label = 'Tgl Selesai Percobaan';
+        else var label = 'Tgl Selesai Kontrak';
+        $('#profile-tgl-keluar').html(renderEditElement('datepicker', data.tgl_keluar, 'tgl_keluar', label, false));
+    };
 
 
     $('#profile-tempat-lahir').html(renderEditElement('text', data.tempat_lahir, 'tempat_lahir', 'Tempat Lahir', false));

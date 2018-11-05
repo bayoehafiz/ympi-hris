@@ -328,4 +328,9 @@ var BasePagesAttendance = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesAttendance.init(); });
+jQuery(function() {
+    // Core Variable
+    window.BASE_URL = url('protocol') + '://' + url('hostname');
+
+    BasePagesAttendance.init();
+});

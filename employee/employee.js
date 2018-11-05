@@ -60,6 +60,7 @@ var BasePagesEmployee = function() {
         // Table initiation
         var table = $('.js-dataTable-full').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, "asc"]
             ],
@@ -636,7 +637,7 @@ var BasePagesEmployee = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu', function(e) {
             e.preventDefault();
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location = BASE_URL + $(this).attr('route');
             return false;
         });
 
@@ -673,7 +674,7 @@ var BasePagesEmployee = function() {
             var nik = $(this).parents('tr').attr('data-nik');
             $.ajax({
                 type: "POST",
-                url: BASE_URL + "/php/api/getEmployeeById.php",
+                url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
                     id: nik
@@ -705,7 +706,7 @@ var BasePagesEmployee = function() {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + "/php/api/getEmployeeById.php",
+                url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
                     id: nik
@@ -737,9 +738,9 @@ var BasePagesEmployee = function() {
         $('.js-dataTable-full tbody').on('click', '.btn-remove', function() {
             var data = table.row($(this).parents('tr')).data();
             swal({
-                title: "Hapus data?",
+                title: "Hapus Data?",
                 text: "Data yang dihapus tidak akan dapat dikembalikan",
-                type: "warning",
+                type: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Hapus!",
@@ -749,7 +750,7 @@ var BasePagesEmployee = function() {
                     return new Promise(function(resolve) {
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deleteEmployee.php",
+                                url: "/php/api/deleteEmployee.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id
@@ -758,14 +759,7 @@ var BasePagesEmployee = function() {
                                 if (response.status == 'err') {
                                     swal('Error', response.message, 'error');
                                 } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "si si-check",
-                                        "message": "Data karyawan berhasil dihapus"
-                                    }, {
-                                        "type": "success"
-                                    });
-                                    $('#modal-profile').modal('hide');
+                                    swal('Success', "Data karyawan berhasil dihapus", 'success');
 
                                     // reload the stat
                                     initStat();
@@ -780,9 +774,8 @@ var BasePagesEmployee = function() {
                     });
                 },
                 allowOutsideClick: false
-            });
+            }).catch(swal.noop);
         });
-
 
         //
         // MODAL ACTIONS !!!
@@ -797,7 +790,7 @@ var BasePagesEmployee = function() {
 
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + "/php/api/getEmployeeById.php",
+                    url: "/php/api/getEmployeeById.php",
                     dataType: 'json',
                     data: {
                         id: nik
@@ -821,7 +814,7 @@ var BasePagesEmployee = function() {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + "/php/api/getEmployeeById.php",
+                url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
                     id: nik
@@ -862,7 +855,7 @@ var BasePagesEmployee = function() {
                     return new Promise(function(resolve) {
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deleteEmployee.php",
+                                url: "/php/api/deleteEmployee.php",
                                 dataType: 'json',
                                 data: {
                                     id: $('#opened-profile').val()
@@ -994,13 +987,14 @@ var BasePagesEmployee = function() {
             }); // end of $.when
         });
 
+
         // when GEAR button clicked
         $(document).on('click', '#btn-generate-profile', function() {
             generateRandomProfile();
         });
 
 
-        // when division selector changed
+        // when KODE_BAGIAN selector changed
         $(document).on('change', '#input-kode_bagian', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -1014,7 +1008,7 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // when division selector changed
+        // when DIVISION selector changed
         $(document).on('change', '#input-division', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -1035,7 +1029,7 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // when department selector changed
+        // when DEPARTMENT selector changed
         $(document).on('change', '#input-department', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -1056,7 +1050,7 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // when section selector changed
+        // when SECTION selector changed
         $(document).on('change', '#input-section', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -1077,7 +1071,7 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // when sub-section selector changed
+        // when SUB-SECTION selector changed
         $(document).on('change', '#input-sub_section', function() {
             var optionSelected = $("option:selected", this);
             var valueSelected = this.value;
@@ -1097,16 +1091,81 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // when modal on close
-        // $('#modal-profile').on('hidden.bs.modal', function() {
-        //     console.log("Clearing all inputs...");
-        //     $('[id^="input-"]').val('');
-        //     $('#opened-nik, #opened-profile, #origin, #form-scope').val('');
-        // })
+        // when STATUS KARYAWAN selector changed
+        $(document).on('change', '#input-status', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+
+            var $containerMasaKontrak = $('#profile-masa-kontrak');
+            var $containerTglKeluar = $('#profile-tgl-keluar');
+
+            if (valueSelected != 'Tetap') {
+                var html = '';
+                $containerMasaKontrak.empty();
+                $containerTglKeluar.empty();
+
+                if (valueSelected == 'Percobaan') {
+                    var label = 'Masa Percobaan';
+                    var label_2 = 'Tgl Selesai Percobaan';
+                    var value = 3;
+                } else {
+                    var label = 'Masa Kontrak';
+                    var label_2 = 'Tgl Selesai Kontrak';
+                    var value = 6;
+                }
+
+                html = renderAddElement('predefined-select', 'masa_kontrak', label, [{
+                    label: "3 Bulan",
+                    value: 3
+                }, {
+                    label: "6 Bulan",
+                    value: 6
+                }, {
+                    label: "1 Tahun",
+                    value: 12
+                }, {
+                    label: "18 Bulan",
+                    value: 18
+                }, {
+                    label: "2 Tahun",
+                    value: 24
+                }], value);
+                $containerMasaKontrak.append(html);
+
+                // by default is 3 Months contract
+                if ($('#input-tgl_masuk').val() != '') var t_masuk = $('#input-tgl_masuk').val();
+                else var t_masuk = moment().format('DD-MM-YYYY');
+                html = renderAddElement('datepicker', 'tgl_keluar', label_2, null, moment(t_masuk, 'DD-MM-YYYY').add(value, 'M').format('DD-MM-YYYY'));
+                $containerTglKeluar.append(html);
+
+            } else {
+                $containerMasaKontrak.empty();
+                $containerTglKeluar.empty();
+            }
+
+            // reinitiate Datepicker plugin
+            App.initHelpers(['datepicker']);
+        });
+
+        // when MASA KERJA selector changed
+        $(document).on('change', '#input-masa_kontrak', function() {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            if ($('#input-tgl_masuk').val() != '') var t_masuk = $('#input-tgl_masuk').val();
+            else var t_masuk = moment().format('DD-MM-YYYY');
+            $('#input-tgl_keluar').val(moment(t_masuk, 'DD-MM-YYYY').add(valueSelected, 'M').format('DD-MM-YYYY'));
+        });
+
+        // when MASA KERJA selector changed
+        $(document).on('change', '#input-tgl_masuk', function() {
+            $('#input-masa_kontrak').trigger('change');
+        });
 
         // 
         // Eof MODAL ACTIONS !!!
-        // 
+        //
+
+
 
         // When STAT NUMBER is clicked
         $(document).on('click', 'a.stat-filter', function(e) {
@@ -1114,6 +1173,9 @@ var BasePagesEmployee = function() {
             var data = $(this).attr('data');
             $('#input-filter-status').val(data).trigger('change');
         });
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
     };
 
     return {
@@ -1130,6 +1192,11 @@ var BasePagesEmployee = function() {
 
 // Initialize when page loads
 jQuery(function() {
+    // Core Variable
+    window.BASE_URL = url('protocol') + '://' + url('hostname');
+    // console.log("BASE_URL >>" + BASE_URL);
+
+    // Main INIT
     BasePagesEmployee.init();
 
     $(window).load(function() {

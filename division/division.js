@@ -114,7 +114,10 @@ var BasePagesDivision = function() {
                         required: true,
                         minlength: 3
                     },
-                    'elem-division': {
+                    'elem-bagian_key': {
+                        required: true
+                    },
+                    'elem-bagian_value': {
                         required: true
                     }
                 };
@@ -123,8 +126,11 @@ var BasePagesDivision = function() {
                         required: 'Isikan Kode',
                         minlength: 'Minimal 3 karakter'
                     },
-                    'elem-division': {
-                        required: 'Pilih Divisi'
+                    'elem-bagian_key': {
+                        required: 'Pilih Jenis Bagian'
+                    },
+                    'elem-bagian_value': {
+                        required: 'Pilih *'
                     }
                 };
                 break;
@@ -323,6 +329,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-kode-bagian').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -353,39 +360,48 @@ var BasePagesDivision = function() {
                 { className: "font-w600 text-center", data: "kode" },
                 {
                     className: "text-center",
-                    data: "nama_division"
-                },
-                {
-                    className: "text-center",
-                    data: "nama_department",
+                    data: 'bagian_key',
                     render: function(data, type, row) {
-                        if (row.department == null) return '-';
-                        else return data;
+                        switch (data) {
+                            case 'division':
+                                var jenis_bagian = 'Divisi';
+                                break;
+                            case 'department':
+                                var jenis_bagian = 'Departemen';
+                                break;
+                            case 'section':
+                                var jenis_bagian = 'Section';
+                                break;
+                            case 'sub_section':
+                                var jenis_bagian = 'Sub Section';
+                                break;
+                            default:
+                                var jenis_bagian = 'Grup';
+                                break;
+                        }
+                        return jenis_bagian;
                     }
                 },
                 {
                     className: "text-center",
-                    data: "nama_section",
-                    render: function(data, type, row) {
-                        if (row.section == null) return '-';
-                        else return data;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "nama_sub_section",
-                    render: function(data, type, row) {
-                        if (row.sub_section == null) return '-';
-                        else return data;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "nama_group",
-                    render: function(data, type, row) {
-                        if (row.group == null) return '-';
-                        else return data;
-                    }
+                    data: 'bagian_value',
+                    // render: function(data, type, row) {
+                    //     $.ajax({
+                    //         type: "POST",
+                    //         url: BASE_URL + "/php/api/getDivisionName.php",
+                    //         dataType: 'json',
+                    //         data: {
+                    //             table: row.bagian_key,
+                    //             id: parseInt(data)
+                    //         }
+                    //     }).done(function(res) {
+                    //         console.log(res.data[0].nama);
+                    //         var nama_bagian;
+                    //         if (res.success) nama_bagian = res.data[0].nama;
+                    //         else nama_bagian = '-';
+                    //         return nama_bagian;
+                    //     })
+                    // }
                 },
                 {
                     className: "hidden-xs text-center",
@@ -414,6 +430,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-division').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -470,6 +487,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-department').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -499,7 +517,7 @@ var BasePagesDivision = function() {
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
                 { className: "hidden-xs text-center", data: "child" },
-                { className: "hidden-xs", data: "parent" },
+                { className: "hidden-xs", data: "parent_name" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -527,6 +545,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-section').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -556,7 +575,7 @@ var BasePagesDivision = function() {
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
                 { className: "hidden-xs text-center", data: "child" },
-                { className: "hidden-xs", data: "parent" },
+                { className: "hidden-xs", data: "parent_name" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -584,6 +603,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-sub-section').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -613,7 +633,7 @@ var BasePagesDivision = function() {
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
                 { className: "hidden-xs text-center", data: "child", },
-                { className: "hidden-xs", data: "parent" },
+                { className: "hidden-xs", data: "parent_name" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -641,6 +661,7 @@ var BasePagesDivision = function() {
         // Table initiation
         var table = $('#table-group').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -669,7 +690,7 @@ var BasePagesDivision = function() {
             columns: [
                 { data: "updated" },
                 { className: "font-w600 ", data: "nama" },
-                { className: "hidden-xs", data: "parent" },
+                { className: "hidden-xs", data: "parent_name" },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -800,13 +821,24 @@ var BasePagesDivision = function() {
                     html += renderAddElement('select', 'parent', 'Sub Section induk');
                     break;
                 default:
-                    $('#hidden-division, #hidden-department, #hidden-section, #hidden-sub_section, #hidden-group').removeClass('hide-me');
+                    $('#hidden-bagian_key, #hidden-bagian_value').removeClass('hide-me');
                     html += renderAddElement('text', 'kode', 'Kode Bagian');
-                    html += renderAddElement('select', 'division', 'Divisi');
-                    html += renderAddElement('select', 'department', 'Departemen');
-                    html += renderAddElement('select', 'section', 'Section');
-                    html += renderAddElement('select', 'sub_section', 'Sub Section');
-                    html += renderAddElement('select', 'group', 'Grup');
+                    html += renderAddElement('predefined-select', 'bagian_key', 'Jenis Bagian', [{
+                        key: 'Divisi',
+                        value: 'division'
+                    }, {
+                        key: 'Departemen',
+                        value: 'department'
+                    }, {
+                        key: 'Section',
+                        value: 'section'
+                    }, {
+                        key: 'Sub Section',
+                        value: 'sub_section'
+                    }, {
+                        key: 'Grup',
+                        value: 'group'
+                    }]);
                     break;
             }
 
@@ -818,7 +850,11 @@ var BasePagesDivision = function() {
 
             // hide unrelated buttons
             $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-            $('#modal').modal('show');
+            $('#modal').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
         });
 
         // When ACTION buttons clicked
@@ -827,11 +863,81 @@ var BasePagesDivision = function() {
             var active_table_id = $(this).parents("table").attr('id');
             var table = $('#' + active_table_id).DataTable();
             var data = table.row($(this).parents('tr')).data();
+            // console.log(data);
 
             // Lets decide which button is clicked:
-            if (act == 'edit') { // edit the data
-                // 
-            } else if (act == 'remove') { // remove the data
+            if (act == 'edit') { // EDIT the data
+                // reset the modal first!
+                $('#modal-title, #generated-container').html('');
+                $('div[id^=hidden-]').addClass('hide-me');
+
+                var html = '';
+                data_type = $('#hidden-active-type').val();
+                $('#hidden-type').val(data_type);
+
+                switch (data_type) {
+                    case "division":
+                        html += renderEditElement('text', 'nama', 'Nama Divisi', data.nama);
+                        break;
+                    case "department":
+                        console.log(data);
+                        $('#hidden-parent').removeClass('hide-me');
+                        html += renderEditElement('text', 'nama', 'Nama Departemen', data.nama);
+                        html += renderEditElement('select', 'parent', 'Divisi Induk', data.parent);
+                        break;
+                    case "section":
+                        $('#hidden-parent').removeClass('hide-me');
+                        html += renderEditElement('text', 'nama', 'Nama Section', data.nama);
+                        html += renderEditElement('select', 'parent', 'Departemen Induk', data.parent);
+                        break;
+                    case "sub_section":
+                        $('#hidden-parent').removeClass('hide-me');
+                        html += renderEditElement('text', 'nama', 'Nama Sub Section', data.nama);
+                        html += renderEditElement('select', 'parent', 'Section Induk', data.parent);
+                        break;
+                    case "group":
+                        $('#hidden-parent').removeClass('hide-me');
+                        html += renderEditElement('text', 'nama', 'Nama Grup', data.nama);
+                        html += renderEditElement('select', 'parent', 'Sub Section induk', data.parent);
+                        break;
+                    default:
+                        $('#hidden-bagian_key, #hidden-bagian_value').removeClass('hide-me');
+                        html += renderEditElement('text', 'kode', 'Kode Bagian', data.kode);
+                        html += renderEditElement('predefined-select', 'bagian_key', 'Jenis Bagian', data.bagian_key, [{
+                            key: 'Divisi',
+                            value: 'division'
+                        }, {
+                            key: 'Departemen',
+                            value: 'department'
+                        }, {
+                            key: 'Section',
+                            value: 'section'
+                        }, {
+                            key: 'Sub Section',
+                            value: 'sub_section'
+                        }, {
+                            key: 'Grup',
+                            value: 'group'
+                        }]);
+                        html += renderEditElement('predefined-select', 'bagian_value', '', data.bagian_value);
+                        break;
+                }
+
+                // init the validation
+                initValidation(data_type);
+
+                $('#modal-title').html('Tambah Data: ' + data_type);
+                $('#generated-container').html(html);
+
+                // hide unrelated buttons
+                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+                $('#modal').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+
+            } else if (act == 'remove') { // REMOVE the data
                 if (data.nama == undefined)
                     var nama_kode = data.kode;
                 else
@@ -884,7 +990,7 @@ var BasePagesDivision = function() {
                     allowOutsideClick: false
                 })
 
-            } else { // set active / non-active status
+            } else { // SET ACTIVE / NON-ACTIVE status
                 if (data.nama == undefined)
                     var nama_kode = data.kode;
                 else
@@ -947,52 +1053,26 @@ var BasePagesDivision = function() {
             }
         });
 
-        // Selector onChange() handler
-        $(document).on('change', '[id^=input-]', function() {
-            // get the DB table name first and decide the CHILD TABLE
-            var id = $(this).attr('id');
-            var $parentTable = id.substr(id.indexOf("-") + 1);
-            if ($parentTable != 'parent') { // exclude the PARENT selector
-                switch ($parentTable) {
-                    case "division":
-                        var $childTable = 'department';
-                        var $otherSelectors = $('#input-section, #input-sub_section, #input-group');
-                        break;
-                    case "department":
-                        var $childTable = 'section';
-                        var $otherSelectors = $('#input-sub_section, #input-group');
-                        break;
-                    case "section":
-                        var $childTable = 'sub_section';
-                        var $otherSelectors = $('#input-group');
-                        break;
-                    case "sub_section":
-                        var $childTable = 'group';
-                        break;
-                    default:
-                        break;
-                }
+        // selector JENIS BAGIAN onChange() handler
+        $(document).on('change', '#input-bagian_key', function() {
+            var selected = this.value;
 
-                var optionSelected = $("option:selected", this);
-                var valueSelected = this.value;
-
-                // fetch data for populating CHILD selector
-                $.ajax({
-                    type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorData.php',
-                    dataType: 'json',
-                    data: {
-                        table: $childTable,
-                        parent: valueSelected
-                    },
-                    success: function(res) {
-                        if (res.success) {
-                            if ($childTable != undefined) repopulateSelector('input-' + $childTable, res.data);
-                            if ($otherSelectors != undefined) $otherSelectors.empty();
-                        }
+            $.ajax({
+                type: "POST",
+                url: BASE_URL + '/php/api/getSelectorData.php',
+                dataType: 'json',
+                data: {
+                    table: selected
+                },
+                success: function(res) {
+                    if (res.success) {
+                        $targetSelector = $('#input-bagian_value');
+                        res.data.forEach(function(v) {
+                            $targetSelector.append('<option value="' + v.id + '">' + v.nama + '</option>');
+                        })
                     }
-                });
-            }
+                }
+            });
         });
 
         // when modal on close
@@ -1015,6 +1095,9 @@ var BasePagesDivision = function() {
 
         // Lets init our first table :: Kode Bagian Table
         initTableKodeBagian();
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
     };
 
     return {
@@ -1027,4 +1110,9 @@ var BasePagesDivision = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesDivision.init(); });
+jQuery(function() {
+    // Core Variable
+    window.BASE_URL = url('protocol') + '://' + url('hostname');
+
+    BasePagesDivision.init();
+});

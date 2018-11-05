@@ -209,6 +209,9 @@ var BasePagesGrade = function() {
         // Lets init our stat & table :: Grade Table
         initStat('grade');
         initTableGrade();
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
     };
 
     var initStat = function(table) {
@@ -261,6 +264,7 @@ var BasePagesGrade = function() {
         // Table initiation
         var table = $('#table-grade').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -303,9 +307,9 @@ var BasePagesGrade = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -317,6 +321,7 @@ var BasePagesGrade = function() {
         // Table initiation
         var table = $('#table-penugasan').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -358,9 +363,9 @@ var BasePagesGrade = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            // '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -378,4 +383,9 @@ var BasePagesGrade = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesGrade.init(); });
+jQuery(function() {
+    // Core Variable
+    window.BASE_URL = url('protocol') + '://' + url('hostname');
+
+    BasePagesGrade.init();
+});

@@ -1,8 +1,20 @@
 // Function to render elements inside the modal :: ADD
-var renderAddElement = function(type, name, label) {
+var renderAddElement = function(type, name, label, meta_data) {
     var elem = '';
 
-    if (type == 'select') {
+    if (type == 'predefined-select') {
+        var container = $('#input-' + name);
+        // reset the selector first
+        container.empty();
+        container.append('<option value="" selected></option>');
+
+        meta_data.forEach(function(v){
+            container.append('<option value="' + v.value + '">' + v.key + '</option>')
+        })
+
+        $('#label-' + name).html(label);
+        
+    } else if (type == 'select') {
         var container = $('#input-' + name);
         // reset the selector first
         container.empty();
@@ -26,7 +38,7 @@ var renderAddElement = function(type, name, label) {
                 if (res.success) {
                     var data = res.data;
                     data.forEach(function(v) {
-                        container.append('<option value="' + v.id + '">' + v.nama + '</option>')
+                        container.append('<option value="' + v.id + '">' + v.nama + '</option>');
                     })
                 }
             });

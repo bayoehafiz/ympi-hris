@@ -439,7 +439,7 @@ var BasePagesShift = function() {
 
             // reset all elements
             $('[id^=input-]').html('').empty();
-            
+
             // hide all hidden elements
             $('[id^=hidden-]').addClass('hide-me');
         })
@@ -720,4 +720,9 @@ var BasePagesShift = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() { BasePagesShift.init(); });
+jQuery(function() {
+    // Core Variable
+    window.BASE_URL = url('protocol') + '://' + url('hostname');
+    
+    BasePagesShift.init();
+});

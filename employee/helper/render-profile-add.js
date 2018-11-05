@@ -12,6 +12,9 @@ var renderProfileAdd = function() {
     $('ul.nav-tabs').children(':first').addClass('active');
     $(".tab-pane:first").addClass('active');
 
+    // Reset all containers
+    $('div.modal-content').find('[id^=profile-]').empty();
+
     // Set value in modal
     $('#avatar').attr('src', "../assets/img/avatars/avatar.jpg");
 
@@ -28,20 +31,21 @@ var renderProfileAdd = function() {
             table: 'kode_bagian'
         },
         success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
-                '<option value="" class="text-muted">Kode Bagian</option>';
+            if (res.success) {
+                var selector = '<div class="form-group">' +
+                    '<div class="form-material form-material-primary push-30">' +
+                    '<select class="form-control text-right" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
+                    '<option value="" class="text-muted">Kode Bagian</option>';
+                res.data.forEach(function(o) {
+                    selector += '<option value="' + o.id + '">' + o.kode + '</option>';
+                })
 
-            res.data.forEach(function(o) {
-                selector += '<option value="' + o.id + '">' + o.kode + '</option>';
-            })
+                selector += '</select>' +
+                    '</div>' +
+                    '</div>';
 
-            selector += '</select>' +
-                '</div>' +
-                '</div>';
-
-            $('#modal-kode-bagian').html(selector);
+                $('#modal-kode-bagian').html(selector);
+            }
         }
     });
 
@@ -156,19 +160,19 @@ var renderProfileAdd = function() {
         }
     });
 
-    $('#profile-status').html(renderAddElement('select', '', 'status', 'Status Karyawan', false, [
+    $('#profile-status').html(renderAddElement('select', 'status', 'Status Karyawan', [
         { value: 'Tetap', label: 'Tetap' },
         { value: 'Kontrak 1', label: 'Kontrak 1' },
         { value: 'Kontrak 2', label: 'Kontrak 2' },
         { value: 'Percobaan', label: 'Percobaan' }
     ]));
 
-    $('#profile-tgl-masuk').html(renderAddElement('datepicker', '', 'tgl_masuk', 'Tanggal Masuk', false));
+    $('#profile-tgl-masuk').html(renderAddElement('datepicker', 'tgl_masuk', 'Tanggal Masuk', null, moment().format('DD-MM-YYYY')));
     $('#profile-masa-kerja').html(''); // blank
 
-    $('#profile-tempat-lahir').html(renderAddElement('text', '', 'tempat_lahir', 'Tempat Lahir', false));
-    $('#profile-tgl-lahir').html(renderAddElement('datepicker', '', 'tgl_lahir', 'Tanggal Lahir', false));
-    $('#profile-agama').html(renderAddElement('select', '', 'agama', 'Agama', false, [
+    $('#profile-tempat-lahir').html(renderAddElement('text', 'tempat_lahir', 'Tempat Lahir'));
+    $('#profile-tgl-lahir').html(renderAddElement('datepicker', 'tgl_lahir', 'Tanggal Lahir'));
+    $('#profile-agama').html(renderAddElement('select', 'agama', 'Agama', [
         { value: 'Islam', label: 'Islam' },
         { value: 'Kristen', label: 'Kristen' },
         { value: 'Katholik', label: 'Katholik' },
@@ -176,13 +180,13 @@ var renderProfileAdd = function() {
         { value: 'Buddha', label: 'Buddha' },
         { value: 'Konghucu', label: 'Konghucu' }
     ]));
-    $('#profile-jenis-kelamin').html(renderAddElement('select', '', 'jenis_kelamin', 'Jenis Kelamin', false, [
+    $('#profile-jenis-kelamin').html(renderAddElement('select', 'jenis_kelamin', 'Jenis Kelamin', [
         { value: 'Laki-laki', label: 'Laki-laki' },
         { value: 'Perempuan', label: 'Perempuan' }
     ]));
-    $('#profile-alamat-lengkap').html(renderAddElement('textarea', '', 'alamat_lengkap', 'Alamat Lengkap', false));
-    $('#profile-alamat-domisili').html(renderAddElement('textarea', '', 'alamat_domisili', 'Alamat Domisili', false));
-    $('#profile-status-keluarga').html(renderAddElement('select', '', 'status_keluarga', 'Status Keluarga', false, [
+    $('#profile-alamat-lengkap').html(renderAddElement('textarea', 'alamat_lengkap', 'Alamat Lengkap'));
+    $('#profile-alamat-domisili').html(renderAddElement('textarea', 'alamat_domisili', 'Alamat Domisili'));
+    $('#profile-status-keluarga').html(renderAddElement('select', 'status_keluarga', 'Status Keluarga', [
         { value: 'K0', label: 'K0' },
         { value: 'K1', label: 'K1' },
         { value: 'K2', label: 'K2' },
@@ -193,7 +197,7 @@ var renderProfileAdd = function() {
         { value: 'Tk', label: 'Tk' },
     ]));
 
-    $('#profile-pendidikan').html(renderAddElement('select', '', 'pendidikan', 'Pendidikan', false, [
+    $('#profile-pendidikan').html(renderAddElement('select', 'pendidikan', 'Pendidikan', [
         { value: 'S0', label: 'S0 (SD)' },
         { value: 'S1', label: 'S1 (SMP)' },
         { value: 'S2', label: 'S2 (SMA/SMK)' },
@@ -201,19 +205,18 @@ var renderProfileAdd = function() {
         { value: 'S4', label: 'S4 (Diploma 3)' },
         { value: 'S5', label: 'S5 (Sarjana)' }
     ]));
-    $('#profile-sekolah-universitas').html(renderAddElement('text', '', 'sekolah_universitas', 'Sekolah / Universitas', false));
-    $('#profile-jurusan').html(renderAddElement('text', '', 'jurusan', 'Jurusan', false));
+    $('#profile-sekolah-universitas').html(renderAddElement('text', 'sekolah_universitas', 'Sekolah / Universitas'));
+    $('#profile-jurusan').html(renderAddElement('text', 'jurusan', 'Jurusan'));
 
-    $('#profile-telepon').html(renderAddElement('text', '', 'no_telepon', 'No. Telepon', false));
-    $('#profile-no-rekening').html(renderAddElement('text', '', 'no_rekening', 'No. Rekening', false));
-    $('#profile-no-ktp').html(renderAddElement('number', '', 'no_ktp', 'No. KTP', false));
-    $('#profile-no-npwp').html(renderAddElement('text', '', 'no_npwp', 'No. NPWP', false));
-    $('#profile-no-bpjstk').html(renderAddElement('text', '', 'no_bpjstk', 'No. BPJS TK', false));
-    $('#profile-no-bpjskes').html(renderAddElement('text', '', 'no_bpjskes', 'No. BPJS Kes', false));
-    $('#profile-no-jp').html(renderAddElement('text', '', 'no_jp', 'No. JP', false));
+    $('#profile-telepon').html(renderAddElement('text', 'no_telepon', 'No. Telepon'));
+    $('#profile-no-rekening').html(renderAddElement('text', 'no_rekening', 'No. Rekening'));
+    $('#profile-no-ktp').html(renderAddElement('number', 'no_ktp', 'No. KTP'));
+    $('#profile-no-npwp').html(renderAddElement('text', 'no_npwp', 'No. NPWP'));
+    $('#profile-no-bpjstk').html(renderAddElement('text', 'no_bpjstk', 'No. BPJS TK'));
+    $('#profile-no-bpjskes').html(renderAddElement('text', 'no_bpjskes', 'No. BPJS Kes'));
+    $('#profile-no-jp').html(renderAddElement('text', 'no_jp', 'No. JP'));
 
     // re-initialize DatePicker
     App.initHelpers(['datepicker']);
     initValidation();
 };
-

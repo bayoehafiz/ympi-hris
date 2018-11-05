@@ -78,13 +78,10 @@
                                                     <tr>
                                                         <th></th>
                                                         <th class="text-center">Kode</th>
-                                                        <th class="text-center">Divisi</th>
-                                                        <th class="text-center">Departemen</th>
-                                                        <th class="text-center">Section</th>
-                                                        <th class="text-center">Sub Section</th>
-                                                        <th class="text-center">Grup</th>
+                                                        <th class="text-center">Jenis Bagian</th>
+                                                        <th class="text-center">Nama Bagian</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 </tbody>
@@ -118,7 +115,7 @@
                                                         <th class="hidden-xs text-center" style="width: 25%!important;">Nama</th>
                                                         <th class="text-center">Jml. Dept.</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -152,7 +149,7 @@
                                                         <th class="hidden-xs text-center">Jml. Section</th>
                                                         <th class="hidden-xs text-center">Divisi Induk</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -186,7 +183,7 @@
                                                         <th class="hidden-xs text-center">Jml. Sub Section</th>
                                                         <th class="text-center">Dept. Induk</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                             </table>
@@ -220,7 +217,7 @@
                                                         <th class="hidden-xs text-center">Jml. Group</th>
                                                         <th class="text-center">Section Induk</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 </tbody>
@@ -254,7 +251,7 @@
                                                         <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
                                                         <th class="text-center">Sub Section Induk</th>
                                                         <th class="text-center">Status</th>
-                                                        <th class="text-center" style="width: 10%;">Actions</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 </tbody>
@@ -297,42 +294,34 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter" id="modal-content">
-                                <span id="generated-container">All generated elements will be here</span>
-                                <div class="form-group hide-me" id="hidden-division">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-division" name="elem-division" size="1"></select>
-                                        <label for="elem-division" id="label-division"></label>
+                            <div class="block-content bg-gray-lighter row" id="modal-content">
+                                <div class="row push-5-t">
+                                    <div class="col-md-8">
+                                        <div id="generated-container">All generated elements will be here</div>
                                     </div>
-                                </div>
-                                <div class="form-group hide-me" id="hidden-department">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-department" name="elem-department" size="1"></select>
-                                        <label for="elem-department" id="label-department"></label>
+                                    <div class="col-md-6">
+                                        <div class="form-group hide-me" id="hidden-bagian_key">
+                                            <div class="form-material form-material-primary push-30">
+                                                <select class="form-control" id="input-bagian_key" name="elem-bagian_key" size="1"></select>
+                                                <label for="elem-bagian_key" id="label-bagian_key"></label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group hide-me" id="hidden-section">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-section" name="elem-section" size="1"></select>
-                                        <label for="elem-section" id="label-section"></label>
+                                    <div class="col-md-6">
+                                        <div class="form-group hide-me" id="hidden-bagian_value">
+                                            <div class="form-material form-material-primary push-30">
+                                                <select class="form-control" id="input-bagian_value" name="elem-bagian_value" size="1"></select>
+                                                <label for="elem-bagian_value" id="label-bagian_value"></label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group hide-me" id="hidden-sub_section">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-sub_section" name="elem-sub_section" size="1"></select>
-                                        <label for="elem-sub_section" id="label-sub_section"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group hide-me" id="hidden-group">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-group" name="elem-group" size="1"></select>
-                                        <label for="elem-group" id="label-group"></label>
-                                    </div>
-                                </div>
-                                <div class="form-group hide-me" id="hidden-parent">
-                                    <div class="form-material form-material-primary push-30">
-                                        <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
-                                        <label for="elem-parent" id="label-parent"></label>
+                                    <div class="col-md-6">
+                                        <div class="form-group hide-me" id="hidden-parent">
+                                            <div class="form-material form-material-primary push-30">
+                                                <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
+                                                <label for="elem-parent" id="label-parent"></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -375,9 +364,9 @@
     <script src="../assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../assets/js/core/moment.min.js"></script>
     <!-- Main script -->
-    <script src="../config.js"></script>
     <script src="../assets/js/app.js"></script>
     <!-- Page JS Plugins -->
+    <script src="../assets/js/plugins/url/url.min.js"></script>
     <script src="../assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
@@ -398,6 +387,7 @@
     <script src="helper/bs-datatables.js"></script>
     <script src="helper/repopulate-selector.js"></script>
     <script src="helper/render-add-element.js"></script>
+    <script src="helper/render-edit-element.js"></script>
     <!-- <script src="helper/init-validation.js"></script> -->
     <script src="division.js"></script>
     <script>

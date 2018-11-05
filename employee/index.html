@@ -49,7 +49,7 @@
                 <!-- Dynamic Table Full Pagination -->
                 <div class="block col-md-9">
                     <div class="block-content">
-                        <table class="table table-bordered table-striped js-dataTable-full table-responsive table-vcenter display nowrap" id="table-employee" style="width: 100%!important;">
+                        <table class="table table-bordered table-striped js-dataTable-full table-responsive table-vcenter" id="table-employee" style="width: 100%!important;">
                             <thead>
                                 <tr>
                                     <th class="text-center"><i class="si si-user"></i></th>
@@ -96,13 +96,13 @@
                 <form class="js-validation-material" action="" method="post" id="profile-form">
                     <div class="modal-content">
                         <div class="block block-themed block-transparent remove-margin-b">
-                            <div class="block-header bg-primary">
+                            <div class="block-header bg-primary-dark">
                                 <ul class="block-options">
                                     <li>
                                         <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
                                     </li>
                                 </ul>
-                                <h3 class="block-title" id="modal-title">Data Karyawan</h3>
+                                <h3 class="block-title text-primary" id="modal-title">Data Karyawan</h3>
                             </div>
                             <div class="block-content bg-gray-lighter">
                                 <div class="row">
@@ -136,39 +136,55 @@
                                             <div class="block bg-gray-lighter">
                                                 <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                                                     <li class="active">
-                                                        <a class="tab-title" href="#btabs-static-kerja">Data Kerja</a>
+                                                        <a class="tab-title" href="#btabs-static-divisi"><i class="si si-layers"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a class="tab-title" href="#btabs-static-pribadi">Pribadi</a>
+                                                        <a class="tab-title" href="#btabs-static-kerja"><i class="si si-briefcase"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a class="tab-title" href="#btabs-static-pendidikan">Pendidikan</a>
+                                                        <a class="tab-title" href="#btabs-static-pribadi"><i class="si si-user"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a class="tab-title" href="#btabs-static-admin">Administrasi</a>
+                                                        <a class="tab-title" href="#btabs-static-pendidikan"><i class="si si-trophy"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="tab-title" href="#btabs-static-admin"><i class="si si-paper-clip"></i></a>
                                                     </li>
                                                 </ul>
                                                 <div class="block-content tab-content">
-                                                    <div class="tab-pane active" id="btabs-static-kerja">
-                                                        <div class="row push-5-t">
+                                                    <div class="tab-pane active" id="btabs-static-divisi">
+                                                        <p class="block-title"><i class="si si-layers push-5-r"></i> Data Divisi</p>
+                                                        <div class="row push-30-t push-20">
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-division"></div>
                                                                 <div class="push-10" id="profile-department"></div>
                                                                 <div class="push-10" id="profile-section"></div>
                                                                 <div class="push-10" id="profile-sub-section"></div>
-                                                                <div class="push-10" id="profile-group"></div>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <div class="push-10" id="profile-status"></div>
-                                                                <div class="push-10" id="profile-tgl-masuk"></div>
-                                                                <div class="push-10" id="profile-masa-kerja"></div>
+                                                                <div class="push-10" id="profile-group"></div>
                                                                 <div class="push-10" id="profile-grade"></div>
                                                                 <div class="push-10" id="profile-penugasan"></div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="tab-pane" id="btabs-static-kerja">
+                                                        <p class="block-title"><i class="si si-briefcase push-5-r"></i> Data Kerja</p>
+                                                        <div class="row push-30-t push-20">
+                                                            <div class="col-md-6">
+                                                                <div class="push-10" id="profile-status"></div>
+                                                                <div class="push-10" id="profile-tgl-masuk"></div>
+                                                                <div class="push-10" id="profile-masa-kerja"></div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="push-10" id="profile-masa-kontrak"></div>
+                                                                <div class="push-10" id="profile-tgl-keluar"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="tab-pane" id="btabs-static-pribadi">
-                                                        <div class="row push-5-t">
+                                                        <p class="block-title"><i class="si si-user push-5-r"></i> Data Pribadi</p>
+                                                        <div class="row push-30-t push-20">
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-tempat-lahir"></div>
                                                                 <div class="push-10" id="profile-tgl-lahir"></div>
@@ -183,7 +199,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="btabs-static-pendidikan">
-                                                        <div class="row push-5-t">
+                                                        <p class="block-title"><i class="si si-trophy push-5-r"></i> Data Pendidikan</p>
+                                                        <div class="row push-30-t push-20">
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-pendidikan"></div>
                                                                 <div class="push-10" id="profile-sekolah-universitas"></div>
@@ -193,7 +210,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="tab-pane" id="btabs-static-admin">
-                                                        <div class="row push-5-t">
+                                                        <p class="block-title"><i class="si si-paper-clip push-5-r"></i>  Data Administrasi</p>
+                                                        <div class="row push-30-t push-20">
                                                             <div class="col-md-6">
                                                                 <div class="push-10" id="profile-telepon"></div>
                                                                 <div class="push-10" id="profile-no-rekening"></div>
@@ -214,12 +232,12 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button class="btn btn-sm btn-danger pull-left" type="button" id="btn-remove-profile"><i class="si si-ban"></i> Hapus Data</button>
                                 <button class="btn btn-sm btn-default pull-left" data-toggle="popover" data-placement="top" data-content="Generate random sample data" type="button" id="btn-generate-profile"><i class="fa fa-gear"></i></button>
-                                <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="fa fa-edit"></i> Ubah</button>
-                                <button class="btn btn-sm btn-danger" type="button" id="btn-remove-profile"><i class="fa fa-trash"></i> Hapus</button>
-                                <button class="btn btn-sm btn-primary" type="submit" id="btn-save-profile"><i class="fa fa-save"></i> Simpan</button>
+                                <button class="btn btn-sm btn-warning" type="button" id="btn-edit-profile"><i class="si si-pencil"></i> Ubah</button>
                                 <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> Tutup</button>
-                                <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile">Batal</button>
+                                <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="si si-action-undo"></i> Batal</button>
+                                <button class="btn btn-sm btn-primary" type="submit" id="btn-save-profile"><i class="si si-check"></i> Simpan</button>
                             </div>
                         </div>
                 </form>
@@ -293,9 +311,9 @@
         <script src="../assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="../assets/js/core/moment.min.js"></script>
         <!-- Main script -->
-        <script src="../config.js"></script>
         <script src="../assets/js/app.js"></script>
         <!-- Page JS Plugins -->
+        <script src="../assets/js/plugins/url/url.min.js"></script>
         <script src="../assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-notify/bootstrap-notify.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
@@ -312,7 +330,6 @@
         <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
         <script src="../assets/js/plugins/cropperjs/cropper.min.js"></script>
         <script src="../assets/js/plugins/jquery-cropper/jquery-cropper.min.js"></script>
-        <script src="../assets/js/plugins/url/url.min.js"></script>
         <!-- Page JS Code -->
         <script src="helper/bs-datatables.js"></script>
         <script src="helper/generate-nik.js"></script>
