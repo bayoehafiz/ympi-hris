@@ -1,8 +1,5 @@
 .DS_Store
-config.js
-
 .idea
 
-config\.js\.example
-
 php/config/conn\.php
+assets/img/avatars/*
