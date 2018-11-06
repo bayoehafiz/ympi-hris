@@ -234,24 +234,22 @@ var BasePagesGrade = function() {
                             if (d.kode == null)
                                 var title = d.nama;
                             else
-                                var title = '[' + d.kode + '] ' + d.nama;
+                                var title = d.kode + '<span class="text-muted">' + d.nama + '</span>';
 
                             html += '<div class="col-md-' + wCounter + '">' +
                                 '<a href="' + BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
-                                '<span class="h1 font-w700 text-primary animated flipInX" id="total-finance">' + d.total + '</span>' +
-                                '<div class="font-w700 text-gray-darker animated fadeIn">' + title + '</div>' +
+                                '<span class="h1 font-w700 text-primary animated fadeIn" id="total-finance">' + d.total + '</span>' +
+                                '<div class="h5 font-w600 text-gray-darker animated fadeIn">' + title + '</div>' +
                                 '</a>' +
-                                // '<div class="text-muted animated fadeIn"><small>Karyawan</small></div>' +
                                 '</div>';
                         });
                     }
                 }
 
-                html += '<div class="col-md-2 pull-right push-5-t">' +
+                html += '<div class="col-md-2 pull-right push-10-t">' +
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + table + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container

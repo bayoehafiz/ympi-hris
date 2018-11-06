@@ -28,7 +28,7 @@
 
 <body>
     <div id="page-loader"></div>
-    <div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
+    <div id="page-container" class="sidebar-l sidebar-o sidebar-mini side-scroll header-navbar-fixed">
         <!-- Sidebar -->
         <nav id="sidebar"></nav>
         <!-- END Sidebar -->
@@ -38,8 +38,8 @@
         <!-- Main Container -->
         <main id="main-container">
             <!-- Stats -->
-            <div class="content bg-white border-b">
-                <div class="row items-push text-uppercase text-center center-block" id="stat-grade"></div>
+            <div class="content-mini content-mini-full bg-white border-b">
+                <div class="row items-push text-center center-block" id="stat-grade"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
@@ -108,7 +108,7 @@
                 <div class="modal-content">
                     <form class="js-validation-material" action="" method="post" id="form-modal">
                         <div class="block block-themed block-transparent remove-margin-b">
-                            <div class="block-header bg-primary">
+                            <div class="block-header bg-primary-dark">
                                 <ul class="block-options">
                                     <li>
                                         <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
@@ -118,14 +118,12 @@
                             </div>
                             <div class="block-content bg-gray-lighter" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
-                                <div class="modal-footer">
-                                    <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
-                                    <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
-                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
-                                    <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
-                                </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus Data</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
                         </div>
                     </form>
                 </div>

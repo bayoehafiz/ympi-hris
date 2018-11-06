@@ -39,7 +39,6 @@ var renderEditElement = function(type, name, label, value, meta_data) {
             })
 
             $('#label-' + name).html(label);
-            container.trigger('change');
 
         } else {
             container.val(value);
@@ -49,7 +48,13 @@ var renderEditElement = function(type, name, label, value, meta_data) {
         var container = $('#input-' + name);
         // reset the selector first
         container.empty();
-        if (name == 'parent') {
+
+        if (name == 'bagian_value') {
+            
+            populate('#input-' + name, value.table, value.id);
+            
+        } else if (name == 'parent') {
+
             // get the source DB table to populate parent's select
             if (label == 'Divisi Induk') var source_table = 'division';
             else if (label == 'Departemen Induk') var source_table = 'department';
@@ -57,7 +62,9 @@ var renderEditElement = function(type, name, label, value, meta_data) {
             else var source_table = 'sub_section';
 
             populate('#input-' + name, source_table, value)
+
         } else {
+
             switch (name) {
                 case 'department':
                     populate('#input-' + name, name, value)
@@ -75,6 +82,7 @@ var renderEditElement = function(type, name, label, value, meta_data) {
                     populate('#input-' + name, name, value)
                     break;
             }
+
         }
         container.trigger('change');
         $('#label-' + name).html(label);

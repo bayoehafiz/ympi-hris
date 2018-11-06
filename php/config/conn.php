@@ -1,11 +1,11 @@
 <?php
-//database details
+// database details
 $dbHost = 'localhost';
 $dbUsername = 'ympi';
 $dbPassword = 'Hello123#';
 $dbName = 'ympi_hris';
 
-//create connection and select DB
+// create connection and select DB
 mysqli_report(MYSQLI_REPORT_STRICT);
 try {
     $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);

@@ -19,6 +19,7 @@ var initUploader = function() {
         var url;
 
         var done = function(url) {
+            // console.log(url);
             $input.empty();
             $image.attr('src', url);
             $profileModal.modal('hide');

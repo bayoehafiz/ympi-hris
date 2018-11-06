@@ -8724,6 +8724,11 @@ a.block.block-link-hover3:active {
     height: 128px;
 }
 
+.img-avatar.img-avatar176 {
+    width: 176px;
+    height: 176px;
+}
+
 .img-avatar-thumb {
     margin: 5px;
     -webkit-box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.4);
@@ -14435,10 +14440,6 @@ optgroup {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
-}
-
-.img-container img {
-    max-width: 100%;
 }
 
 div.scrollable {

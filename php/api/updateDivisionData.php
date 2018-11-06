@@ -9,12 +9,12 @@ function getParent($db, $targetTbl, $targetId)
     return $rec['parent'];
 }
 
-if (isset($_POST['obj'])) {
-    $data = $_POST['obj'];
+if (isset($_POST['data'])) {
+    $id = $_POST['id'];
+    $data = $_POST['data'];
     $table = $_POST['table'];
 
-    $sql_sets = '';
-    $sql_values = '';
+    $sql_sets = "";
     $arr_length = count($data);
     $counter = 0;
 
@@ -72,49 +72,33 @@ if (isset($_POST['obj'])) {
         }
 
         // inject KODE and ROOT TABLE information
-        $sql_sets .= '`kode`, ';
-        $sql_sets .= '`bagian_key`, ';
-        $sql_sets .= '`bagian_value`, ';
-        $sql_values .= '"' . $code . '", ';
-        $sql_values .= '"' . $rootTable . '", ';
-        $sql_values .= intval($rootId) . ', ';
+        $sql_sets .= '`kode` = "' . $code . '", `bagian_key` = "' . $rootTable . '", `bagian_value` = ' . intval($rootId) . ', ';
 
         // Finally, prepare $traceData for DB querying
         foreach ($traceData as $data) {
             $counter++;
-            $sql_sets .= '`' . $data['table'] . '`';
-            $sql_values .= intval($data['id']);
+            $sql_sets .= '`' . $data['table'] . '` = ' . intval($data['id']);
 
             if ($counter != sizeof($traceData)) {
                 $sql_sets .= ', ';
-                $sql_values .= ', ';
             }
         }
 
     } else {
+
+        // Populate the SQL SET data
         foreach ($data as $key => $value) {
-            if ($value['value'] != '') {
-                $counter++;
-
-                if ($value['key'] == 'nik') {
-                    $sql_sets .= '`' . $value['key'] . '`';
-                    $sql_values .= intval($value['value']);
-                } else {
-                    $sql_sets .= '`' . $value['key'] . '`';
-                    $sql_values .= '"' . $value['value'] . '"';
-                }
-
-                if ($counter != $arr_length) {
-                    $sql_sets .= ', ';
-                    $sql_values .= ', ';
-                }
+            $counter++;
+            $sql_sets .= "`" . $value['key'] . "` = '" . $value['value'] . "'";
+            if ($counter != $arr_length) {
+                $sql_sets .= ", ";
             }
         }
     }
 
-    $sql = "INSERT INTO `" . $table . "` (" . $sql_sets . ") VALUES (" . $sql_values . ")";
+    $sql = "UPDATE `{$table}` SET {$sql_sets}  WHERE id = '{$id}'";
 
-    // ChromePhp::log($sql);
+    ChromePhp::log($sql);
 
     if ($db->query($sql)) {
         $res['success'] = true;
@@ -123,6 +107,6 @@ if (isset($_POST['obj'])) {
         $res['message'] = '(' . $db->errno . ') ' . $db->error;
     }
 
-    //returns data as JSON format
+    // //returns data as JSON format
     echo json_encode($res);
 }

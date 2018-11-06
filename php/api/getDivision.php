@@ -37,11 +37,11 @@ if (isset($_POST['table'])) {
     if ($table == 'kode_bagian') {
         // kode_bagian table
         $empQuery = "SELECT a.*
-            FROM
-                `kode_bagian` a
-        WHERE 1 {$searchQuery}
-        GROUP BY a.id
-        ORDER BY {$columnName} {$columnSortOrder} LIMIT {$row},{$rowperpage}";
+                FROM `kode_bagian` a
+                WHERE 1 {$searchQuery}
+                GROUP BY a.id
+                ORDER BY {$columnName} {$columnSortOrder} 
+                LIMIT {$row},{$rowperpage}";
 
     } else if ($table == 'division') {
         $empQuery = "SELECT a.*, IFNULL(COUNT(b.id),0) AS child
@@ -82,6 +82,8 @@ if (isset($_POST['table'])) {
                 ORDER BY {$columnName} {$columnSortOrder}
                 LIMIT {$row},{$rowperpage}";
     }
+
+    // ChromePhp::log($empQuery);
 
     $empRecords = mysqli_query($db, $empQuery);
     $rows = array();

@@ -173,16 +173,36 @@ var BasePagesDivision = function() {
                     });
 
                 // Read current data type
-                var dType = $('#hidden-active-type').val();
+                var $table = $('#hidden-active-type').val();
+                var $id = $('#hidden-opened-data').val();
 
+                // Read the current scope (add OR edit)
+                var $scope = $('#hidden-modal-scope').val();
+
+                if ($scope == 'add') {
+                    var $apiUrl = BASE_URL + '/php/api/addDivisionData.php';
+                    var $payload = {
+                        obj: data,
+                        table: $table
+                    };
+                    var $text = 'Data berhasil ditambahkan';
+
+                } else {
+                    var $apiUrl = BASE_URL + '/php/api/updateDivisionData.php';
+                    var $payload = {
+                        id: $id,
+                        data: data,
+                        table: $table
+                    };
+                    var $text = 'Data berhasil di-update';
+                }
+
+                // Call the API!
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/addDivisionData.php',
+                    url: $apiUrl,
                     dataType: 'json',
-                    data: {
-                        obj: data,
-                        table: dType
-                    },
+                    data: $payload,
                     success: function(res) {
                         if (res.status == 'err') {
                             swal("Error!", res.message, "error");
@@ -190,17 +210,17 @@ var BasePagesDivision = function() {
                             $('#modal').modal('hide');
                             $.notify({
                                 "icon": "fa fa-check-circle",
-                                "message": "Data berhasil ditambahkan"
+                                "message": $text
                             }, {
                                 "type": "success"
                             })
 
-                            // reload the stat
+                            // reload the stats
                             initSidebar();
                             initStat();
 
                             // reload the table
-                            var table = $('#table-' + dType.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                            var table = $('#table-' + $table.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
                             table.ajax.reload();
                         }
 
@@ -280,33 +300,39 @@ var BasePagesDivision = function() {
                     if (data_length > 0) {
                         var counter = 0;
                         data.forEach(function(d) {
-                            if (d.total != 0) {
-                                counter++;
-                                if (d.kode == undefined) d.kode = d.nama;
+                            // if (d.total != 0) {
+                            counter++;
+                            if (d.kode == undefined) d.kode = d.nama;
 
-                                if (d.active == 0) {
-                                    var text_color_1 = " text-muted";
-                                    var text_color_2 = " text-muted";
+                            if (d.active == 0) {
+                                var text_color_1 = " text-muted";
+                                var text_color_2 = " text-muted";
+                                var hotlink_o = '';
+                                var hotlink_c = '';
+                                var $a = d.total;
+                                var $b = d.kode;
+                            } else {
+                                var text_color_1 = " text-muted";
+                                var text_color_2 = "";
+                                if (d.total == 0) {
+                                    text_color_2 = " text-primary";
                                     var hotlink_o = '';
                                     var hotlink_c = '';
-                                    var $a = d.total;
-                                    var $b = d.kode;
                                 } else {
-                                    var text_color_1 = " text-muted";
-                                    var text_color_2 = "";
                                     var hotlink_o = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">';
                                     var hotlink_c = '</a>';
-                                    var $a = d.total;
-                                    var $b = d.kode;
                                 }
-
-                                html += '<div class="block-content push-10">' +
-                                    hotlink_o +
-                                    '<div class="h3 font-w600' + text_color_2 + '">' + $a + '</div>' +
-                                    '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
-                                    hotlink_c +
-                                    '</div>';
+                                var $a = d.total;
+                                var $b = d.kode;
                             }
+
+                            html += '<div class="block-content push-10">' +
+                                hotlink_o +
+                                '<div class="h3 font-w600' + text_color_2 + '">' + $a + '</div>' +
+                                '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
+                                hotlink_c +
+                                '</div>';
+                            // }
                         });
                     }
                 }
@@ -357,7 +383,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 text-center", data: "kode" },
+                {
+                    className: "font-w600 text-center",
+                    data: "kode",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 {
                     className: "text-center",
                     data: 'bagian_key',
@@ -382,27 +418,7 @@ var BasePagesDivision = function() {
                         return jenis_bagian;
                     }
                 },
-                {
-                    className: "text-center",
-                    data: 'bagian_value',
-                    // render: function(data, type, row) {
-                    //     $.ajax({
-                    //         type: "POST",
-                    //         url: BASE_URL + "/php/api/getDivisionName.php",
-                    //         dataType: 'json',
-                    //         data: {
-                    //             table: row.bagian_key,
-                    //             id: parseInt(data)
-                    //         }
-                    //     }).done(function(res) {
-                    //         console.log(res.data[0].nama);
-                    //         var nama_bagian;
-                    //         if (res.success) nama_bagian = res.data[0].nama;
-                    //         else nama_bagian = '-';
-                    //         return nama_bagian;
-                    //     })
-                    // }
-                },
+                { className: "text-center", data: 'bagian_value' },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
@@ -458,7 +474,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs text-center", data: "child" },
                 {
                     className: "hidden-xs text-center",
@@ -515,7 +541,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs text-center", data: "child" },
                 { className: "hidden-xs", data: "parent_name" },
                 {
@@ -573,7 +609,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs text-center", data: "child" },
                 { className: "hidden-xs", data: "parent_name" },
                 {
@@ -631,7 +677,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs text-center", data: "child", },
                 { className: "hidden-xs", data: "parent_name" },
                 {
@@ -689,7 +745,17 @@ var BasePagesDivision = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-info push-10-l">baru</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs", data: "parent_name" },
                 {
                     className: "hidden-xs text-center",
@@ -794,7 +860,6 @@ var BasePagesDivision = function() {
 
             var html = '';
             data_type = $('#hidden-active-type').val();
-            $('#hidden-type').val(data_type);
 
             switch (data_type) {
                 case "division":
@@ -848,8 +913,9 @@ var BasePagesDivision = function() {
             $('#modal-title').html('Tambah Data: ' + data_type);
             $('#generated-container').html(html);
 
-            // hide unrelated buttons
-            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+            // Set modal scope
+            $('#hidden-modal-scope').val('add');
+
             $('#modal').modal({
                 show: true,
                 keyboard: false,
@@ -863,7 +929,6 @@ var BasePagesDivision = function() {
             var active_table_id = $(this).parents("table").attr('id');
             var table = $('#' + active_table_id).DataTable();
             var data = table.row($(this).parents('tr')).data();
-            // console.log(data);
 
             // Lets decide which button is clicked:
             if (act == 'edit') { // EDIT the data
@@ -873,7 +938,6 @@ var BasePagesDivision = function() {
 
                 var html = '';
                 data_type = $('#hidden-active-type').val();
-                $('#hidden-type').val(data_type);
 
                 switch (data_type) {
                     case "division":
@@ -919,18 +983,24 @@ var BasePagesDivision = function() {
                             key: 'Grup',
                             value: 'group'
                         }]);
-                        html += renderEditElement('predefined-select', 'bagian_value', '', data.bagian_value);
+                        html += renderEditElement('select', 'bagian_value', '', {
+                            table: data.bagian_key,
+                            id: data.bagian_value
+                        });
                         break;
                 }
 
                 // init the validation
                 initValidation(data_type);
 
-                $('#modal-title').html('Tambah Data: ' + data_type);
+                $('#modal-title').html('Ubah Data: ' + data_type);
                 $('#generated-container').html(html);
 
-                // hide unrelated buttons
-                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+                // Set modal scope & id
+                $('#hidden-modal-scope').val('edit');
+                $('#hidden-opened-data').val(data.id);
+
+                // Show modal
                 $('#modal').modal({
                     show: true,
                     keyboard: false,
@@ -966,13 +1036,7 @@ var BasePagesDivision = function() {
                                 if (response.status == 'err') {
                                     swal('Error', response.message, 'error');
                                 } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                                    swal('Success', response.message, 'success');
 
                                     // reload the stat
                                     initStat();
@@ -1067,6 +1131,7 @@ var BasePagesDivision = function() {
                 success: function(res) {
                     if (res.success) {
                         $targetSelector = $('#input-bagian_value');
+                        $targetSelector.empty();
                         res.data.forEach(function(v) {
                             $targetSelector.append('<option value="' + v.id + '">' + v.nama + '</option>');
                         })
@@ -1085,6 +1150,9 @@ var BasePagesDivision = function() {
 
             // hide all hidden elements
             $('[id^=hidden-]').addClass('hide-me');
+
+            // clear modal scope
+            $('#hidden-modal-scope, #hidden-opened-data').val('');
         })
 
         // set default hidden value for ACTIVE type
