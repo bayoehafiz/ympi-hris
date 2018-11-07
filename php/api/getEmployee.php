@@ -10,6 +10,14 @@ $columnIndex = $_POST['order'][0]['column']; // Column index
 $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
 $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
+$scope = $_POST['scope']; // active or inactive employees
+
+
+if ($scope == 'active') {
+    $scope = 1;
+} else {
+    $scope = 0;
+}
 
 if (isset($_POST['filter'])) {
     $filterValue = $_POST['filter'];
@@ -36,13 +44,17 @@ if ($filterValue != '') {
 }
 
 ## Total number of record
-$sel = mysqli_query($db, "select count(a.id) as allcount from employee a WHERE 1 " . $filterQuery . $searchQuery);
+$sel = mysqli_query($db, "select count(a.id) as allcount from employee a WHERE a.active = " . $scope . " " . $filterQuery . $searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecord = $records['allcount'];
 
 ## Fetch records
 $empQuery = "SELECT
-            a.*,
+            a.id,
+            a.nik,
+            a.nama,
+            a.status,
+            a.photo_url,
             b.nama AS nama_division,
             c.nama AS nama_department,
             d.nama AS nama_section,
@@ -70,7 +82,7 @@ $empQuery = "SELECT
                     penugasan h ON h.id = a.penugasan
                 LEFT JOIN
                     kode_bagian i ON i.id = a.kode_bagian
-        WHERE 1 {$filterQuery} {$searchQuery}
+        WHERE a.active = {$scope} {$filterQuery} {$searchQuery}
         ORDER BY {$columnName} {$columnSortOrder}
         LIMIT {$row},{$rowperpage}";
 

@@ -3,20 +3,20 @@ var renderProfileEdit = function(data) {
     $('#modal-title').html('Profil Karyawan - Ubah Data');
 
     // hide/show (un)related buttons
-    $('#btn-edit-profile, #btn-remove-profile, #btn-close-profile, #btn-generate-profile').addClass('hide-me');
+    $('#btn-edit-profile, #btn-terminate-profile, #btn-close-profile, #btn-generate-profile').addClass('hide-me');
     $('#btn-save-profile, #btn-cancel-profile').removeClass('hide-me');
 
     // Reset active tabs
-    $('ul.nav-tabs').find('li.active').removeClass('active');
-    $('.tab-pane.active').removeClass('active');
-    $('ul.nav-tabs').children(':first').addClass('active');
-    $(".tab-pane:first").addClass('active');
+    $('#modal-profile ul.nav-tabs').find('li.active').removeClass('active');
+    $('#modal-profile .tab-pane.active').removeClass('active');
+    $('#modal-profile ul.nav-tabs').children(':first').addClass('active');
+    $("#modal-profile .tab-pane:first").addClass('active');
 
     // hide NIK element
     $('#modal-nik').addClass('hide-me');
 
     // Reset all containers
-    $('div.modal-content').find('[id^=profile-]').empty();
+    $('#modal-profile div.modal-content').find('[id^=profile-]').empty();
 
     // Set value in modal
     var photo_url = "../" + data.photo_url;

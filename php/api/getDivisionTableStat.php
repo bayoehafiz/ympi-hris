@@ -13,7 +13,7 @@ $check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
 $exists = ($check->num_rows > 0) ? true : false;
 if ($exists) {
     $sql = "SELECT
-            a.id, a.kode, COUNT(b.id) AS total, active
+            a.id, a.kode, COUNT(b.id) AS total, a.active
         FROM
             `{$table}` a
                 LEFT JOIN
@@ -24,7 +24,7 @@ if ($exists) {
         {$limit}";
 } else {
     $sql = "SELECT
-            a.id, a.nama, COUNT(b.id) AS total, active
+            a.id, a.nama, COUNT(b.id) AS total, a.active
         FROM
             `{$table}` a
                 LEFT JOIN
@@ -36,6 +36,7 @@ if ($exists) {
 }
 
 // ChromePhp::log($sql);
+
 $query = $db->query($sql);
 $rows = array();
 

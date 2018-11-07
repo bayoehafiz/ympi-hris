@@ -1052,7 +1052,7 @@ var BasePagesDivision = function() {
                             });
                     },
                     allowOutsideClick: false
-                })
+                }).catch(swal.noop);
 
             } else { // SET ACTIVE / NON-ACTIVE status
                 if (data.nama == undefined)
@@ -1113,7 +1113,7 @@ var BasePagesDivision = function() {
                             });
                     },
                     allowOutsideClick: false
-                })
+                }).catch(swal.noop);
             }
         });
 

@@ -22,9 +22,9 @@ var BasePagesLogin = function() {
                 jQuery(e).closest('.help-block').remove();
             },
             rules: {
-                'login-username': {
+                'login-nik': {
                     required: true,
-                    minlength: 3
+                    minlength: 8
                 },
                 'login-password': {
                     required: true,
@@ -32,13 +32,13 @@ var BasePagesLogin = function() {
                 }
             },
             messages: {
-                'login-username': {
-                    required: 'Please enter a username',
-                    minlength: 'Your username must consist of at least 3 characters'
+                'login-nik': {
+                    required: 'Isikan NIK Anda',
+                    minlength: 'NIK minimal 8 karakter'
                 },
                 'login-password': {
-                    required: 'Please provide a password',
-                    minlength: 'Your password must be at least 5 characters long'
+                    required: 'Isikan Password',
+                    minlength: 'Password minimal 5 karakter'
                 }
             }
         });

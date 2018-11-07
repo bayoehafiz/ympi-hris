@@ -52,14 +52,15 @@ var BasePagesEmployee = function() {
         })
     };
 
-    // Init main table
-    var initTable = function(filterData) {
+    // Init table employee
+    var initTableEmployee = function(filterData) {
         if (filterData != undefined) var $filter = filterData
         else var $filter = '';
 
         // Table initiation
-        var table = $('.js-dataTable-full').DataTable({
+        var table = $('#table-employee').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            stateSave: true,
             autoWidth: false,
             order: [
                 [0, "asc"]
@@ -78,46 +79,13 @@ var BasePagesEmployee = function() {
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
                 data: {
+                    scope: 'active',
                     filter: $filter
-                },
-                // Error handler
-                dataSrc: function(res) {
-                    if (res.error) {
-                        $.notify("Error!", res.message, "error");
-                        return [];
-                    } else {
-                        // format the Date into correct one!
-                        var tableData = [];
-
-                        res.aaData.forEach(function(val) {
-                            // create TEMP variable (temporary) for ordering purpose
-                            // var tmp = moment(val.tgl_masuk, 'DD-MM-YY').format('YYYYMMDD');
-                            // val.tmp = tmp;
-
-                            // validate Nama (remove special character)
-                            var nama = val.nama;
-                            val.nama = nama.replace(/[^\w\s]/gi, '');
-
-                            // Tgl_masuk formatting
-                            var dTglMasuk = val.tgl_masuk;
-                            if (dTglMasuk.length < 10) dTglMasuk = moment(dTglMasuk, 'DD-MM-YY').format('DD-MM-YYYY');
-                            val.tgl_masuk = dTglMasuk;
-
-                            // Tgl_lahir formatting
-                            var dTglLahir = val.tgl_lahir;
-                            if (dTglLahir.length < 10) dTglLahir = moment(dTglLahir, 'DD-MM-YY').format('DD-MM-YYYY');
-                            val.tgl_lahir = dTglLahir;
-
-                            tableData.push(val);
-                        })
-
-                        return tableData;
-                    }
                 }
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-nik', data.nik);
+                $(row).attr('data-id', data.id);
             },
             columns: [{
                     orderable: false,
@@ -161,13 +129,6 @@ var BasePagesEmployee = function() {
                         else return data + "<br/><small class=\"text-muted\">" + row.nama_grade + "</small>";
                     }
                 },
-                // {
-                //     className: "text-center",
-                //     data: "tgl_masuk",
-                //     render: function(data, type, row) {
-                //         return moment(data, "DD-MM-YYYY").format("D MMM YYYY");
-                //     }
-                // }, 
                 {
                     className: "text-center",
                     data: "status",
@@ -212,6 +173,86 @@ var BasePagesEmployee = function() {
         //         //
         //     }
         // });
+    };
+
+    // Init table employee
+    var initTableTerminated = function(filterData) {
+        // if (filterData != undefined) var $filter = filterData
+        // else var $filter = '';
+
+        // Table initiation
+        var table = $('#table-terminated').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
+            order: [
+                [0, "asc"]
+            ],
+            columnDefs: [
+                { targets: 0, type: 'nik-formatted' }
+            ],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: BASE_URL + '/php/api/getEmployee.php',
+                data: {
+                    scope: 'inactive',
+                    // filter: $filter
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-nik', data.nik);
+            },
+            columns: [{
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    data: "photo_url",
+                    render: function(data, type, row) {
+                        return '<img src="../' + data + '" class="img-avatar img-avatar32" />';
+                    }
+                }, {
+                    className: "font-w600",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
+                    }
+                }, {
+                    className: "text-center",
+                    data: "nik"
+                }, {
+                    className: "text-center",
+                    data: "termination_date",
+                    render: function(data, type, row) {
+                        return moment(data, "DD-MM-YYYY").format("D MMM YYYY");
+                    }
+                }, {
+                    className: "text-center d-inline-block text-truncate",
+                    data: "termination_reason"
+                },
+                {
+                    className: "text-center",
+                    data: null,
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-sm btn-default" type="button" id="btn-view"><i class="si si-eye"></i></button>' +
+                            '<button class="btn btn-sm btn-default btn-remove-terminated" type="button"><i class="si si-trash"></i></button>' +
+                            '</div>';
+                    },
+                    searchable: false,
+                    orderable: false
+                }
+            ],
+            fnInitComplete: function() {
+                // console.log("Table loaded!");
+            }
+        });
     };
 
     // Init table filtering
@@ -559,10 +600,9 @@ var BasePagesEmployee = function() {
         // Button RESET / CLEAR action
         $(document).on('click', '#btn-reset-filter', function() {
             // send filters data to table & reinitiate table
-            initTable();
-            var table = $('.js-dataTable-full').DataTable();
-            // table.ajax.reload();
-            table.columns.adjust().draw(); // readjust the column width
+            // initTableEmployee();
+            var table = $('#table-employee').DataTable();
+            table.ajax.reload();
 
             // reset all components
             $('[id^=input-filter-]').val('');
@@ -599,12 +639,10 @@ var BasePagesEmployee = function() {
                 });
 
             // send filters data to table & reinitiate table
-            initTable(data);
-            var table = $('.js-dataTable-full').DataTable();
-            // table.ajax.reload();
-            table.columns.adjust().draw(); // readjust the column width
-
-        })
+            initTableEmployee(data);
+            var table = $('#table-employee').DataTable();
+            table.ajax.reload();
+        });
 
         // Fill all BAGIAN selectors
         populateAll('department');
@@ -647,44 +685,21 @@ var BasePagesEmployee = function() {
             location.reload();
         });
 
-        // This is OUR TABLE!
-        var table = $('.js-dataTable-full').DataTable();
 
-        // when ADD BUTTON is clicked
-        $(document).on('click', '#btn-add', function() {
-            console.log("Clearing all inputs first...");
-            $('[id^="input-"]').val('');
-
-            $('#photo-container-edit').removeClass('hide-me');
-            $('#photo-container-view').addClass('hide-me');
-
-            $('#modal-profile').modal({
-                show: true,
-                keyboard: false,
-                backdrop: 'static'
-            });
-
-            renderProfileAdd();
-            $('#opened-profile').val("");
-            $('#opened-nik').val("");
-        });
-
-        // When employee NAME or TABLE'S VIEW button is clicked
-        $('.js-dataTable-full tbody').on('click', 'a, #btn-view', function() {
-            var nik = $(this).parents('tr').attr('data-nik');
+        // data manipulation functions
+        var table = $('#table-employee').DataTable();
+        var viewData = function(id) {
             $.ajax({
                 type: "POST",
                 url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
-                    id: nik
+                    id: id
                 }
             }).done(function(res) {
-                console.log("Resetting all inputs...");
                 var data = res.data;
                 renderProfileView(data);
 
-                $('[id^="input-"]').val('');
                 $('#photo-container-view').removeClass('hide-me');
                 $('#photo-container-edit').addClass('hide-me');
 
@@ -696,26 +711,20 @@ var BasePagesEmployee = function() {
                 });
 
                 $('#opened-profile').val(data.id);
-                $('#opened-nik').val(data.nik);
             });
-        });
+        };
 
-        // When TABLE'S EDIT button is clicked
-        $('.js-dataTable-full tbody').on('click', '.btn-edit', function() {
-            var nik = $(this).parents('tr').attr('data-nik');
-
+        var editData = function(id) {
             $.ajax({
                 type: "POST",
                 url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
-                    id: nik
+                    id: id
                 }
             }).done(function(res) {
                 var data = res.data;
 
-                console.log("Resetting all inputs...");
-                $('[id^="input-"]').val('');
                 $('#photo-container-edit').removeClass('hide-me');
                 $('#photo-container-view').addClass('hide-me');
 
@@ -727,18 +736,15 @@ var BasePagesEmployee = function() {
                 });
 
                 $('#opened-profile').val(data.id);
-                $('#opened-nik').val(data.nik);
                 $('#origin').val('direct');
 
                 renderProfileEdit(data);
             });
-        });
+        };
 
-        // When TABLE'S DELETE button is clicked
-        $('.js-dataTable-full tbody').on('click', '.btn-remove', function() {
-            var data = table.row($(this).parents('tr')).data();
+        var removeData = function(id) {
             swal({
-                title: "Hapus Data?",
+                title: "Hapus Data Karyawan?",
                 text: "Data yang dihapus tidak akan dapat dikembalikan",
                 type: "question",
                 showCancelButton: true,
@@ -753,7 +759,7 @@ var BasePagesEmployee = function() {
                                 url: "/php/api/deleteEmployee.php",
                                 dataType: 'json',
                                 data: {
-                                    id: data.id
+                                    id: id
                                 }
                             }).done(function(response) {
                                 if (response.status == 'err') {
@@ -775,31 +781,98 @@ var BasePagesEmployee = function() {
                 },
                 allowOutsideClick: false
             }).catch(swal.noop);
+        };
+
+        // when tabs clicked
+        $(document).on('click', '.main-tabs', function() {
+            var t = $(this).attr('data');
+            $('#hidden-active-type').val(t);
+            switch (t) {
+                case 'terminated':
+                    initTableTerminated();
+                    break;
+                default:
+                    initTableEmployee();
+                    initFilter();
+                    break;
+            }
+            $('#btn-add').attr('data-type', t);
         });
 
-        //
-        // MODAL ACTIONS !!!
-        //
+
+        // =========================
+        // TABLE ACTIONS !!!
+        // 
+        // when ADD BUTTON is clicked
+        $(document).on('click', '#btn-add', function() {
+            $('#photo-container-edit').removeClass('hide-me');
+            $('#photo-container-view').addClass('hide-me');
+
+            $('#modal-profile').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
+
+            renderProfileAdd();
+            $('#opened-profile').val("");
+        });
+
+        // When employee NAME or TABLE'S VIEW button is clicked
+        $('#table-employee, #table-terminated').on('click', 'a, #btn-view', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            viewData(id);
+        });
+
+        // When TABLE'S EDIT button is clicked
+        $('#table-employee tbody').on('click', '.btn-edit', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            editData(id);
+        });
+
+        // When table-employee DELETE button is clicked
+        $(document).on('click', '.btn-remove', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            removeData(id);
+        });
+
+        // When table-terminated DELETE button is clicked
+        $(document).on('click', '.btn-remove-terminated', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            removeData(data);
+        });
+        // 
+        // END TABLE ACTIONS
+        // =========================
+
+
+
+        // =========================
+        // MODAL ACTIONS !!!       
+        // 
+        // when GEAR button clicked
+        $(document).on('click', '#btn-generate-profile', function() {
+            generateRandomProfile();
+        });
+
         // when modal CANCEL button clicked
         $(document).on('click', '#btn-cancel-profile', function() {
             var origin = $('#origin').val();
             if (origin == 'direct') {
                 $('#modal-profile').modal('hide');
             } else {
-                var nik = $('#opened-nik').val();
+                var id = $('#opened-profile').val();
 
                 $.ajax({
                     type: "POST",
                     url: "/php/api/getEmployeeById.php",
                     dataType: 'json',
                     data: {
-                        id: nik
+                        id: id
                     }
                 }).done(function(res) {
                     var data = res.data;
 
-                    console.log("Resetting all inputs...");
-                    $('[id^="input-"]').val('');
                     $('#photo-container-view').removeClass('hide-me');
                     $('#photo-container-edit').addClass('hide-me');
 
@@ -810,20 +883,18 @@ var BasePagesEmployee = function() {
 
         // When modal EDIT button is clicked
         $(document).on('click', '#btn-edit-profile', function() {
-            var nik = $('#opened-nik').val();
+            var id = $('#opened-profile').val();
 
             $.ajax({
                 type: "POST",
                 url: "/php/api/getEmployeeById.php",
                 dataType: 'json',
                 data: {
-                    id: nik
+                    id: id
                 }
             }).done(function(res) {
                 var data = res.data;
 
-                console.log("Resetting all inputs...");
-                $('[id^="input-"]').val('');
                 $('#photo-container-edit').removeClass('hide-me');
                 $('#photo-container-view').addClass('hide-me');
 
@@ -840,160 +911,42 @@ var BasePagesEmployee = function() {
             });
         });
 
-        // When modal DELETE button is clicked
-        $(document).on('click', '#btn-remove-profile', function() {
+        // When modal TERMINATE button is clicked
+        $(document).on('click', '#btn-terminate-profile', function() {
             swal({
-                title: "Hapus data?",
-                text: "Data yang dihapus tidak akan dapat dikembalikan",
+                title: "Peringatan!",
+                html: "Karyawan akan dipindahkan ke data \"Karyawan Non Aktif\".<br>Klik <strong>OK</strong> untuk melanjutkan.",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Hapus!",
+                confirmButtonText: "Ok",
                 cancelButtonText: "Batal",
-                showLoaderOnConfirm: true,
                 preConfirm: function() {
-                    return new Promise(function(resolve) {
-                        $.ajax({
-                                type: "POST",
-                                url: "/php/api/deleteEmployee.php",
-                                dataType: 'json',
-                                data: {
-                                    id: $('#opened-profile').val()
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "si si-check",
-                                        "message": "Data karyawan berhasil dihapus"
-                                    }, {
-                                        "type": "success"
-                                    });
-                                    $('#modal-profile').modal('hide');
+                    swal.close();
+                    $('#modal-profile').modal('hide');
 
-                                    // reload the stat
-                                    initStat();
+                    // Render termination elements
+                    $('#profile-termination_date').html('');
+                    $('#profile-termination_date').html(renderAddElement('datepicker', 'termination_date', 'Tanggal Terminasi'));
+                    $('#profile-termination_reason').html('');
+                    $('#profile-termination_reason').html(renderAddElement('textarea', 'termination_reason', 'Alasan Terminasi'));
 
-                                    // reload the table
-                                    table.clear();
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
+                    initTerminationValidation();
+
+                    App.initHelpers('datepicker');
+
+                    $('#modal-termination').modal({
+                        show: true,
+                        backdrop: 'static',
+                        keyboard: false
                     });
                 },
                 allowOutsideClick: false
-            });
-        })
-
-        // When SAVE / SUBMIT button is clicked
-        $(document).on('submit', '#profile-form', function(e) {
-            e.preventDefault();
-
-            var data = [];
-            var tgl_masuk, status;
-            $('[id^="input-"]').filter(
-                function() {
-                    var elem = this;
-                    // cleaning empty data [TEMP!]
-                    if (elem['value'] != '') {
-                        var key = elem['id'].replace('input-', '');
-                        if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
-                        if (key == 'status') status = elem['value']; // save status for NIK generation
-                        return data.push({
-                            "key": key,
-                            "value": elem['value']
-                        });
-                    }
-                });
-
-            // Read current profile
-            var cProf = $('#opened-profile').val();
-            if (cProf == '') var apiUrl = BASE_URL + '/php/api/addEmployee.php';
-            else var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
-
-            // then generate new NIK
-            $.when(getLatestNik()).done(function(response) {
-                var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
-                var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
-                var month = moment(tgl_masuk, 'DD-MM-YYYY').format('MM');
-
-                // Generate latest 4 digits
-                if (response.success) {
-                    var existing_nik = $('#opened-nik').val();
-                    if (existing_nik.length == 0) { // if freshly new data :: ADD
-                        var latest = parseInt(response.data) + 1;
-                    } else { // if EDIT data
-                        var latest = parseInt(existing_nik.substr(existing_nik.length - 4));
-                    }
-                    var pin = pad(latest, 4);
-                } else { // if empty database!
-                    var pin = "0001";
-                }
-
-                // Generate the Year Letter
-                var letter = "";
-                if (status == 'Tetap') {
-                    var match_obj = $letters.find(obj => {
-                        return obj.year == year;
-                    });
-                    letter = match_obj.letter;
-                } else {
-                    letter = "*";
-                }
-
-                var new_nik = letter + short_year + month + pin;
-                data.push({
-                    "key": "nik",
-                    "value": new_nik
-                });
-
-                // Send the final data!!!
-                $.ajax({
-                    type: "POST",
-                    url: apiUrl,
-                    dataType: 'json',
-                    data: {
-                        data: data,
-                        new_nik: new_nik,
-                        id: $('#opened-profile').val()
-                    },
-                    success: function(res) {
-                        if (res.status == 'err') {
-                            swal("Error!", res.message, "error");
-                        } else {
-                            $('#modal-profile').modal('hide');
-                            $.notify({
-                                "icon": "si si-check",
-                                "message": "Data karyawan berhasil disimpan"
-                            }, {
-                                "type": "success"
-                            });
-
-                            // reload the stat
-                            initStat();
-
-                            // destroy the table and reinitiate it
-                            table.clear();
-                            table.ajax.reload();
-                        }
-
-                    }
-                }); // end of $.ajax
-            }); // end of $.when
+            }).catch(swal.noop);
         });
 
 
-        // when GEAR button clicked
-        $(document).on('click', '#btn-generate-profile', function() {
-            generateRandomProfile();
-        });
-
-
+        // SELECTOR HANDLERS :::
         // when KODE_BAGIAN selector changed
         $(document).on('change', '#input-kode_bagian', function() {
             var optionSelected = $("option:selected", this);
@@ -1160,11 +1113,10 @@ var BasePagesEmployee = function() {
         $(document).on('change', '#input-tgl_masuk', function() {
             $('#input-masa_kontrak').trigger('change');
         });
-
+        // END SELECTOR HANDLERS :::
         // 
-        // Eof MODAL ACTIONS !!!
-        //
-
+        // END MODAL ACTIONS !!!
+        // =========================
 
 
         // When STAT NUMBER is clicked
@@ -1182,7 +1134,7 @@ var BasePagesEmployee = function() {
         init: function() {
             initStat();
             bsDataTables();
-            initTable();
+            initTableEmployee();
             initEmployeePage();
             initFilter();
             initUploader();
@@ -1195,6 +1147,9 @@ jQuery(function() {
     // Core Variable
     window.BASE_URL = url('protocol') + '://' + url('hostname');
     // console.log("BASE_URL >>" + BASE_URL);
+
+    // Do this before you initialize any of your modals
+    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 
     // Main INIT
     BasePagesEmployee.init();

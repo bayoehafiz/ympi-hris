@@ -3,17 +3,17 @@ var renderProfileAdd = function() {
     $('#modal-title').html('Profil Karyawan - Tambah Data');
 
     // hide/show (un)related buttons
-    $('#btn-edit-profile, #btn-remove-profile, #btn-cancel-profile').addClass('hide-me');
+    $('#btn-edit-profile, #btn-terminate-profile, #btn-cancel-profile').addClass('hide-me');
     $('#btn-save-profile, #btn-close-profile, #btn-generate-profile').removeClass('hide-me');
 
     // Reset active tabs
-    $('ul.nav-tabs').find('li.active').removeClass('active');
-    $('.tab-pane.active').removeClass('active');
-    $('ul.nav-tabs').children(':first').addClass('active');
-    $(".tab-pane:first").addClass('active');
+    $('#modal-profile ul.nav-tabs').find('li.active').removeClass('active');
+    $('#modal-profile .tab-pane.active').removeClass('active');
+    $('#modal-profile ul.nav-tabs').children(':first').addClass('active');
+    $("#modal-profile .tab-pane:first").addClass('active');
 
     // Reset all containers
-    $('div.modal-content').find('[id^=profile-]').empty();
+    $('#modal-profile div.modal-content').find('[id^=profile-]').empty();
 
     // Set value in modal
     $('#avatar').attr('src', "../assets/img/avatars/avatar.jpg");
@@ -60,7 +60,7 @@ var renderProfileAdd = function() {
         success: function(res) {
             var selector = '<div class="form-group">' +
                 '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-division" name="elem-division" size="1">' +
+                '<select class="form-control text-right" id="input-division" name="elem-division" size="1" z-index="99999">' +
                 '<option value=""></option>';
 
             res.data.forEach(function(o) {
@@ -218,5 +218,6 @@ var renderProfileAdd = function() {
 
     // re-initialize DatePicker
     App.initHelpers(['datepicker']);
+
     initValidation();
 };
