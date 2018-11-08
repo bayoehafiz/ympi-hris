@@ -8,7 +8,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-nama': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     }
                 };
                 var messages = {
@@ -24,7 +24,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-nama': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     },
                     'elem-parent': {
                         required: true
@@ -46,7 +46,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-nama': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     },
                     'elem-parent': {
                         required: true
@@ -68,7 +68,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-nama': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     },
                     'elem-parent': {
                         required: true
@@ -90,7 +90,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-nama': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     },
                     'elem-parent': {
                         required: true
@@ -112,7 +112,7 @@ var BasePagesDivision = function() {
                 var rules = {
                     'elem-kode': {
                         required: true,
-                        minlength: 3
+                        minlength: 2
                     },
                     'elem-bagian_key': {
                         required: true
@@ -261,7 +261,7 @@ var BasePagesDivision = function() {
                         html += '';
                         data.forEach(function(d) {
                             html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
+                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.value.replace(/\"/g, "") + '"></span>' +
                                 '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
                                 '</div>';
                         });
@@ -272,11 +272,13 @@ var BasePagesDivision = function() {
                     '<span class="h1 font-w700 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    // '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container
                 container.html(html);
+
+                // reinitiate counter plugin
+                App.initHelpers('appear-countTo');
             }
         });
     };
@@ -285,6 +287,7 @@ var BasePagesDivision = function() {
         var container = $('#sidebar-data-' + type);
         container.empty();
         // Get division datas
+
         $.ajax({
             type: "POST",
             url: BASE_URL + '/php/api/getDivisionTableStat.php',
@@ -418,7 +421,10 @@ var BasePagesDivision = function() {
                         return jenis_bagian;
                     }
                 },
-                { className: "text-center", data: 'bagian_value' },
+                {
+                    className: "text-center",
+                    data: "nama_bagian"
+                },
                 {
                     className: "hidden-xs text-center",
                     data: "active",

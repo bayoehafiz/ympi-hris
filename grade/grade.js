@@ -283,7 +283,7 @@ var BasePagesGrade = function() {
 
                             html += '<div class="col-md-' + wCounter + '">' +
                                 '<a href="' + BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
-                                '<span class="h1 font-w700 text-primary animated fadeIn" id="total-finance">' + d.total + '</span>' +
+                                '<span class="h1 font-w700 text-primary animated fadeIn" id="total-finance" data-toggle="countTo" data-to="' + d.total + '"></span>' +
                                 '<div class="h5 font-w600 text-gray-darker animated fadeIn">' + title + '</div>' +
                                 '</a>' +
                                 '</div>';
@@ -299,6 +299,9 @@ var BasePagesGrade = function() {
 
                 // append the result into container
                 $('#stat-grade').html(html);
+
+                // reinitiate counter plugin
+                App.initHelpers('appear-countTo');
             }
         })
     };

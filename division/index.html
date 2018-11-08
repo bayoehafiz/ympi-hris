@@ -21,6 +21,18 @@
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
+    <style type="text/css">
+    /*Equal height for tables column*/
+    .e-row {
+        display: table;
+    }
+
+    .e-row .e-panel {
+        float: none;
+        display: table-cell;
+        vertical-align: top;
+    }
+    </style>
 </head>
 
 <body>
@@ -65,8 +77,8 @@
                     </ul>
                     <div class="block-content tab-content">
                         <div class="tab-pane fade in active" id="btabs-animated-fade-kode-bagian">
-                            <div class="row">
-                                <div class="col-md-10">
+                            <div class="row e-row">
+                                <div class="col-md-10 e-panel">
                                     <div class="block">
                                         <div class="block-content">
                                             <!-- Table Detail Bagian -->
@@ -87,7 +99,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 push-20-t push-20">
+                                <div class="col-md-2 push-20-t push-20 e-panel">
                                     <!-- Sidebar Stat -->
                                     <div class="block block-themed block-rounded">
                                         <div class="block-header bg-amethyst">

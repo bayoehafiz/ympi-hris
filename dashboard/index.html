@@ -1,6 +1,3 @@
-<?php
-    echo "Hello mother fucker";
-?>
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -35,28 +32,147 @@
         <!-- END Header -->
         <!-- Main Container -->
         <main id="main-container">
-            <!-- Page Header -->
-            <div class="content bg-image overflow-hidden" style="background-image: url('../assets/img/background.jpg');">
-                <div class="push-50-t push-15">
-                    <h1 class="h2 text-white animated zoomIn">DASHBOARD</h1>
-                    <h2 class="h5 text-white-op animated zoomIn">Hello <span id="nick" class="nickname">Jack</span></h2>
-                </div>
-            </div>
-            <!-- END Page Header -->
             <!-- Page Content -->
             <div class="content">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Something here -->
+                    <div class="col-md-12">
+                        <!-- Stat BY STATUS -->
+                        <div class="block block-rounded">
+                            <div class="block-content">
+                                <div class="row">
+                                    <div class="col-sm-9 col-md-10">
+                                        <div class="row items-push text-center push-10-t">
+                                            <div class="col-xs-6 col-sm-3">
+                                                <a href="" class="stat-click">
+                                                <div id="chart-total-percobaan" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#f5f5f5" data-track-color="#eeeeee">
+                                                    <span class="h3 text-gray-darker font-w600"><span id="percent-total-percobaan"></span>%</span>
+                                                </div>
+                                            </a>
+                                                <div class="h5 push-5-t">PERCOBAAN</div>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-3">
+                                                <a href="" class="stat-click">
+                                                <div id="chart-total-kontrak_1" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#f3b760" data-track-color="#eeeeee">
+                                                    <span class="h3 text-gray-darker font-w600"><span id="percent-total-kontrak_1"></span>%</span>
+                                                </div>
+                                            </a>
+                                                <div class="h5 push-5-t">KONTRAK 1</div>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-3">
+                                                <a href="" class="stat-click">
+                                                <div id="chart-total-kontrak_2" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#70b9eb" data-track-color="#eeeeee">
+                                                    <span class="h3 text-gray-darker font-w600"><span id="percent-total-kontrak_2"></span>%</span>
+                                                </div>
+                                            </a>
+                                                <div class="h5 push-5-t">KONTRAK 2</div>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-3">
+                                                <a href="" class="stat-click">
+                                                <div id="chart-total-tetap" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#a48ad4" data-track-color="#eeeeee">
+                                                    <span class="h3 text-gray-darker font-w600"><span id="percent-total-tetap"></span>%</span>
+                                                </div>
+                                            </a>
+                                                <div class="h5 push-5-t">TETAP</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 col-md-2">
+                                        <div class="block-mini block-mini-full push-20-t">
+                                            <div class="text-uppercase text-center center-block">
+                                                <div class="h1 text-muted animated flipInX"><i class="font-w700 si si-users"></i></div>
+                                                <span class="h1 font-w700 animated flipInX" id="chart-total" data-toggle="countTo" data-to="0"></span>
+                                                <div class="h5 font-w600 text-gray-darker animated fadeIn">Total</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END BY STATUS -->
+                    </div>
+                    <div class="col-md-3">
+                        <!-- DATA GRID -->
+                        <div class="content-grid">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- Mini Stats -->
+                                    <a class="block block-link-hover3 mini-stat-click" href="javascript:void(0)">
+                                            <table class="block-table text-center">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 50%;">
+                                                            <div class="push-30 push-30-t">
+                                                                <i class="si si-user-following fa-3x text-primary"></i>
+                                                            </div>
+                                                        </td>
+                                                        <td class="bg-gray-lighter" style="width: 50%;">
+                                                            <div id="stat-karyawan-aktif" class="h1 font-w700"></div>
+                                                            <div class="h5 text-muted text-uppercase push-5-t">Karyawan Aktif</div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </a>
+                                    <a class="block block-link-hover3 mini-stat-click" href="javascript:void(0)">
+                                            <table class="block-table text-center">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 50%;">
+                                                            <div class="push-30 push-30-t">
+                                                                <i class="si si-user-unfollow fa-3x text-danger"></i>
+                                                            </div>
+                                                        </td>
+                                                        <td class="bg-gray-lighter" style="width: 50%;">
+                                                            <div id="stat-karyawan-non-aktif" class="h1 font-w700"></div>
+                                                            <div class="h5 text-muted text-uppercase push-5-t">Karyawan Non Aktif</div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </a>
+                                    <!-- END Mini Stats -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DATA GRID -->
+                    </div>
+                    <div class="col-md-9">
+                        <!-- BAR CHART -->
+                        <div class="block">
+                            <ul class="nav nav-tabs nav-justified" data-toggle="tabs" id="tab-chart">
+                                <li class="active">
+                                    <a href="javascript:void(0)" class="chart-click" data="bagian">Stat Bagian</a>
+                                </li>
+                                <li class="">
+                                    <a href="javascript:void(0)" class="chart-click" data="grade">Stat Grade</a>
+                                </li>
+                                <li class="">
+                                    <a href="javascript:void(0)" class="chart-click" data="jabatan">Stat Jabatan</a>
+                                </li>
+                            </ul>
+                            <div class="block-content tab-content">
+                                <div class="tab-pane active" id="btabs-static-justified-home">
+                                    <div class="block block-rounded">
+                                        <div class="block-content">
+                                            <div class=" block-mini block-mini-full text-center">
+                                                <div id="chart-container"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END BAR CHART -->
                     </div>
                 </div>
             </div>
-            <!-- END Page Content -->
-        </main>
-        <!-- END Main Container -->
-        <!-- Footer -->
-        <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
-        <!-- END Footer -->
+    </div>
+    <!-- END Page Content -->
+    </main>
+    <!-- END Main Container -->
+    <!-- Footer -->
+    <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
+    <!-- END Footer -->
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->
@@ -77,10 +193,15 @@
     <script src="../assets/js/core/storage.min.js"></script>
     <script src="../assets/js/core/moment.min.js"></script>
     <!-- Page JS Plugins -->
+    <script src="../assets/js/plugins/easy-pie-chart/jquery.easypiechart.min.js"></script>
     <script src="../assets/js/plugins/url/url.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/sweetalert2/es6-promise.auto.min.js"></script>
     <script src="../assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- FusionCharts -->
+    <script src="../assets/js/plugins/jquery-fusioncharts/fusioncharts.js"></script>
+    <script src="../assets/js/plugins/jquery-fusioncharts/jquery-fusioncharts.min.js"></script>
+    <script src="../assets/js/plugins/jquery-fusioncharts/fusioncharts.theme.fusion.js"></script>
     <!-- Page JS Code -->
     <script src="dashboard.js"></script>
 </body>

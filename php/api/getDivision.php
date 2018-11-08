@@ -40,7 +40,7 @@ if (isset($_POST['table'])) {
                 FROM `kode_bagian` a
                 WHERE 1 {$searchQuery}
                 GROUP BY a.id
-                ORDER BY {$columnName} {$columnSortOrder} 
+                ORDER BY {$columnName} {$columnSortOrder}
                 LIMIT {$row},{$rowperpage}";
 
     } else if ($table == 'division') {
@@ -88,8 +88,19 @@ if (isset($_POST['table'])) {
     $empRecords = mysqli_query($db, $empQuery);
     $rows = array();
 
-    while ($r = mysqli_fetch_assoc($empRecords)) {
-        $rows[] = $r;
+    if ($table == 'kode_bagian') {
+        while ($r = mysqli_fetch_assoc($empRecords)) {
+            // Get the name og bagian_value
+            $initSql = "SELECT `nama` FROM " . $r['bagian_key'] . " WHERE `id` = " . $r['bagian_value'];
+            $sel = mysqli_query($db, $initSql);
+            $dt = mysqli_fetch_assoc($sel);
+            $r['nama_bagian'] = $dt['nama'];
+            $rows[] = $r;
+        }
+    } else {
+        while ($r = mysqli_fetch_assoc($empRecords)) {
+            $rows[] = $r;
+        }
     }
 
     ## Response

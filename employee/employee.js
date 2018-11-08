@@ -125,7 +125,7 @@ var BasePagesEmployee = function() {
                         html += '';
                         data.forEach(function(d) {
                             html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary animated flipInX">' + d.value.replace(/\"/g, "") + '</span>' +
+                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.value.replace(/\"/g, "") + '"></span>' +
                                 '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
                                 '</div>';
                             counter += parseInt(d.value.replace(/\"/g, ""));
@@ -133,7 +133,7 @@ var BasePagesEmployee = function() {
                     }
 
                     html += '<div class="col-md-2 col-xs-6">' +
-                        '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap">' + counter + '</span>' +
+                        '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap" data-toggle="countTo" data-to="' + counter + '"></span>' +
                         '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
                         '</div>';
                 }
@@ -145,6 +145,9 @@ var BasePagesEmployee = function() {
                     '</div>';
 
                 container.html(html);
+
+                // reinitiate counter plugin
+                App.initHelpers('appear-countTo');
             }
         })
     };
