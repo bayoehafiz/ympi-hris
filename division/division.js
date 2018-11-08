@@ -1090,6 +1090,7 @@ var BasePagesDivision = function() {
                             }).done(function(response) {
                                 if (!response.success) {
                                     swal('Error', response.message, 'error');
+                                    return false;
                                 } else {
                                     swal.close();
                                     $.notify({
@@ -1106,6 +1107,8 @@ var BasePagesDivision = function() {
                                     // reload the table
                                     var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
                                     table.ajax.reload();
+
+                                    return true;
                                 }
                             })
                             .fail(function() {

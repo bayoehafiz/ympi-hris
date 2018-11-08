@@ -61,7 +61,6 @@ var BasePagesGrade = function() {
             switch (data_type) {
                 case "penugasan":
                     html += renderAddElement('text', 'nama', 'Nama Penugasan');
-                    // html += renderAddElement('text', 'kode', 'Kode');
                     break;
                 default:
                     html += renderAddElement('text', 'nama', 'Nama Grade');
@@ -73,6 +72,8 @@ var BasePagesGrade = function() {
 
             $('#modal-title').html('Tambah Data ' + data_type);
             $('#generated-container').html(html);
+
+            $('#hidden-modal-scope').val('add');
 
             // hide unrelated buttons
             $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
@@ -88,7 +89,43 @@ var BasePagesGrade = function() {
 
             // Lets decide which button is clicked:
             if (act == 'edit') { // edit the data
-                // 
+                // reset the modal first!
+                $('#modal-title, #generated-container').html('');
+                $('#hidden-select').addClass('hide-me');
+
+                var html = '';
+                data_type = $('#hidden-active-type').val();
+
+                switch (data_type) {
+                    case "penugasan":
+                        html += renderEditElement('text', 'nama', 'Nama Penugasan', data.nama);
+                        break;
+                    default:
+                        html += renderEditElement('text', 'nama', 'Nama Grade', data.nama);
+                        html += renderEditElement('text', 'kode', 'Kode', data.kode);
+                        break;
+                }
+
+                // init the validation
+                initValidation(data_type);
+
+                $('#modal-title').html('Ubah Data ' + data_type);
+                $('#generated-container').html(html);
+
+                $('#hidden-modal-scope').val('edit');
+                $('#hidden-opened-id').val(data.id);
+
+                // hide unrelated buttons
+                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+                $('#modal').modal('show');
+
+                // Show modal
+                $('#modal').modal({
+                    show: true,
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+
             } else if (act == 'remove') { // remove the data
                 swal({
                     title: "Konfirmasi",
@@ -132,7 +169,8 @@ var BasePagesGrade = function() {
                             });
                     },
                     allowOutsideClick: false
-                })
+                }).catch(swal.noop);
+
             } else { // set active / non-active status
                 var current_status = data.active;
                 if (current_status == 1) {
@@ -184,7 +222,8 @@ var BasePagesGrade = function() {
                             });
                     },
                     allowOutsideClick: false
-                })
+                }).catch(swal.noop);
+
             }
         });
 

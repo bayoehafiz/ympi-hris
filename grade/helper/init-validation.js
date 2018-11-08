@@ -1,6 +1,9 @@
 // Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
-var initValidation = function(data_type) {
-    switch (data_type) {
+var initValidation = function() {
+    // Read current table type
+    var $table = $('#hidden-active-type').val();
+
+    switch ($table) {
         case 'penugasan':
             var nama = 'Penugasan';
             var rules = {
@@ -16,6 +19,7 @@ var initValidation = function(data_type) {
                 }
             };
             break;
+
         default:
             var nama = 'Grade';
             var rules = {
@@ -77,19 +81,34 @@ var initValidation = function(data_type) {
                     }
                 });
 
-            // Read current data type
-            var dType = $('#hidden-active-type').val();
+            // Read current id
+            var $id = $('#hidden-opened-id').val();
 
-            console.log("sending data to table " + dType);
+            // Read the current scope (add OR edit)
+            var $scope = $('#hidden-modal-scope').val();
+            if ($scope == 'add') {
+                var $apiUrl = BASE_URL + '/php/api/addGradeData.php';
+                var $payload = {
+                    obj: data,
+                    table: $table
+                };
+                var $text = 'Data berhasil ditambahkan';
+
+            } else {
+                var $apiUrl = BASE_URL + '/php/api/updateGradeData.php';
+                var $payload = {
+                    id: $id,
+                    data: data,
+                    table: $table
+                };
+                var $text = 'Data berhasil diupdate';
+            }
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/addGradeData.php',
+                url: $apiUrl,
                 dataType: 'json',
-                data: {
-                    obj: data,
-                    table: dType
-                },
+                data: $payload,
                 success: function(res) {
                     if (res.status == 'err') {
                         swal("Error!", res.message, "error");
@@ -97,12 +116,12 @@ var initValidation = function(data_type) {
                         $('#modal').modal('hide');
                         $.notify({
                             "icon": "fa fa-check-circle",
-                            "message": "Data berhasil ditambahkan"
+                            "message": $text
                         }, {
                             "type": "success"
                         })
                         // reload the table & stat
-                        var table = $('#table-' + dType.replace('_', '-')).DataTable();
+                        var table = $('#table-' + $table).DataTable();
                         table.ajax.reload();
                         initStat(table);
                     }

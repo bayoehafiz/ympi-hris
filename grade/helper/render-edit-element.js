@@ -1,5 +1,5 @@
 // Function to render elements inside the modal :: ADD
-var renderAddElement = function(type, name, label) {
+var renderEditElement = function(type, name, label, value) {
     var elem = '';
 
     if (type == 'select') {
@@ -22,13 +22,14 @@ var renderAddElement = function(type, name, label) {
                 $('#label-parent').html(label);
 
                 data.forEach(function(v) {
-                    $('#input-parent').append('<option value="' + v.id + '">' + v.nama + '</option>')
+                    if (v.id == value) $('#input-parent').append('<option value="' + v.id + '" selected>' + v.nama + '</option>');
+                    else $('#input-parent').append('<option value="' + v.id + '">' + v.nama + '</option>');
                 })
             }
         })
     } else {
         elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
-            '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
+            '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" value="' + value + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div>';
     }
