@@ -3,7 +3,7 @@ var initUploader = function() {
     var $avatar = $('#avatar');
     var $image = $('#image');
     var $input = $('#photo-file');
-    var $finalInput = $('#input-photo_url')
+    var $finalInput = $('#input-photo_url');
     var $profileModal = $('#modal-profile');
     var $uploadModal = $('#modal-uploader');
 

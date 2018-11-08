@@ -1,10 +1,10 @@
-// Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
+// Employee Validation
 var initValidation = function() {
     // Function to send data
-    var sendData = function(payload) {
+    var sendData = function(url, payload) {
         $.ajax({
             type: "POST",
-            url: apiUrl,
+            url: url,
             dataType: 'json',
             data: payload,
             success: function(res) {
@@ -20,9 +20,10 @@ var initValidation = function() {
                     });
 
                     // reload the stat
-                    initStat();
+                    // initStat();
 
                     // reinitiate table
+                    var table = $('#table-employee').DataTable();
                     table.ajax.reload();
                 }
 
@@ -79,9 +80,6 @@ var initValidation = function() {
             },
             'elem-no_rekening': {
                 required: true
-            },
-            'elem-no_npwp': {
-                required: true
             }
         },
         messages: {
@@ -101,13 +99,14 @@ var initValidation = function() {
             'elem-tgl_masuk': 'Pilih Tanggal',
             'elem-no_telepon': 'Masukkan No. Telepon',
             'elem-no_ktp': 'Masukkan No. KTP',
-            'elem-no_rekening': 'Masukkan No. Rekening',
-            'elem-no_npwp': 'Masukkan No. NPWP',
+            'elem-no_rekening': 'Masukkan No. Rekening'
         },
         // When form on SUBMIT
         submitHandler: function(form) {
             var data = [];
             var tgl_masuk, status;
+            var kode_bagian_changed = false;
+            var old_kode_bagian = $('#opened-kode_bagian').val();
 
             // Read all FORM INPUTs
             $('[id^="input-"]').filter(
@@ -118,6 +117,12 @@ var initValidation = function() {
                         var key = elem['id'].replace('input-', '');
                         if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
                         if (key == 'status') status = elem['value']; // save status for NIK generation
+
+                        // if kode bagian is changed, mark it!
+                        if ((key == 'kode_bagian') && (elem['value'] != old_kode_bagian)) {
+                            kode_bagian_changed = true;
+                        }
+
                         return data.push({
                             "key": key,
                             "value": elem['value']
@@ -126,17 +131,12 @@ var initValidation = function() {
                 });
 
             // Read current profile and decide whether it's ADD or EDIT
-            var cProf = $('#opened-profile').val();
-            if (cProf == '') {
-                var $act = 'add';
-                var apiUrl = BASE_URL + '/php/api/addEmployee.php';
-            } else {
-                var $act = 'edit';
-                var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
-            }
+            var $id = $('#opened-profile').val();
 
-            // if $act is ADD
-            if ($act == 'add') {
+            // if it is ADD
+            if ($id == '') {
+                var apiUrl = BASE_URL + '/php/api/addEmployee.php';
+
                 // then generate new NIK
                 $.when(getLatestNik()).done(function(response) {
                     var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
@@ -145,12 +145,7 @@ var initValidation = function() {
 
                     // Generate latest 4 digits
                     if (response.success) {
-                        var existing_nik = $('#opened-nik').val();
-                        if (existing_nik.length == 0) { // if freshly new data :: ADD
-                            var latest = parseInt(response.data) + 1;
-                        } else { // if EDIT data
-                            var latest = parseInt(existing_nik.substr(existing_nik.length - 4));
-                        }
+                        var latest = parseInt(response.data) + 1;
                         var pin = pad(latest, 4);
                     } else { // if empty database!
                         var pin = "0001";
@@ -167,27 +162,75 @@ var initValidation = function() {
                         letter = "*";
                     }
 
-                    var new_nik = letter + short_year + month + pin;
                     data.push({
+                        "key": "pin",
+                        "value": pin
+                    }, {
                         "key": "nik",
-                        "value": new_nik
+                        "value": letter + short_year + month + pin
                     });
 
                     var payload = {
-                        data: data,
-                        new_nik: new_nik,
-                        id: $('#opened-profile').val()
+                        data: data
                     }
 
                     // Send the data !!!
-                    sendData(payload);
-                });
+                    console.log("Saving data to " + apiUrl, payload);
+                    sendData(apiUrl, payload);
+                })
 
-            } else { // if $act is EDIT
-                // read current employee's data
-                var current_data = table()
+            } else { // if it is EDIT
+                var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
+
+                // if kode_bagian is changed
+                if (kode_bagian_changed) {
+                    // then call the ajax to wipe all bagians data
+                    $.post(BASE_URL + '/php/api/wipeEmployeeDiv.php', { id: $id });
+                }
+
+                // check if tgl_masuk is changed
+                var old_tgl_masuk = $('#opened-tgl_masuk').val();
+                var old_status = $('#opened-status').val();
+
+                if ((old_tgl_masuk != tgl_masuk) || (old_status != status)) {
+                    // generate new NIK
+                    var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
+                    var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
+                    var month = moment(tgl_masuk, 'DD-MM-YYYY').format('MM');
+                    var pin = '';
+
+                    // Get latest 4 digits from OLD NIK
+                    var old_nik = $('#opened-nik').val();
+                    pin = old_nik.substring(5, 9);
+
+                    // Generate the Year Letter
+                    var letter = "";
+                    if (status == 'Tetap') {
+                        var match_obj = $letters.find(obj => {
+                            return obj.year == year;
+                        });
+                        letter = match_obj.letter;
+                    } else {
+                        letter = "*";
+                    }
+
+                    data.push({
+                        "key": "pin",
+                        "value": pin
+                    }, {
+                        "key": "nik",
+                        "value": letter + short_year + month + pin
+                    });
+                }
+
+                var payload = {
+                    id: $id,
+                    data: data
+                }
+                // Send the data !!!
+                // console.log("Saving data to " + apiUrl, payload);
+                sendData(apiUrl, payload);
             }
-
         }
     });
 };

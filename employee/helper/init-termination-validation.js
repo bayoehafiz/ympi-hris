@@ -1,4 +1,4 @@
-// Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
+// Terination Form Validation
 var initTerminationValidation = function() {
     $('#termination-form').validate({
         debug: true,
@@ -74,7 +74,7 @@ var initTerminationValidation = function() {
                         initStat();
 
                         // reload the table
-                        var table = $('#table-employee').DataTable(); 
+                        var table = $('#table-employee').DataTable();
                         table.ajax.reload();
                     }
 

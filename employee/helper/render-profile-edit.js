@@ -1,6 +1,6 @@
 // Render elements when editing profile
 var renderProfileEdit = function(data) {
-    $('#modal-title').html('Profil Karyawan - Ubah Data');
+    $('#modal-title').html('Profil Karyawan: Ubah Data');
 
     // hide/show (un)related buttons
     $('#btn-edit-profile, #btn-terminate-profile, #btn-close-profile, #btn-generate-profile').addClass('hide-me');
@@ -12,18 +12,19 @@ var renderProfileEdit = function(data) {
     $('#modal-profile ul.nav-tabs').children(':first').addClass('active');
     $("#modal-profile .tab-pane:first").addClass('active');
 
-    // hide NIK element
-    $('#modal-nik').addClass('hide-me');
 
     // Reset all containers
     $('#modal-profile div.modal-content').find('[id^=profile-]').empty();
+    $('#modal-nama, #modal-nik, #modal-kode-bagian').empty();
 
     // Set value in modal
     var photo_url = "../" + data.photo_url;
     $('#photo_container-edit').removeClass('hide-me');
     $('#avatar').attr('src', photo_url);
 
-    $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-right font-s20" type="text" id="input-nama" name="material-color-primary" placeholder="' + data.nama + '" value="' + data.nama + '"></div>');
+    $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-center font-s20" type="text" id="input-nama" name="material-color-primary" value="' + data.nama + '"></div>');
+
+    $('#modal-nik').addClass('hide-me');
 
     // fetch data for populating KODE BAGIAN selector
     $.ajax({
@@ -338,7 +339,6 @@ var renderProfileEdit = function(data) {
         { value: 'Percobaan', label: 'Percobaan' }
     ], data.status));
 
-    $('#profile-nik').html(renderEditElement('text', data.nik, 'nik', 'NIK', false));
     $('#profile-tgl-masuk').html(renderEditElement('datepicker', data.tgl_masuk, 'tgl_masuk', 'Tanggal Masuk', false));
 
     if (data.status != 'Tetap') {
@@ -412,5 +412,12 @@ var renderProfileEdit = function(data) {
 
     // re-initialize DatePicker
     App.initHelpers(['datepicker']);
+
+    // Save old NIK, STATUS and TGL_MASUK on hidden input for later new NIK generation
+    $('#opened-nik').val(data.nik);
+    $('#opened-tgl_masuk').val(data.tgl_masuk);
+    $('#opened-status').val(data.status);
+    $('#opened-kode_bagian').val(data.kode_bagian);
+
     initValidation();
 };

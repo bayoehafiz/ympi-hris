@@ -37,10 +37,6 @@ if (isset($_POST['data'])) {
     $arr_length = count($data);
     $counter = 0;
 
-    if (isset($_POST['new_nik'])) {
-        $nik = $_POST['new_nik'];
-    }
-
     foreach ($data as $key => $value) {
         if ($value['value'] != '') {
             $counter++;

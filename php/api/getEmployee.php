@@ -12,7 +12,6 @@ $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
 $searchValue = $_POST['search']['value']; // Search value
 $scope = $_POST['scope']; // active or inactive employees
 
-
 if ($scope == 'active') {
     $scope = 1;
 } else {
@@ -36,10 +35,12 @@ if ($searchValue != '') {
 $filterQuery = " ";
 if ($filterValue != '') {
     foreach ($filterValue as $value) {
-		if ($value['key'] == 'status' || $value['key'] == 'jenis_kelamin') 
-			$filterQuery .= " and a." . $value['key'] . " = '" . $value['value'] . "'";
-		else 
-			$filterQuery .= " and a." . $value['key'] . " = " . $value['value'];
+        if ($value['key'] == 'status' || $value['key'] == 'jenis_kelamin') {
+            $filterQuery .= " and a." . $value['key'] . " = '" . $value['value'] . "'";
+        } else {
+            $filterQuery .= " and a." . $value['key'] . " = " . $value['value'];
+        }
+
     }
 }
 
@@ -55,6 +56,8 @@ $empQuery = "SELECT
             a.nama,
             a.status,
             a.photo_url,
+            a.termination_date,
+            a.termination_reason,
             b.nama AS nama_division,
             c.nama AS nama_department,
             d.nama AS nama_section,

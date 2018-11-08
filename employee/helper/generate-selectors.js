@@ -10,7 +10,7 @@ var generateSelectors = function(selected) {
         success: function(res) {
             if (res.success) {
                 var data = res.data[0];
-                
+
                 // set value for SELECTORS
                 $('#input-division').val(data.division).trigger('change').attr('disabled', 'disabled');
 
@@ -71,16 +71,28 @@ var generateSelectors = function(selected) {
                                                                 $('#input-group').val(data.group).attr('disabled', 'disabled');
                                                             }
                                                         });
+                                                    } else {
+                                                        $('#input-group').val('');
                                                     }
+                                                    // END Group selector
                                                 }
                                             });
+                                        } else {
+                                            $('#input-sub_section').val('');
                                         }
+                                        // END Sub Section selector
                                     }
                                 });
+                            } else {
+                                $('#input-section').val('');
                             }
+                            // End section selector
                         }
                     });
+                } else {
+                    $('#input-department').val('');
                 }
+                // End department selector
             }
         }
     });

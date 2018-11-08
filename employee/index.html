@@ -80,7 +80,7 @@
                                 </div>
                                 <!-- Data Filtering -->
                                 <div class="col-md-3">
-                                    <div class="block bg-gray-lighter block-themed block-rounded push-20-t" id="filter-block">
+                                    <div class="block block-themed block-rounded push-20-t" id="filter-block">
                                         <div class="block-header bg-amethyst">
                                             <ul class="block-options">
                                                 <li>
@@ -89,7 +89,7 @@
                                             </ul>
                                             <h3 class="block-title"><i class="fa fa-filter"></i> Filter</h3>
                                         </div>
-                                        <div class="block-content text-muted">
+                                        <div class="block-content bg-gray-lighter text-muted">
                                             <form action="" method="post" id="filter-form">
                                                 <div id="filter-container" class="push-50">Filter components will be here</div>
                                             </form>
@@ -173,7 +173,7 @@
                                     </div>
                                     <div class="block-content text-center push-30">
                                         <div class="h3 font-w700 push-5 text-center" id="modal-nama"></div>
-                                        <div class="h4 font-w600 push-5 hide-me" id="modal-nik"></div>
+                                        <div class="h4 font-w600 push-5" id="modal-nik"></div>
                                         <div id="modal-kode-bagian" class="text-center"></div>
                                     </div>
                                 </div>
@@ -181,19 +181,19 @@
                                     <div class="block bg-gray-lighter">
                                         <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                                             <li class="active">
-                                                <a class="tab-title" href="#btabs-static-divisi"><i class="si si-layers"></i></a>
+                                                <a class="tab-title" href="#btabs-static-divisi"><i class="si si-layers font-s20"></i></a>
                                             </li>
                                             <li>
-                                                <a class="tab-title" href="#btabs-static-kerja"><i class="si si-briefcase"></i></a>
+                                                <a class="tab-title" href="#btabs-static-kerja"><i class="si si-briefcase font-s20"></i></a>
                                             </li>
                                             <li>
-                                                <a class="tab-title" href="#btabs-static-pribadi"><i class="si si-user"></i></a>
+                                                <a class="tab-title" href="#btabs-static-pribadi"><i class="si si-user font-s20"></i></a>
                                             </li>
                                             <li>
-                                                <a class="tab-title" href="#btabs-static-pendidikan"><i class="si si-graduation"></i></a>
+                                                <a class="tab-title" href="#btabs-static-pendidikan"><i class="si si-graduation font-s20"></i></a>
                                             </li>
                                             <li>
-                                                <a class="tab-title" href="#btabs-static-admin"><i class="si si-paper-clip"></i></a>
+                                                <a class="tab-title" href="#btabs-static-admin"><i class="si si-paper-clip font-s20"></i></a>
                                             </li>
                                         </ul>
                                         <div class="block-content tab-content">
@@ -279,12 +279,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-sm btn-danger pull-left" type="button" id="btn-terminate-profile"><i class="si si-ban"></i> Terminasi</button>
-                        <button class="btn btn-sm btn-warning pull-left" type="button" id="btn-edit-profile"><i class="si si-pencil"></i> Ubah</button>
+                        <button class="btn btn-sm btn-danger pull-left" type="button" id="btn-terminate-profile"><i class="si si-ban"></i> TERMINASI</button>
+                        <button class="btn btn-sm btn-warning pull-left" type="button" id="btn-edit-profile"><i class="si si-pencil"></i> UBAH DATA</button>
                         <button class="btn btn-sm btn-default pull-left" data-toggle="popover" data-placement="top" data-content="Generate random sample data" type="button" id="btn-generate-profile"><i class="fa fa-gear"></i></button>
-                        <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> Tutup</button>
-                        <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="si si-action-undo"></i> Batal</button>
-                        <button class="btn btn-sm btn-primary" type="submit" id="btn-save-profile"><i class="si si-check"></i> Simpan</button>
+                        <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-close-profile"></i> TUTUP</button>
+                        <button class="btn btn-sm btn-default" type="button" id="btn-cancel-profile"><i class="si si-action-undo"></i> BATAL</button>
+                        <button class="btn btn-sm btn-primary" type="submit" id="btn-save-profile"><i class="si si-check"></i> SIMPAN</button>
                     </div>
                 </div>
             </form>
@@ -321,8 +321,8 @@
                                 <button class="btn btn-sm btn-default" id="zoom-in"><i class="si si-magnifier-add"></i></button>
                                 <button class="btn btn-sm btn-default" id="zoom-out"><i class="si si-magnifier-remove"></i></button>
                             </div>
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="crop">Selesai</button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">BATAL</button>
+                            <button type="button" class="btn btn-sm btn-primary" id="crop">SELESAI</button>
                         </div>
                     </div>
                 </div>
@@ -349,8 +349,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-sm btn-danger">Selesai</button>
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">BATAL</button>
+                            <button type="submit" class="btn btn-sm btn-danger">SELESAI</button>
                         </div>
                     </form>
                 </div>
@@ -362,6 +362,10 @@
         <!-- END Footer -->
         <input type="hidden" id="hidden-active-type">
         <input type="hidden" id="opened-profile">
+        <input type="hidden" id="opened-nik">
+        <input type="hidden" id="opened-status">
+        <input type="hidden" id="opened-tgl_masuk">
+        <input type="hidden" id="opened-kode_bagian">
         <input type="hidden" id="origin">
         <input type="hidden" id="form-scope">
         <input type="hidden" id="uploader-opened">

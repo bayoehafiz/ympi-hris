@@ -30,10 +30,11 @@ var renderProfileView = function(data) {
     // 3. NIK
     if (data.active == 1) {
         if (data.status == "Tetap") var snik = '<span class="text-primary">' + data.nik + '</span>';
-        else if (data.status == "Kontrak 1") var snik = '<span class="text-info">' + data.nik + '</span>';
-        else var snik = '<span class="text-warning">' + data.nik + '</span>';
+        else if (data.status == "Kontrak 1") var snik = '<span class="text-warning">' + data.nik + '</span>';
+        else if (data.status == "Kontrak 2") var snik = '<span class="text-info">' + data.nik + '</span>';
+        else var snik = '<span class="text-muted">' + data.nik + '</span>';
     } else {
-        var snik = '<span class="text-danger">' + data.nik + '</span>';
+        var snik = '<span class="text-danger"><i class="si si-ban push-5-r"></i>' + data.nik + '</span>';
     }
 
     $('#modal-nik').removeClass('hide-me');
@@ -68,9 +69,9 @@ var renderProfileView = function(data) {
         var status = '<span class="text-danger font-w700">NON AKTIF</span>';
     } else {
         if (data.status == 'Tetap') var status = '<span class="text-primary font-w700">' + data.status.toUpperCase() + '</span>';
-        else if (data.status == 'Percobaan') var status = '<span class="text-default font-w700">' + data.status.toUpperCase() + '</span>';
-        else if (data.status == 'Kontrak 1') var status = '<span class="text-info font-w700">' + data.status.toUpperCase() + '</span>';
-        else var status = '<span class="text-warning font-w700">' + data.status.toUpperCase() + '</span>';
+        else if (data.status == 'Percobaan') var status = '<span class="text-muted font-w700">' + data.status.toUpperCase() + '</span>';
+        else if (data.status == 'Kontrak 1') var status = '<span class="text-warning font-w700">' + data.status.toUpperCase() + '</span>';
+        else var status = '<span class="text-info font-w700">' + data.status.toUpperCase() + '</span>';
     }
     $('#profile-status').html('<div class="text-muted push-5">Status Karyawan</div>' + status);
     // 9. Tanggal masuk

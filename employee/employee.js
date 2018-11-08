@@ -1,4 +1,101 @@
 var BasePagesEmployee = function() {
+    var viewData = function(id) {
+        $.ajax({
+            type: "POST",
+            url: "/php/api/getEmployeeById.php",
+            dataType: 'json',
+            data: {
+                id: id
+            }
+        }).done(function(res) {
+            var data = res.data;
+            renderProfileView(data);
+
+            $('#photo-container-view').removeClass('hide-me');
+            $('#photo-container-edit').addClass('hide-me');
+
+            // Open the popup modal
+            $('#modal-profile').modal({
+                show: true,
+                // keyboard: false,
+                backdrop: 'static'
+            });
+
+            $('#opened-profile').val(data.id);
+        });
+    };
+
+    var editData = function(id) {
+        $.ajax({
+            type: "POST",
+            url: "/php/api/getEmployeeById.php",
+            dataType: 'json',
+            data: {
+                id: id
+            }
+        }).done(function(res) {
+            var data = res.data;
+            renderProfileEdit(data);
+
+            $('#photo-container-edit').removeClass('hide-me');
+            $('#photo-container-view').addClass('hide-me');
+
+            // Open the popup modal
+            $('#modal-profile').modal({
+                show: true,
+                // keyboard: false,
+                backdrop: 'static'
+            });
+
+            $('#opened-profile').val(data.id);
+            $('#origin').val('direct');
+        });
+    };
+
+    var removeData = function(id) {
+        swal({
+                title: "Hapus Data Karyawan?",
+                text: "Data yang dihapus tidak akan dapat dikembalikan",
+                type: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Hapus!",
+                cancelButtonText: "Batal",
+                showLoaderOnConfirm: true,
+                preConfirm: function() {
+                    return new Promise(function(resolve) {
+                        $.ajax({
+                                type: "POST",
+                                url: "/php/api/deleteEmployee.php",
+                                dataType: 'json',
+                                data: {
+                                    id: id
+                                }
+                            }).done(function(response) {
+                                if (response.status == 'err') {
+                                    swal('Error', response.message, 'error');
+                                } else {
+                                    swal('Success', "Data karyawan berhasil dihapus", 'success');
+
+                                    // reload the stat
+                                    initStat();
+
+                                    // reload the table
+                                    var $table = $('#hidden-active-type').val();
+                                    var table = $('#table-' + $table).DataTable();
+                                    table.ajax.reload();
+                                }
+                            })
+                            .fail(function() {
+                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                            });
+                    });
+                },
+                allowOutsideClick: false
+            })
+            .catch(swal.noop);
+    };
+
     // Init page stat
     var initStat = function() {
         $.ajax({
@@ -60,10 +157,9 @@ var BasePagesEmployee = function() {
         // Table initiation
         var table = $('#table-employee').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
-            stateSave: true,
             autoWidth: false,
             order: [
-                [0, "asc"]
+                [2, "asc"]
             ],
             columnDefs: [
                 { targets: 0, type: 'nik-formatted' }
@@ -112,7 +208,12 @@ var BasePagesEmployee = function() {
                         if (data == null) { // if empty, show SUB_SECTION instead
                             if (row.nama_sub_section == null) { // if empty, show SECTION instead
                                 if (row.nama_section == null) { // if empty, show DEPTARTMENT instead
-                                    if (row.nama_department == null) return "<small class=\"text-muted\">Divisi</small><br/>" + row.nama_division.toUpperCase(); // if empty, show DIVISION instead
+                                    if (row.nama_department == null) {
+                                        if (row.nama_division == null) {
+                                            return "-";
+                                        }
+                                        return "<small class=\"text-muted\">Divisi</small><br/>" + row.nama_division.toUpperCase();
+                                    }
                                     return "<small class=\"text-muted\">Departemen</small><br/>" + row.nama_department.toUpperCase();
                                 }
                                 return "<small class=\"text-muted\">Section</small><br/>" + row.nama_section.toUpperCase();
@@ -136,8 +237,8 @@ var BasePagesEmployee = function() {
                         var statusEdt = '';
 
                         if (data == "Tetap") statusEdt = '<span class="label label-primary">' + data.toUpperCase() + '</span>';
-                        else if (data == "Kontrak 1") statusEdt = '<span class="label label-info">' + data.toUpperCase() + '</span>';
-                        else if (data == "Kontrak 2") statusEdt = '<span class="label label-warning">' + data.toUpperCase() + '</span>';
+                        else if (data == "Kontrak 1") statusEdt = '<span class="label label-warning">' + data.toUpperCase() + '</span>';
+                        else if (data == "Kontrak 2") statusEdt = '<span class="label label-info">' + data.toUpperCase() + '</span>';
                         else statusEdt = '<span class="label label-default">' + data.toUpperCase() + '</span>';
 
                         return statusEdt;
@@ -173,13 +274,33 @@ var BasePagesEmployee = function() {
         //         //
         //     }
         // });
+
+
+        // TABLE ACTIONS !!!
+        // 
+        // When employee NAME or TABLE'S VIEW button is clicked
+        $('#table-employee tbody').on('click', 'a, #btn-view', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            viewData(id);
+        });
+
+        // When TABLE'S EDIT button is clicked
+        $('#table-employee tbody').on('click', '.btn-edit', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            editData(id);
+        });
+
+        // When table-employee DELETE button is clicked
+        $('#table-employee tbody').on('click', '.btn-remove', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            removeData(id);
+        });
+        // 
+        // END TABLE ACTIONS
     };
 
     // Init table employee
     var initTableTerminated = function(filterData) {
-        // if (filterData != undefined) var $filter = filterData
-        // else var $filter = '';
-
         // Table initiation
         var table = $('#table-terminated').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
@@ -201,13 +322,12 @@ var BasePagesEmployee = function() {
             ajax: {
                 url: BASE_URL + '/php/api/getEmployee.php',
                 data: {
-                    scope: 'inactive',
-                    // filter: $filter
+                    scope: 'inactive'
                 }
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-nik', data.nik);
+                $(row).attr('data-id', data.id);
             },
             columns: [{
                     orderable: false,
@@ -241,7 +361,7 @@ var BasePagesEmployee = function() {
                     data: null,
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" id="btn-view"><i class="si si-eye"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" id="btn-view-terminated"><i class="si si-eye"></i></button>' +
                             '<button class="btn btn-sm btn-default btn-remove-terminated" type="button"><i class="si si-trash"></i></button>' +
                             '</div>';
                     },
@@ -253,6 +373,23 @@ var BasePagesEmployee = function() {
                 // console.log("Table loaded!");
             }
         });
+
+        // TABLE ACTIONS !!!
+        // 
+        // When employee NAME or TABLE'S VIEW button is clicked
+        $('#table-terminated tbody').on('click', 'a, #btn-view-terminated', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            console.log('loading VIEW ' + id);
+            viewData(id);
+        });
+
+        // When table-employee DELETE button is clicked
+        $('#table-terminated tbody').on('click', '.btn-remove-terminated', function() {
+            var id = $(this).parents('tr').attr('data-id');
+            removeData(id);
+        });
+        // 
+        // END TABLE ACTIONS
     };
 
     // Init table filtering
@@ -600,9 +737,9 @@ var BasePagesEmployee = function() {
         // Button RESET / CLEAR action
         $(document).on('click', '#btn-reset-filter', function() {
             // send filters data to table & reinitiate table
-            // initTableEmployee();
-            var table = $('#table-employee').DataTable();
-            table.ajax.reload();
+            initTableEmployee('');
+            // var table = $('#table-employee').DataTable();
+            // table.ajax.reload();
 
             // reset all components
             $('[id^=input-filter-]').val('');
@@ -640,8 +777,8 @@ var BasePagesEmployee = function() {
 
             // send filters data to table & reinitiate table
             initTableEmployee(data);
-            var table = $('#table-employee').DataTable();
-            table.ajax.reload();
+            // var table = $('#table-employee').DataTable();
+            // table.ajax.reload();
         });
 
         // Fill all BAGIAN selectors
@@ -686,103 +823,6 @@ var BasePagesEmployee = function() {
         });
 
 
-        // data manipulation functions
-        var table = $('#table-employee').DataTable();
-        var viewData = function(id) {
-            $.ajax({
-                type: "POST",
-                url: "/php/api/getEmployeeById.php",
-                dataType: 'json',
-                data: {
-                    id: id
-                }
-            }).done(function(res) {
-                var data = res.data;
-                renderProfileView(data);
-
-                $('#photo-container-view').removeClass('hide-me');
-                $('#photo-container-edit').addClass('hide-me');
-
-                // Open the popup modal
-                $('#modal-profile').modal({
-                    show: true,
-                    keyboard: false,
-                    backdrop: 'static'
-                });
-
-                $('#opened-profile').val(data.id);
-            });
-        };
-
-        var editData = function(id) {
-            $.ajax({
-                type: "POST",
-                url: "/php/api/getEmployeeById.php",
-                dataType: 'json',
-                data: {
-                    id: id
-                }
-            }).done(function(res) {
-                var data = res.data;
-
-                $('#photo-container-edit').removeClass('hide-me');
-                $('#photo-container-view').addClass('hide-me');
-
-                // Open the popup modal
-                $('#modal-profile').modal({
-                    show: true,
-                    keyboard: false,
-                    backdrop: 'static'
-                });
-
-                $('#opened-profile').val(data.id);
-                $('#origin').val('direct');
-
-                renderProfileEdit(data);
-            });
-        };
-
-        var removeData = function(id) {
-            swal({
-                title: "Hapus Data Karyawan?",
-                text: "Data yang dihapus tidak akan dapat dikembalikan",
-                type: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Hapus!",
-                cancelButtonText: "Batal",
-                showLoaderOnConfirm: true,
-                preConfirm: function() {
-                    return new Promise(function(resolve) {
-                        $.ajax({
-                                type: "POST",
-                                url: "/php/api/deleteEmployee.php",
-                                dataType: 'json',
-                                data: {
-                                    id: id
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal('Success', "Data karyawan berhasil dihapus", 'success');
-
-                                    // reload the stat
-                                    initStat();
-
-                                    // reload the table
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    });
-                },
-                allowOutsideClick: false
-            }).catch(swal.noop);
-        };
-
         // when tabs clicked
         $(document).on('click', '.main-tabs', function() {
             var t = $(this).attr('data');
@@ -800,9 +840,6 @@ var BasePagesEmployee = function() {
         });
 
 
-        // =========================
-        // TABLE ACTIONS !!!
-        // 
         // when ADD BUTTON is clicked
         $(document).on('click', '#btn-add', function() {
             $('#photo-container-edit').removeClass('hide-me');
@@ -810,41 +847,13 @@ var BasePagesEmployee = function() {
 
             $('#modal-profile').modal({
                 show: true,
-                keyboard: false,
+                // keyboard: false,
                 backdrop: 'static'
             });
 
             renderProfileAdd();
             $('#opened-profile').val("");
         });
-
-        // When employee NAME or TABLE'S VIEW button is clicked
-        $('#table-employee, #table-terminated').on('click', 'a, #btn-view', function() {
-            var id = $(this).parents('tr').attr('data-id');
-            viewData(id);
-        });
-
-        // When TABLE'S EDIT button is clicked
-        $('#table-employee tbody').on('click', '.btn-edit', function() {
-            var id = $(this).parents('tr').attr('data-id');
-            editData(id);
-        });
-
-        // When table-employee DELETE button is clicked
-        $(document).on('click', '.btn-remove', function() {
-            var id = $(this).parents('tr').attr('data-id');
-            removeData(id);
-        });
-
-        // When table-terminated DELETE button is clicked
-        $(document).on('click', '.btn-remove-terminated', function() {
-            var id = $(this).parents('tr').attr('data-id');
-            removeData(data);
-        });
-        // 
-        // END TABLE ACTIONS
-        // =========================
-
 
 
         // =========================
@@ -894,20 +903,19 @@ var BasePagesEmployee = function() {
                 }
             }).done(function(res) {
                 var data = res.data;
+                renderProfileEdit(data);
 
                 $('#photo-container-edit').removeClass('hide-me');
                 $('#photo-container-view').addClass('hide-me');
 
                 // Open the popup modal
-                $('#modal-profile').modal({
-                    show: true,
-                    keyboard: false,
-                    backdrop: 'static'
-                });
+                // $('#modal-profile').modal({
+                //     show: true,
+                //     // keyboard: false,
+                //     backdrop: 'static'
+                // });
 
                 $('#origin').val('modal');
-
-                renderProfileEdit(data);
             });
         });
 
@@ -953,7 +961,7 @@ var BasePagesEmployee = function() {
             var valueSelected = this.value;
 
             if (valueSelected != '') {
-                $('#input-division, #input-department, #input-section, #input-sub_section, #input-group').val('')
+                $('#input-division, #input-department, #input-section, #input-sub_section, #input-group').val('');
                 generateSelectors(valueSelected);
             } else {
                 // Clearing all selectors!
@@ -1128,6 +1136,9 @@ var BasePagesEmployee = function() {
 
         // Surpress DT warning into JS errors
         $.fn.dataTableExt.sErrMode = 'throw';
+
+        // Set default hidden-active-type
+        $('#hidden-active-type').val('employee');
     };
 
     return {
@@ -1147,9 +1158,6 @@ jQuery(function() {
     // Core Variable
     window.BASE_URL = url('protocol') + '://' + url('hostname');
     // console.log("BASE_URL >>" + BASE_URL);
-
-    // Do this before you initialize any of your modals
-    $.fn.modal.Constructor.prototype.enforceFocus = function() {};
 
     // Main INIT
     BasePagesEmployee.init();
