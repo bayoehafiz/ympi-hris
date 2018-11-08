@@ -96,19 +96,23 @@ var renderProfileView = function(data) {
     }
 
     // 11. Masa Kontrak
-    if (data.masa_kontrak != null) {
-        if (data.status == 'Percobaan') {
-            var kontrak_type = 'Percobaan';
-        } else {
-            var kontrak_type = 'Kontrak';
+    if (data.status == 1) {
+        if (data.masa_kontrak != null) {
+            if (data.status == 'Percobaan') {
+                var kontrak_type = 'Percobaan';
+            } else {
+                var kontrak_type = 'Kontrak';
+            }
+            $('#profile-masa-kontrak').html('<div class="text-muted push-5">Masa ' + kontrak_type + '</div>' + data.masa_kontrak + ' Bulan');
         }
-        $('#profile-masa-kontrak').html('<div class="text-muted push-5">Masa ' + kontrak_type + '</div>' + data.masa_kontrak + ' Bulan');
     }
 
     // 12. Tgl Keluar
-    if (data.tgl_keluar != null) {
-        var tgl_keluar = moment(data.tgl_keluar, 'DD-MM-YYYY').format('D MMM YYYY');
-        $('#profile-tgl-keluar').html('<div class="text-muted push-5">Tgl Selesai ' + kontrak_type + '</div>' + tgl_keluar);
+    if (data.status == 1) {
+        if (data.tgl_keluar != null) {
+            var tgl_keluar = moment(data.tgl_keluar, 'DD-MM-YYYY').format('D MMM YYYY');
+            $('#profile-tgl-keluar').html('<div class="text-muted push-5">Tgl Selesai ' + kontrak_type + '</div>' + tgl_keluar);
+        }
     }
 
     // :: Tab PRIBADI::

@@ -922,35 +922,58 @@ var BasePagesEmployee = function() {
         // When modal TERMINATE button is clicked
         $(document).on('click', '#btn-terminate-profile', function() {
             swal({
-                title: "Peringatan!",
-                html: "Karyawan akan dipindahkan ke data \"Karyawan Non Aktif\".<br>Klik <strong>OK</strong> untuk melanjutkan.",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Ok",
-                cancelButtonText: "Batal",
-                preConfirm: function() {
-                    swal.close();
-                    $('#modal-profile').modal('hide');
+                    title: "Peringatan!",
+                    html: "Karyawan akan dipindahkan ke data \"Karyawan Non Aktif\".<br>Klik <strong>OK</strong> untuk melanjutkan.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ok",
+                    cancelButtonText: "Batal",
+                    // preConfirm: function() {
+                    //     swal.close();
+                    //     $('#modal-profile').modal('hide');
 
-                    // Render termination elements
-                    $('#profile-termination_date').html('');
-                    $('#profile-termination_date').html(renderAddElement('datepicker', 'termination_date', 'Tanggal Terminasi'));
-                    $('#profile-termination_reason').html('');
-                    $('#profile-termination_reason').html(renderAddElement('textarea', 'termination_reason', 'Alasan Terminasi'));
+                    //     // Render termination elements
+                    //     $('#profile-termination_date').html('');
+                    //     $('#profile-termination_date').html(renderAddElement('datepicker', 'termination_date', 'Tanggal Terminasi'));
+                    //     $('#profile-termination_reason').html('');
+                    //     $('#profile-termination_reason').html(renderAddElement('textarea', 'termination_reason', 'Alasan Terminasi'));
 
-                    initTerminationValidation();
+                    //     initTerminationValidation();
 
-                    App.initHelpers('datepicker');
+                    //     App.initHelpers('datepicker');
 
-                    $('#modal-termination').modal({
-                        show: true,
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                },
-                allowOutsideClick: false
-            }).catch(swal.noop);
+                    //     $('#modal-termination').modal({
+                    //         show: true,
+                    //         backdrop: 'static',
+                    //         keyboard: false
+                    //     });
+                    // },
+                    allowOutsideClick: false
+                })
+                .then(function(res) {
+                    if (res) {
+                        swal.close();
+                        $('#modal-profile').modal('hide');
+
+                        // Render termination elements
+                        $('#modal-termination #profile-termination_date').html('');
+                        $('#modal-termination #profile-termination_date').html(renderAddElement('datepicker', 'termination_date', 'Tanggal Terminasi', null, moment().format('DD-MM-YYYY')));
+                        $('#modal-termination #profile-termination_reason').html('');
+                        $('#modal-termination #profile-termination_reason').html(renderAddElement('textarea', 'termination_reason', 'Alasan Terminasi'));
+
+                        initTerminationValidation();
+
+                        App.initHelpers('datepicker');
+
+                        $('#modal-termination').modal({
+                            show: true,
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    }
+                })
+                .catch(swal.noop);
         });
 
 
