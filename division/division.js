@@ -388,7 +388,7 @@ var BasePagesDivision = function() {
                     data: "kode",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -479,7 +479,7 @@ var BasePagesDivision = function() {
                     data: "nama",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -546,7 +546,7 @@ var BasePagesDivision = function() {
                     data: "nama",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -614,7 +614,7 @@ var BasePagesDivision = function() {
                     data: "nama",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -682,7 +682,7 @@ var BasePagesDivision = function() {
                     data: "nama",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -750,7 +750,7 @@ var BasePagesDivision = function() {
                     data: "nama",
                     render: function(data, type, row) {
                         if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-info push-10-l">baru</span>';
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
                         } else {
                             return data;
                         }
@@ -931,7 +931,9 @@ var BasePagesDivision = function() {
             var data = table.row($(this).parents('tr')).data();
 
             // Lets decide which button is clicked:
+            // 
             if (act == 'edit') { // EDIT the data
+
                 // reset the modal first!
                 $('#modal-title, #generated-container').html('');
                 $('div[id^=hidden-]').addClass('hide-me');
@@ -1014,45 +1016,48 @@ var BasePagesDivision = function() {
                     var nama_kode = data.nama.toUpperCase();
 
                 swal({
-                    title: "Konfirmasi",
-                    text: "Hapus " + nama_kode + " dari database?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/deleteDivisionData.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal('Success', response.message, 'success');
+                        title: "Konfirmasi",
+                        text: "Hapus " + nama_kode + " dari database?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Hapus!",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/deleteDivisionData.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType
+                                    }
+                                }).done(function(response) {
+                                    if (response.status == 'err') {
+                                        swal('Error', response.message, 'error');
+                                    } else {
+                                        swal('Success', response.message, 'success');
 
-                                    // reload the stat
-                                    initStat();
-                                    initSidebar(dType);
+                                        // reload the stat
+                                        initStat();
+                                        initSidebar(dType);
 
-                                    // reload the table
-                                    var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                }).catch(swal.noop);
+                                        // reload the table
+                                        var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" instead of "sub-section"
+                                        table.ajax.reload();
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+                    })
+                    .catch(swal.noop);
 
             } else { // SET ACTIVE / NON-ACTIVE status
                 if (data.nama == undefined)
@@ -1068,55 +1073,59 @@ var BasePagesDivision = function() {
                 }
 
                 swal({
-                    title: "Konfirmasi",
-                    text: txt,
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Ya",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType,
-                                    status: current_status
-                                }
-                            }).done(function(response) {
-                                if (!response.success) {
-                                    swal('Error', response.message, 'error');
-                                    return false;
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                        title: "Konfirmasi",
+                        text: txt,
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ya",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType,
+                                        status: current_status
+                                    }
+                                }).done(function(response) {
+                                    if (!response.success) {
+                                        swal('Error', response.message, 'error');
+                                        return false;
+                                    } else {
+                                        swal.close();
+                                        $.notify({
+                                            "icon": "fa fa-check-circle",
+                                            "message": response.message
+                                        }, {
+                                            "type": "success"
+                                        })
 
-                                    // reload the stat
-                                    initStat();
-                                    initSidebar(dType);
+                                        // reload the stat
+                                        initStat();
+                                        initSidebar(dType);
 
-                                    // reload the table
-                                    var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
-                                    table.ajax.reload();
+                                        // reload the table
+                                        var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
+                                        table.ajax.reload();
 
-                                    return true;
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                }).catch(swal.noop);
+                                        return true;
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+
+                    })
+                    .catch(swal.noop);
             }
         });
 

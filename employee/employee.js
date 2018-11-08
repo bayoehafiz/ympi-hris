@@ -929,26 +929,6 @@ var BasePagesEmployee = function() {
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "Ok",
                     cancelButtonText: "Batal",
-                    // preConfirm: function() {
-                    //     swal.close();
-                    //     $('#modal-profile').modal('hide');
-
-                    //     // Render termination elements
-                    //     $('#profile-termination_date').html('');
-                    //     $('#profile-termination_date').html(renderAddElement('datepicker', 'termination_date', 'Tanggal Terminasi'));
-                    //     $('#profile-termination_reason').html('');
-                    //     $('#profile-termination_reason').html(renderAddElement('textarea', 'termination_reason', 'Alasan Terminasi'));
-
-                    //     initTerminationValidation();
-
-                    //     App.initHelpers('datepicker');
-
-                    //     $('#modal-termination').modal({
-                    //         show: true,
-                    //         backdrop: 'static',
-                    //         keyboard: false
-                    //     });
-                    // },
                     allowOutsideClick: false
                 })
                 .then(function(res) {

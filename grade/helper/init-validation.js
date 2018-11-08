@@ -123,7 +123,7 @@ var initValidation = function() {
                         // reload the table & stat
                         var table = $('#table-' + $table).DataTable();
                         table.ajax.reload();
-                        initStat(table);
+                        // initStat(table);
                     }
 
                 }

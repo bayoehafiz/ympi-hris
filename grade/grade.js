@@ -128,48 +128,51 @@ var BasePagesGrade = function() {
 
             } else if (act == 'remove') { // remove the data
                 swal({
-                    title: "Konfirmasi",
-                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/deleteGradeData.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                        title: "Konfirmasi",
+                        text: "Hapus " + data.nama.toUpperCase() + " dari database?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Hapus!",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/deleteGradeData.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType
+                                    }
+                                }).done(function(response) {
+                                    if (response.status == 'err') {
+                                        swal('Error', response.message, 'error');
+                                    } else {
+                                        swal.close();
+                                        $.notify({
+                                            "icon": "fa fa-check-circle",
+                                            "message": response.message
+                                        }, {
+                                            "type": "success"
+                                        })
 
-                                    // reload the table & stat
-                                    var table = $('#table-' + dType).DataTable();
-                                    table.ajax.reload();
-                                    initStat(table);
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                }).catch(swal.noop);
+                                        // reload the table & stat
+                                        var table = $('#table-' + dType).DataTable();
+                                        table.ajax.reload();
+                                        initStat(table);
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+                    })
+                    .catch(swal.noop);
 
             } else { // set active / non-active status
                 var current_status = data.active;
@@ -180,49 +183,52 @@ var BasePagesGrade = function() {
                 }
 
                 swal({
-                    title: "Konfirmasi",
-                    text: txt,
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Ya",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/updateGradeDataStatus.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType,
-                                    status: current_status
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                        title: "Konfirmasi",
+                        text: txt,
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ya",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/updateGradeDataStatus.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType,
+                                        status: current_status
+                                    }
+                                }).done(function(response) {
+                                    if (response.status == 'err') {
+                                        swal('Error', response.message, 'error');
+                                    } else {
+                                        swal.close();
+                                        $.notify({
+                                            "icon": "fa fa-check-circle",
+                                            "message": response.message
+                                        }, {
+                                            "type": "success"
+                                        })
 
-                                    // reload the table & stat
-                                    var table = $('#table-' + dType).DataTable();
-                                    table.ajax.reload();
-                                    initStat(table);
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                }).catch(swal.noop);
+                                        // reload the table & stat
+                                        var table = $('#table-' + dType).DataTable();
+                                        table.ajax.reload();
+                                        initStat(table);
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+                    })
+                    .catch(swal.noop);
 
             }
         });
@@ -329,7 +335,17 @@ var BasePagesGrade = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { className: "hidden-xs text-center", data: "kode" },
                 {
                     className: "hidden-xs text-center",
@@ -386,7 +402,17 @@ var BasePagesGrade = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 {
                     className: "hidden-xs text-center",
                     data: "active",

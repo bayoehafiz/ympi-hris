@@ -98,7 +98,7 @@ if (isset($_POST['data'])) {
 
     $sql = "UPDATE `{$table}` SET {$sql_sets}  WHERE id = '{$id}'";
 
-    ChromePhp::log($sql);
+    // ChromePhp::log($sql);
 
     if ($db->query($sql)) {
         $res['success'] = true;
