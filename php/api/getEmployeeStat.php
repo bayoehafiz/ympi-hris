@@ -8,7 +8,7 @@ $sql = "SELECT
     (SELECT COUNT(*) FROM employee WHERE status = 'Kontrak 2') as `Kontrak 2`,
     (SELECT COUNT(*) FROM employee WHERE status = 'Tetap') as `Tetap`
     FROM employee
-    WHERE active = 1";
+    WHERE active = 1 and status = 'Percobaan'";
 
 // ChromePhp::log($sql);
 
