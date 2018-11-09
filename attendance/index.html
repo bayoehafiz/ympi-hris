@@ -103,8 +103,8 @@
         <!-- Modal -->
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
-                <div class="modal-content">
-                    <form class="js-validation-material" action="" method="post" id="form-modal">
+                <form class="js-validation-material" action="" method="post" id="form-modal">
+                    <div class="modal-content">
                         <div class="block block-themed block-transparent remove-margin-b">
                             <div class="block-header bg-primary-dark">
                                 <ul class="block-options">
@@ -114,21 +114,21 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter row" id="modal-content">
+                            <div class="block-content bg-gray-lighter row push-20" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
-                                <div class="modal-footer col-md-12">
-                                    <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
-                                    <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
-                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
-                                    <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
-                                </div>
                             </div>
                         </div>
-                    </form>
-                    <input type="hidden" id="act-type">
-                    <input type="hidden" id="data-id">
-                </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="si si-pencil"></i> Ubah</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
+                            <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="si si-action-undo"></i> Batal</button>
+                        </div>
+                    </div>
+                </form>
+                <input type="hidden" id="act-type">
+                <input type="hidden" id="data-id">
             </div>
         </div>
         <!-- END Modal -->

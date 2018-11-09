@@ -10,9 +10,10 @@ $sql = "SELECT
                 employee b ON b.grade = a.id
         WHERE
             a.active = 1
-        GROUP BY a.id";
+        GROUP BY a.id
+        ORDER BY a.id";
 
-// ChromePhp::log($sql);
+ChromePhp::log($sql);
 
 $query = $db->query($sql);
 $rows = array();

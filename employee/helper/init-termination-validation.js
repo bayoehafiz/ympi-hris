@@ -74,7 +74,7 @@ var initTerminationValidation = function() {
                         initStat();
 
                         // reload the table
-                        var table = $('#table-employee').DataTable();
+                        var table = $('#table-terminated').DataTable();
                         table.ajax.reload();
                     }
 

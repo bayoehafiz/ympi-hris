@@ -1,5 +1,3 @@
 .DS_Store
 .idea
-
 php/config/conn\.php
-assets/img/avatars/*

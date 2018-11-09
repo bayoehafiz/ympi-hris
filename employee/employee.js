@@ -103,6 +103,7 @@ var BasePagesEmployee = function() {
             url: BASE_URL + '/php/api/getEmployeeStat.php',
             dataType: 'json',
             success: function(res) {
+                console.log(res.data);
                 var container = $('#employee-stat');
                 container.empty();
 
@@ -161,6 +162,7 @@ var BasePagesEmployee = function() {
         var table = $('#table-employee').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
+            stateSave: true,
             order: [
                 [2, "asc"]
             ],
@@ -202,7 +204,10 @@ var BasePagesEmployee = function() {
                     }
                 }, {
                     className: "text-center",
-                    data: "nik"
+                    data: "nik",
+                    render: function(data, type, row) {
+                        return data.replace('*', '');
+                    }
                 }, {
                     className: "text-center d-inline-block text-truncate",
                     data: "nama_group",
@@ -266,17 +271,17 @@ var BasePagesEmployee = function() {
         });
 
         // Extend sorting Fn for NIK column
-        // jQuery.extend(jQuery.fn.dataTableExt.sort, {
-        //     "nik-formatted-pre": function(a) {
-        //         console.log(a);
-        //     },
-        //     "nik-formatted-asc": function(a, b) {
-        //         //
-        //     },
-        //     "nik-formatted-desc": function(a, b) {
-        //         //
-        //     }
-        // });
+        jQuery.extend(jQuery.fn.dataTableExt.sort, {
+            "nik-formatted-pre": function(a) {
+                console.log(a);
+            },
+            "nik-formatted-asc": function(a, b) {
+                //
+            },
+            "nik-formatted-desc": function(a, b) {
+                //
+            }
+        });
 
 
         // TABLE ACTIONS !!!
@@ -348,7 +353,10 @@ var BasePagesEmployee = function() {
                     }
                 }, {
                     className: "text-center",
-                    data: "nik"
+                    data: "nik",
+                    render: function(data, type, row) {
+                        return data.replace('*', '');
+                    }
                 }, {
                     className: "text-center",
                     data: "termination_date",

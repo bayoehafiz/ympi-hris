@@ -79,7 +79,7 @@ if ($table != 'kode_bagian') {
             $sel = mysqli_query($db, $sql);
             $tot = mysqli_fetch_assoc($sel);
 
-            $rows[$counter]['total'] = $tot['total'];
+            $rows[$counter]['total'] = intVal($tot['total']);
 
             $counter++;
         }

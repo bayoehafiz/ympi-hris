@@ -230,17 +230,17 @@ var BasePagesDivision = function() {
         });
     };
 
-    var initStat = function() {
+    var initStat = function(type) {
         // clear the container first
         var container = $('#stat-divisi');
         container.empty();
         // Get division datas
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getDivisionStat.php',
+            url: BASE_URL + '/php/api/getDivisionTableStat.php',
             dataType: 'json',
             data: {
-                table: 'kode_bagian'
+                table: type
             },
             success: function(res) {
                 var html = '';
@@ -826,32 +826,32 @@ var BasePagesDivision = function() {
             switch (t) {
                 case 'division':
                     $('#btn-add').attr('data', 'Divisi');
-                    initSidebar('division');
+                    initStat('division');
                     initTableDivision();
                     break;
                 case 'department':
                     $('#btn-add').attr('data', 'Departemen');
-                    initSidebar('department');
+                    initStat('department');
                     initTableDepartment();
                     break;
                 case 'section':
                     $('#btn-add').attr('data', 'Section');
-                    initSidebar('section');
+                    initStat('section');
                     initTableSection();
                     break;
                 case 'sub_section':
                     $('#btn-add').attr('data', 'Sub Section');
-                    initSidebar('sub_section');
+                    initStat('sub_section');
                     initTableSubSection();
                     break;
                 case 'group':
                     $('#btn-add').attr('data', 'Grup');
-                    initSidebar('group');
+                    initStat('group');
                     initTableGroup();
                     break;
                 default:
                     $('#btn-add').attr('data', 'Kode Bagian');
-                    initSidebar('kode_bagian');
+                    initStat('kode_bagian');
                     initTableKodeBagian();
                     break;
             }
@@ -1188,8 +1188,8 @@ var BasePagesDivision = function() {
 
     return {
         init: function() {
-            initStat();
-            initSidebar('kode_bagian');
+            initStat('kode_bagian');
+            // initSidebar('kode_bagian');
             initDivisionPage();
         }
     };

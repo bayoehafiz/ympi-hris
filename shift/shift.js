@@ -1,26 +1,209 @@
 var BasePagesShift = function() {
-    // Init jQuery AutoComplete example, for more examples you can check out https://github.com/Pixabay/jQuery-autoComplete
-    var initAutoComplete = function() {
-        // Init autocomplete functionality
-        $('#employee-selector').autoComplete({
-            minChars: 1,
-            // source: function(term, response) {
-            //     $.getJSON(BASE_URL + '/php/api/getEmployeeName.php', { q: term }, function(data) { response(data); });
-            // },
-            source: function(term, suggest) {
-                term = term.toLowerCase();
+    // Init form validation
+    var initValidation = function(type) {
+        if (type == 'shift') {
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-kode': {
+                    required: true
+                },
+                'elem-hari_efektif': {
+                    required: true
+                },
+                'elem-jam_masuk': {
+                    required: true
+                },
+                'elem-jam_keluar': {
+                    required: true,
+                },
+                'elem-awal_scan_masuk': {
+                    required: true
+                },
+                'elem-akhir_scan_masuk': {
+                    required: true
+                },
+                'elem-awal_scan_keluar': {
+                    required: true
+                },
+                'elem-akhir_scan_keluar': {
+                    required: true
+                }
+            }
 
-                var $countriesList = ['Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Anguilla', 'Antigua &amp; Barbuda', 'Argentina', 'Armenia', 'Aruba', 'Australia', 'Austria', 'Azerbaijan', 'Bahamas', 'Bahrain', 'Bangladesh', 'Barbados', 'Belarus', 'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia &amp; Herzegovina', 'Botswana', 'Brazil', 'British Virgin Islands', 'Brunei', 'Bulgaria', 'Burkina Faso', 'Burundi', 'Cambodia', 'Cameroon', 'Cape Verde', 'Cayman Islands', 'Chad', 'Chile', 'China', 'Colombia', 'Congo', 'Cook Islands', 'Costa Rica', 'Cote D Ivoire', 'Croatia', 'Cruise Ship', 'Cuba', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'Ecuador', 'Egypt', 'El Salvador', 'Equatorial Guinea', 'Estonia', 'Ethiopia', 'Falkland Islands', 'Faroe Islands', 'Fiji', 'Finland', 'France', 'French Polynesia', 'French West Indies', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea Bissau', 'Guyana', 'Haiti', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Kuwait', 'Kyrgyz Republic', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Mauritania', 'Mauritius', 'Mexico', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Namibia', 'Nepal', 'Netherlands', 'Netherlands Antilles', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Norway', 'Oman', 'Pakistan', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'Reunion', 'Romania', 'Russia', 'Rwanda', 'Saint Pierre &amp; Miquelon', 'Samoa', 'San Marino', 'Satellite', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka', 'St Kitts &amp; Nevis', 'St Lucia', 'St Vincent', 'St. Lucia', 'Sudan', 'Suriname', 'Swaziland', 'Sweden', 'Switzerland', 'Syria', 'Taiwan', 'Tajikistan', 'Tanzania', 'Thailand', 'Timor L\'Este', 'Togo', 'Tonga', 'Trinidad &amp; Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks &amp; Caicos', 'Uganda', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Uzbekistan', 'Venezuela', 'Vietnam', 'Virgin Islands (US)', 'Yemen', 'Zambia', 'Zimbabwe'];
-                var $suggestions = [];
+            var messages = {
+                'elem-nama': {
+                    required: 'Masukkan Nama',
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-kode': 'Masukkan Kode',
+                'elem-hari_efektif': 'Pilih minimal 1 hari efektif',
+                'elem-jam_masuk': 'Isikan jam masuk',
+                'elem-jam_keluar': 'Isikan jam keluar',
+                'elem-awal_scan_masuk': 'Isikan jam awal scan masuk',
+                'elem-akhir_scan_masuk': 'Isikan jam akhir scan masuk',
+                'elem-awal_scan_keluar': 'Isikan jam awal scan keluar',
+                'elem-akhir_scan_keluar': 'Isikan jam akhir scan keluar'
+            }
 
-                for ($i = 0; $i < $countriesList.length; $i++) {
-                    if (~$countriesList[$i].toLowerCase().indexOf(term)) $suggestions.push($countriesList[$i]);
+        } else {
+            var rules = {
+                'elem-nama': {
+                    required: true,
+                    minlength: 3
+                },
+                'elem-kode': {
+                    required: true
+                },
+                'elem-shift': {
+                    required: true
+                },
+                'elem-assignation_key': {
+                    required: true
+                },
+                'elem-date': {
+                    required: true
+                }
+            }
+
+            var messages = {
+                'elem-nama': {
+                    required: 'Masukkan Nama',
+                    minlength: 'Minimal 3 karakter'
+                },
+                'elem-kode': 'Masukkan Kode',
+                'elem-shift': 'Pilih Shift',
+                'elem-assignation_key': 'Pilih Dept/Sect/Sub Sect/Grup',
+                'elem-date': 'Pilih Tanggal Efektif'
+            }
+        }
+
+        // Run the plugin
+        window.$validator = $('.js-validation-material').validate({ // save it in global var to call it later
+            debug: true,
+            ignore: [],
+            errorClass: 'help-block text-right animated fadeInDown',
+            errorElement: 'div',
+            errorPlacement: function(error, e) {
+                jQuery(e).parents('.form-group > div').append(error);
+            },
+            highlight: function(e) {
+                var elem = jQuery(e);
+
+                elem.closest('.form-group').removeClass('has-error').addClass('has-error');
+                elem.closest('.help-block').remove();
+            },
+            success: function(e) {
+                var elem = jQuery(e);
+
+                elem.closest('.form-group').removeClass('has-error');
+                elem.closest('.help-block').remove();
+            },
+            rules: rules,
+            messages: messages,
+            submitHandler: function(form) {
+                // begin processing the data
+                var data = [];
+                if ($('#input-hari_efektif').length) {
+                    var selected = $('#input-hari_efektif').val();
+                    if (selected != null) {
+                        array = selected + "";
+                        data.push({
+                            "key": "hari_efektif",
+                            "value": array
+                        });
+                    }
                 }
 
-                suggest($suggestions);
-            },
-            onSelect: function(term) {
-                console.log(term + ' selected!');
+                $('[id^="input-"]:not(#input-hari_efektif)').filter(function() {
+                    var elem = this;
+                    // cleaning empty data [TEMP!]
+                    if (elem['value'] != '') {
+                        if (elem['id'] == "input-date") {
+                            var $str = elem['value'];
+                            var $arr = $str.split(" - ");
+
+                            data.push({
+                                "key": "date_from",
+                                "value": moment($arr[0], 'MM/DD/YYYY').format('DD-MM-YYYY')
+                            });
+
+                            data.push({
+                                "key": "date_to",
+                                "value": moment($arr[1], 'MM/DD/YYYY').format('DD-MM-YYYY')
+                            });
+
+                            return data;
+                        } else {
+                            return data.push({
+                                "key": elem['id'].replace('input-', ''),
+                                "value": elem['value']
+                            });
+                        }
+
+
+                    }
+                });
+
+                // Read current data-type and act-type
+                var dType = $('#hidden-active-type').val(); // target table
+                var actType = $('#act-type').val();
+                if (actType == 'add') { // if ADDING NEW DATA
+                    var api_url = BASE_URL + '/php/api/addShiftData.php';
+
+                    // add random color for drag & drop shifts
+                    // data.push({
+                    //     key: "color",
+                    //     value: generateColor()
+                    // })
+
+                    var payload = {
+                        data: data,
+                        table: dType
+                    };
+
+                    var msg = "Data berhasil ditambahkan";
+
+                } else { // if EDITING EXISTING DATA
+                    var api_url = BASE_URL + '/php/api/updateShiftData.php';
+                    var payload = {
+                        data: data,
+                        table: dType,
+                        id: $('#data-id').val()
+                    };
+
+                    var msg = "Data berhasil di-update";
+                }
+
+                // Saving...
+                console.log("Saving...", api_url, payload);
+                $.ajax({
+                    method: "POST",
+                    url: api_url,
+                    dataType: 'json',
+                    data: payload,
+                    success: function(res) {
+                        if (res.success) {
+                            $('#modal').modal('hide');
+                            $.notify({
+                                "icon": "fa fa-check-circle",
+                                "message": msg
+                            }, {
+                                "type": "success"
+                            })
+
+                            initStat();
+                            // reload the table
+                            var table = $('#table-' + dType.replace('_', '-')).DataTable();
+                            table.ajax.reload();
+                        } else {
+                            swal("Error!", res.message, "error");
+                        }
+
+                    }
+                })
             }
         });
     };
@@ -65,16 +248,16 @@ var BasePagesShift = function() {
             switch (t) {
                 case 'group_shift':
                     $('#btn-add').attr('data-type', 'Group Shift');
-                    initStat('group_shift');
+                    // initStat('group_shift');
                     initTableGroupShift();
                     break;
                 case 'penugasan_shift':
                     $('#btn-add').attr('data-type', 'Penugasan Shift');
-                    initContentPenugasanShift();
+                    // initContentPenugasanShift();
                     break;
                 default:
                     $('#btn-add').attr('data-type', 'Shift');
-                    initStat('shift');
+                    // initStat('shift');
                     initTableShift();
                     break;
             };
@@ -321,95 +504,101 @@ var BasePagesShift = function() {
                 }
 
                 swal({
-                    title: "Konfirmasi",
-                    text: txt,
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Ya",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType,
-                                    status: current_status
-                                }
-                            }).done(function(response) {
-                                if (!response.success) {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                        title: "Konfirmasi",
+                        text: txt,
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ya",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType,
+                                        status: current_status
+                                    }
+                                }).done(function(response) {
+                                    if (!response.success) {
+                                        swal('Error', response.message, 'error');
+                                    } else {
+                                        swal.close();
+                                        $.notify({
+                                            "icon": "fa fa-check-circle",
+                                            "message": response.message
+                                        }, {
+                                            "type": "success"
+                                        })
 
-                                    // reload the stat
-                                    initStat(dType);
+                                        // reload the stat
+                                        initStat(dType);
 
-                                    // reload the table
-                                    var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                })
+                                        // reload the table
+                                        var table = $('#table-' + dType.replace("_", "-")).DataTable(); // in case we got "sub_section" or "kode_bagian"
+                                        table.ajax.reload();
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+                    })
+                    .catch(swal.noop);
 
             } else { // remove the data
                 swal({
-                    title: "Konfirmasi",
-                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: BASE_URL + "/php/api/deleteShiftData.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
+                        title: "Konfirmasi",
+                        text: "Hapus " + data.nama.toUpperCase() + " dari database?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Hapus!",
+                        cancelButtonText: "Batal",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false
+                    })
+                    .then(function(res) {
+                        if (res) {
+                            var dType = $('#hidden-active-type').val();
+                            $.ajax({
+                                    type: "POST",
+                                    url: BASE_URL + "/php/api/deleteShiftData.php",
+                                    dataType: 'json',
+                                    data: {
+                                        id: data.id,
+                                        table: dType
+                                    }
+                                }).done(function(response) {
+                                    if (response.status == 'err') {
+                                        swal('Error', response.message, 'error');
+                                    } else {
+                                        swal.close();
+                                        $.notify({
+                                            "icon": "fa fa-check-circle",
+                                            "message": response.message
+                                        }, {
+                                            "type": "success"
+                                        })
 
-                                    // reload the table
-                                    var table = $('#table-' + dType).DataTable();
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                })
+                                        // reload the table
+                                        var table = $('#table-' + dType).DataTable();
+                                        table.ajax.reload();
+                                    }
+                                })
+                                .fail(function() {
+                                    swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                                });
+                        }
+                    })
+                    .catch(swal.noop);
             }
         });
 
@@ -449,6 +638,9 @@ var BasePagesShift = function() {
 
         // Lets init our first table :: Shift Table
         initTableShift();
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
     };
 
     var initStat = function(type) {
@@ -457,12 +649,12 @@ var BasePagesShift = function() {
         container.empty();
         // Get division datas
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: BASE_URL + '/php/api/getShiftStat.php',
             dataType: 'json',
-            data: {
-                type: type
-            },
+            // data: {
+            //     type: type
+            // },
             success: function(res) {
                 var html = '';
                 if (res.success) {
@@ -473,22 +665,24 @@ var BasePagesShift = function() {
                         data.forEach(function(d) {
                             if (d.kode == undefined) d.kode = d.nama;
                             html += '<div class="col-md-2">' +
+                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.total + '"></span>' +
                                 '<div class="font-w700 text-gray-darker animated fadIn">' + d.nama + '</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
+                                '</div>';
                         });
                     }
                 }
 
-                html += '<div class="col-md-2 pull-right">' +
+                html += '<div class="col-md-2 pull-right push-5-t">' +
                     '<span class="h2 font-w300 text-primary animated flipInX">' +
                     '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
                     '</span>' +
-                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
                     '</div>';
 
                 // append the result into container
                 container.html(html);
+
+                // reinitiate counter plugin
+                App.initHelpers('appear-countTo');
             }
         })
     };
@@ -500,6 +694,7 @@ var BasePagesShift = function() {
         // Table initiation
         var table = $('#table-shift').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -528,7 +723,17 @@ var BasePagesShift = function() {
             columns: [
                 { data: "updated" },
                 { className: "text-center", data: "kode" },
-                { className: "font-w600", data: "nama" },
+                {
+                    className: "font-w600",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 {
                     data: "hari_efektif",
                     render: function(data, type, row) {
@@ -537,7 +742,8 @@ var BasePagesShift = function() {
                         var splitted_string = raw_string.split(',');
                         var final_string = '';
                         splitted_string.forEach(function(s) {
-                            final_string += '<span class="label label-primary push-5-r">' + s + '</span>';
+                            if (row.active == 1) final_string += '<span class="label label-primary push-5-r">' + s.toUpperCase() + '</span>';
+                            else final_string += '<span class="label label-default push-5-r">' + s.toUpperCase() + '</span>';
                         });
 
                         return final_string;
@@ -577,9 +783,9 @@ var BasePagesShift = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -591,6 +797,7 @@ var BasePagesShift = function() {
         // Table initiation
         var table = $('#table-group-shift').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
             order: [
                 [0, 'desc']
             ],
@@ -619,12 +826,23 @@ var BasePagesShift = function() {
             columns: [
                 { data: "updated" },
                 { className: "hidden-xs text-center", data: "kode" },
-                { className: "font-w600 ", data: "nama" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 {
                     className: "text-center",
                     data: "nama_shift",
                     render: function(data, type, row) {
-                        return '<span class="label label-primary">' + data + '</span>';
+                        if (row.active == 1) return '<span class="label label-primary">' + data.toUpperCase() + '</span>';
+                        else return '<span class="label label-default">' + data.toUpperCase() + '</span>';
                     }
                 },
                 {
@@ -641,7 +859,8 @@ var BasePagesShift = function() {
                                 id: row.assignation_value
                             },
                             success: function(res) {
-                                $(currentCell).html('<span class="label label-primary">[' + row.assignation_key.toUpperCase() + '] ' + res.data[0]['nama'].toUpperCase() + '</span>');
+                                if (row.active == 1) $(currentCell).html('<small class="text-muted">' + row.assignation_key + '</small><br/>' + res.data[0]['nama'].toUpperCase());
+                                else $(currentCell).html('<small class="text-muted">' + row.assignation_key.toUpperCase() + '</small><br/>' + res.data[0]['nama'].toUpperCase());
                             }
                         })
                         return null;
@@ -667,9 +886,9 @@ var BasePagesShift = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
                     }
                 }
@@ -677,17 +896,14 @@ var BasePagesShift = function() {
         });
     };
 
-    var initContentPenugasanShift = function() {
-        // Init employee selector
-        initAutoComplete();
-
+    var initContentTransferShift = function() {
         // render list of shift events
         $.ajax({
             type: "POST",
             url: BASE_URL + '/php/api/getShift.php',
             dataType: 'json',
             data: {
-                table: 'shift'
+                table: 'group_shift'
             },
             success: function(response) {
                 if (response.success) {
@@ -701,8 +917,6 @@ var BasePagesShift = function() {
 
                     // enable shift-list footer
                     $('#shift-list-footer').removeClass('hide-me');
-
-                    initEvents();
                 }
             }
         });
@@ -723,6 +937,6 @@ var BasePagesShift = function() {
 jQuery(function() {
     // Core Variable
     window.BASE_URL = url('protocol') + '://' + url('hostname');
-    
+
     BasePagesShift.init();
 });

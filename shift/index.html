@@ -52,9 +52,9 @@
                         <li>
                             <a href="#btabs-animated-fade-group_shift" class="tab-btn" data="group_shift">Data Group Shift</a>
                         </li>
-                        <!-- <li>
-                            <a href="#btabs-animated-fade-penugasan_shift" class="tab-btn" data="penugasan_shift">Penugasan Shift</a>
-                        </li> -->
+                        <li>
+                            <a href="#btabs-animated-fade-transfer_shift" class="tab-btn" data="transfer_shift">Transfer Shift</a>
+                        </li>
                     </ul>
                     <div class="block-content tab-content">
                         <div class="tab-pane fade in active" id="btabs-animated-fade-shift">
@@ -68,11 +68,11 @@
                                                 <th class="text-center">Kode</th>
                                                 <th>Nama</th>
                                                 <th class="text-center">Hari Efektif</th>
-                                                <th class="text-center" style="width: 15%;">Jam</th>
-                                                <th class="text-center" style="width: 15%;">Scan Masuk</th>
-                                                <th class="text-center" style="width: 15%;">Scan Keluar</th>
+                                                <th class="text-center">Jam</th>
+                                                <th class="text-center">Scan Masuk</th>
+                                                <th class="text-center">Scan Keluar</th>
                                                 <th class="text-center">Status</th>
-                                                <th class="text-center">Actions</th>
+                                                <th class="text-center" style="width: 15%;">Actions</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -91,10 +91,10 @@
                                                 <th class="text-center">Kode</th>
                                                 <th class="hidden-xs text-center">Nama</th>
                                                 <th class="text-center">Assigned Shift</th>
-                                                <th class="text-center">Assigned Dept/(Sub) Sect/Grup</th>
+                                                <th class="text-center">Assigned Unit</th>
                                                 <th class="text-center">Tgl Efektif</th>
                                                 <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 10%;">Actions</th>
+                                                <th class="text-center" style="width: 15%;">Actions</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-penugasan_shift">
+                        <div class="tab-pane fade" id="btabs-animated-fade-transfer_shift">
                             <div class="block">
                                 <div class="block-content">
                                     <div class="row items-push">
@@ -141,8 +141,8 @@
         <!-- Modal -->
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
-                <div class="modal-content">
-                    <form class="js-validation-material" method="post" id="form-modal">
+                <form class="js-validation-material" method="post" id="form-modal">
+                    <div class="modal-content">
                         <div class="block block-themed block-transparent remove-margin-b">
                             <div class="block-header bg-primary-dark">
                                 <ul class="block-options">
@@ -152,7 +152,7 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter row" id="modal-content">
+                            <div class="block-content bg-gray-lighter row  push-20" id="modal-content">
                                 <span id="generated-container">All generated elements will be here</span>
                                 <div class="form-group hide-me" id="hidden-shift">
                                     <div class="col-md-7">
@@ -186,19 +186,19 @@
                                         <input class="form-control daterangepicker" type="text" id="input-date" name="elem-date">
                                     </div>
                                 </div> -->
-                                <div class="modal-footer col-md-12">
-                                    <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="fa fa-edit"></i> Ubah</button>
-                                    <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="fa fa-trash"></i> Hapus</button>
-                                    <button class="btn btn-sm btn-success" type="submit" id="btn-modal-save"><i class="fa fa-save"></i> Simpan</button>
-                                    <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close"><i class="fa fa-check"></i> Tutup</button>
-                                    <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="fa fa-times"></i> Batal</button>
-                                </div>
                             </div>
                         </div>
-                    </form>
-                    <input type="hidden" id="act-type">
-                    <input type="hidden" id="data-id">
-                </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="si si-pencil"></i> Ubah</button>
+                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
+                            <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="si si-action-undo"></i> Batal</button>
+                        </div>
+                    </div>
+                </form>
+                <input type="hidden" id="act-type">
+                <input type="hidden" id="data-id">
             </div>
         </div>
         <!-- END Modal -->
@@ -257,7 +257,6 @@
     <script src="helper/render-edit-element.js"></script>
     <script src="helper/init-events.js"></script>
     <script src="helper/init-calendar.js"></script>
-    <script src="helper/init-validation.js"></script>
     <script src="helper/generate-color.js"></script>
     <script src="helper/repopulate-selector.js"></script>
     <script src="shift.js"></script>

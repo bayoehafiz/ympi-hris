@@ -56,9 +56,11 @@ var renderProfileView = function(data) {
     $('#profile-sub-section').html('<div class="text-muted push-5">Sub Section</div>' + nama_sub_section);
     $('#profile-group').html('<div class="text-muted push-5">Grup</div>' + nama_group);
     $('#profile-kode-bagian').html('<div class="text-muted push-5">Kode Bagian</div>' + nama_kode_bagian);
+
     // 6. Grade
     var grade = data.kode_grade == null ? '-' : '[' + data.kode_grade + '] ' + data.nama_grade;
     $('#profile-grade').html('<div class="text-muted push-5">Grade</div>' + grade);
+
     // 7. Penugasan
     var penugasan = data.penugasan == null ? '-' : data.nama_penugasan;
     $('#profile-penugasan').html('<div class="text-muted push-5">Penugasan</div>' + penugasan);
@@ -73,6 +75,7 @@ var renderProfileView = function(data) {
         else if (data.status == 'Kontrak 1') var status = '<span class="text-warning font-w700">' + data.status.toUpperCase() + '</span>';
         else var status = '<span class="text-info font-w700">' + data.status.toUpperCase() + '</span>';
     }
+
     $('#profile-status').html('<div class="text-muted push-5">Status Karyawan</div>' + status);
     // 9. Tanggal masuk
     $('#profile-tgl-masuk').html('<div class="text-muted push-5">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
@@ -96,7 +99,8 @@ var renderProfileView = function(data) {
     }
 
     // 11. Masa Kontrak
-    if (data.status == 1) {
+    if (data.active == 1) {
+        // console.log(data.masa_kontrak);
         if (data.masa_kontrak != null) {
             if (data.status == 'Percobaan') {
                 var kontrak_type = 'Percobaan';
@@ -108,7 +112,7 @@ var renderProfileView = function(data) {
     }
 
     // 12. Tgl Keluar
-    if (data.status == 1) {
+    if (data.active == 1) {
         if (data.tgl_keluar != null) {
             var tgl_keluar = moment(data.tgl_keluar, 'DD-MM-YYYY').format('D MMM YYYY');
             $('#profile-tgl-keluar').html('<div class="text-muted push-5">Tgl Selesai ' + kontrak_type + '</div>' + tgl_keluar);

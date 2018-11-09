@@ -158,9 +158,10 @@ var initValidation = function() {
                             return obj.year == year;
                         });
                         letter = match_obj.letter;
-                    } else {
-                        letter = "*";
-                    }
+                    } 
+                    // else {
+                    //     letter = "*";
+                    // }
 
                     data.push({
                         "key": "pin",

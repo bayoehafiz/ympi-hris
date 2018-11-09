@@ -5,19 +5,19 @@ var BasePagesDashboard = function() {
                 var data = res.data[0];
 
                 var p_percobaaan = Math.ceil((parseInt(data.total_percobaan) / parseInt(data.total)) * 100);
-                $('#percent-total-percobaan').html(p_percobaaan);
+                $('#percent-total-percobaan').html(data.total_percobaan);
                 $('#chart-total-percobaan').attr('data-percent', p_percobaaan);
 
                 var p_kontrak_1 = Math.ceil((parseInt(data.total_kontrak_1) / parseInt(data.total)) * 100);
-                $('#percent-total-kontrak_1').html(p_kontrak_1);
+                $('#percent-total-kontrak_1').html(data.total_kontrak_1);
                 $('#chart-total-kontrak_1').attr('data-percent', p_kontrak_1);
 
                 var p_kontrak_2 = Math.ceil((parseInt(data.total_kontrak_2) / parseInt(data.total)) * 100);
-                $('#percent-total-kontrak_2').html(p_kontrak_2);
+                $('#percent-total-kontrak_2').html(data.total_kontrak_2);
                 $('#chart-total-kontrak_2').attr('data-percent', p_kontrak_2);
 
                 var p_tetap = Math.ceil((parseInt(data.total_tetap) / parseInt(data.total)) * 100);
-                $('#percent-total-tetap').html(p_tetap);
+                $('#percent-total-tetap').html(data.total_tetap);
                 $('#chart-total-tetap').attr('data-percent', p_tetap);
 
                 $('#chart-total').attr('data-to', data.total);
@@ -84,8 +84,8 @@ var BasePagesDashboard = function() {
                 "xAxisName": null,
                 "yAxisName": null,
                 "theme": "fusion",
-                "labelFontSize": "16",
-                "labelFontBold": "1",
+                "labelFontSize": "14",
+                // "labelFontBold": "1",
                 "showValues": "1",
                 "valueFontSize": "20",
                 "valueFontBold": "1",

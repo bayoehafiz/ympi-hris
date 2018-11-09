@@ -207,6 +207,9 @@ var BasePagesAttendance = function() {
 
         // Lets init our first table :: Attendance Table
         initTableAttendance();
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
     };
 
     var initStat = function(type) {
