@@ -332,8 +332,13 @@ var BasePagesAttendance = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    // Core Variable
-    window.BASE_URL = url('protocol') + '://' + url('hostname');
+    // BASE_URL generator
+    var $URL = document.URL;
+    if (url('1', $URL) != 'attendance') {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+    } else {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+    }
 
     BasePagesAttendance.init();
 });

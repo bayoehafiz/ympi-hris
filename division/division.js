@@ -1197,8 +1197,12 @@ var BasePagesDivision = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    // Core Variable
-    window.BASE_URL = url('protocol') + '://' + url('hostname');
+    var $URL = document.URL;
+    if (url('1', $URL) != 'division') {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+    } else {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+    }
 
     BasePagesDivision.init();
 });

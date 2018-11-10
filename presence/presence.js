@@ -5,9 +5,9 @@ var BasePagesPresence = function() {
             url: BASE_URL + '/php/api/syncPresenceData.php',
             dataType: 'json',
             success: function(res) {
-                if (res.success) {
-                    console.log("Berhasil sync " +res.data[0].total + " data presensi!")
-                }
+                // if (res.success) {
+                    console.log(res);
+                // }
             }
         })
     }
@@ -215,11 +215,17 @@ var BasePagesPresence = function() {
             $('[id^=hidden-]').addClass('hide-me');
         })
 
+
+        // When SYNC button is clicked
+        $(document).on('click', '#sync-data', function() {
+            syncData();
+        })
+
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('presence');
 
         // Lets init our first table :: Presence Table
-        initTablePresence();
+        // initTablePresence();
 
         // Surpress DT warning into JS errors
         $.fn.dataTableExt.sErrMode = 'throw';
@@ -345,8 +351,12 @@ var BasePagesPresence = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    // Core Variable
-    window.BASE_URL = url('protocol') + '://' + url('hostname');
+    var $URL = document.URL;
+    if (url('1', $URL) != 'presence') {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+    } else {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+    }
 
     BasePagesPresence.init();
 });

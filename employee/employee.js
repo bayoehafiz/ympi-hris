@@ -2,7 +2,7 @@ var BasePagesEmployee = function() {
     var viewData = function(id) {
         $.ajax({
             type: "POST",
-            url: "/php/api/getEmployeeById.php",
+            url: BASE_URL + "/php/api/getEmployeeById.php",
             dataType: 'json',
             data: {
                 id: id
@@ -28,7 +28,7 @@ var BasePagesEmployee = function() {
     var editData = function(id) {
         $.ajax({
             type: "POST",
-            url: "/php/api/getEmployeeById.php",
+            url: BASE_URL + "/php/api/getEmployeeById.php",
             dataType: 'json',
             data: {
                 id: id
@@ -66,7 +66,7 @@ var BasePagesEmployee = function() {
                     return new Promise(function(resolve) {
                         $.ajax({
                                 type: "POST",
-                                url: "/php/api/deleteEmployee.php",
+                                url: BASE_URL + "/php/api/deleteEmployee.php",
                                 dataType: 'json',
                                 data: {
                                     id: id
@@ -1169,9 +1169,13 @@ var BasePagesEmployee = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    // Core Variable
-    window.BASE_URL = url('protocol') + '://' + url('hostname');
-    // console.log("BASE_URL >>" + BASE_URL);
+    // BASE_URL generator
+    var $URL = document.URL;
+    if (url('1', $URL) != 'employee') {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+    } else {
+        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+    }
 
     // Main INIT
     BasePagesEmployee.init();
