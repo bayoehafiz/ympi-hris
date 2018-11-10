@@ -4,7 +4,7 @@ var renderEditElement = function(type, name, label, value, meta_data) {
         $container = $($container);
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getSelectorDataClean.php',
+            url: ENV.BASE_API + 'getSelectorDataClean.php',
             dataType: 'json',
             data: {
                 table: $table

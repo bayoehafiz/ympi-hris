@@ -1,6 +1,6 @@
 var BasePagesDashboard = function() {
     var initStatByStatus = function() {
-        $.getJSON(BASE_API + 'getStatByStatus.php', function(res) {
+        $.getJSON(ENV.BASE_API + 'getStatByStatus.php', function(res) {
             if (res.success) {
                 var data = res.data[0];
 
@@ -34,7 +34,7 @@ var BasePagesDashboard = function() {
     };
 
     var initMiniStat = function() {
-        $.getJSON(BASE_API + 'getStatByAktif.php', function(res) {
+        $.getJSON(ENV.BASE_API + 'getStatByAktif.php', function(res) {
             if (res.success) {
                 var data = res.data[0];
 
@@ -54,11 +54,11 @@ var BasePagesDashboard = function() {
 
     var initChart = function(type) {
         if (type == 'bagian') {
-            var $url = BASE_API + 'getStatByBagian.php';
+            var $url = ENV.BASE_API + 'getStatByBagian.php';
         } else if (type == 'grade') {
-            var $url = BASE_API + 'getStatByGrade.php';
+            var $url = ENV.BASE_API + 'getStatByGrade.php';
         } else {
-            var $url = BASE_API + 'getStatByJabatan.php';
+            var $url = ENV.BASE_API + 'getStatByJabatan.php';
         }
 
         var $cat = [];
@@ -118,7 +118,7 @@ var BasePagesDashboard = function() {
 
     var initDashboard = function() {
         // Core Variable
-        window.BASE_URL = url('protocol') + '://' + url('hostname');
+        window.ENV.BASE_URL = url('protocol') + '://' + url('hostname');
 
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -142,7 +142,7 @@ var BasePagesDashboard = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu', function(e) {
             e.preventDefault;
-            console.log(BASE_URL + $(this).attr('route'));
+            console.log(ENV.BASE_URL + $(this).attr('route'));
             if ($(this).attr('route') != undefined) window.location = ".." + $(this).attr('route');
             return false;
         });

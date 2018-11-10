@@ -52,9 +52,9 @@ var initTerminationValidation = function() {
             // Call the API!
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/terminateEmployee.php',
+                url: ENV.BASE_API + 'terminateEmployee.php',
                 dataType: 'json',
-                data: {``
+                data: {
                     data: $data,
                     id: $id
                 },

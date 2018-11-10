@@ -180,7 +180,7 @@ var BasePagesDivision = function() {
                 var $scope = $('#hidden-modal-scope').val();
 
                 if ($scope == 'add') {
-                    var $apiUrl = BASE_URL + '/php/api/addDivisionData.php';
+                    var $apiUrl = ENV.BASE_API + 'addDivisionData.php';
                     var $payload = {
                         obj: data,
                         table: $table
@@ -188,7 +188,7 @@ var BasePagesDivision = function() {
                     var $text = 'Data berhasil ditambahkan';
 
                 } else {
-                    var $apiUrl = BASE_URL + '/php/api/updateDivisionData.php';
+                    var $apiUrl = ENV.BASE_API + 'updateDivisionData.php';
                     var $payload = {
                         id: $id,
                         data: data,
@@ -216,8 +216,8 @@ var BasePagesDivision = function() {
                             })
 
                             // reload the stats
-                            initSidebar();
-                            initStat();
+                            // initSidebar();
+                            initStat($table);
 
                             // reload the table
                             var table = $('#table-' + $table.replace('_', '-')).DataTable(); // in case we got "sub_section" instead of "sub-section"
@@ -232,65 +232,13 @@ var BasePagesDivision = function() {
 
     var initStat = function(type) {
         // clear the container first
-        var container = $('#stat-divisi');
+        var container = $('#stat-division');
         container.empty();
+
         // Get division datas
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getDivisionTableStat.php',
-            dataType: 'json',
-            data: {
-                table: type
-            },
-            success: function(res) {
-                var html = '';
-                if (res.success) {
-                    var data = [];
-                    var str = JSON.stringify(res.data[0]); // convert to String
-                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
-                    str.split(',').forEach(function(a) { // split by Comma and make an array
-                        var split = a.split(':'); // split by Colon and push into DATA
-                        data.push({
-                            label: split[0].toString(),
-                            value: split[1]
-                        })
-                    });
-
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        html += '';
-                        data.forEach(function(d) {
-                            html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.value.replace(/\"/g, "") + '"></span>' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
-                                '</div>';
-                        });
-                    }
-                }
-
-                html += '<div class="col-md-2 pull-right push-5-t">' +
-                    '<span class="h1 font-w700 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="kode_bagian"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '</div>';
-
-                // append the result into container
-                container.html(html);
-
-                // reinitiate counter plugin
-                App.initHelpers('appear-countTo');
-            }
-        });
-    };
-
-    var initSidebar = function(type) {
-        var container = $('#sidebar-data-' + type);
-        container.empty();
-        // Get division datas
-
-        $.ajax({
-            type: "POST",
-            url: BASE_URL + '/php/api/getDivisionTableStat.php',
+            url: ENV.BASE_API + 'getDivisionStat.php',
             dataType: 'json',
             data: {
                 table: type
@@ -299,59 +247,65 @@ var BasePagesDivision = function() {
                 var html = '';
                 if (res.success) {
                     var data = res.data;
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        var counter = 0;
-                        data.forEach(function(d) {
-                            // if (d.total != 0) {
-                            counter++;
-                            if (d.kode == undefined) d.kode = d.nama;
+                    if (data.length > 0) {
+                        html += '';
 
-                            if (d.active == 0) {
-                                var text_color_1 = " text-muted";
-                                var text_color_2 = " text-muted";
-                                var hotlink_o = '';
-                                var hotlink_c = '';
-                                var $a = d.total;
-                                var $b = d.kode;
-                            } else {
-                                var text_color_1 = " text-muted";
-                                var text_color_2 = "";
-                                if (d.total == 0) {
-                                    text_color_2 = " text-primary";
-                                    var hotlink_o = '';
-                                    var hotlink_c = '';
-                                } else {
-                                    var hotlink_o = '<a href="' + BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">';
-                                    var hotlink_c = '</a>';
-                                }
-                                var $a = d.total;
-                                var $b = d.kode;
+                        // Grouping the kode_bagian by `nama`
+                        var temp = data;
+                        data = [];
+                        temp.reduce(function(res, value) {
+                            if (!res[value.nama]) {
+                                res[value.nama] = {
+                                    id: value.id,
+                                    total: 0,
+                                    nama: value.nama
+                                };
+                                data.push(res[value.nama])
                             }
+                            res[value.nama].total += parseInt(value.total);
+                            return res;
+                        }, {});
 
-                            html += '<div class="block-content push-10">' +
-                                hotlink_o +
-                                '<div class="h3 font-w600' + text_color_2 + '">' + $a + '</div>' +
-                                '<div class="h5 text-muted push-5-t' + text_color_1 + '">' + $b + '</div>' +
-                                hotlink_c +
+                        data.forEach(function(d) {
+                            html += '<div>' +
+                                '<a href="' + ENV.BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' +
+                                '<span class="h1 font-w700 text-primary animated flipInX" data-toggle="countTo" data-to="' + d.total + '"></span>' +
+                                '<div class="font-w700 text-gray-darker animated fadeIn">' + d.nama + '</div>' +
+                                '</div>' +
                                 '</div>';
-                            // }
                         });
+                        container.append(html);
                     }
+                } else {
+                    swal('Error', res.message, 'error');
                 }
 
-                // if there's no data to show at all!
-                if (html == '') {
-                    html += '<div class="alert alert-warning push-20-t">' +
-                        '<h3 class="font-w300 push-5"><i class="si si-info"></i></h3>' +
-                        '<p>Tidak ada data untuk ditampilkan!</p>' +
-                        '</div>';
-                }
+                // reinitiate counter plugin
+                App.initHelpers(['appear-countTo']);
 
-                // append the result into container
-                container.append(html);
+                // re-initialize slider plugin
+                if (type == 'kode_bagian') var $dataToShow = 8;
+                else var $dataToShow = 6;
+                if (container.hasClass('slick-initialized')) {
+                    container.slick('removeSlide', null, null, true); // remove all previous slides
+                    container.slick('unslick');
+                }
+                container.slick({
+                    autoplay: true,
+                    dots: false,
+                    slidesToShow: $dataToShow,
+                    prevArrow: '<span class="prev"><i class="fa fa-angle-left fa-3x text-primary-lighter"></i></span>',
+                    nextArrow: '<span class="next"><i class="fa fa-angle-right fa-3x text-primary-lighter"></i></span>',
+                });
+
+                // Inject data-type to btn-add
+                $('#btn-add').attr('data-type', type);
             }
         });
+    };
+
+    var initSidebar = function() {
+        $('#sticky-sidebar').sticky({ topSpacing: 80 });
     };
 
     var initTableKodeBagian = function() {
@@ -375,9 +329,13 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'kode_bagian'
+                },
+                dataSrc: function(json) {
+                    console.log(json.aaData);
+                    return json.aaData;
                 }
             },
             deferRender: true,
@@ -469,7 +427,7 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'division'
                 }
@@ -536,7 +494,7 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'department'
                 }
@@ -604,7 +562,7 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'section'
                 }
@@ -672,7 +630,7 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'sub_section'
                 },
@@ -740,7 +698,7 @@ var BasePagesDivision = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getDivision.php',
+                url: ENV.BASE_API + 'getDivision.php',
                 data: {
                     table: 'group'
                 }
@@ -809,7 +767,7 @@ var BasePagesDivision = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu, .logo', function(e) {
             e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
             return false;
         });
 
@@ -1037,7 +995,7 @@ var BasePagesDivision = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/deleteDivisionData.php",
+                                    url: ENV.BASE_API + "deleteDivisionData.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -1050,7 +1008,7 @@ var BasePagesDivision = function() {
                                         swal('Success', response.message, 'success');
 
                                         // reload the stat
-                                        initStat();
+                                        initStat(dType);
                                         initSidebar(dType);
 
                                         // reload the table
@@ -1094,7 +1052,7 @@ var BasePagesDivision = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
+                                    url: ENV.BASE_API + "updateDivisionDataStatus.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -1115,7 +1073,7 @@ var BasePagesDivision = function() {
                                         })
 
                                         // reload the stat
-                                        initStat();
+                                        initStat(dType);
                                         initSidebar(dType);
 
                                         // reload the table
@@ -1141,7 +1099,7 @@ var BasePagesDivision = function() {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorData.php',
+                url: ENV.BASE_API + 'getSelectorData.php',
                 dataType: 'json',
                 data: {
                     table: selected
@@ -1176,11 +1134,6 @@ var BasePagesDivision = function() {
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('kode_bagian');
 
-        // init the Datatables BS style
-        bsDataTables();
-
-        // Lets init our first table :: Kode Bagian Table
-        initTableKodeBagian();
 
         // Surpress DT warning into JS errors
         $.fn.dataTableExt.sErrMode = 'throw';
@@ -1188,21 +1141,15 @@ var BasePagesDivision = function() {
 
     return {
         init: function() {
+            bsDataTables();
+            set_base('division');
             initStat('kode_bagian');
-            // initSidebar('kode_bagian');
+            initSidebar();
+            initTableKodeBagian();
             initDivisionPage();
         }
     };
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    var $URL = document.URL;
-    if (url('1', $URL) != 'division') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
-    BasePagesDivision.init();
-});
+jQuery(function() { BasePagesDivision.init(); });

@@ -36,7 +36,7 @@ var renderAddElement = function(type, name, label, data_object, col_size, target
         // Get data for the selector
         $.ajax({
             method: "POST",
-            url: BASE_URL + '/php/api/getSelectorDataClean.php',
+            url: ENV.BASE_API + 'getSelectorDataClean.php',
             dataType: 'json',
             data: {
                 table: target_table

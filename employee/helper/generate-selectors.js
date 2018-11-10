@@ -2,7 +2,7 @@
 var generateSelectors = function(selected) {
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getKodeBagianById.php',
+        url: ENV.BASE_API + 'getKodeBagianById.php',
         dataType: 'json',
         data: {
             id: selected
@@ -18,7 +18,7 @@ var generateSelectors = function(selected) {
                 if (data.department != null) {
                     $.ajax({
                         type: "POST",
-                        url: BASE_URL + '/php/api/getSelectorData.php',
+                        url: ENV.BASE_API + 'getSelectorData.php',
                         dataType: 'json',
                         data: {
                             table: 'department',
@@ -32,7 +32,7 @@ var generateSelectors = function(selected) {
                             if (data.section != null) {
                                 $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + '/php/api/getSelectorData.php',
+                                    url: ENV.BASE_API + 'getSelectorData.php',
                                     dataType: 'json',
                                     data: {
                                         table: 'section',
@@ -46,7 +46,7 @@ var generateSelectors = function(selected) {
                                         if (data.sub_section != null) {
                                             $.ajax({
                                                 type: "POST",
-                                                url: BASE_URL + '/php/api/getSelectorData.php',
+                                                url: ENV.BASE_API + 'getSelectorData.php',
                                                 dataType: 'json',
                                                 data: {
                                                     table: 'sub_section',
@@ -60,7 +60,7 @@ var generateSelectors = function(selected) {
                                                     if (data.group != null) {
                                                         $.ajax({
                                                             type: "POST",
-                                                            url: BASE_URL + '/php/api/getSelectorData.php',
+                                                            url: ENV.BASE_API + 'getSelectorData.php',
                                                             dataType: 'json',
                                                             data: {
                                                                 table: 'group',

@@ -1365,6 +1365,7 @@ var App = function() {
 
 // Create an alias for App (you can use OneUI in your pages instead of App if you like)
 var OneUI = App;
+window.ENV = {};
 
 // Initialize app when page loads
 jQuery(function() {
@@ -1373,13 +1374,13 @@ jQuery(function() {
         window.set_base = function(module_name) {
             var $URL = document.URL;
             if (url('1', $URL) != module_name) {
-                window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+                ENV.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
             } else {
-                // Without /path/
-                window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+                // Without "/path/"
+                ENV.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
             }
 
-            window.BASE_API = BASE_URL + '/php/api/';
+            ENV.BASE_API = ENV.BASE_URL + '/php/api/';
         };
 
         // Init an error alert on button click

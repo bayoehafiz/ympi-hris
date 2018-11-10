@@ -22,7 +22,7 @@ var BasePagesGrade = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu, .logo', function(e) {
             e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
             return false;
         });
 
@@ -143,7 +143,7 @@ var BasePagesGrade = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/deleteGradeData.php",
+                                    url: ENV.BASE_API + "deleteGradeData.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -198,7 +198,7 @@ var BasePagesGrade = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/updateGradeDataStatus.php",
+                                    url: ENV.BASE_API + "updateGradeDataStatus.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -263,7 +263,7 @@ var BasePagesGrade = function() {
         // Get Grade stat
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getGradeStat.php',
+            url: ENV.BASE_API + 'getGradeStat.php',
             dataType: 'json',
             data: {
                 table: table
@@ -282,7 +282,7 @@ var BasePagesGrade = function() {
                                 var title = d.kode + '<span class="text-muted">' + d.nama + '</span>';
 
                             html += '<div class="col-md-' + wCounter + '">' +
-                                '<a href="' + BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
+                                '<a href="' + ENV.BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
                                 '<span class="h1 font-w700 text-primary animated fadeIn" id="total-finance" data-toggle="countTo" data-to="' + d.total + '"></span>' +
                                 '<div class="h5 font-w600 text-gray-darker animated fadeIn">' + title + '</div>' +
                                 '</a>' +
@@ -327,7 +327,7 @@ var BasePagesGrade = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getGrade.php',
+                url: ENV.BASE_API + 'getGrade.php',
                 data: {
                     table: 'grade'
                 }
@@ -394,7 +394,7 @@ var BasePagesGrade = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getGrade.php',
+                url: ENV.BASE_API + 'getGrade.php',
                 data: {
                     table: 'penugasan'
                 }
@@ -441,6 +441,7 @@ var BasePagesGrade = function() {
 
     return {
         init: function() {
+            set_base('grade');
             bsDataTables();
             initStat();
             initGradePage();
@@ -449,13 +450,4 @@ var BasePagesGrade = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    var $URL = document.URL;
-    if (url('1', $URL) != 'grade') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
-    BasePagesGrade.init();
-});
+jQuery(function() { BasePagesGrade.init(); });

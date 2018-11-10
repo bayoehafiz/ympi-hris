@@ -74,7 +74,7 @@ var initValidation = function(data_type) {
             var dType = $('#hidden-active-type').val();
             var actType = $('#act-type').val();
             if (actType == 'add') {
-                var api_url = BASE_URL + '/php/api/addAttendanceData.php';
+                var api_url = ENV.BASE_API + 'addAttendanceData.php';
 
                 // add random color for drag & drop attendances
                 // data.push({
@@ -89,7 +89,7 @@ var initValidation = function(data_type) {
 
                 var msg = "Data berhasil ditambahkan";
             } else {
-                var api_url = BASE_URL + '/php/api/updateAttendanceData.php';
+                var api_url = ENV.BASE_API + 'updateAttendanceData.php';
                 var payload = {
                     data: data,
                     table: dType,

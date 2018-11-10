@@ -8,7 +8,7 @@ var renderAddElement = function(type, name, label) {
 
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getGradeData.php',
+            url: ENV.BASE_API + 'getGradeData.php',
             dataType: 'json',
             data: {
                 table: source_table

@@ -8,7 +8,7 @@ $dbName = 'ympi_hris';
 // create connection and select DB
 mysqli_report(MYSQLI_REPORT_STRICT);
 try {
-    $db = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+    $db = mysqli_connect($dbHost, $dbUsername, $dbPassword, $dbName);
 } catch (Exception $e) {
     $res['error'] = true;
     $res['message'] = "DB Error: " . $e->getMessage() . ".\rPlease check your DB connection settings in \"php/api/conn.php\"."; // not in live code obviously...

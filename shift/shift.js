@@ -151,7 +151,7 @@ var BasePagesShift = function() {
                 var dType = $('#hidden-active-type').val(); // target table
                 var actType = $('#act-type').val();
                 if (actType == 'add') { // if ADDING NEW DATA
-                    var api_url = BASE_URL + '/php/api/addShiftData.php';
+                    var api_url = ENV.BASE_API + 'addShiftData.php';
 
                     // add random color for drag & drop shifts
                     // data.push({
@@ -167,7 +167,7 @@ var BasePagesShift = function() {
                     var msg = "Data berhasil ditambahkan";
 
                 } else { // if EDITING EXISTING DATA
-                    var api_url = BASE_URL + '/php/api/updateShiftData.php';
+                    var api_url = ENV.BASE_API + 'updateShiftData.php';
                     var payload = {
                         data: data,
                         table: dType,
@@ -208,6 +208,288 @@ var BasePagesShift = function() {
         });
     };
 
+    var initStat = function(type) {
+        // clear the container first
+        var container = $('#stat-shift');
+        container.empty();
+        // Get division datas
+        $.ajax({
+            type: "GET",
+            url: ENV.BASE_API + 'getShiftStat.php',
+            dataType: 'json',
+            // data: {
+            //     type: type
+            // },
+            success: function(res) {
+                var html = '';
+                if (res.success) {
+                    var data = res.data;
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        html += '';
+                        data.forEach(function(d) {
+                            if (d.kode == undefined) d.kode = d.nama;
+                            html += '<div class="col-md-2">' +
+                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.total + '"></span>' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.nama + '</div>' +
+                                '</div>';
+                        });
+                    }
+                }
+
+                html += '<div class="col-md-2 pull-right push-5-t">' +
+                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
+                    '</span>' +
+                    '</div>';
+
+                // append the result into container
+                container.html(html);
+
+                // reinitiate counter plugin
+                App.initHelpers('appear-countTo');
+            }
+        })
+    };
+
+    var initTableShift = function() {
+        // init table BS style
+        bsDataTables();
+
+        // Table initiation
+        var table = $('#table-shift').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: ENV.BASE_API + 'getShift.php',
+                data: {
+                    table: 'shift'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
+            columns: [
+                { data: "updated" },
+                { className: "text-center", data: "kode" },
+                {
+                    className: "font-w600",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+                {
+                    data: "hari_efektif",
+                    render: function(data, type, row) {
+                        // Manipulate result data
+                        var raw_string = data;
+                        var splitted_string = raw_string.split(',');
+                        var final_string = '';
+                        splitted_string.forEach(function(s) {
+                            if (row.active == 1) final_string += '<span class="label label-primary push-5-r">' + s.toUpperCase() + '</span>';
+                            else final_string += '<span class="label label-default push-5-r">' + s.toUpperCase() + '</span>';
+                        });
+
+                        return final_string;
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "jam",
+                    render: function(data, type, row) {
+                        return row.jam_masuk + ' - ' + row.jam_keluar;
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "scan_masuk",
+                    render: function(data, type, row) {
+                        return row.awal_scan_masuk + ' - ' + row.akhir_scan_masuk;
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "scan_keluar",
+                    render: function(data, type, row) {
+                        return row.awal_scan_keluar + ' - ' + row.akhir_scan_keluar;
+                    }
+                },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
+
+    var initTableGroupShift = function() {
+        // Table initiation
+        var table = $('#table-group-shift').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            autoWidth: false,
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: ENV.BASE_API + 'getShift.php',
+                data: {
+                    table: 'group_shift'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
+            columns: [
+                { data: "updated" },
+                { className: "hidden-xs text-center", data: "kode" },
+                {
+                    className: "font-w600 ",
+                    data: "nama",
+                    render: function(data, type, row) {
+                        if (row.active == 0 && row.created == row.updated) {
+                            return data + '<span class="label label-success push-10-l">BARU</span>';
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "nama_shift",
+                    render: function(data, type, row) {
+                        if (row.active == 1) return '<span class="label label-primary">' + data.toUpperCase() + '</span>';
+                        else return '<span class="label label-default">' + data.toUpperCase() + '</span>';
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "updated",
+                    render: function(data, type, row, meta) {
+                        var currentCell = $("#table-group-shift").DataTable().cells({ "row": meta.row, "column": meta.col }).nodes(0);
+                        $.ajax({
+                            type: "POST",
+                            url: ENV.BASE_API + 'getDivisionName.php',
+                            dataType: 'json',
+                            data: {
+                                table: row.assignation_key,
+                                id: row.assignation_value
+                            },
+                            success: function(res) {
+                                if (row.active == 1) $(currentCell).html('<small class="text-muted">' + row.assignation_key + '</small><br/>' + res.data[0]['nama'].toUpperCase());
+                                else $(currentCell).html('<small class="text-muted">' + row.assignation_key.toUpperCase() + '</small><br/>' + res.data[0]['nama'].toUpperCase());
+                            }
+                        })
+                        return null;
+                    }
+                },
+                {
+                    className: "text-center",
+                    data: "date",
+                    render: function(data, type, row) {
+                        return moment(row.date_from, 'DD-MM-YYYY').format('D MMM YY') + ' <small>s/d</small> ' + moment(row.date_to, 'DD-MM-YYYY').format('D MMM YY');
+                    }
+                },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
+
+    var initContentTransferShift = function() {
+        // render list of shift events
+        $.ajax({
+            type: "POST",
+            url: ENV.BASE_API + 'getShift.php',
+            dataType: 'json',
+            data: {
+                table: 'group_shift'
+            },
+            success: function(response) {
+                if (response.success) {
+                    var container = $('.js-events');
+                    container.empty();
+
+                    var data = response.data;
+                    data.forEach(function(d) {
+                        container.append('<li style="background-color: ' + d.color + '">' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
+                    })
+
+                    // enable shift-list footer
+                    $('#shift-list-footer').removeClass('hide-me');
+                }
+            }
+        });
+
+        // FullCalendar, for more examples you can check out http://fullcalendar.io/
+        initCalendar();
+    };
+
     var initShiftPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -231,7 +513,7 @@ var BasePagesShift = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu, .logo', function(e) {
             e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
             return false;
         });
 
@@ -519,7 +801,7 @@ var BasePagesShift = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/updateDivisionDataStatus.php",
+                                    url: ENV.BASE_API + "updateDivisionDataStatus.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -570,7 +852,7 @@ var BasePagesShift = function() {
                             var dType = $('#hidden-active-type').val();
                             $.ajax({
                                     type: "POST",
-                                    url: BASE_URL + "/php/api/deleteShiftData.php",
+                                    url: ENV.BASE_API + "deleteShiftData.php",
                                     dataType: 'json',
                                     data: {
                                         id: data.id,
@@ -610,7 +892,7 @@ var BasePagesShift = function() {
             // fetch data for populating DEPARTEMEN selector
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorDataClean.php',
+                url: ENV.BASE_API + 'getSelectorDataClean.php',
                 dataType: 'json',
                 data: {
                     table: valueSelected
@@ -643,290 +925,9 @@ var BasePagesShift = function() {
         $.fn.dataTableExt.sErrMode = 'throw';
     };
 
-    var initStat = function(type) {
-        // clear the container first
-        var container = $('#stat-shift');
-        container.empty();
-        // Get division datas
-        $.ajax({
-            type: "GET",
-            url: BASE_URL + '/php/api/getShiftStat.php',
-            dataType: 'json',
-            // data: {
-            //     type: type
-            // },
-            success: function(res) {
-                var html = '';
-                if (res.success) {
-                    var data = res.data;
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        html += '';
-                        data.forEach(function(d) {
-                            if (d.kode == undefined) d.kode = d.nama;
-                            html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.total + '"></span>' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.nama + '</div>' +
-                                '</div>';
-                        });
-                    }
-                }
-
-                html += '<div class="col-md-2 pull-right push-5-t">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '</div>';
-
-                // append the result into container
-                container.html(html);
-
-                // reinitiate counter plugin
-                App.initHelpers('appear-countTo');
-            }
-        })
-    };
-
-    var initTableShift = function() {
-        // init table BS style
-        bsDataTables();
-
-        // Table initiation
-        var table = $('#table-shift').DataTable({
-            destroy: true, // destroy it first, if there is an active table instance
-            autoWidth: false,
-            order: [
-                [0, 'desc']
-            ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            processing: true,
-            serverSide: true,
-            serverMethod: 'post',
-            ajax: {
-                url: BASE_URL + '/php/api/getShift.php',
-                data: {
-                    table: 'shift'
-                }
-            },
-            deferRender: true,
-            createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-id', data.id);
-            },
-            columns: [
-                { data: "updated" },
-                { className: "text-center", data: "kode" },
-                {
-                    className: "font-w600",
-                    data: "nama",
-                    render: function(data, type, row) {
-                        if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-success push-10-l">BARU</span>';
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    data: "hari_efektif",
-                    render: function(data, type, row) {
-                        // Manipulate result data
-                        var raw_string = data;
-                        var splitted_string = raw_string.split(',');
-                        var final_string = '';
-                        splitted_string.forEach(function(s) {
-                            if (row.active == 1) final_string += '<span class="label label-primary push-5-r">' + s.toUpperCase() + '</span>';
-                            else final_string += '<span class="label label-default push-5-r">' + s.toUpperCase() + '</span>';
-                        });
-
-                        return final_string;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "jam",
-                    render: function(data, type, row) {
-                        return row.jam_masuk + ' - ' + row.jam_keluar;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "scan_masuk",
-                    render: function(data, type, row) {
-                        return row.awal_scan_masuk + ' - ' + row.akhir_scan_masuk;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "scan_keluar",
-                    render: function(data, type, row) {
-                        return row.awal_scan_keluar + ' - ' + row.akhir_scan_keluar;
-                    }
-                },
-                {
-                    className: "hidden-xs text-center",
-                    data: "active",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success">Aktif</span>';
-                        else return '<span class="label label-default">Non Aktif</span>';
-                    }
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
-                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
-                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
-                            '</div>';
-                    }
-                }
-            ]
-        });
-    };
-
-    var initTableGroupShift = function() {
-        // Table initiation
-        var table = $('#table-group-shift').DataTable({
-            destroy: true, // destroy it first, if there is an active table instance
-            autoWidth: false,
-            order: [
-                [0, 'desc']
-            ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            processing: true,
-            serverSide: true,
-            serverMethod: 'post',
-            ajax: {
-                url: BASE_URL + '/php/api/getShift.php',
-                data: {
-                    table: 'group_shift'
-                }
-            },
-            deferRender: true,
-            createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-id', data.id);
-            },
-            columns: [
-                { data: "updated" },
-                { className: "hidden-xs text-center", data: "kode" },
-                {
-                    className: "font-w600 ",
-                    data: "nama",
-                    render: function(data, type, row) {
-                        if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-success push-10-l">BARU</span>';
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "nama_shift",
-                    render: function(data, type, row) {
-                        if (row.active == 1) return '<span class="label label-primary">' + data.toUpperCase() + '</span>';
-                        else return '<span class="label label-default">' + data.toUpperCase() + '</span>';
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "updated",
-                    render: function(data, type, row, meta) {
-                        var currentCell = $("#table-group-shift").DataTable().cells({ "row": meta.row, "column": meta.col }).nodes(0);
-                        $.ajax({
-                            type: "POST",
-                            url: BASE_URL + '/php/api/getDivisionName.php',
-                            dataType: 'json',
-                            data: {
-                                table: row.assignation_key,
-                                id: row.assignation_value
-                            },
-                            success: function(res) {
-                                if (row.active == 1) $(currentCell).html('<small class="text-muted">' + row.assignation_key + '</small><br/>' + res.data[0]['nama'].toUpperCase());
-                                else $(currentCell).html('<small class="text-muted">' + row.assignation_key.toUpperCase() + '</small><br/>' + res.data[0]['nama'].toUpperCase());
-                            }
-                        })
-                        return null;
-                    }
-                },
-                {
-                    className: "text-center",
-                    data: "date",
-                    render: function(data, type, row) {
-                        return moment(row.date_from, 'DD-MM-YYYY').format('D MMM YY') + ' <small>s/d</small> ' + moment(row.date_to, 'DD-MM-YYYY').format('D MMM YY');
-                    }
-                },
-                {
-                    className: "hidden-xs text-center",
-                    data: "active",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success">Aktif</span>';
-                        else return '<span class="label label-default">Non Aktif</span>';
-                    }
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
-                            '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
-                            '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
-                            '</div>';
-                    }
-                }
-            ]
-        });
-    };
-
-    var initContentTransferShift = function() {
-        // render list of shift events
-        $.ajax({
-            type: "POST",
-            url: BASE_URL + '/php/api/getShift.php',
-            dataType: 'json',
-            data: {
-                table: 'group_shift'
-            },
-            success: function(response) {
-                if (response.success) {
-                    var container = $('.js-events');
-                    container.empty();
-
-                    var data = response.data;
-                    data.forEach(function(d) {
-                        container.append('<li style="background-color: ' + d.color + '">' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
-                    })
-
-                    // enable shift-list footer
-                    $('#shift-list-footer').removeClass('hide-me');
-                }
-            }
-        });
-
-        // FullCalendar, for more examples you can check out http://fullcalendar.io/
-        initCalendar();
-    };
-
     return {
         init: function() {
+            set_base('shift');
             initStat('shift');
             initShiftPage();
         }
@@ -934,13 +935,4 @@ var BasePagesShift = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    var $URL = document.URL;
-    if (url('1', $URL) != 'shift') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
-    BasePagesShift.init();
-});
+jQuery(function() { BasePagesShift.init(); });

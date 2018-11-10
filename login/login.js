@@ -57,7 +57,7 @@ jQuery(function() {
     set_base('$');
 
     // Bypass login
-    window.location.href = BASE_URL + '/dashboard';
+    window.location.href = ENV.BASE_URL + '/dashboard';
     
     BasePagesLogin.init();
 });

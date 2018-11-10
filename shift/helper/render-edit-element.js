@@ -17,7 +17,7 @@ var renderEditElement = function(type, name, label, value, data_object, col_size
         // Populate data for ASSIGNATION_VALUE selector
         $.ajax({
             method: "POST",
-            url: BASE_URL + '/php/api/getSelectorDataClean.php',
+            url: ENV.BASE_API + 'getSelectorDataClean.php',
             dataType: 'json',
             data: {
                 table: value.key
@@ -68,7 +68,7 @@ var renderEditElement = function(type, name, label, value, data_object, col_size
         // Get data for the selector
         $.ajax({
             method: "POST",
-            url: BASE_URL + '/php/api/getSelectorDataClean.php',
+            url: ENV.BASE_API + 'getSelectorDataClean.php',
             dataType: 'json',
             data: {
                 table: target_table

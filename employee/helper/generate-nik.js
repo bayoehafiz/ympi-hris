@@ -88,7 +88,7 @@ var pad = function(str, max) {
 var getLatestNik = function(status_karyawan) {
     return $.ajax({
         type: "GET",
-        url: BASE_URL + "/php/api/getLatestNik.php",
+        url: ENV.BASE_API + "getLatestNik.php",
         dataType: "json"
     });
 }

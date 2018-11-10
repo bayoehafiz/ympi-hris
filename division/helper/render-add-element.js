@@ -29,7 +29,7 @@ var renderAddElement = function(type, name, label, meta_data) {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getDivisionData.php',
+                url: ENV.BASE_API + 'getDivisionData.php',
                 dataType: 'json',
                 data: {
                     table: source_table
@@ -47,7 +47,7 @@ var renderAddElement = function(type, name, label, meta_data) {
                 // populate the selector datas 
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorDataClean.php',
+                    url: ENV.BASE_API + 'getSelectorDataClean.php',
                     dataType: 'json',
                     data: {
                         table: name

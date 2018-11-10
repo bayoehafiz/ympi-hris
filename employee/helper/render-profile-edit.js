@@ -29,7 +29,7 @@ var renderProfileEdit = function(data) {
     // fetch data for populating KODE BAGIAN selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'kode_bagian'
@@ -57,7 +57,7 @@ var renderProfileEdit = function(data) {
     // fetch data for populating DIVISI selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'division'
@@ -92,7 +92,7 @@ var renderProfileEdit = function(data) {
     else var dataObj = { table: 'department' };
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: dataObj,
         success: function(res) {
@@ -136,7 +136,7 @@ var renderProfileEdit = function(data) {
     else var dataObj = { table: 'section' };
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: dataObj,
         success: function(res) {
@@ -179,7 +179,7 @@ var renderProfileEdit = function(data) {
     else var dataObj = { table: 'sub_section' };
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: dataObj,
         success: function(res) {
@@ -222,7 +222,7 @@ var renderProfileEdit = function(data) {
     else var dataObj = { table: 'group' };
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: dataObj,
         success: function(res) {
@@ -264,7 +264,7 @@ var renderProfileEdit = function(data) {
     // fetch data for populating GRADE selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'grade'
@@ -300,7 +300,7 @@ var renderProfileEdit = function(data) {
     // fetch data for populating PENUGASAN selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'penugasan'

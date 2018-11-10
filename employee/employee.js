@@ -2,7 +2,7 @@ var BasePagesEmployee = function() {
     var viewData = function(id) {
         $.ajax({
             type: "POST",
-            url: BASE_URL + "/php/api/getEmployeeById.php",
+            url: ENV.BASE_API + "getEmployeeById.php",
             dataType: 'json',
             data: {
                 id: id
@@ -28,7 +28,7 @@ var BasePagesEmployee = function() {
     var editData = function(id) {
         $.ajax({
             type: "POST",
-            url: BASE_URL + "/php/api/getEmployeeById.php",
+            url: ENV.BASE_API + "getEmployeeById.php",
             dataType: 'json',
             data: {
                 id: id
@@ -66,7 +66,7 @@ var BasePagesEmployee = function() {
                     return new Promise(function(resolve) {
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deleteEmployee.php",
+                                url: ENV.BASE_API + "deleteEmployee.php",
                                 dataType: 'json',
                                 data: {
                                     id: id
@@ -100,7 +100,7 @@ var BasePagesEmployee = function() {
     var initStat = function() {
         $.ajax({
             type: "GET",
-            url: BASE_URL + '/php/api/getEmployeeStat.php',
+            url: ENV.BASE_API + 'getEmployeeStat.php',
             dataType: 'json',
             success: function(res) {
                 console.log(res.data);
@@ -132,11 +132,6 @@ var BasePagesEmployee = function() {
                             counter += parseInt(d.value.replace(/\"/g, ""));
                         });
                     }
-
-                    html += '<div class="col-md-2 col-xs-6">' +
-                        '<span class="h1 font-w700 text-primary animated flipInX" id="total-tetap" data-toggle="countTo" data-to="' + counter + '"></span>' +
-                        '<div class="font-w700 text-gray-darker animated fadeIn">Total</div>' +
-                        '</div>';
                 }
 
                 html += '<div class="col-md-2 pull-right push-5-t">' +
@@ -178,7 +173,7 @@ var BasePagesEmployee = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getEmployee.php',
+                url: ENV.BASE_API + 'getEmployee.php',
                 data: {
                     scope: 'active',
                     filter: $filter
@@ -404,7 +399,7 @@ var BasePagesEmployee = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getEmployee.php',
+                url: ENV.BASE_API + 'getEmployee.php',
                 data: {
                     scope: 'inactive'
                 }
@@ -544,7 +539,7 @@ var BasePagesEmployee = function() {
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: BASE_URL + '/php/api/getSelectorData.php',
+            url: ENV.BASE_API + 'getSelectorData.php',
             data: { table: 'kode_bagian' },
             success: function(res) {
                 if (res.success) {
@@ -571,7 +566,7 @@ var BasePagesEmployee = function() {
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: BASE_URL + '/php/api/getSelectorData.php',
+            url: ENV.BASE_API + 'getSelectorData.php',
             data: { table: 'division' },
             success: function(res) {
                 if (res.success) {
@@ -635,7 +630,7 @@ var BasePagesEmployee = function() {
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: BASE_URL + '/php/api/getSelectorData.php',
+            url: ENV.BASE_API + 'getSelectorData.php',
             data: { table: 'grade' },
             success: function(res) {
                 if (res.success) {
@@ -662,7 +657,7 @@ var BasePagesEmployee = function() {
         $.ajax({
             type: 'POST',
             dataType: 'json',
-            url: BASE_URL + '/php/api/getSelectorData.php',
+            url: ENV.BASE_API + 'getSelectorData.php',
             data: { table: 'penugasan' },
             success: function(res) {
                 if (res.success) {
@@ -689,7 +684,7 @@ var BasePagesEmployee = function() {
         var populateAll = function(table) {
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorDataClean.php',
+                url: ENV.BASE_API + 'getSelectorDataClean.php',
                 dataType: 'json',
                 data: {
                     table: table
@@ -726,7 +721,7 @@ var BasePagesEmployee = function() {
                 // fetch data for populating DEPARTEMEN selector
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    url: ENV.BASE_API + 'getSelectorData.php',
                     dataType: 'json',
                     data: {
                         table: 'department',
@@ -756,7 +751,7 @@ var BasePagesEmployee = function() {
                 // fetch data for populating DEPARTEMEN selector
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    url: ENV.BASE_API + 'getSelectorData.php',
                     dataType: 'json',
                     data: {
                         table: 'section',
@@ -781,7 +776,7 @@ var BasePagesEmployee = function() {
                 // fetch data for populating DEPARTEMEN selector
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    url: ENV.BASE_API + 'getSelectorData.php',
                     dataType: 'json',
                     data: {
                         table: 'sub_section',
@@ -806,7 +801,7 @@ var BasePagesEmployee = function() {
                 // fetch data for populating DEPARTEMEN selector
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + '/php/api/getSelectorData.php',
+                    url: ENV.BASE_API + 'getSelectorData.php',
                     dataType: 'json',
                     data: {
                         table: 'group',
@@ -873,6 +868,9 @@ var BasePagesEmployee = function() {
         populateAll('section');
         populateAll('sub_section');
         populateAll('group');
+
+        // Call the sticky plugin
+        $('#filter-block').sticky({ topSpacing: 60 });
     };
 
     // init the page
@@ -899,7 +897,7 @@ var BasePagesEmployee = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu', function(e) {
             e.preventDefault();
-            if ($(this).attr('route') != undefined) window.location = BASE_URL + $(this).attr('route');
+            if ($(this).attr('route') != undefined) window.location = ENV.BASE_URL + $(this).attr('route');
             return false;
         });
 
@@ -961,7 +959,7 @@ var BasePagesEmployee = function() {
 
                 $.ajax({
                     type: "POST",
-                    url: BASE_URL + "/php/api/getEmployeeById.php",
+                    url: ENV.BASE_API + "getEmployeeById.php",
                     dataType: 'json',
                     data: {
                         id: id
@@ -983,7 +981,7 @@ var BasePagesEmployee = function() {
 
             $.ajax({
                 type: "POST",
-                url: BASE_URL + "/php/api/getEmployeeById.php",
+                url: ENV.BASE_API + "getEmployeeById.php",
                 dataType: 'json',
                 data: {
                     id: id
@@ -1067,7 +1065,7 @@ var BasePagesEmployee = function() {
             // fetch data for populating DEPARTEMEN selector
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorData.php',
+                url: ENV.BASE_API + 'getSelectorData.php',
                 dataType: 'json',
                 data: {
                     table: 'department',
@@ -1088,7 +1086,7 @@ var BasePagesEmployee = function() {
             // fetch data for populating SECTION selector
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorData.php',
+                url: ENV.BASE_API + 'getSelectorData.php',
                 dataType: 'json',
                 data: {
                     table: 'section',
@@ -1109,7 +1107,7 @@ var BasePagesEmployee = function() {
             // fetch data for populating SUB SECTION selector
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorData.php',
+                url: ENV.BASE_API + 'getSelectorData.php',
                 dataType: 'json',
                 data: {
                     table: 'sub_section',
@@ -1130,7 +1128,7 @@ var BasePagesEmployee = function() {
             // fetch data for populating GROUP selector
             $.ajax({
                 type: "POST",
-                url: BASE_URL + '/php/api/getSelectorData.php',
+                url: ENV.BASE_API + 'getSelectorData.php',
                 dataType: 'json',
                 data: {
                     table: 'group',
@@ -1155,6 +1153,7 @@ var BasePagesEmployee = function() {
                 $containerMasaKontrak.empty();
                 $containerTglKeluar.empty();
 
+                // Set default value for MASA_KONTRAK
                 if (valueSelected == 'Percobaan') {
                     var label = 'Masa Percobaan';
                     var label_2 = 'Tgl Selesai Percobaan';
@@ -1162,7 +1161,7 @@ var BasePagesEmployee = function() {
                 } else {
                     var label = 'Masa Kontrak';
                     var label_2 = 'Tgl Selesai Kontrak';
-                    var value = 6;
+                    var value = 12;
                 }
 
                 html = renderAddElement('predefined-select', 'masa_kontrak', label, [{
@@ -1204,6 +1203,7 @@ var BasePagesEmployee = function() {
             var valueSelected = this.value;
             if ($('#input-tgl_masuk').val() != '') var t_masuk = $('#input-tgl_masuk').val();
             else var t_masuk = moment().format('DD-MM-YYYY');
+
             $('#input-tgl_keluar').val(moment(t_masuk, 'DD-MM-YYYY').add(valueSelected, 'M').format('DD-MM-YYYY'));
         });
 
@@ -1233,6 +1233,7 @@ var BasePagesEmployee = function() {
 
     return {
         init: function() {
+            set_base('employee');
             initStat();
             bsDataTables();
             initTableEmployee();
@@ -1245,8 +1246,6 @@ var BasePagesEmployee = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    set_base('employee');
-
     // Main INIT
     BasePagesEmployee.init();
 

@@ -2,7 +2,7 @@ var BasePagesPresence = function() {
     var syncData = function() {
         $.ajax({
             type: "GET",
-            url: BASE_URL + '/php/api/syncPresenceData.php',
+            url: BASE_API + 'syncPresenceData.php',
             dataType: 'json',
             success: function(res) {
                 // if (res.success) {
@@ -171,7 +171,7 @@ var BasePagesPresence = function() {
                         var dType = $('#hidden-active-type').val();
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deletePresenceData.php",
+                                url: BASE_API + "deletePresenceData.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id,
@@ -238,7 +238,7 @@ var BasePagesPresence = function() {
         // Get division datas
         $.ajax({
             type: "POST",
-            url: BASE_URL + '/php/api/getPresenceStat.php',
+            url: BASE_API + 'getPresenceStat.php',
             dataType: 'json',
             data: {
                 type: type
@@ -296,7 +296,7 @@ var BasePagesPresence = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_URL + '/php/api/getPresence.php',
+                url: BASE_API + 'getPresence.php',
                 data: {
                     table: 'presence'
                 }

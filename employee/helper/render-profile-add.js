@@ -25,7 +25,7 @@ var renderProfileAdd = function() {
     // fetch data for populating KODE BAGIAN selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'kode_bagian'
@@ -52,7 +52,7 @@ var renderProfileAdd = function() {
     // fetch data for populating DIVISI selector
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'division'
@@ -110,7 +110,7 @@ var renderProfileAdd = function() {
 
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'grade'
@@ -136,7 +136,7 @@ var renderProfileAdd = function() {
 
     $.ajax({
         type: "POST",
-        url: BASE_URL + '/php/api/getSelectorData.php',
+        url: ENV.BASE_API + 'getSelectorData.php',
         dataType: 'json',
         data: {
             table: 'penugasan'

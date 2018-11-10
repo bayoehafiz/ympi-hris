@@ -1,4 +1,4 @@
-// Employee Validation
+// Employee Form Validation
 var initValidation = function() {
     // Function to send data
     var sendData = function(url, payload) {
@@ -20,7 +20,7 @@ var initValidation = function() {
                     });
 
                     // reload the stat
-                    // initStat();
+                    initStat();
 
                     // reinitiate table
                     var table = $('#table-employee').DataTable();
@@ -135,7 +135,7 @@ var initValidation = function() {
 
             // if it is ADD
             if ($id == '') {
-                var apiUrl = BASE_URL + '/php/api/addEmployee.php';
+                var apiUrl = ENV.BASE_API + 'addEmployee.php';
 
                 // then generate new NIK
                 $.when(getLatestNik()).done(function(response) {
@@ -158,7 +158,7 @@ var initValidation = function() {
                             return obj.year == year;
                         });
                         letter = match_obj.letter;
-                    } 
+                    }
                     // else {
                     //     letter = "*";
                     // }
@@ -181,12 +181,12 @@ var initValidation = function() {
                 })
 
             } else { // if it is EDIT
-                var apiUrl = BASE_URL + '/php/api/updateEmployee.php';
+                var apiUrl = ENV.BASE_API + 'updateEmployee.php';
 
                 // if kode_bagian is changed
                 if (kode_bagian_changed) {
                     // then call the ajax to wipe all bagians data
-                    $.post(BASE_URL + '/php/api/wipeEmployeeDiv.php', { id: $id });
+                    $.post(ENV.BASE_API + 'wipeEmployeeDiv.php', { id: $id });
                 }
 
                 // check if tgl_masuk is changed

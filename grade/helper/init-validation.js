@@ -87,7 +87,7 @@ var initValidation = function() {
             // Read the current scope (add OR edit)
             var $scope = $('#hidden-modal-scope').val();
             if ($scope == 'add') {
-                var $apiUrl = BASE_URL + '/php/api/addGradeData.php';
+                var $apiUrl = ENV.BASE_API + 'addGradeData.php';
                 var $payload = {
                     obj: data,
                     table: $table
@@ -95,7 +95,7 @@ var initValidation = function() {
                 var $text = 'Data berhasil ditambahkan';
 
             } else {
-                var $apiUrl = BASE_URL + '/php/api/updateGradeData.php';
+                var $apiUrl = ENV.BASE_API + 'updateGradeData.php';
                 var $payload = {
                     id: $id,
                     data: data,

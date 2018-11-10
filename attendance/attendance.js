@@ -1,4 +1,114 @@
 var BasePagesAttendance = function() {
+    var initStat = function(type) {
+        // clear the container first
+        var container = $('#stat-attendance');
+        container.empty();
+        // Get division datas
+        $.ajax({
+            type: "POST",
+            url: ENV.BASE_API + 'getAttendanceStat.php',
+            dataType: 'json',
+            data: {
+                type: type
+            },
+            success: function(res) {
+                var html = '';
+                if (res.success) {
+                    var data = res.data;
+                    var data_length = data.length;
+                    if (data_length > 0) {
+                        html += '';
+                        data.forEach(function(d) {
+                            if (d.kode == undefined) d.kode = d.nama;
+                            html += '<div class="col-md-2">' +
+                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.nama + '</div>' +
+                                '<span class="h2 font-w300 text-primary animated flipInX">' + d.total + '</span>' +
+                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
+                        });
+                    }
+                }
+
+                html += '<div class="col-md-2 pull-right">' +
+                    '<span class="h2 font-w300 text-primary animated flipInX">' +
+                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
+                    '</span>' +
+                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
+                    '</div>';
+
+                // append the result into container
+                container.html(html);
+            }
+        })
+    };
+
+    var initTableAttendance = function() {
+        // init table BS style
+        bsDataTables();
+
+        // Table initiation
+        var table = $('#table-attendance').DataTable({
+            destroy: true, // destroy it first, if there is an active table instance
+            order: [
+                [0, 'desc']
+            ],
+            columnDefs: [{
+                "visible": false,
+                "targets": 0
+            }],
+            pageLength: 10,
+            lengthMenu: [
+                [10, 20, 50, 100],
+                [10, 20, 50, 100]
+            ],
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                url: ENV.BASE_API + 'getAttendance.php',
+                data: {
+                    table: 'attendance'
+                }
+            },
+            deferRender: true,
+            createdRow: function(row, data, dataIndex) {
+                $(row).attr('data-id', data.id);
+            },
+            columns: [
+                { data: "updated" },
+                { className: "text-center", data: "kode" },
+                { className: "font-w600", data: "jenis" },
+                {
+                    className: "text-center",
+                    data: "potongan_cuti",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<i class="fa fa-lg fa-check text-success"></i>';
+                        else return '<i class="fa fa-lg fa-close text-muted"></i>'
+                    }
+                },
+                { data: "keterangan" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "active",
+                    render: function(data, type, row) {
+                        if (data == 1) return '<span class="label label-success">Aktif</span>';
+                        else return '<span class="label label-default">Non Aktif</span>';
+                    }
+                },
+                {
+                    data: null,
+                    className: "text-center",
+                    render: function(data, type, row) {
+                        return '<div class="btn-group text-center">' +
+                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
+                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
+                            '</div>';
+                    }
+                }
+            ]
+        });
+    };
+
     var initAttendancePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
@@ -22,7 +132,7 @@ var BasePagesAttendance = function() {
         // when menu button is clicked
         $(document).on('click', '.nav-menu, .logo', function(e) {
             e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
             return false;
         });
 
@@ -102,7 +212,7 @@ var BasePagesAttendance = function() {
                 $('#modal-title, #generated-container').html('');
 
                 var html = '';
-                data_type = $(this).attr('data-active-type');
+                data_type = $(this).attr('hidden-active-type');
                 $('#hidden-type').val(data_type);
                 console.log(data_type);
 
@@ -158,7 +268,7 @@ var BasePagesAttendance = function() {
                         var dType = $('#hidden-active-type').val();
                         $.ajax({
                                 type: "POST",
-                                url: BASE_URL + "/php/api/deleteAttendanceData.php",
+                                url: ENV.BASE_API + "deleteAttendanceData.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id,
@@ -212,118 +322,10 @@ var BasePagesAttendance = function() {
         $.fn.dataTableExt.sErrMode = 'throw';
     };
 
-    var initStat = function(type) {
-        // clear the container first
-        var container = $('#stat-attendance');
-        container.empty();
-        // Get division datas
-        $.ajax({
-            type: "POST",
-            url: BASE_URL + '/php/api/getAttendanceStat.php',
-            dataType: 'json',
-            data: {
-                type: type
-            },
-            success: function(res) {
-                var html = '';
-                if (res.success) {
-                    var data = res.data;
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        html += '';
-                        data.forEach(function(d) {
-                            if (d.kode == undefined) d.kode = d.nama;
-                            html += '<div class="col-md-2">' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.nama + '</div>' +
-                                '<span class="h2 font-w300 text-primary animated flipInX">' + d.total + '</span>' +
-                                '<div class="text-muted animated fadeIn"><small>Karyawan</small></div></div>';
-                        });
-                    }
-                }
-
-                html += '<div class="col-md-2 pull-right">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '<div class="text-muted animated fadeIn"><small>Tambah Data</small></div>' +
-                    '</div>';
-
-                // append the result into container
-                container.html(html);
-            }
-        })
-    };
-
-    var initTableAttendance = function() {
-        // init table BS style
-        bsDataTables();
-
-        // Table initiation
-        var table = $('#table-attendance').DataTable({
-            destroy: true, // destroy it first, if there is an active table instance
-            order: [
-                [0, 'desc']
-            ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            processing: true,
-            serverSide: true,
-            serverMethod: 'post',
-            ajax: {
-                url: BASE_URL + '/php/api/getAttendance.php',
-                data: {
-                    table: 'attendance'
-                }
-            },
-            deferRender: true,
-            createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-id', data.id);
-            },
-            columns: [
-                { data: "updated" },
-                { className: "text-center", data: "kode" },
-                { className: "font-w600", data: "jenis" },
-                {
-                    className: "text-center",
-                    data: "potongan_cuti",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<i class="fa fa-lg fa-check text-success"></i>';
-                        else return '<i class="fa fa-lg fa-close text-muted"></i>'
-                    }
-                },
-                { data: "keterangan" },
-                {
-                    className: "hidden-xs text-center",
-                    data: "active",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success">Aktif</span>';
-                        else return '<span class="label label-default">Non Aktif</span>';
-                    }
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
-                            '</div>';
-                    }
-                }
-            ]
-        });
-    };
 
     return {
         init: function() {
+            set_base('attendance');
             initStat('attendance');
             initAttendancePage();
         }
@@ -331,14 +333,4 @@ var BasePagesAttendance = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    // BASE_URL generator
-    var $URL = document.URL;
-    if (url('1', $URL) != 'attendance') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
-    BasePagesAttendance.init();
-});
+jQuery(function() {BasePagesAttendance.init();});

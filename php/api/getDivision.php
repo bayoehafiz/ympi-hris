@@ -83,18 +83,17 @@ if (isset($_POST['table'])) {
                 LIMIT {$row},{$rowperpage}";
     }
 
-    // ChromePhp::log($empQuery);
-
     $empRecords = mysqli_query($db, $empQuery);
     $rows = array();
 
     if ($table == 'kode_bagian') {
         while ($r = mysqli_fetch_assoc($empRecords)) {
             // Get the name og bagian_value
-            $initSql = "SELECT `nama` FROM " . $r['bagian_key'] . " WHERE `id` = " . $r['bagian_value'];
+            $initSql = "SELECT `nama` FROM `" . $r['bagian_key'] . "` WHERE `id` = " . $r['bagian_value'];
             $sel = mysqli_query($db, $initSql);
-            $dt = mysqli_fetch_assoc($sel);
-            $r['nama_bagian'] = $dt['nama'];
+            while ($dt = mysqli_fetch_assoc($sel)) {
+                $r['nama_bagian'] = $dt['nama'];
+            }
             $rows[] = $r;
         }
     } else {
@@ -102,6 +101,8 @@ if (isset($_POST['table'])) {
             $rows[] = $r;
         }
     }
+
+    // ChromePhp::log($rows);
 
     ## Response
     $response = array(
