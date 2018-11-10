@@ -6,7 +6,7 @@
 
 var BasePagesLogin = function() {
     // Init Login Form Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
-    var initValidationLogin = function(){
+    var initValidationLogin = function() {
         jQuery('.js-validation-login').validate({
             errorClass: 'help-block text-right animated fadeInDown',
             errorElement: 'div',
@@ -45,7 +45,7 @@ var BasePagesLogin = function() {
     };
 
     return {
-        init: function () {
+        init: function() {
             // Init Login Form Validation
             initValidationLogin();
         }
@@ -53,4 +53,11 @@ var BasePagesLogin = function() {
 }();
 
 // Initialize when page loads
-jQuery(function(){ BasePagesLogin.init(); });
+jQuery(function() {
+    set_base('$');
+
+    // Bypass login
+    window.location.href = BASE_URL + '/dashboard';
+    
+    BasePagesLogin.init();
+});

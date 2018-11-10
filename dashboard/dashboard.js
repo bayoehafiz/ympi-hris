@@ -1,6 +1,6 @@
 var BasePagesDashboard = function() {
     var initStatByStatus = function() {
-        $.getJSON(BASE_URL + '/php/api/getStatByStatus.php', function(res) {
+        $.getJSON(BASE_API + 'getStatByStatus.php', function(res) {
             if (res.success) {
                 var data = res.data[0];
 
@@ -34,7 +34,7 @@ var BasePagesDashboard = function() {
     };
 
     var initMiniStat = function() {
-        $.getJSON(BASE_URL + '/php/api/getStatByAktif.php', function(res) {
+        $.getJSON(BASE_API + 'getStatByAktif.php', function(res) {
             if (res.success) {
                 var data = res.data[0];
 
@@ -54,11 +54,11 @@ var BasePagesDashboard = function() {
 
     var initChart = function(type) {
         if (type == 'bagian') {
-            var $url = BASE_URL + '/php/api/getStatByBagian.php';
+            var $url = BASE_API + 'getStatByBagian.php';
         } else if (type == 'grade') {
-            var $url = BASE_URL + '/php/api/getStatByGrade.php';
+            var $url = BASE_API + 'getStatByGrade.php';
         } else {
-            var $url = BASE_URL + '/php/api/getStatByJabatan.php';
+            var $url = BASE_API + 'getStatByJabatan.php';
         }
 
         var $cat = [];
@@ -174,14 +174,7 @@ var BasePagesDashboard = function() {
 
 // Initialize when page loads
 jQuery(function() {
-    // BASE_URL generator
-    var $URL = document.URL;
-    if (url('1', $URL) != 'dashboard') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
+    set_base('dashboard');
 
     // Init main page
     BasePagesDashboard.init();

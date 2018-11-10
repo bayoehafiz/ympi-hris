@@ -1369,10 +1369,24 @@ var OneUI = App;
 // Initialize app when page loads
 jQuery(function() {
     if (typeof angular == 'undefined') {
+        // Generate BASE_URL and BASE_API
+        window.set_base = function(module_name) {
+            var $URL = document.URL;
+            if (url('1', $URL) != module_name) {
+                window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
+            } else {
+                // Without /path/
+                window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
+            }
+
+            window.BASE_API = BASE_URL + '/php/api/';
+        };
+
         // Init an error alert on button click
         $(document).on('click', '.js-swal-error', function() {
             swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
         });
+
 
         // Our application inititation
         App.init();

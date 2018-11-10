@@ -54,7 +54,7 @@ var initTerminationValidation = function() {
                 type: "POST",
                 url: BASE_URL + '/php/api/terminateEmployee.php',
                 dataType: 'json',
-                data: {
+                data: {``
                     data: $data,
                     id: $id
                 },
