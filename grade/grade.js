@@ -248,8 +248,8 @@ var BasePagesGrade = function() {
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('grade');
 
-        // init Datatable BS style
-        bsDataTables();
+        // Default button add text
+        $('#btn-add-text').text('Tambah Grade');
 
         // Lets init our stat & table :: Grade Table
         initStat('grade');
@@ -343,9 +343,6 @@ var BasePagesGrade = function() {
                     prevArrow: '<span class="prev"><i class="fa fa-angle-left fa-3x text-primary-lighter"></i></span>',
                     nextArrow: '<span class="next"><i class="fa fa-angle-right fa-3x text-primary-lighter"></i></span>',
                 });
-
-                // Default button add text
-                $('#btn-add-text').text('Tambah Grade');
 
                 // Inject data-type to btn-add
                 $('#btn-add').attr('data-type', type);

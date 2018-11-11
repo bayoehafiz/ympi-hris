@@ -50,9 +50,9 @@ var renderEditElement = function(type, name, label, value, meta_data) {
         container.empty();
 
         if (name == 'bagian_value') {
-            
+
             populate('#input-' + name, value.table, value.id);
-            
+
         } else if (name == 'parent') {
 
             // get the source DB table to populate parent's select
@@ -87,8 +87,10 @@ var renderEditElement = function(type, name, label, value, meta_data) {
         container.trigger('change');
         $('#label-' + name).html(label);
     } else {
+        if (name == 'nama' || name == 'kode') var font_size = " font-s20 font-w700";
+        else var font_size = "";
         elem += '<div class="form-group push-50 push-20-t"><div class="form-material form-material-primary">' +
-            '<input class="form-control input-lg" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" value="' + value + '">' +
+            '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" value="' + value + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div>';
     }
