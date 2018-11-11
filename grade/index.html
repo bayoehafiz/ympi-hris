@@ -15,9 +15,12 @@
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/app.css">
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
@@ -36,64 +39,76 @@
         <main id="main-container">
             <!-- Stats -->
             <div class="content-mini content-mini-full bg-white border-b">
-                <div class="row items-push text-center center-block" id="stat-grade"></div>
+                <div class="items-push text-center center-block push-10-t" id="stat-grade"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
-                <!-- Block Tabs Animated Fade -->
-                <div class="block">
-                    <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
-                        <li class="active">
-                            <a href="#btabs-animated-fade-grade" class="tab-btn" data="grade">Grade</a>
-                        </li>
-                        <li>
-                            <a href="#btabs-animated-fade-penugasan" class="tab-btn" data="penugasan">Penugasan</a>
-                        </li>
-                    </ul>
-                    <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-grade">
-                            <div class="block">
-                                <div class="block-content">
-                                    <!-- Table grade -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-grade" style="width: 100%!important;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="hidden-xs text-center">Nama Grade</th>
-                                                <th class="text-center">Kode</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 15%;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        </tbody>
-                                    </table>
-                                    <!-- END Table grade -->
+                <div class="row">
+                    <div class="col-md-9">
+                        <!-- Block Tabs Animated Fade -->
+                        <div class="block">
+                            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+                                <li class="active">
+                                    <a href="#btabs-animated-fade-grade" class="tab-btn" data="grade">GRADE</a>
+                                </li>
+                                <li>
+                                    <a href="#btabs-animated-fade-penugasan" class="tab-btn" data="penugasan">PENUGASAN / JABATAN</a>
+                                </li>
+                            </ul>
+                            <div class="block-content tab-content">
+                                <!-- Table grade -->
+                                <div class="tab-pane fade in active" id="btabs-animated-fade-grade">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-grade" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center">Nama Grade</th>
+                                                        <th class="text-center">Kode</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- END Table grade -->
+                                <!-- Table penugasan -->
+                                <div class="tab-pane fade" id="btabs-animated-fade-penugasan">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-penugasan" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 5%;">No.</th>
+                                                        <th class="hidden-xs text-center">Nama</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END Table penugasan -->
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-penugasan">
-                            <div class="block">
-                                <div class="block-content">
-                                    <!-- Table penugasan -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-penugasan" style="width: 100%!important;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="hidden-xs text-center">Nama</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 15%;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        </tbody>
-                                    </table>
-                                    <!-- END Table penugasan -->
-                                </div>
+                        <!-- END Block Tabs Animated Fade -->
+                    </div>
+                    <div class="col-md-3">
+                        <div id="sticky-sidebar">
+                            <div class="h3 font-w700 text-primary animated flipInX push-20 push-10-t">
+                                <button type="button" class="btn btn-block btn-square btn-primary push-5 text-uppercase" id="btn-add"><i class="si si-plus push-5-r"></i><span id="btn-add-text"></span></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- END Block Tabs Animated Fade -->
             </div>
             <!-- END Page Content -->
         </main>
@@ -148,12 +163,12 @@
     <script src="../assets/js/core/js.cookie.min.js"></script>
     <script src="../assets/js/app.js"></script>
     <!-- Auth plugin -->
-    <script src="../assets/js/core/lock.min.js"></script>
     <script src="../assets/js/core/storage.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/sweetalert2/es6-promise.auto.min.js"></script>
     <script src="../assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
     <script src="../assets/js/core/moment.min.js"></script>
+    <script src="../assets/js/core/jquery.sticky.js"></script>
     <!-- Main script -->
     <script src="../assets/js/app.js"></script>
     <!-- Page JS Plugins -->
@@ -165,6 +180,7 @@
     <script src="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="../assets/js/plugins/slick/slick.min.js"></script>
     <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
     <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>

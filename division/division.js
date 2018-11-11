@@ -284,7 +284,7 @@ var BasePagesDivision = function() {
                 App.initHelpers(['appear-countTo']);
 
                 // re-initialize slider plugin
-                if (type == 'kode_bagian') var $dataToShow = 8;
+                if (type == 'kode_bagian') var $dataToShow = 7;
                 else var $dataToShow = 6;
                 if (container.hasClass('slick-initialized')) {
                     container.slick('removeSlide', null, null, true); // remove all previous slides
@@ -305,7 +305,7 @@ var BasePagesDivision = function() {
     };
 
     var initSidebar = function() {
-        $('#sticky-sidebar').sticky({ topSpacing: 80 });
+        $('#sticky-sidebar').sticky({ topSpacing: 65, bottomSpacing: 100 });
     };
 
     var initTableKodeBagian = function() {
@@ -334,7 +334,6 @@ var BasePagesDivision = function() {
                     table: 'kode_bagian'
                 },
                 dataSrc: function(json) {
-                    console.log(json.aaData);
                     return json.aaData;
                 }
             },
@@ -396,7 +395,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -463,7 +462,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -531,7 +530,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -599,7 +598,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -667,7 +666,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -734,7 +733,7 @@ var BasePagesDivision = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -747,21 +746,19 @@ var BasePagesDivision = function() {
     var initDivisionPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-divisi').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-layers">&nbsp;&nbsp;</i>DATA DIVISI</h3>');
+            $('#header-title').html('<i class="si si-layers push-10-r"></i>Data Divisi');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // console.log("Footer loaded!");
         });
 
         // when menu button is clicked
@@ -784,31 +781,37 @@ var BasePagesDivision = function() {
             switch (t) {
                 case 'division':
                     $('#btn-add').attr('data', 'Divisi');
+                    $('#btn-add-text').text('Tambah Divisi');
                     initStat('division');
                     initTableDivision();
                     break;
                 case 'department':
                     $('#btn-add').attr('data', 'Departemen');
+                    $('#btn-add-text').text('Tambah Departemen');
                     initStat('department');
                     initTableDepartment();
                     break;
                 case 'section':
                     $('#btn-add').attr('data', 'Section');
+                    $('#btn-add-text').text('Tambah Section');
                     initStat('section');
                     initTableSection();
                     break;
                 case 'sub_section':
                     $('#btn-add').attr('data', 'Sub Section');
+                    $('#btn-add-text').text('Tambah Sub Section');
                     initStat('sub_section');
                     initTableSubSection();
                     break;
                 case 'group':
                     $('#btn-add').attr('data', 'Grup');
+                    $('#btn-add-text').text('Tambah Grup');
                     initStat('group');
                     initTableGroup();
                     break;
                 default:
                     $('#btn-add').attr('data', 'Kode Bagian');
+                    $('#btn-add-text').text('Tambah Bagian');
                     initStat('kode_bagian');
                     initTableKodeBagian();
                     break;
@@ -1134,6 +1137,8 @@ var BasePagesDivision = function() {
         // set default hidden value for ACTIVE type
         $('#hidden-active-type').val('kode_bagian');
 
+        // Default button add text
+        $('#btn-add-text').text('Tambah Bagian');
 
         // Surpress DT warning into JS errors
         $.fn.dataTableExt.sErrMode = 'throw';

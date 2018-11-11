@@ -2,21 +2,19 @@ var BasePagesGrade = function() {
     var initGradePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-grade').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-briefcase">&nbsp;&nbsp;</i>DATA GRADE</h3>');
+            $('#header-title').html('<i class="si si-briefcase push-10-r"></i>Data Grade');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // console.log("Footer loaded!");
         });
 
         // when menu button is clicked
@@ -39,10 +37,12 @@ var BasePagesGrade = function() {
             switch (t) {
                 case 'penugasan':
                     initStat('penugasan');
+                    $('#btn-add-text').text('Tambah Jabatan');
                     initTablePenugasan();
                     break;
                 default:
                     initStat('grade');
+                    $('#btn-add-text').text('Tambah Grade');
                     initTableGrade();
                     break;
             }
@@ -259,14 +259,18 @@ var BasePagesGrade = function() {
         $.fn.dataTableExt.sErrMode = 'throw';
     };
 
-    var initStat = function(table) {
+    var initStat = function(type) {
+        // clear the container first
+        var container = $('#stat-grade');
+        container.empty();
+
         // Get Grade stat
         $.ajax({
             type: "POST",
             url: ENV.BASE_API + 'getGradeStat.php',
             dataType: 'json',
             data: {
-                table: table
+                table: type
             },
             success: function(res) {
                 var html = '';
@@ -274,36 +278,83 @@ var BasePagesGrade = function() {
                     var data = res.data;
                     var data_length = data.length;
                     if (data_length > 0) {
-                        var wCounter = parseInt(12 / data_length); // set the width of the column
+                        html += '';
+
+                        // Grouping the kode_bagian by `nama`
+                        var temp = data;
+                        data = [];
+                        temp.reduce(function(res, value) {
+                            if (!value.kode) {
+                                if (!res[value.nama]) {
+                                    res[value.nama] = {
+                                        id: value.id,
+                                        nama: value.nama,
+                                        total: 0
+                                    };
+                                    data.push(res[value.nama])
+                                }
+                                res[value.nama].total += parseInt(value.total);
+                            } else {
+                                if (!res[value.kode]) {
+                                    res[value.kode] = {
+                                        id: value.id,
+                                        kode: value.kode,
+                                        total: 0
+                                    };
+                                    data.push(res[value.kode])
+                                }
+                                res[value.kode].total += parseInt(value.total);
+                            }
+                            return res;
+                        }, {});
+
                         data.forEach(function(d) {
-                            if (d.kode == null)
+                            if (!d.kode)
                                 var title = d.nama;
                             else
-                                var title = d.kode + '<span class="text-muted">' + d.nama + '</span>';
+                                var title = d.kode;
 
-                            html += '<div class="col-md-' + wCounter + '">' +
-                                '<a href="' + ENV.BASE_URL + '/employee/?filter=' + table + '&value=' + d.id + '">' +
-                                '<span class="h1 font-w700 text-primary animated fadeIn" id="total-finance" data-toggle="countTo" data-to="' + d.total + '"></span>' +
+                            html += '<div>' +
+                                '<a href="' + ENV.BASE_URL + '/employee/?filter=' + type + '&value=' + d.id + '">' +
+                                '<span class="h1 font-w700 text-primary animated fadeIn" id="total-' + title + '" data-toggle="countTo" data-to="' + d.total + '"></span>' +
                                 '<div class="h5 font-w600 text-gray-darker animated fadeIn">' + title + '</div>' +
                                 '</a>' +
                                 '</div>';
                         });
+
+                        container.append(html);
                     }
+                } else {
+                    swal('Error', res.message, 'error');
                 }
-
-                html += '<div class="col-md-2 pull-right push-10-t">' +
-                    '<span class="h1 font-w700 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + table + '"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '</div>';
-
-                // append the result into container
-                $('#stat-grade').html(html);
 
                 // reinitiate counter plugin
                 App.initHelpers('appear-countTo');
+
+                // re-initialize slider plugin
+                if (container.hasClass('slick-initialized')) {
+                    container.slick('removeSlide', null, null, true); // remove all previous slides
+                    container.slick('unslick');
+                }
+                container.slick({
+                    autoplay: true,
+                    dots: false,
+                    slidesToShow: 7,
+                    prevArrow: '<span class="prev"><i class="fa fa-angle-left fa-3x text-primary-lighter"></i></span>',
+                    nextArrow: '<span class="next"><i class="fa fa-angle-right fa-3x text-primary-lighter"></i></span>',
+                });
+
+                // Default button add text
+                $('#btn-add-text').text('Tambah Grade');
+
+                // Inject data-type to btn-add
+                $('#btn-add').attr('data-type', type);
             }
         })
+    };
+
+    var initSidebar = function() {
+        $('#sticky-sidebar').sticky({ topSpacing: 65, bottomSpacing: 100 });
     };
 
     var initTableGrade = function() {
@@ -363,7 +414,7 @@ var BasePagesGrade = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -379,7 +430,7 @@ var BasePagesGrade = function() {
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
             order: [
-                [0, 'desc']
+                [1, 'asc']
             ],
             columnDefs: [{
                 "visible": false,
@@ -405,6 +456,7 @@ var BasePagesGrade = function() {
             },
             columns: [
                 { data: "updated" },
+                { className: "hidden-xs text-center", data: "priority" },
                 {
                     className: "font-w600 ",
                     data: "nama",
@@ -429,7 +481,7 @@ var BasePagesGrade = function() {
                     className: "text-center",
                     render: function(data, type, row) {
                         return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-power"></i></button>' +
+                            '<button class="btn btn-sm btn-default" type="button" act="switch"><i class="si si-refresh"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="edit"><i class="si si-pencil"></i></button>' +
                             '<button class="btn btn-sm btn-default" type="button" act="remove"><i class="si si-trash"></i></button>' +
                             '</div>';
@@ -444,6 +496,7 @@ var BasePagesGrade = function() {
             set_base('grade');
             bsDataTables();
             initStat();
+            initSidebar();
             initGradePage();
         }
     };

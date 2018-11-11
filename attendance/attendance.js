@@ -112,21 +112,19 @@ var BasePagesAttendance = function() {
     var initAttendancePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-attendance').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-ban">&nbsp;&nbsp;</i>DATA ABSENSI</h3>');
+            $('#header-title').html('<i class="si si-ban push-10-r"></i>Data Absensi');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // console.log("Footer loaded!");
         });
 
         // when menu button is clicked

@@ -3,14 +3,14 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 $sql = "SELECT 
-            a.id, a.nama, COUNT(b.id) AS total
+            a.`id`, a.`nama`, 
+            (SELECT COUNT(*) FROM `employee` WHERE `jenis_kelamin` = 'Perempuan' AND active = 1 AND `penugasan` = a.`id`) AS total_p,
+            (SELECT COUNT(*) FROM `employee` WHERE `jenis_kelamin` = 'Laki-laki' AND active = 1 AND `penugasan` = a.`id`) AS total_l
         FROM
-            penugasan a
-            LEFT JOIN
-                employee b ON b.penugasan = a.id
+            `penugasan` a
         WHERE
-            a.active = 1
-        GROUP BY a.id";
+            a.`active` = 1
+        GROUP BY a.`priority`";
 
 // ChromePhp::log($sql);
 

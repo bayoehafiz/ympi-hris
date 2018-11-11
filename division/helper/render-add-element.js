@@ -8,12 +8,12 @@ var renderAddElement = function(type, name, label, meta_data) {
         container.empty();
         container.append('<option value="" selected></option>');
 
-        meta_data.forEach(function(v){
+        meta_data.forEach(function(v) {
             container.append('<option value="' + v.value + '">' + v.key + '</option>')
         })
 
         $('#label-' + name).html(label);
-        
+
     } else if (type == 'select') {
         var container = $('#input-' + name);
         // reset the selector first
@@ -69,8 +69,10 @@ var renderAddElement = function(type, name, label, meta_data) {
         $('#label-' + name).html(label);
 
     } else {
+        if (name == 'nama' || name == 'kode') var font_size = " font-s20 font-w700";
+        else var font_size = "";
         elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
-            '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
+            '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div>';
     }

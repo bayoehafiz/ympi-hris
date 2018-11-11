@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/app.css">
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
@@ -38,32 +39,32 @@
         <main id="main-container">
             <!-- Stats -->
             <div class="content-mini content-mini-full bg-white border-b">
-                <div class="js-slider items-push text-center center-block" id="stat-division"></div>
+                <div class="items-push text-center center-block push-10-t" id="stat-division"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
                 <div class="row">
                     <!-- Block Tabs Animated Fade -->
-                    <div class="block col-md-10">
+                    <div class="block col-md-9 nopadding">
                         <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                             <li class="active">
-                                <a href="#btabs-animated-fade-kode-bagian" class="tab-btn" data="kode_bagian">Kode Bagian</a>
+                                <a href="#btabs-animated-fade-kode-bagian" class="tab-btn" data="kode_bagian">KODE BAGIAN</a>
                             </li>
                             <li>
-                                <a href="#btabs-animated-fade-divisi" class="tab-btn" data="division">Divisi</a>
+                                <a href="#btabs-animated-fade-divisi" class="tab-btn" data="division">DIVISI</a>
                             </li>
                             <li>
-                                <a href="#btabs-animated-fade-departemen" class="tab-btn" data="department">Departemen</a>
+                                <a href="#btabs-animated-fade-departemen" class="tab-btn" data="department">DEPARTEMEN</a>
                             </li>
                             <li>
-                                <a href="#btabs-animated-fade-section" class="tab-btn" data="section">Section</a>
+                                <a href="#btabs-animated-fade-section" class="tab-btn" data="section">SECTION</a>
                             </li>
                             <li>
-                                <a href="#btabs-animated-fade-sub-section" class="tab-btn" data="sub_section">Sub Section</a>
+                                <a href="#btabs-animated-fade-sub-section" class="tab-btn" data="sub_section">SUB SECTION</a>
                             </li>
                             <li>
-                                <a href="#btabs-animated-fade-grup" class="tab-btn" data="group">Grup</a>
+                                <a href="#btabs-animated-fade-grup" class="tab-btn" data="group">GRUP</a>
                             </li>
                         </ul>
                         <div class="block-content tab-content">
@@ -79,7 +80,7 @@
                                                     <th class="text-center">Jenis Bagian</th>
                                                     <th class="text-center">Nama Bagian</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             </tbody>
@@ -99,7 +100,7 @@
                                                     <th class="hidden-xs text-center" style="width: 25%!important;">Nama</th>
                                                     <th class="text-center">Jml. Dept.</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -119,7 +120,7 @@
                                                     <th class="hidden-xs text-center">Jml. Section</th>
                                                     <th class="hidden-xs text-center">Divisi Induk</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -139,7 +140,7 @@
                                                     <th class="hidden-xs text-center">Jml. Sub Section</th>
                                                     <th class="text-center">Dept. Induk</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -159,7 +160,7 @@
                                                     <th class="hidden-xs text-center">Jml. Group</th>
                                                     <th class="text-center">Section Induk</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             </tbody>
@@ -179,7 +180,7 @@
                                                     <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
                                                     <th class="text-center">Sub Section Induk</th>
                                                     <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 20%;">Actions</th>
+                                                    <th class="text-center" style="width: 15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             </tbody>
@@ -191,9 +192,11 @@
                         </div>
                     </div>
                     <!-- END Block Tabs Animated Fade -->
-                    <div class="col-md-2 text-center push-10-t">
-                        <div class="text-primary animated fadeIn" id="sticky-sidebar">
-                            <button type="button" class="btn btn-block btn-square btn-primary push-5" id="btn-add"><i class="si si-plus"></i> TAMBAH DATA</button>
+                    <div class="col-md-3">
+                        <div id="sticky-sidebar">
+                            <div class="h3 font-w700 text-primary animated flipInX push-20 push-10-t">
+                                <button type="button" class="btn btn-block btn-square btn-primary push-5 text-uppercase" id="btn-add"><i class="si si-plus push-5-r"></i><span id="btn-add-text"></span></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,9 +279,7 @@
     <script src="../assets/js/core/jquery.countTo.min.js"></script>
     <script src="../assets/js/core/jquery.placeholder.min.js"></script>
     <script src="../assets/js/core/js.cookie.min.js"></script>
-    <script src="../assets/js/app.js"></script>
     <!-- Auth plugin -->
-    <script src="../assets/js/core/lock.min.js"></script>
     <script src="../assets/js/core/storage.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/sweetalert2/es6-promise.auto.min.js"></script>
@@ -296,6 +297,7 @@
     <script src="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="../assets/js/plugins/slick/slick.min.js"></script>
     <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
     <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
@@ -305,7 +307,6 @@
     <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="../assets/js/plugins/slick/slick.min.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
     <script src="helper/repopulate-selector.js"></script>

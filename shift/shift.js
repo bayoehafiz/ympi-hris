@@ -493,7 +493,6 @@ var BasePagesShift = function() {
     var initShiftPage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-shift-kerja').addClass('active');
         });
@@ -501,13 +500,12 @@ var BasePagesShift = function() {
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-book-open">&nbsp;&nbsp;</i>DATA SHIFT KERJA</h3>');
-            console.log("Header Navigation loaded!");
+            $('#header-title').html('<i class="si si-book-open push-10-r"></i>Data Shift');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // console.log("Footer loaded!");
         });
 
         // when menu button is clicked

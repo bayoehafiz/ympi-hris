@@ -1,5 +1,6 @@
 var BasePagesEmployee = function() {
     var viewData = function(id) {
+        // Fetch respected data
         $.ajax({
             type: "POST",
             url: ENV.BASE_API + "getEmployeeById.php",
@@ -96,58 +97,6 @@ var BasePagesEmployee = function() {
             .catch(swal.noop);
     };
 
-    // Init page stat
-    var initStat = function() {
-        $.ajax({
-            type: "GET",
-            url: ENV.BASE_API + 'getEmployeeStat.php',
-            dataType: 'json',
-            success: function(res) {
-                console.log(res.data);
-                var container = $('#employee-stat');
-                container.empty();
-
-                var html = '';
-                if (res.success) {
-                    var data = [];
-                    var str = JSON.stringify(res.data[0]); // convert to String
-                    str = str.substring(str.indexOf('{') + 1, str.indexOf('}')); // remove Brackets
-                    str.split(',').forEach(function(a) { // split by Comma and make an array
-                        var split = a.split(':'); // split by Colon and push into DATA
-                        data.push({
-                            label: split[0].toString(),
-                            value: split[1]
-                        })
-                    });
-
-                    var counter = 0;
-                    var data_length = data.length;
-                    if (data_length > 0) {
-                        html += '';
-                        data.forEach(function(d) {
-                            html += '<div class="col-md-2">' +
-                                '<span class="h1 font-w700 text-primary" data-toggle="countTo" data-to="' + d.value.replace(/\"/g, "") + '"></span>' +
-                                '<div class="font-w700 text-gray-darker animated fadIn">' + d.label.replace(/\"/g, "") + '</div>' +
-                                '</div>';
-                            counter += parseInt(d.value.replace(/\"/g, ""));
-                        });
-                    }
-                }
-
-                html += '<div class="col-md-2 pull-right push-5-t">' +
-                    '<span class="h1 font-w700 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '</div>';
-
-                container.html(html);
-
-                // reinitiate counter plugin
-                App.initHelpers('appear-countTo');
-            }
-        })
-    };
-
     // Init table employee
     var initTableEmployee = function(filterData) {
         if (filterData != undefined) var $filter = filterData
@@ -161,10 +110,7 @@ var BasePagesEmployee = function() {
             order: [
                 [2, "asc"]
             ],
-            columnDefs: [
-                { targets: 0, type: 'natural' }
-            ],
-            pageLength: 10,
+            pageLength: 20,
             lengthMenu: [
                 [10, 20, 50, 100],
                 [10, 20, 50, 100]
@@ -177,7 +123,7 @@ var BasePagesEmployee = function() {
                 data: {
                     scope: 'active',
                     filter: $filter
-                }
+                },
             },
             deferRender: true,
             createdRow: function(row, data, dataIndex) {
@@ -195,14 +141,11 @@ var BasePagesEmployee = function() {
                     className: "font-w600",
                     data: "nama",
                     render: function(data, type, row) {
-                        return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
+                        return '<a href="javascript:void(0)">' + data + '</a>';
                     }
                 }, {
                     className: "text-center",
-                    data: "nik",
-                    render: function(data, type, row) {
-                        return data.replace('*', '');
-                    }
+                    data: "nik"
                 }, {
                     className: "text-center d-inline-block text-truncate",
                     data: "nama_group",
@@ -265,93 +208,19 @@ var BasePagesEmployee = function() {
             }
         });
 
-        // Extend sorting Fn for NIK column
-        function naturalSort(a, b, html) {
-            var re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?%?$|^0x[0-9a-f]+$|[0-9]+)/gi,
-                sre = /(^[ ]*|[ ]*$)/g,
-                dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
-                hre = /^0x[0-9a-f]+$/i,
-                ore = /^0/,
-                htmre = /(<([^>]+)>)/ig,
-                // convert all to strings and trim()
-                x = a.toString().replace(sre, '') || '',
-                y = b.toString().replace(sre, '') || '';
-            // remove html from strings if desired
-            if (!html) {
-                x = x.replace(htmre, '');
-                y = y.replace(htmre, '');
-            }
-            // chunk/tokenize
-            var xN = x.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0'),
-                yN = y.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0'),
-                // numeric, hex or date detection
-                xD = parseInt(x.match(hre), 10) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
-                yD = parseInt(y.match(hre), 10) || xD && y.match(dre) && Date.parse(y) || null;
-
-            // first try and sort Hex codes or Dates
-            if (yD) {
-                if (xD < yD) {
-                    return -1;
-                } else if (xD > yD) {
-                    return 1;
-                }
-            }
-
-            // natural sorting through split numeric strings and default strings
-            for (var cLoc = 0, numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
-                // find floats not starting with '0', string or 0 if not defined (Clint Priest)
-                var oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc], 10) || xN[cLoc] || 0;
-                var oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc], 10) || yN[cLoc] || 0;
-                // handle numeric vs string comparison - number < string - (Kyle Adams)
-                if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
-                    return (isNaN(oFxNcL)) ? 1 : -1;
-                }
-                // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
-                else if (typeof oFxNcL !== typeof oFyNcL) {
-                    oFxNcL += '';
-                    oFyNcL += '';
-                }
-                if (oFxNcL < oFyNcL) {
-                    return -1;
-                }
-                if (oFxNcL > oFyNcL) {
-                    return 1;
-                }
-            }
-            return 0;
-        }
-
-        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-            "natural-asc": function(a, b) {
-                return naturalSort(a, b, true);
-            },
-
-            "natural-desc": function(a, b) {
-                return naturalSort(a, b, true) * -1;
-            },
-
-            "natural-nohtml-asc": function(a, b) {
-                return naturalSort(a, b, false);
-            },
-
-            "natural-nohtml-desc": function(a, b) {
-                return naturalSort(a, b, false) * -1;
-            },
-
-            "natural-ci-asc": function(a, b) {
-                a = a.toString().toLowerCase();
-                b = b.toString().toLowerCase();
-
-                return naturalSort(a, b, true);
-            },
-
-            "natural-ci-desc": function(a, b) {
-                a = a.toString().toLowerCase();
-                b = b.toString().toLowerCase();
-
-                return naturalSort(a, b, true) * -1;
-            }
-        });
+        // jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        //     "formatted-num-pre": function(a) {
+        //         a = (a === "-" || a === "") ? 0 : a.replace(/[^\d\-\.]/g, "");
+        //         console.log(parseFloat(a));
+        //         return parseFloat(a);
+        //     },
+        //     "formatted-num-asc": function(a, b) {
+        //         return a - b;
+        //     },
+        //     "formatted-num-desc": function(a, b) {
+        //         return b - a;
+        //     }
+        // });
 
 
 
@@ -387,9 +256,9 @@ var BasePagesEmployee = function() {
             order: [
                 [0, "asc"]
             ],
-            columnDefs: [
-                { targets: 0, type: 'nik-formatted' }
-            ],
+            // columnDefs: [
+            //     { targets: 0, type: 'nik-formatted' }
+            // ],
             pageLength: 10,
             lengthMenu: [
                 [10, 20, 50, 100],
@@ -424,10 +293,7 @@ var BasePagesEmployee = function() {
                     }
                 }, {
                     className: "text-center",
-                    data: "nik",
-                    render: function(data, type, row) {
-                        return data.replace('*', '');
-                    }
+                    data: "nik"
                 }, {
                     className: "text-center",
                     data: "termination_date",
@@ -461,7 +327,6 @@ var BasePagesEmployee = function() {
         // When employee NAME or TABLE'S VIEW button is clicked
         $('#table-terminated tbody').on('click', 'a, #btn-view-terminated', function() {
             var id = $(this).parents('tr').attr('data-id');
-            console.log('loading VIEW ' + id);
             viewData(id);
         });
 
@@ -473,6 +338,7 @@ var BasePagesEmployee = function() {
         // 
         // END TABLE ACTIONS
     };
+
 
     // Init table filtering
     var initFilter = function(data) {
@@ -870,28 +736,26 @@ var BasePagesEmployee = function() {
         populateAll('group');
 
         // Call the sticky plugin
-        $('#filter-block').sticky({ topSpacing: 60 });
+        $('#sticky-block').sticky({ topSpacing: 60, bottomSpacing: 100 });
     };
 
     // init the page
     var initEmployeePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-karyawan').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-users">&nbsp;&nbsp;</i>DATA KARYAWAN</h3>');
+            $('#header-title').html('<i class="si si-users push-10-r"></i>Data Karyawan');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // 
         });
 
         // when menu button is clicked
@@ -1161,7 +1025,9 @@ var BasePagesEmployee = function() {
                 } else {
                     var label = 'Masa Kontrak';
                     var label_2 = 'Tgl Selesai Kontrak';
-                    var value = 12;
+
+                    if (valueSelected == 'Kontrak 1') var value = 12;
+                    else var value = 24;
                 }
 
                 html = renderAddElement('predefined-select', 'masa_kontrak', label, [{
@@ -1249,7 +1115,7 @@ jQuery(function() {
     // Main INIT
     BasePagesEmployee.init();
 
-    $(window).load(function() {
+    $(window).on('load', function() {
         // Read current URL if there's any parameter given
         var params = url('?');
         if (params != undefined) {

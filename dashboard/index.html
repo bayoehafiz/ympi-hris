@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="../assets/css/fonts.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/app.css">
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- Page JS Plugins CSS -->
@@ -44,35 +45,35 @@
                                         <div class="row items-push text-center push-10-t">
                                             <div class="col-xs-6 col-sm-3">
                                                 <a href="" class="stat-click">
-                                                <div id="chart-total-percobaan" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#f5f5f5" data-track-color="#eeeeee">
+                                                <div id="chart-total-percobaan" class="js-pie-chart pie-chart" data-percent="0" data-line-width="8" data-size="100" data-bar-color="#f5f5f5" data-track-color="#eeeeee">
                                                     <span class="h3 text-gray-darker font-w600"><span id="percent-total-percobaan"></span></span>
                                                 </div>
                                             </a>
-                                                <div class="h5 push-5-t">PERCOBAAN</div>
+                                                <div class="h5 font-w600 push-5-t">Percobaan</div>
                                             </div>
                                             <div class="col-xs-6 col-sm-3">
                                                 <a href="" class="stat-click">
-                                                <div id="chart-total-kontrak_1" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#f3b760" data-track-color="#eeeeee">
+                                                <div id="chart-total-kontrak_1" class="js-pie-chart pie-chart" data-percent="0" data-line-width="8" data-size="100" data-bar-color="#f3b760" data-track-color="#eeeeee">
                                                     <span class="h3 text-gray-darker font-w600"><span id="percent-total-kontrak_1"></span></span>
                                                 </div>
                                             </a>
-                                                <div class="h5 push-5-t">KONTRAK 1</div>
+                                                <div class="h5 font-w600 push-5-t">Kontrak 1</div>
                                             </div>
                                             <div class="col-xs-6 col-sm-3">
                                                 <a href="" class="stat-click">
-                                                <div id="chart-total-kontrak_2" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#70b9eb" data-track-color="#eeeeee">
+                                                <div id="chart-total-kontrak_2" class="js-pie-chart pie-chart" data-percent="0" data-line-width="8" data-size="100" data-bar-color="#70b9eb" data-track-color="#eeeeee">
                                                     <span class="h3 text-gray-darker font-w600"><span id="percent-total-kontrak_2"></span></span>
                                                 </div>
                                             </a>
-                                                <div class="h5 push-5-t">KONTRAK 2</div>
+                                                <div class="h5 font-w600 push-5-t">Kontrak 2</div>
                                             </div>
                                             <div class="col-xs-6 col-sm-3">
                                                 <a href="" class="stat-click">
-                                                <div id="chart-total-tetap" class="js-pie-chart pie-chart" data-percent="0" data-line-width="10" data-size="100" data-bar-color="#a48ad4" data-track-color="#eeeeee">
+                                                <div id="chart-total-tetap" class="js-pie-chart pie-chart" data-percent="0" data-line-width="8" data-size="100" data-bar-color="#a48ad4" data-track-color="#eeeeee">
                                                     <span class="h3 text-gray-darker font-w600"><span id="percent-total-tetap"></span></span>
                                                 </div>
                                             </a>
-                                                <div class="h5 push-5-t">TETAP</div>
+                                                <div class="h5 font-w600 push-5-t">Tetap</div>
                                             </div>
                                         </div>
                                     </div>
@@ -90,12 +91,11 @@
                         </div>
                         <!-- END BY STATUS -->
                     </div>
-                    <div class="col-md-3">
-                        <!-- DATA GRID -->
+                    <!-- Mini Stats -->
+                    <!-- <div class="col-md-3">
                         <div class="content-grid">
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <!-- Mini Stats -->
                                     <a class="block block-link-hover3 mini-stat-click" href="javascript:void(0)">
                                             <table class="block-table text-center">
                                                 <tbody>
@@ -130,24 +130,23 @@
                                                 </tbody>
                                             </table>
                                         </a>
-                                    <!-- END Mini Stats -->
                                 </div>
                             </div>
                         </div>
-                        <!-- END DATA GRID -->
-                    </div>
-                    <div class="col-md-9">
-                        <!-- BAR CHART -->
+                    </div> -->
+                    <!-- END Mini Stats -->
+                    <!-- BAR CHART -->
+                    <div class="col-md-12">
                         <div class="block">
                             <ul class="nav nav-tabs nav-justified" data-toggle="tabs" id="tab-chart">
                                 <li class="active">
-                                    <a href="javascript:void(0)" class="chart-click" data="bagian">Stat Bagian</a>
+                                    <a href="javascript:void(0)" class="chart-click" data="bagian">Stat By Bagian</a>
                                 </li>
                                 <li class="">
-                                    <a href="javascript:void(0)" class="chart-click" data="grade">Stat Grade</a>
+                                    <a href="javascript:void(0)" class="chart-click" data="grade">Stat By Grade</a>
                                 </li>
                                 <li class="">
-                                    <a href="javascript:void(0)" class="chart-click" data="jabatan">Stat Jabatan</a>
+                                    <a href="javascript:void(0)" class="chart-click" data="jabatan">Stat By Jabatan</a>
                                 </li>
                             </ul>
                             <div class="block-content tab-content">
@@ -162,8 +161,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- END BAR CHART -->
                     </div>
+                    <!-- END BAR CHART -->
                 </div>
             </div>
     </div>
@@ -185,13 +184,11 @@
     <script src="../assets/js/core/jquery.countTo.min.js"></script>
     <script src="../assets/js/core/jquery.placeholder.min.js"></script>
     <script src="../assets/js/core/js.cookie.min.js"></script>
+    <script src="../assets/js/core/storage.min.js"></script>
+    <script src="../assets/js/core/moment.min.js"></script>
     <!-- Main script -->
     <!-- <script src="config.js"></script> -->
     <script src="../assets/js/app.js"></script>
-    <!-- Auth plugin -->
-    <script src="../assets/js/core/lock.min.js"></script>
-    <script src="../assets/js/core/storage.min.js"></script>
-    <script src="../assets/js/core/moment.min.js"></script>
     <!-- Page JS Plugins -->
     <script src="../assets/js/plugins/easy-pie-chart/jquery.easypiechart.min.js"></script>
     <script src="../assets/js/plugins/url/url.min.js"></script>

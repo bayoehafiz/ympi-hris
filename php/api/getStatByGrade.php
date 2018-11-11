@@ -3,17 +3,17 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 $sql = "SELECT 
-            a.id, a.kode, a.nama, COUNT(b.id) AS total
+            a.`id`, a.`kode` AS nama,
+            (SELECT COUNT(*) FROM `employee` WHERE `jenis_kelamin` = 'Laki-laki' AND active = 1 AND `grade` = a.`id`) AS total_l,
+            (SELECT COUNT(*) FROM `employee` WHERE `jenis_kelamin` = 'Perempuan' AND active = 1 AND `grade` = a.`id`) AS total_p
         FROM
-            grade a
-            LEFT JOIN
-                employee b ON b.grade = a.id
+            `grade` a
         WHERE
-            a.active = 1
-        GROUP BY a.id
-        ORDER BY a.id";
+            a.`active` = 1
+        GROUP BY a.`id`
+        ORDER BY a.`kode`";
 
-ChromePhp::log($sql);
+// ChromePhp::log($sql);
 
 $query = $db->query($sql);
 $rows = array();

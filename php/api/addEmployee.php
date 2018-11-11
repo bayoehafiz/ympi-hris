@@ -31,7 +31,9 @@ function saveBase64ImagePng($name, $base64Image, $imageDir)
 
 if (isset($_POST['data'])) {
     $data = $_POST['data'];
+    $nik = $_POST['nik'];
     $path = '../../assets/img/avatars/';
+    
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);

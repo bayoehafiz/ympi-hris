@@ -3,7 +3,7 @@ include "../config/conn.php";
 include "../inc/chromePhp.php";
 
 $initSql = "SELECT
-        `kode`, `division`, `department`, `section`, `sub_section`, `group`
+        `id`, `kode`, `division`, `department`, `section`, `sub_section`, `group`
     FROM
         `kode_bagian`
     WHERE
@@ -18,6 +18,7 @@ $rows = [];
 if ($initQuery->num_rows > 0) {
     $counter = 0;
     while ($r = mysqli_fetch_assoc($initQuery)) {
+        // $rows[$counter]['id'] = $r['id'];
         $rows[$counter]['nama'] = $r['kode'];
 
         // Find the smallest unit
@@ -47,15 +48,19 @@ if ($initQuery->num_rows > 0) {
         }
 
         // Find the employee total
-        $sql = "SELECT  COUNT(*) AS total
+        $sql = "SELECT  
+                COUNT(*) AS total_p,
+                (SELECT COUNT(*) FROM `employee` WHERE `jenis_kelamin` = 'Laki-laki' AND active = 1 AND `{$t}` = {$childest}) AS total_l
             FROM
                 `employee`
-            WHERE `{$t}` = {$childest}";
+            WHERE 
+                `jenis_kelamin` = 'Perempuan' AND active = 1 AND `{$t}` = {$childest}";
 
         $sel = mysqli_query($db, $sql);
         $tot = mysqli_fetch_assoc($sel);
 
-        $rows[$counter]['total'] = $tot['total'];
+        $rows[$counter]['total_p'] = $tot['total_p'];
+        $rows[$counter]['total_l'] = $tot['total_l'];
 
         $counter++;
     }

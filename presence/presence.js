@@ -2,7 +2,7 @@ var BasePagesPresence = function() {
     var syncData = function() {
         $.ajax({
             type: "GET",
-            url: BASE_API + 'syncPresenceData.php',
+            url: ENV.BASE_API + 'syncPresenceData.php',
             dataType: 'json',
             success: function(res) {
                 // if (res.success) {
@@ -15,27 +15,25 @@ var BasePagesPresence = function() {
     var initPresencePage = function() {
         // load sidebar
         $('#sidebar').load("../partials/sidebar.html", function() {
-            console.log("Sidebar loaded!");
             // Set active class for related menu
             $('#menu-presence').addClass('active');
         });
 
         // load header-nav
         $('#header-navbar').load("../partials/header-nav.html", function() {
-            console.log("Header Navigation loaded!");
             // Set the page title
-            $('#header-title').html('<h3 class="push-5-t"><i class="si si-check">&nbsp;&nbsp;</i>DATA PRESENSI</h3>');
+            $('#header-title').html('<i class="si si-check push-10-r"></i>Data Presensi');
         });
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            console.log("Footer loaded!");
+            // console.log("Footer loaded!");
         });
 
         // when menu button is clicked
         $(document).on('click', '.nav-menu, .logo', function(e) {
             e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(BASE_URL + $(this).attr('route'));
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
             return false;
         });
 
@@ -171,7 +169,7 @@ var BasePagesPresence = function() {
                         var dType = $('#hidden-active-type').val();
                         $.ajax({
                                 type: "POST",
-                                url: BASE_API + "deletePresenceData.php",
+                                url: ENV.BASE_API + "deletePresenceData.php",
                                 dataType: 'json',
                                 data: {
                                     id: data.id,
@@ -238,7 +236,7 @@ var BasePagesPresence = function() {
         // Get division datas
         $.ajax({
             type: "POST",
-            url: BASE_API + 'getPresenceStat.php',
+            url: ENV.BASE_API + 'getPresenceStat.php',
             dataType: 'json',
             data: {
                 type: type
@@ -296,7 +294,7 @@ var BasePagesPresence = function() {
             serverSide: true,
             serverMethod: 'post',
             ajax: {
-                url: BASE_API + 'getPresence.php',
+                url: ENV.BASE_API + 'getPresence.php',
                 data: {
                     table: 'presence'
                 }
@@ -343,6 +341,7 @@ var BasePagesPresence = function() {
 
     return {
         init: function() {
+            set_base('presence');
             // initStat('presence');
             initPresencePage();
         }
@@ -350,13 +349,4 @@ var BasePagesPresence = function() {
 }();
 
 // Initialize when page loads
-jQuery(function() {
-    var $URL = document.URL;
-    if (url('1', $URL) != 'presence') {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL) + '/' + url('1', $URL);
-    } else {
-        window.BASE_URL = url('protocol', $URL) + '://' + url('hostname', $URL);
-    }
-
-    BasePagesPresence.init();
-});
+jQuery(function() { BasePagesPresence.init(); });

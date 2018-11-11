@@ -14,7 +14,7 @@ if ($table == "kode_bagian") {
     if ($q->num_rows > 0) {
         while ($r = mysqli_fetch_assoc($q)) {
             // read the employee total
-            $sel = mysqli_query($db, "SELECT count(*) AS total FROM `employee` WHERE `" . $r['bagian_key'] . "` = " . $r['bagian_value']);
+            $sel = mysqli_query($db, "SELECT count(*) AS total FROM `employee` WHERE active = 1 AND `" . $r['bagian_key'] . "` = " . $r['bagian_value']);
             $rec = mysqli_fetch_assoc($sel);
 
             $r['total'] = $rec['total'];

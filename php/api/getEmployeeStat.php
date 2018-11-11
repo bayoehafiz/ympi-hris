@@ -7,7 +7,8 @@ $sql = "SELECT
             (SELECT COUNT(*) FROM `employee` WHERE `status` = 'Kontrak 1' and `active` = 1) as `Kontrak 1`,
             (SELECT COUNT(*) FROM `employee` WHERE `status` = 'Kontrak 2' and `active` = 1) as `Kontrak 2`,
             (SELECT COUNT(*) FROM `employee` WHERE `status` = 'Tetap'  and `active` = 1) as `Tetap`,
-            (SELECT COUNT(*) FROM `employee` WHERE `active` = 0) as `Non Aktif`
+            (SELECT COUNT(*) FROM `employee` WHERE (`status` = 'Percobaan' OR `status` = 'Kontrak 1' OR `status` = 'Kontrak 2' OR `status` = 'Tetap') and `active` = 1) as `Total Aktif`,
+            (SELECT COUNT(*) FROM `employee` WHERE `active` = 0) as `Total Non Aktif`
         FROM `employee`
         WHERE `active` = 1 and `status` = 'Percobaan'";
 

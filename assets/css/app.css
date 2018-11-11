@@ -1,0 +1,122 @@
+
+/*User added*/
+.hide-me {
+    display: none !important;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+
+.btn-circle.btn-lg {
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    font-size: 24px;
+    line-height: 1.33;
+    border-radius: 35px;
+}
+
+optgroup {
+    font-size: 12px;
+}
+
+.img-avatar176 {
+    width: 176px;
+    height: 176px;
+}
+
+.font-s20 {
+    font-size: 20px !important;
+}
+
+/* Avatar overlay effect */
+.photo-container {
+    position: relative;
+    width: 50%;
+}
+
+.photo-avatar {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #a48ad4;
+}
+
+.photo-container:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+div.scrollable {
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*margin-top: -100px;*/
+    z-index: 10;
+    /*height: 100%;*/
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/* slide */
+.prev {
+    display: block;
+    position: absolute;
+    z-index: 1000;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.next {
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    cursor: pointer;
+}

@@ -86,8 +86,8 @@ var initUploader = function() {
 
         if (cropper) {
             canvas = cropper.getCroppedCanvas({
-                width: 360,
-                height: 360,
+                width: 480,
+                height: 480,
             });
 
             initialAvatarURL = $avatar.attr('src');

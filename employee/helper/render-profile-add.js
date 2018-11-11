@@ -16,7 +16,7 @@ var renderProfileAdd = function() {
     $('#modal-profile div.modal-content').find('[id^=profile-]').empty();
 
     // Set value in modal
-    $('#avatar').attr('src', "../assets/img/avatars/avatar.jpg");
+    $('#avatar').attr('src', "../assets/img/avatar.jpg");
 
     $('#modal-nama').html('<div class="form-group"><div class="form-material form-material-primary"><input class="form-control text-center font-s20" type="text" id="input-nama" name="elem-nama" placeholder="Nama Lengkap"></div></div>');
 

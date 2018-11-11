@@ -9,26 +9,24 @@ $check = $db->query("SHOW COLUMNS FROM `{$table}` LIKE 'kode'");
 $exists = ($check->num_rows > 0) ? TRUE : FALSE;
 if ($exists) {
         $sql = "SELECT 
-            a.id, a.kode, a.nama, COUNT(b.id) AS total
+            a.`id`, a.`kode`, a.`nama`, COUNT(b.`id`) AS `total`
         FROM
             `{$table}` a
                 LEFT JOIN
-            `employee` b ON b.{$table} = a.id
-        WHERE a.active = 1
-        GROUP BY a.id
-        ORDER BY total DESC
-        LIMIT 5";
+            `employee` b ON b.`{$table}` = a.`id` AND b.`active` = 1
+        WHERE a.`active` = 1
+        GROUP BY a.`id`
+        ORDER BY a.`kode` ASC";
     } else {
         $sql = "SELECT 
-            a.id, a.nama, COUNT(b.id) AS total
+            a.`id`, a.`nama`, a.`priority`, COUNT(b.`id`) AS `total`
         FROM
             `{$table}` a
                 LEFT JOIN
-            `employee` b ON b.{$table} = a.id
-        WHERE a.active = 1
-        GROUP BY a.id
-        ORDER BY total DESC
-        LIMIT 5";
+            `employee` b ON b.`{$table}` = a.`id` AND b.`active` = 1
+        WHERE a.`active` = 1
+        GROUP BY a.`id`
+        ORDER BY a.`priority` ASC";
     }
 
 

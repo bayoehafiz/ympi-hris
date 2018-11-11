@@ -24,7 +24,7 @@ if (isset($_POST['id'])) {
         $photoPath = '../../' . $rows[0]['photo_url'];
         if (file_exists($photoPath)) {
             // if it's not default photo placeholder
-            if ($photoPath != '../../assets/img/avatars/avatar.jpg') {
+            if ($photoPath != '../../assets/img/avatar.jpg') {
                 // then remove the photo
                 if (!unlink($photoPath)) {
                     echo ("Error deleting photo file");

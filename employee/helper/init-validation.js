@@ -14,13 +14,13 @@ var initValidation = function() {
                     $('#modal-profile').modal('hide');
                     $.notify({
                         "icon": "si si-check",
-                        "message": "Data karyawan berhasil disimpan"
+                        "message": "Data karyawan berhasil ditambahkan"
                     }, {
                         "type": "success"
                     });
 
                     // reload the stat
-                    initStat();
+                    window.initStat();
 
                     // reinitiate table
                     var table = $('#table-employee').DataTable();
@@ -172,11 +172,11 @@ var initValidation = function() {
                     });
 
                     var payload = {
-                        data: data
+                        data: data,
+                        nik: letter + short_year + month + pin // <- DON'T REMOVE THIS!!!
                     }
 
                     // Send the data !!!
-                    console.log("Saving data to " + apiUrl, payload);
                     sendData(apiUrl, payload);
                 })
 
@@ -211,9 +211,10 @@ var initValidation = function() {
                             return obj.year == year;
                         });
                         letter = match_obj.letter;
-                    } else {
-                        letter = "*";
-                    }
+                    } 
+                    // else {
+                    //     letter = "*";
+                    // }
 
                     data.push({
                         "key": "pin",
@@ -228,8 +229,8 @@ var initValidation = function() {
                     id: $id,
                     data: data
                 }
+
                 // Send the data !!!
-                // console.log("Saving data to " + apiUrl, payload);
                 sendData(apiUrl, payload);
             }
         }
