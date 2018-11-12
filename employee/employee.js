@@ -98,8 +98,8 @@ var BasePagesEmployee = function() {
     };
 
     // Init table employee
-    var initTableEmployee = function(filterData) {
-        if (filterData != undefined) var $filter = filterData
+    var initTableEmployee = function(filter) {
+        if (filter != undefined) var $filter = filter;
         else var $filter = '';
 
         // Table initiation
@@ -107,29 +107,34 @@ var BasePagesEmployee = function() {
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
             stateSave: true,
+            responsive: true,
             order: [
-                [2, "asc"]
+                [0, "asc"]
             ],
             pageLength: 20,
             lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
+                [20, 50, 100],
+                [20, 50, 100]
             ],
             processing: true,
             serverSide: true,
+            deferRender: true,
             serverMethod: 'post',
             ajax: {
                 url: ENV.BASE_API + 'getEmployee.php',
                 data: {
-                    scope: 'active',
+                    scope: 'active', // <- to fetch ACTIVE EMPLOYEE only!
                     filter: $filter
                 },
             },
-            deferRender: true,
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
             },
             columns: [{
+                    data: "updated",
+                    visible: false
+                },
+                {
                     orderable: false,
                     searchable: false,
                     className: "text-center",
@@ -203,8 +208,15 @@ var BasePagesEmployee = function() {
                     orderable: false
                 }
             ],
+            language: {
+                emptyTable: "Tidak ada data tersedia",
+                processing: "Mengambil Data... ",
+                zeroRecords: "Tidak ada data ditemukan",
+                info: "Menampilkan _START_ - _END_ dari total _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 dari total 0 data",
+                search: "Cari: ",
+            },
             fnInitComplete: function() {
-                // initFilter();
                 // console.log("Table Employee loaded!");
             }
         });
@@ -254,6 +266,7 @@ var BasePagesEmployee = function() {
         var table = $('#table-terminated').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
+            responsive: true,
             order: [
                 [0, "asc"]
             ],
@@ -318,6 +331,14 @@ var BasePagesEmployee = function() {
                     orderable: false
                 }
             ],
+            language: {
+                emptyTable: "Tidak ada data tersedia",
+                processing: "Mengambil Data... ",
+                zeroRecords: "Tidak ada data ditemukan",
+                info: "Menampilkan _START_ - _END_ dari total _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 dari total 0 data",
+                search: "Cari: ",
+            },
             fnInitComplete: function() {
                 // console.log("Table Terminated loaded!");
             }
@@ -339,7 +360,6 @@ var BasePagesEmployee = function() {
         // 
         // END TABLE ACTIONS
     };
-
 
     // Init table filtering
     var initFilter = function(data) {

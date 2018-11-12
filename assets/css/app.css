@@ -1,4 +1,3 @@
-
 /*User added*/
 .hide-me {
     display: none !important;
@@ -102,7 +101,7 @@ div.scrollable {
 
 
 /* slide */
-.prev {
+span.prev {
     display: block;
     position: absolute;
     z-index: 1000;
@@ -111,7 +110,7 @@ div.scrollable {
     cursor: pointer;
 }
 
-.next {
+span.next {
     display: block;
     position: absolute;
     right: 0px;

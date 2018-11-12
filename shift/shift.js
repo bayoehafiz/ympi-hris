@@ -354,7 +354,15 @@ var BasePagesShift = function() {
                             '</div>';
                     }
                 }
-            ]
+            ],
+            language: {
+                emptyTable: "Tidak ada data tersedia",
+                processing: "Mengambil Data... ",
+                zeroRecords: "Tidak ada data ditemukan",
+                info: "Menampilkan _START_ - _END_ dari total _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 dari total 0 data",
+                search: "Cari: ",
+            },
         });
     };
 
@@ -457,7 +465,15 @@ var BasePagesShift = function() {
                             '</div>';
                     }
                 }
-            ]
+            ],
+            language: {
+                emptyTable: "Tidak ada data tersedia",
+                processing: "Mengambil Data... ",
+                zeroRecords: "Tidak ada data ditemukan",
+                info: "Menampilkan _START_ - _END_ dari total _TOTAL_ data",
+                infoEmpty: "Menampilkan 0 dari total 0 data",
+                search: "Cari: ",
+            },
         });
     };
 

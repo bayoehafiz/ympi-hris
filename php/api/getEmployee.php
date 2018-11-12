@@ -14,8 +14,32 @@ $scope = $_POST['scope']; // active or inactive employees
 
 if ($scope == 'active') {
     $scope = 1;
+    $select = "a.`id`,
+                a.`nik`,
+                a.`nama`,
+                a.`status`,
+                a.`photo_url`,
+                a.`updated`,
+                -- a.*,
+                b.`nama` AS `nama_division`,
+                c.`nama` AS `nama_department`,
+                d.`nama` AS `nama_section`,
+                e.`nama` AS `nama_sub_section`,
+                f.`nama` AS `nama_group`,
+                g.`nama` AS `nama_grade`,
+                g.`kode` AS `kode_grade`,
+                h.`nama` AS `nama_penugasan`,
+                i.`kode` AS `nama_kode_bagian`";
 } else {
     $scope = 0;
+    $select = "a.`id`,
+                a.`nik`,
+                a.`nama`,
+                a.`status`,
+                a.`photo_url`,
+                a.`termination_date`,
+                a.`termination_reason`,
+                a.`updated`";
 }
 
 if (isset($_POST['filter'])) {
@@ -27,8 +51,8 @@ if (isset($_POST['filter'])) {
 ## Search
 $searchQuery = " ";
 if ($searchValue != '') {
-    $searchQuery = " and (a.nama like '%" . $searchValue . "%' or
-        a.nik like '%" . $searchValue . "%') ";
+    $searchQuery = " and (a.`nama` like '%" . $searchValue . "%' or
+        a.`nik` like '%" . $searchValue . "%') ";
 }
 
 # Filter
@@ -36,56 +60,41 @@ $filterQuery = " ";
 if ($filterValue != '') {
     foreach ($filterValue as $value) {
         if ($value['key'] == 'status' || $value['key'] == 'jenis_kelamin') {
-            $filterQuery .= " and a." . $value['key'] . " = '" . $value['value'] . "'";
+            $filterQuery .= " and a.`" . $value['key'] . "` = '" . $value['value'] . "'";
         } else {
-            $filterQuery .= " and a." . $value['key'] . " = " . $value['value'];
+            $filterQuery .= " and a.`" . $value['key'] . "` = " . $value['value'];
         }
 
     }
 }
 
 ## Total number of record
-$sel = mysqli_query($db, "select count(a.id) as allcount from employee a WHERE a.active = " . $scope . " " . $filterQuery . $searchQuery);
+$sel = mysqli_query($db, "select count(a.`id`) as `allcount` from `employee` a WHERE a.`active` = " . $scope . " " . $filterQuery . $searchQuery);
 $records = mysqli_fetch_assoc($sel);
 $totalRecord = $records['allcount'];
 
 ## Fetch records
 $empQuery = "SELECT
-            a.id,
-            a.nik,
-            a.nama,
-            a.status,
-            a.photo_url,
-            a.termination_date,
-            a.termination_reason,
-            b.nama AS nama_division,
-            c.nama AS nama_department,
-            d.nama AS nama_section,
-            e.nama AS nama_sub_section,
-            f.nama AS nama_group,
-            g.nama AS nama_grade,
-            g.kode AS kode_grade,
-            h.nama AS nama_penugasan,
-            i.kode AS nama_kode_bagian
+            {$select}
         FROM
-            employee a
+            `employee` a
                 LEFT JOIN
-            division b ON b.id = a.division
+            `division` b ON b.`id` = a.`division`
                 LEFT JOIN
-                    department c ON c.id = a.department
+                    `department` c ON c.`id` = a.`department`
                 LEFT JOIN
-                    section d ON d.id = a.section
+                    `section` d ON d.`id` = a.`section`
                 LEFT JOIN
-                    sub_section e ON e.id = a.sub_section
+                    `sub_section` e ON e.`id` = a.`sub_section`
                 LEFT JOIN
-                    `group` f ON f.id = a.group
+                    `group` f ON f.`id` = a.`group`
                 LEFT JOIN
-                    grade g ON g.id = a.grade
+                    `grade` g ON g.`id` = a.`grade`
                 LEFT JOIN
-                    penugasan h ON h.id = a.penugasan
+                    `penugasan` h ON h.`id` = a.`penugasan`
                 LEFT JOIN
-                    kode_bagian i ON i.id = a.kode_bagian
-        WHERE a.active = {$scope} {$filterQuery} {$searchQuery}
+                    `kode_bagian` i ON i.`id` = a.`kode_bagian`
+        WHERE a.`active` = {$scope} {$filterQuery} {$searchQuery}
         ORDER BY {$columnName} {$columnSortOrder}
         LIMIT {$row},{$rowperpage}";
 
