@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2.min.css">
+    <!-- <link rel="stylesheet" href="../assets/js/plugins/select2/select2-bootstrap.min.css"> -->
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/cropperjs/cropper.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
@@ -88,19 +90,88 @@
                                         <div class="h1 font-w700 text-primary animated flipInX push-20 push-20-t">
                                             <button type="button" class="btn btn-primary btn-square btn-block text-uppercase" id="btn-add"><i class="si si-plus push-5-r"></i>Tambah Data Karyawan</button>
                                         </div>
-                                        <div class="block block-rounded">
+                                        <div class="block block-rounded block-bordered" id="filter-block">
                                             <div class="block-header bg-gray-light">
                                                 <ul class="block-options">
                                                     <li>
-                                                        <button type="button" id="btn-reset-filter" class="btn text-uppercase"><i class="si si-reload push-5-r"></i>Clear</button>
+                                                        <button type="button" id="btn-reset-filter" class="btn text-uppercase"><i class="si si-reload push-5-r"></i>Clear All</button>
                                                     </li>
                                                 </ul>
                                                 <h3 class="block-title"><i class="fa fa-filter"></i> Filter</h3>
                                             </div>
-                                            <div class="block-content bg-gray-lighter text-muted">
-                                                <form action="" method="post" id="filter-form">
-                                                    <div id="filter-container" class="push-50">Filter components will be here</div>
-                                                </form>
+                                            <div class="block-content">
+                                                <div id="filter-container" class="push-30">
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-status" name="elem-filter-status" data-placeholder="By Status Karyawan">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-jenis_kelamin" name="elem-filter-jenis_kelamin" data-placeholder="By Jenis Kelamin">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-grade" name="elem-filter-grade" size="1" data-placeholder="By Grade">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-penugasan" name="elem-filter-penugasan" size="1" data-placeholder="By Penugasan / Jabatan">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10 bg-gray-lighter">
+                                                            <select class="form-control" id="input-filter-kode_bagian" name="elem-filter-kode_bagian" data-placeholder="By Kode Bagian">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-division" name="elem-filter-division" size="1" data-placeholder="By Divisi">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-department" name="elem-filter-department" size="1" data-placeholder="By Departemen">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-section" name="elem-filter-section" size="1" data-placeholder="By Section">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-sub_section" name="elem-filter-sub_section" size="1" data-placeholder="By Sub Section">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-material form-material-primary push-10">
+                                                            <select class="form-control" id="input-filter-group" name="elem-filter-group" size="1" data-placeholder="By Grup">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -434,6 +505,7 @@
     <script src="helper/render-profile-view.js"></script>
     <script src="helper/repopulate-selector.js"></script>
     <script src="helper/init-uploader.js"></script>
+    <script src="helper/init-filter.js"></script>
     <script src="employee.js"></script>
     <script>
     jQuery(function() {

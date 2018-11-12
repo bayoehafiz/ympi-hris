@@ -218,6 +218,7 @@ var renderProfileAdd = function() {
 
     // re-initialize DatePicker
     App.initHelpers(['datepicker']);
-
     initValidation();
+
+    return true;
 };

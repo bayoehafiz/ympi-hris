@@ -98,8 +98,8 @@ var BasePagesEmployee = function() {
     };
 
     // Init table employee
-    var initTableEmployee = function(filter) {
-        if (filter != undefined) var $filter = filter;
+    window.initTableEmployee = function(filter) {
+        if (!filter || filter.length > 0) var $filter = filter;
         else var $filter = '';
 
         // Table initiation
@@ -218,6 +218,7 @@ var BasePagesEmployee = function() {
             },
             fnInitComplete: function() {
                 // console.log("Table Employee loaded!");
+                App.blocks('#filter-block', 'state_normal');
             }
         });
 
@@ -261,7 +262,7 @@ var BasePagesEmployee = function() {
     };
 
     // Init table employee
-    var initTableTerminated = function(filterData) {
+    window.initTableTerminated = function(filterData) {
         // Table initiation
         var table = $('#table-terminated').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
@@ -361,405 +362,6 @@ var BasePagesEmployee = function() {
         // END TABLE ACTIONS
     };
 
-    // Init table filtering
-    var initFilter = function(data) {
-        var container = $('#filter-container');
-        container.html('');
-
-        // Populate FILTER selectors :: BY STATUS
-        var data = [{
-            id: 'Tetap',
-            label: 'Tetap'
-        }, {
-            id: 'Kontrak 1',
-            label: 'Kontrak 1'
-        }, {
-            id: 'Kontrak 2',
-            label: 'Kontrak 2'
-        }, {
-            id: 'Percobaan',
-            label: 'Percobaan'
-        }];
-
-        var bag_elems = '<div class="form-group">' +
-            '<div class="form-material form-material-primary push-30 push-30-t">' +
-            '<select class="form-control" id="input-filter-status" name="elem-filter-status" size="1">' +
-            '<option val=""></option>';
-
-        data.forEach(function(dt) {
-            bag_elems += '<option value="' + dt.id + '">' + dt.label + '</option>';
-        });
-
-        bag_elems += '</select>' +
-            '<label for="elem-filter-status">By Status</label>' +
-            '</div>' +
-            '</div>';
-
-        container.append(bag_elems);
-
-        // Populate FILTER selectors :: BY JENIS_KELAMIN
-        var data = [{
-            id: 'Laki-laki',
-            label: 'Laki-laki'
-        }, {
-            id: 'Perempuan',
-            label: 'Perempuan'
-        }];
-
-        var bag_elems = '<div class="form-group">' +
-            '<div class="form-material form-material-primary push-30 push-30-t">' +
-            '<select class="form-control" id="input-filter-jenis_kelamin" name="elem-filter-jenis_kelamin" size="1">' +
-            '<option val=""></option>';
-
-        data.forEach(function(dt) {
-            bag_elems += '<option value="' + dt.id + '">' + dt.label + '</option>';
-        });
-
-        bag_elems += '</select>' +
-            '<label for="elem-filter-jenis_kelamin">By Jenis Kelamin</label>' +
-            '</div>' +
-            '</div>';
-
-        container.append(bag_elems);
-
-        // Populate FILTER selectors :: BY KODE_BAGIAN
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: ENV.BASE_API + 'getSelectorData.php',
-            data: { table: 'kode_bagian' },
-            success: function(res) {
-                if (res.success) {
-                    var bag_elems = '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-kode_bagian" name="elem-filter-kode_bagian" size="1">' +
-                        '<option val=""></option>';
-
-                    res.data.forEach(function(dt) {
-                        bag_elems += '<option value="' + dt.id + '">' + dt.kode + '</option>';
-                    });
-
-                    bag_elems += '</select>' +
-                        '<label for="elem-filter-kode_bagian">By Kode Bagian</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    container.append(bag_elems);
-                }
-            }
-        });
-
-        // Populate FILTER selectors :: BY DEPT/SEC/SUB SEC/GRUP
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: ENV.BASE_API + 'getSelectorData.php',
-            data: { table: 'division' },
-            success: function(res) {
-                if (res.success) {
-                    var bag_elems = '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-division" name="elem-filter-division" size="1">' +
-                        '<option val=""></option>';
-
-                    res.data.forEach(function(dt) {
-                        bag_elems += '<option value="' + dt.id + '">' + dt.nama + '</option>';
-                    });
-
-                    bag_elems += '</select>' +
-                        '<label for="elem-filter-division">By Divisi</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    // Generate another components
-                    bag_elems += '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-department" name="elem-filter-department" size="1">' +
-                        '<option val=""></option>' +
-                        '</select>' +
-                        '<label for="elem-filter-department">By Departemen</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    bag_elems += '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-section" name="elem-filter-section" size="1">' +
-                        '<option val=""></option>' +
-                        '</select>' +
-                        '<label for="elem-filter-section">By Section</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    bag_elems += '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-sub_section" name="elem-filter-sub_section" size="1">' +
-                        '<option val=""></option>' +
-                        '</select>' +
-                        '<label for="elem-filter-sub_section">By Sub Section</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    bag_elems += '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-group" name="elem-filter-group" size="1">' +
-                        '<option val=""></option>' +
-                        '</select>' +
-                        '<label for="elem-filter-group">By Grup</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    container.append(bag_elems);
-                }
-            }
-        });
-
-        // Populate FILTER selectors :: BY GRADE
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: ENV.BASE_API + 'getSelectorData.php',
-            data: { table: 'grade' },
-            success: function(res) {
-                if (res.success) {
-                    var bag_elems = '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-grade" name="elem-filter-grade" size="1">' +
-                        '<option val=""></option>';
-
-                    res.data.forEach(function(dt) {
-                        bag_elems += '<option value="' + dt.id + '">[' + dt.kode + '] ' + dt.nama + '</option>';
-                    });
-
-                    bag_elems += '</select>' +
-                        '<label for="elem-filter-grade">By Grade</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    container.append(bag_elems);
-                }
-            }
-        });
-
-        // Populate FILTER selectors :: BY JABATAN
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: ENV.BASE_API + 'getSelectorData.php',
-            data: { table: 'penugasan' },
-            success: function(res) {
-                if (res.success) {
-                    var bag_elems = '<div class="form-group">' +
-                        '<div class="form-material form-material-primary push-30">' +
-                        '<select class="form-control" id="input-filter-penugasan" name="elem-filter-penugasan" size="1">' +
-                        '<option val=""></option>';
-
-                    res.data.forEach(function(dt) {
-                        bag_elems += '<option value="' + dt.id + '">' + dt.nama + '</option>';
-                    });
-
-                    bag_elems += '</select>' +
-                        '<label for="elem-filter-penugasan">By Jabatan</label>' +
-                        '</div>' +
-                        '</div>';
-
-                    container.append(bag_elems);
-                }
-            }
-        });
-
-        // Function to populate all data (regardless the parent)
-        var populateAll = function(table) {
-            $.ajax({
-                type: "POST",
-                url: ENV.BASE_API + 'getSelectorDataClean.php',
-                dataType: 'json',
-                data: {
-                    table: table
-                },
-                success: function(res) {
-                    if (res.success) repopulateSelector('input-filter-' + table, res.data);
-                }
-            });
-        }
-
-        // 
-        // Filter selector on change functions
-        // 
-        // when filter kode_bagian selector changed
-        $(document).on('change', '#input-filter-kode_bagian', function() {
-            var val = this.value;
-            if (val != '') {
-                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').attr('disabled', 'disabled');
-            } else {
-                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').removeAttr('disabled');
-            }
-            $('#input-filter-division, #input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').val('');
-        });
-
-        // when filter division selector changed
-        $(document).on('change', '#input-filter-division', function() {
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
-
-            if (valueSelected != '') {
-                $('#input-filter-kode_bagian').val('');
-                $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').removeAttr('disabled');
-
-                // fetch data for populating DEPARTEMEN selector
-                $.ajax({
-                    type: "POST",
-                    url: ENV.BASE_API + 'getSelectorData.php',
-                    dataType: 'json',
-                    data: {
-                        table: 'department',
-                        parent: valueSelected
-                    },
-                    success: function(res) {
-                        if (res.success) repopulateSelector('input-filter-department', res.data);
-                        $('#input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
-                    }
-                });
-            } else {
-                $('#input-filter-kode_bagian').removeAttr('disabled');
-                // $('#input-filter-department, #input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
-                populateAll('department');
-                populateAll('section');
-                populateAll('sub_section');
-                populateAll('group');
-            }
-        });
-
-        // when filter department selector changed
-        $(document).on('change', '#input-filter-department', function() {
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
-
-            if (valueSelected != '') {
-                // fetch data for populating DEPARTEMEN selector
-                $.ajax({
-                    type: "POST",
-                    url: ENV.BASE_API + 'getSelectorData.php',
-                    dataType: 'json',
-                    data: {
-                        table: 'section',
-                        parent: valueSelected
-                    },
-                    success: function(res) {
-                        if (res.success) repopulateSelector('input-filter-section', res.data);
-                        $('#input-filter-sub_section, #input-filter-group').empty();
-                    }
-                });
-            } else {
-                $('#input-filter-section, #input-filter-sub_section, #input-filter-group').empty();
-            }
-        });
-
-        // when filter section selector changed
-        $(document).on('change', '#input-filter-section', function() {
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
-
-            if (valueSelected != '') {
-                // fetch data for populating DEPARTEMEN selector
-                $.ajax({
-                    type: "POST",
-                    url: ENV.BASE_API + 'getSelectorData.php',
-                    dataType: 'json',
-                    data: {
-                        table: 'sub_section',
-                        parent: valueSelected
-                    },
-                    success: function(res) {
-                        if (res.success) repopulateSelector('input-filter-sub_section', res.data);
-                        $('#input-filter-group').empty();
-                    }
-                });
-            } else {
-                $('#input-filter-sub_section, #input-filter-group').empty();
-            }
-        });
-
-        // when filter section selector changed
-        $(document).on('change', '#input-filter-sub_section', function() {
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
-
-            if (valueSelected != '') {
-                // fetch data for populating DEPARTEMEN selector
-                $.ajax({
-                    type: "POST",
-                    url: ENV.BASE_API + 'getSelectorData.php',
-                    dataType: 'json',
-                    data: {
-                        table: 'group',
-                        parent: valueSelected
-                    },
-                    success: function(res) {
-                        if (res.success) repopulateSelector('input-filter-group', res.data);
-                    }
-                });
-            } else {
-                $('#input-filter-group').empty();
-            }
-        });
-
-        // Button RESET / CLEAR action
-        $(document).on('click', '#btn-reset-filter', function() {
-            // send filters data to table & reinitiate table
-            initTableEmployee('');
-            // var table = $('#table-employee').DataTable();
-            // table.ajax.reload();
-
-            // reset all components
-            $('[id^=input-filter-]').val('');
-            $('#input-filter-kode_bagian, #input-filter-division').trigger('change');
-            populateAll('department');
-            populateAll('section');
-            populateAll('sub_section');
-            populateAll('group');
-        });
-
-        // Filter on change action
-        $(document).on('change', '[id^=input-filter-]', function() {
-            $('#filter-form').trigger('submit');
-        });
-
-        // FILTER SUBMIT action
-        $(document).on('submit', '#filter-form', function(e) {
-            e.preventDefault();
-
-            var data = [];
-            $('[id^="input-filter-"]').filter(
-                function() {
-                    var elem = this;
-                    // cleaning empty data [TEMP!]
-                    if (elem['value'] != '') {
-                        var key = elem['id'].replace('input-filter-', '');
-                        if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
-                        if (key == 'status') status = elem['value']; // save status for NIK generation
-                        return data.push({
-                            "key": key,
-                            "value": elem['value']
-                        });
-                    }
-                });
-
-            // send filters data to table & reinitiate table
-            initTableEmployee(data);
-            // var table = $('#table-employee').DataTable();
-            // table.ajax.reload();
-        });
-
-        // Fill all BAGIAN selectors
-        populateAll('department');
-        populateAll('section');
-        populateAll('sub_section');
-        populateAll('group');
-
-        // Call the sticky plugin
-        $('#sticky-block').sticky({ topSpacing: 60, bottomSpacing: 100 });
-    };
-
     // init the page
     var initEmployeePage = function() {
         // load sidebar
@@ -799,11 +401,11 @@ var BasePagesEmployee = function() {
             $('#hidden-active-type').val(t);
             switch (t) {
                 case 'terminated':
-                    initTableTerminated();
+                    window.initTableTerminated();
                     break;
                 default:
-                    initTableEmployee();
-                    initFilter();
+                    window.initTableEmployee();
+                    window.initFilter();
                     break;
             }
             $('#btn-add').attr('data-type', t);
@@ -814,15 +416,17 @@ var BasePagesEmployee = function() {
         $(document).on('click', '#btn-add', function() {
             $('#photo-container-edit').removeClass('hide-me');
             $('#photo-container-view').addClass('hide-me');
-
-            $('#modal-profile').modal({
-                show: true,
-                // keyboard: false,
-                backdrop: 'static'
-            });
-
-            renderProfileAdd();
             $('#opened-profile').val("");
+
+            if (renderProfileAdd()) {
+                $('#modal-profile').modal({
+                    show: true,
+                    // keyboard: false,
+                    backdrop: 'static'
+                });
+
+                $('select#[id^=input-]').select2();
+            }
         });
 
 
@@ -1123,9 +727,9 @@ var BasePagesEmployee = function() {
             set_base('employee');
             bsDataTables();
             initStat();
-            initTableEmployee();
+            window.initTableEmployee();
+            window.initFilter();
             initEmployeePage();
-            initFilter();
             initUploader();
         }
     };

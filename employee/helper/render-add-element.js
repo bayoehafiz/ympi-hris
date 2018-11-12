@@ -17,7 +17,7 @@ var renderAddElement = function(type, data_name, label, object, value) { // type
 
     } else if (type == 'select') {
         var elem = '<div class="form-group push-10"><div class="form-material form-material-primary push-30">' +
-            '<select class="form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1">' +
+            '<select class="js-select2 form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1" style="width: 100%;">' +
             '<option></option>';
 
         object.forEach(function(x) {
@@ -30,7 +30,7 @@ var renderAddElement = function(type, data_name, label, object, value) { // type
 
     } else if (type == 'predefined-select') {
         var elem = '<div class="form-group push-10"><div class="form-material form-material-primary push-30">' +
-            '<select class="form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1">' +
+            '<select class="js-select2 form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1" style="width: 100%;">' +
             '<option></option>';
 
         object.forEach(function(x) {

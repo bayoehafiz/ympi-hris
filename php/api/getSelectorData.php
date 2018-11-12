@@ -2,35 +2,43 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (isset($_POST['table'])) {
-    $table = $_POST['table'];
+$table = $_GET['table'];
 
-    if (isset($_POST['parent'])) {
-        $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 AND parent = " . $_POST['parent'] . " ORDER BY nama";
+$where = "";
+if (isset($_GET['q'])) {
+    $searchValue = $_GET['q'];
+    if ($table == 'grade') {
+        $where = " AND (`nama` like '%" . $searchValue . "%' or
+                    `kode` like '%" . $searchValue . "%')";
+    } else if ($table == 'kode_bagian') {
+        $where = " AND (`kode` like '%" . $searchValue . "%')";
     } else {
-        if ($table == 'grade') $sql = "SELECT id, kode, nama FROM `" . $table . "` WHERE active = 1 ORDER BY kode";
-        else if ($table == 'kode_bagian') $sql = "SELECT id, kode FROM `" . $table . "` WHERE active = 1 ORDER BY kode";
-        else $sql = "SELECT id, nama FROM `" . $table . "` WHERE active = 1 ORDER BY nama";
+        $where = " AND (`nama` like '%" . $searchValue . "%')";
     }
-
-    // ChromePhp::log($sql);
-
-    $query = $db->query($sql);
-    $rows = array();
-
-    if ($query->num_rows > 0) {
-        while ($r = mysqli_fetch_assoc($query)) {
-            $rows[] = $r;
-        };
-
-        $data['success'] = true;
-        $data['data'] = $rows;
-    } else {
-        $data['success'] = false;
-        $data['data'] = '';
-    }
-
-    echo json_encode($data);
 }
 
+if (isset($_GET['parent'])) {
+    $parent = $_GET['parent'];
+    $sql = "SELECT `id`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1 AND `parent` = " . $parent . $where . " ORDER BY nama";
+} else {
+    if ($table == 'grade') {
+        $sql = "SELECT `id`, `kode`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `kode`";
+    } else if ($table == 'kode_bagian') {
+        $sql = "SELECT `id`, `kode` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `kode`";
+    } else {
+        $sql = "SELECT `id`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `nama`";
+    }
+}
 
+// ChromePhp::log($sql);
+
+$query = $db->query($sql);
+$rows = array();
+
+if ($query->num_rows > 0) {
+    while ($r = mysqli_fetch_assoc($query)) {
+        $rows[] = $r;
+    }
+}
+
+echo json_encode($rows);
