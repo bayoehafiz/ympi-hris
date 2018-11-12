@@ -29,11 +29,11 @@ function saveBase64ImagePng($name, $base64Image, $imageDir)
     file_put_contents($filePath, $imageData);
 }
 
-if (isset($_POST['data'])) {
+if (isset($_POST['nik'])) {
     $data = $_POST['data'];
     $nik = $_POST['nik'];
     $path = '../../assets/img/avatars/';
-    
+
     $sql_sets = '';
     $sql_values = '';
     $arr_length = count($data);
@@ -74,7 +74,10 @@ if (isset($_POST['data'])) {
         $res['success'] = false;
         $res['message'] = '(' . $db->errno . ') ' . $db->error;
     }
-
-    //returns data as JSON format
-    echo json_encode($res);
+} else {
+    $res['success'] = false;
+    $res['message'] = 'NIK Generation Failed!';
 }
+
+//returns data as JSON format
+echo json_encode($res);
