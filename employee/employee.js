@@ -204,8 +204,8 @@ var BasePagesEmployee = function() {
                 }
             ],
             fnInitComplete: function() {
-                initFilter();
-                console.log("Table Employee loaded!");
+                // initFilter();
+                // console.log("Table Employee loaded!");
             }
         });
 
@@ -319,7 +319,7 @@ var BasePagesEmployee = function() {
                 }
             ],
             fnInitComplete: function() {
-                console.log("Table Terminated loaded!");
+                // console.log("Table Terminated loaded!");
             }
         });
 
@@ -1105,6 +1105,7 @@ var BasePagesEmployee = function() {
             initStat();
             initTableEmployee();
             initEmployeePage();
+            initFilter();
             initUploader();
         }
     };
