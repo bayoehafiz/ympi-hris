@@ -109,26 +109,25 @@ var initValidation = function() {
             var old_kode_bagian = $('#opened-kode_bagian').val();
 
             // Read all FORM INPUTs
-            $('[id^="input-"]').filter(
-                function() {
-                    var elem = this;
-                    // exclude empty input
-                    if (elem['value'] != '') {
-                        var key = elem['id'].replace('input-', '');
-                        if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
-                        if (key == 'status') status = elem['value']; // save status for NIK generation
+            $('[id^="input-"]').filter(function() {
+                var elem = this;
+                // exclude empty input
+                if (elem['value'] != '') {
+                    var key = elem['id'].replace('input-', '');
+                    if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
+                    if (key == 'status') status = elem['value']; // save status for NIK generation
 
-                        // if kode bagian is changed, mark it!
-                        if ((key == 'kode_bagian') && (elem['value'] != old_kode_bagian)) {
-                            kode_bagian_changed = true;
-                        }
-
-                        return data.push({
-                            "key": key,
-                            "value": elem['value']
-                        });
+                    // if kode bagian is changed, mark it!
+                    if ((key == 'kode_bagian') && (elem['value'] != old_kode_bagian)) {
+                        kode_bagian_changed = true;
                     }
-                });
+
+                    return data.push({
+                        "key": key,
+                        "value": elem['value']
+                    });
+                }
+            });
 
             // Read current profile and decide whether it's ADD or EDIT
             var $id = $('#opened-profile').val();
@@ -211,7 +210,7 @@ var initValidation = function() {
                             return obj.year == year;
                         });
                         letter = match_obj.letter;
-                    } 
+                    }
                     // else {
                     //     letter = "*";
                     // }

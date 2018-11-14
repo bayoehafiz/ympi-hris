@@ -15,7 +15,7 @@ var renderProfileEdit = function(data) {
 
     // Reset all containers
     $('#modal-profile div.modal-content').find('[id^=profile-]').empty();
-    $('#modal-nama, #modal-nik, #modal-kode-bagian').empty();
+    $('#modal-nama, #modal-kode-bagian').empty();
 
     // Set value in modal
     var photo_url = "../" + data.photo_url;
@@ -24,384 +24,113 @@ var renderProfileEdit = function(data) {
 
     $('#modal-nama').html('<div class="form-material form-material-primary push-20"><input class="form-control text-center font-s20" type="text" id="input-nama" name="material-color-primary" value="' + data.nama + '"></div>');
 
-    $('#modal-nik').addClass('hide-me');
+    $('#modal-nik').html('<span class="h3 text-muted">' + data.nik + '</span>');
 
-    // fetch data for populating KODE BAGIAN selector
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'kode_bagian'
-        },
-        success: function(res) {
-            if (res.success) {
-                var selector = '<div class="form-group">' +
-                    '<div class="form-material form-material-primary push-30 text-right">' +
-                    '<select class="form-control" id="input-kode_bagian" name="elem-kode_bagian" size="1">' +
-                    '<option value="">Kode Bagian</option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.kode_bagian) selector += '<option value="' + o.id + '" selected>' + o.kode + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.kode + '</option>';
-                })
+    // Tab DATA DIVISI ::
+    $('#profile-kode-bagian').html(renderAddElement('select_ajax', 'kode_bagian', 'Kode Bagian'));
+    $('#profile-division').html(renderAddElement('select_ajax', 'division', 'Divisi'));
+    $('#profile-department').html(renderAddElement('select_ajax', 'department', 'Departemen'));
+    $('#profile-section').html(renderAddElement('select_ajax', 'section', 'Section'));
+    $('#profile-sub-section').html(renderAddElement('select_ajax', 'sub_section', 'Sub Section'));
+    $('#profile-group').html(renderAddElement('select_ajax', 'group', 'Grup'));
+    $('#profile-grade').html(renderAddElement('select_ajax', 'grade', 'Grade'));
+    $('#profile-penugasan').html(renderAddElement('select_ajax', 'penugasan', 'Penugasan / Jabatan'));
 
-                selector += '</select>' +
-                    '</div>' +
-                    '</div>';
-
-                $('#modal-kode-bagian').html(selector);
-            }
-        }
-    });
-
-    // fetch data for populating DIVISI selector
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'division'
-        },
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-division" name="elem-division" size="1">' +
-                '<option value="">Pilih Divisi</option>';
-
-            res.data.forEach(function(o) {
-                if (o.id == data.division) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-            })
-
-            selector += '</select>' +
-                '<label for="elem-division">Divisi</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-division').html(selector);
-
-            // Disable selector if kode_bagian not null
-            if (data.kode_bagian != null) {
-                $('#input-division').attr('disabled', 'disabled');
-            }
-        }
-    });
-
-    // fetch data for populating DEPARTMENT selector
-    if (data.department != null) var dataObj = { table: 'department', parent: data.division };
-    else var dataObj = { table: 'department' };
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: dataObj,
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-department" name="elem-department" size="1">';
-
-            if (res.success) {
-                if (data.department != null) { // if employee has a department
-                    selector += '<option value=""></option>';
-                    var odata = res.data;
-                    odata.forEach(function(o) {
-                        if (o.id == data.department) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                } else { // if employee has no department
-                    selector += '<option value="" selected></option>';
-                    res.data.forEach(function(o) {
-                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                }
-            }
-
-            selector += '</select>' +
-                '<label for="elem-department">Departemen</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-department').html(selector);
-
-            // Disable selector if kode_bagian not null
-            if (data.kode_bagian != null) {
-                $('#input-department').attr('disabled', 'disabled');
-            }
-        }
-    });
-
-
-    // fetch data for populating SECTION selector
-    if (data.section != null) var dataObj = { table: 'section', parent: data.department };
-    else var dataObj = { table: 'section' };
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: dataObj,
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-section" name="elem-section" size="1">';
-
-            if (res.success) {
-                if (data.section != null) { // if employee has no section
-                    selector += '<option value=""></option>';
-                    var odata = res.data;
-                    odata.forEach(function(o) {
-                        if (o.id == data.section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                } else { // if employee has a section
-                    selector += '<option value="" selected></option>';
-                    res.data.forEach(function(o) {
-                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                }
-            }
-
-            selector += '</select>' +
-                '<label for="elem-section">Section</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-section').html(selector);
-
-            // Disable selector if kode_bagian not null
-            if (data.kode_bagian != null) {
-                $('#input-section').attr('disabled', 'disabled');
-            }
-        }
-    });
-
-    // fetch data for populating SUB SECTION selector
-    if (data.sub_section != null) var dataObj = { table: 'sub_section', parent: data.section };
-    else var dataObj = { table: 'sub_section' };
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: dataObj,
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-sub_section" name="elem-sub_section" size="1">';
-
-            if (res.success) {
-                if (data.sub_section != null) { // if employee has a sub_section
-                    selector += '<option value=""></option>';
-                    var odata = res.data;
-                    odata.forEach(function(o) {
-                        if (o.id == data.sub_section) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                } else { // if employee has no sectsub_sectionion
-                    selector += '<option value="" selected></option>';
-                    res.data.forEach(function(o) {
-                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                }
-            }
-
-            selector += '</select>' +
-                '<label for="elem-sub-section">Sub Section</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-sub-section').html(selector);
-
-            // Disable selector if kode_bagian not null
-            if (data.kode_bagian != null) {
-                $('#input-sub_section').attr('disabled', 'disabled');
-            }
-        }
-    });
-
-    // fetch data for populating GRUP selector
-    if (data.group != null) var dataObj = { table: 'group', parent: data.sub_section };
-    else var dataObj = { table: 'group' };
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: dataObj,
-        success: function(res) {
-            // console.log(res);
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-group" name="elem-group" size="1">';
-            selector += '<option value=""></option>';
-
-            if (res.success) {
-                if (data.group != null) { // if employee has a group
-                    var odata = res.data;
-                    odata.forEach(function(o) {
-                        if (o.id == data.group) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                        else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                } else { // if employee has no group
-                    selector += '<option value="" selected></option>';
-                    res.data.forEach(function(o) {
-                        selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                    })
-                }
-            }
-
-            selector += '</select>' +
-                '<label for="elem-group">Grup</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-group').html(selector);
-
-            // Disable selector if kode_bagian not null
-            if (data.kode_bagian != null) {
-                $('#input-group').attr('disabled', 'disabled');
-            }
-        }
-    });
-
-    // fetch data for populating GRADE selector
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'grade'
-        },
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-grade" name="elem-grade" size="1">';
-
-            if (data.grade != null) { // if employee has no section
-                selector += '<option value=""></option>';
-                var odata = res.data;
-                odata.forEach(function(o) {
-                    if (o.id == data.grade) selector += '<option value="' + o.id + '" selected>[' + o.kode + '] ' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">[' + o.kode + '] ' + o.nama + '</option>';
-                })
-            } else { // if employee has a section
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">[' + o.kode + '] ' + o.nama + '</option>';
-                })
-            }
-
-            selector += '</select>' +
-                '<label for="elem-grade">Grade</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-grade').html(selector);
-        }
-    });
-
-    // fetch data for populating PENUGASAN selector
-    $.ajax({
-        type: "POST",
-        url: ENV.BASE_API + 'getSelectorData.php',
-        dataType: 'json',
-        data: {
-            table: 'penugasan'
-        },
-        success: function(res) {
-            var selector = '<div class="form-group">' +
-                '<div class="form-material form-material-primary push-30">' +
-                '<select class="form-control text-right" id="input-penugasan" name="elem-penugasan" size="1">';
-
-            if (data.penugasan != null) { // if employee has no section
-                selector += '<option value=""></option>';
-                res.data.forEach(function(o) {
-                    if (o.id == data.penugasan) selector += '<option value="' + o.id + '" selected>' + o.nama + '</option>';
-                    else selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            } else { // if employee has a section
-                selector += '<option value="" selected></option>';
-                res.data.forEach(function(o) {
-                    selector += '<option value="' + o.id + '">' + o.nama + '</option>';
-                })
-            }
-
-            selector += '</select>' +
-                '<label for="elem-penugasan">Penugasan</label>' +
-                '</div>' +
-                '</div>';
-
-            $('#profile-penugasan').html(selector);
-        }
-    });
-
-    $('#profile-status').html(renderEditElement('select', '', 'status', 'Status Karyawan', false, [
-        { value: 'Tetap', label: 'Tetap' },
-        { value: 'Kontrak 1', label: 'Kontrak 1' },
-        { value: 'Kontrak 2', label: 'Kontrak 2' },
-        { value: 'Percobaan', label: 'Percobaan' }
-    ], data.status));
-
+    // Tab DATA KERJA ::
+    $('#profile-status').html(renderAddElement('select', 'status', 'Status Karyawan'));
     $('#profile-tgl-masuk').html(renderEditElement('datepicker', data.tgl_masuk, 'tgl_masuk', 'Tanggal Masuk', false));
-
+    var containerMasaKontrak = $('#profile-masa-kontrak');
+    var containerTglKeluar = $('#profile-tgl-keluar');
     if (data.status != 'Tetap') {
-        if (data.status == 'Percobaan') var label = 'Masa Percobaan';
-        else var label = 'Masa Kontrak';
-        $('#profile-masa-kontrak').html(renderEditElement('select', '', 'masa_kontrak', label, false, [
-            { value: 3, label: '3 Bulan' },
-            { value: 6, label: '6 Bulan' },
-            { value: 12, label: '1 Tahun' },
-            { value: 18, label: '18 Bulan' },
-            { value: 24, label: '2 Tahun' }
-        ], data.masa_kontrak));
-    };
+        if (data.status == 'Percobaan') {
+            var label = 'Masa Percobaan';
+            var label_2 = 'Tgl Selesai Percobaan';
+            var opts = [{
+                text: "1 Bulan",
+                id: 1
+            }, {
+                text: "3 Bulan",
+                id: 3
+            }, {
+                text: "6 Bulan",
+                id: 6
+            }];
+        } else {
+            var label = 'Masa Kontrak';
+            var label_2 = 'Tgl Selesai Kontrak';
+            if (data.status == 'Kontrak 1') {
+                var value = 12;
+                var opts = [{
+                    text: "6 Bulan",
+                    id: 6
+                }, {
+                    text: "12 Bulan",
+                    id: 12
+                }, {
+                    text: "18 Bulan",
+                    id: 18
+                }, {
+                    text: "2 Tahun",
+                    id: 24
+                }];
+            } else {
+                var value = 6;
+                var opts = [{
+                    text: "6 Bulan",
+                    id: 6
+                }, {
+                    text: "9 Bulan",
+                    id: 9
+                }, {
+                    text: "10 Bulan",
+                    id: 10
+                }, {
+                    text: "11 Bulan",
+                    id: 11
+                }];
+            }
+        }
 
-    if (data.status != 'Tetap') {
-        if (data.status == 'Percobaan') var label = 'Tgl Selesai Percobaan';
-        else var label = 'Tgl Selesai Kontrak';
+        $('#profile-masa-kontrak').html(renderAddElement('select', 'masa_kontrak', label)).promise().then(function() {
+            // destroy first before reinitialize
+            if ($('#input-masa_kontrak').hasClass("select2-hidden-accessible")) {
+                $('#input-masa_kontrak').select2('destroy');
+            }
+            // reinitialize
+            $('#input-masa_kontrak')
+                .select2({
+                    minimumResultsForSearch: -1,
+                    data: opts
+                })
+                .val(data.masa_kontrak)
+                .trigger('change.select2');
+        });
+
         $('#profile-tgl-keluar').html(renderEditElement('datepicker', data.tgl_keluar, 'tgl_keluar', label, false));
-    };
+    } else {
+        // destroy Select2 instance if existed
+        if ($('#input-masa_kontrak').hasClass("select2-hidden-accessible")) {
+            $('#input-masa_kontrak').select2('destroy');
+        }
+        containerMasaKontrak.empty();
+        containerTglKeluar.empty();
+    }
 
-
+    // Tab DATA PRIBADI ::
     $('#profile-tempat-lahir').html(renderEditElement('text', data.tempat_lahir, 'tempat_lahir', 'Tempat Lahir', false));
     $('#profile-tgl-lahir').html(renderEditElement('datepicker', data.tgl_lahir, 'tgl_lahir', 'Tanggal Lahir', false));
-
-    $('#profile-agama').html(renderEditElement('select', '', 'agama', 'Agama', false, [
-        { value: 'Islam', label: 'Islam' },
-        { value: 'Kristen', label: 'Kristen' },
-        { value: 'Katholik', label: 'Katholik' },
-        { value: 'Hindu', label: 'Hindu' },
-        { value: 'Buddha', label: 'Buddha' },
-        { value: 'Konghucu', label: 'Konghucu' }
-    ], data.agama));
-
-    $('#profile-jenis-kelamin').html(renderEditElement('select', '', 'jenis_kelamin', 'Jenis Kelamin', false, [
-        { value: 'Laki-laki', label: 'Laki-laki' },
-        { value: 'Perempuan', label: 'Perempuan' }
-    ], data.jenis_kelamin));
-
+    $('#profile-agama').html(renderAddElement('select', 'agama', 'Agama'));
+    $('#profile-jenis-kelamin').html(renderAddElement('select', 'jenis_kelamin', 'Jenis Kelamin'));
     $('#profile-alamat-lengkap').html(renderEditElement('textarea', data.alamat_lengkap, 'alamat_lengkap', 'Alamat Lengkap', false));
     $('#profile-alamat-domisili').html(renderEditElement('textarea', data.alamat_domisili, 'alamat_domisili', 'Alamat Domisili', false));
-    $('#profile-status-keluarga').html(renderEditElement('select', '', 'status_keluarga', 'Status Keluarga', false, [
-        { value: 'K0', label: 'K0' },
-        { value: 'K1', label: 'K1' },
-        { value: 'K2', label: 'K2' },
-        { value: 'K3', label: 'K3' },
-        { value: 'Pk1', label: 'Pk1' },
-        { value: 'Pk2', label: 'Pk2' },
-        { value: 'Pk3', label: 'Pk3' },
-        { value: 'Tk', label: 'Tk' },
-    ], data.status_keluarga));
+    $('#profile-status-keluarga').html(renderAddElement('select', 'status_keluarga', 'Status Keluarga'));
 
-    $('#profile-pendidikan').html(renderEditElement('select', '', 'pendidikan', 'Pendidikan', false, [
-        { value: 'S0', label: 'S0 (SD)' },
-        { value: 'S1', label: 'S1 (SMP)' },
-        { value: 'S2', label: 'S2 (SMA/SMK)' },
-        { value: 'S3', label: 'S3 (Diploma 1)' },
-        { value: 'S4', label: 'S4 (Diploma 3)' },
-        { value: 'S5', label: 'S5 (Sarjana)' }
-    ], data.pendidikan));
-
+    // Tab DATA PENDIDIKAN ::
+    $('#profile-pendidikan').html(renderAddElement('select', 'pendidikan', 'Pendidikan'));
     $('#profile-sekolah-universitas').html(renderEditElement('text', data.sekolah_universitas, 'sekolah_universitas', 'Sekolah / Universitas', false));
     $('#profile-jurusan').html(renderEditElement('text', data.jurusan, 'jurusan', 'Jurusan', false));
 
+    // Tab DATA ADMINISTRASI ::
     $('#profile-telepon').html(renderEditElement('text', data.no_telepon, 'no_telepon', 'No. Telepon', false));
     $('#profile-no-ktp').html(renderEditElement('text', data.no_ktp, 'no_ktp', 'No. KTP', false));
     $('#profile-no-rekening').html(renderEditElement('text', data.no_rekening, 'no_rekening', 'No. Rekening', false));
@@ -419,5 +148,5 @@ var renderProfileEdit = function(data) {
     $('#opened-status').val(data.status);
     $('#opened-kode_bagian').val(data.kode_bagian);
 
-    initValidation();
+    return true;
 };

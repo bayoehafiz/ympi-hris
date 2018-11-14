@@ -40,11 +40,11 @@ var renderProfileView = function(data) {
     $('#modal-nik').removeClass('hide-me');
     $('#modal-nik').html(snik);
 
-    // 4. Kode Bagian
-    var nama_kode_bagian = data.nama_kode_bagian == null ? '' : '<span class="h5 font-w600"><i class="si si-briefcase push-5-r"></i>' + data.nama_kode_bagian.toUpperCase() + '</span>';
-    $('#modal-kode-bagian').html(nama_kode_bagian);
-
     // :: Tab DATA_DIVISI ::
+    // 4. Kode Bagian
+    var nama_kode_bagian = data.nama_kode_bagian == null ? '-' : '<span class="h5 font-w600"><i class="si si-briefcase push-5-r"></i>' + data.nama_kode_bagian.toUpperCase() + '</span>';
+    $('#profile-kode-bagian').html('<div class="text-muted push-5">Kode Bagian</div>' + nama_kode_bagian);
+    
     // 5. Division, Department, Section, Sub Section and Group
     var nama_department = data.nama_department == null ? '-' : data.nama_department;
     var nama_section = data.nama_section == null ? '-' : data.nama_section;
@@ -182,4 +182,7 @@ var renderProfileView = function(data) {
     var no_jp = !data.no_jp ? '-' : data.no_jp;
     $('#profile-no-jp').html('<div class="text-muted push-5">No. JP</div>' + no_jp);
     // == END SET VALUES ON MODAL ==
+    
+    
+    return true;
 };

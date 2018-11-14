@@ -6,6 +6,7 @@ var initUploader = function() {
     var $finalInput = $('#input-photo_url');
     var $profileModal = $('#modal-profile');
     var $uploadModal = $('#modal-uploader');
+    var cropper = null;
 
     $(document).on('click', '#preview-photo_url', function(e) {
         e.preventDefault();
@@ -17,9 +18,7 @@ var initUploader = function() {
         var reader;
         var file;
         var url;
-
         var done = function(url) {
-            // console.log(url);
             $input.empty();
             $image.attr('src', url);
             $profileModal.modal('hide');
@@ -46,14 +45,14 @@ var initUploader = function() {
 
     // When photo uploader modal is opened/closed
     $uploadModal.on('shown.bs.modal', function() {
+        window.modal_upload = true;
         $image.cropper({
             aspectRatio: 1,
             viewMode: 1
         });
-
         // Get the Cropper.js instance after initialized
         cropper = $image.data('cropper');
-        
+
     }).on('hidden.bs.modal', function() {
         $image.cropper('destroy');
         cropper = null;
@@ -86,8 +85,8 @@ var initUploader = function() {
 
         if (cropper) {
             canvas = cropper.getCroppedCanvas({
-                width: 480,
-                height: 480,
+                width: 360,
+                height: 360,
             });
 
             initialAvatarURL = $avatar.attr('src');

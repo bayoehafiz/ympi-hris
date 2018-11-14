@@ -50,7 +50,7 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs" id="tab-employee">
                         <li class="active">
-                            <a href="#btabs-animated-fade-employee text-uppercase" class="tab-btn main-tabs" data="employee">KARYAWAN AKTIF</a>
+                            <a href="#btabs-animated-fade-employee" class="tab-btn main-tabs" data="employee">KARYAWAN AKTIF</a>
                         </li>
                         <li>
                             <a href="#btabs-animated-fade-terminated" class="tab-btn main-tabs" data="terminated">KARYAWAN NON AKTIF</a>
@@ -218,11 +218,11 @@
     </div>
     <!-- END Main Container -->
     <!-- Profile  Modal -->
-    <div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="modal-profile" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-popin">
             <form class="js-validation-material" action="" method="post" id="profile-form">
                 <div class="modal-content">
-                    <div class="block block-themed block-transparent remove-margin-b">
+                    <div class="block block-themed block-transparent remove-margin-b" id="modal-block">
                         <div class="block-header bg-primary-dark">
                             <ul class="block-options">
                                 <li>
@@ -254,7 +254,6 @@
                                     <div class="block-content text-center push-30">
                                         <div class="h3 font-w700 push-5 text-center" id="modal-nama"></div>
                                         <div class="h3 font-w600 push-5" id="modal-nik"></div>
-                                        <div id="modal-kode-bagian" class="text-center"></div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-lg-8">
@@ -281,15 +280,16 @@
                                                 <p class="block-title"><i class="si si-layers push-5-r"></i> Data Divisi</p>
                                                 <div class="row push-30-t push-20">
                                                     <div class="col-md-6">
+                                                        <div class="push-10" id="profile-grade"></div>
+                                                        <div class="push-10" id="profile-penugasan"></div>
+                                                        <div class="push-10" id="profile-kode-bagian"></div>
                                                         <div class="push-10" id="profile-division"></div>
+                                                    </div>
+                                                    <div class="col-md-6">
                                                         <div class="push-10" id="profile-department"></div>
                                                         <div class="push-10" id="profile-section"></div>
                                                         <div class="push-10" id="profile-sub-section"></div>
-                                                    </div>
-                                                    <div class="col-md-6">
                                                         <div class="push-10" id="profile-group"></div>
-                                                        <div class="push-10" id="profile-grade"></div>
-                                                        <div class="push-10" id="profile-penugasan"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -319,9 +319,9 @@
                                                         <div class="push-10" id="profile-jenis-kelamin"></div>
                                                     </div>
                                                     <div class="col-md-7">
+                                                        <div class="push-10" id="profile-status-keluarga"></div>
                                                         <div class="push-10 text-justify" id="profile-alamat-lengkap"></div>
                                                         <div class="push-10 text-justify" id="profile-alamat-domisili"></div>
-                                                        <div class="push-10" id="profile-status-keluarga"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -495,7 +495,6 @@
     <script src="helper/init-validation.js"></script>
     <script src="helper/init-termination-validation.js"></script>
     <script src="helper/generate-nik.js"></script>
-    <script src="helper/generate-selectors.js"></script>
     <script src="helper/generate-random-profile.js"></script>
     <script src="helper/humanise-date.js"></script>
     <script src="helper/render-add-element.js"></script>
@@ -503,9 +502,12 @@
     <script src="helper/render-profile-add.js"></script>
     <script src="helper/render-profile-edit.js"></script>
     <script src="helper/render-profile-view.js"></script>
-    <script src="helper/repopulate-selector.js"></script>
     <script src="helper/init-uploader.js"></script>
     <script src="helper/init-filter.js"></script>
+    <script src="helper/selector-helpers.js"></script>
+    <script src="helper/modal-helpers.js"></script>
+    <script src="helper/init-table-employee.js"></script>
+    <script src="helper/init-table-terminated.js"></script>
     <script src="employee.js"></script>
     <script>
     jQuery(function() {

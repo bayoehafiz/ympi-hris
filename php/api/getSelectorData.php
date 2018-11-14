@@ -22,10 +22,12 @@ if (isset($_GET['parent'])) {
     $sql = "SELECT `id`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1 AND `parent` = " . $parent . $where . " ORDER BY nama";
 } else {
     if ($table == 'grade') {
-        $sql = "SELECT `id`, `kode`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `kode`";
+        $sql = "SELECT `id`, `kode`, `nama` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `priority`";
+    }else if ($table == 'penugasan') {
+        $sql = "SELECT `id`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `priority`";
     } else if ($table == 'kode_bagian') {
-        $sql = "SELECT `id`, `kode` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `kode`";
-    } else {
+        $sql = "SELECT `id`, `kode`, `bagian_key`, `bagian_value` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `kode`";
+    }  else {
         $sql = "SELECT `id`, `nama` AS `text` FROM `" . $table . "` WHERE `active` = 1" . $where . " ORDER BY `nama`";
     }
 }
@@ -36,8 +38,33 @@ $query = $db->query($sql);
 $rows = array();
 
 if ($query->num_rows > 0) {
-    while ($r = mysqli_fetch_assoc($query)) {
-        $rows[] = $r;
+    if ($table == 'kode_bagian') {
+        // manipulate kode_bagian
+        $counter = 0;
+        while ($d = mysqli_fetch_assoc($query)) {
+            $rows[$counter]['id'] = $d['id'];
+            $rows[$counter]['kode'] = $d['kode'];
+
+            switch($d['bagian_key']) {
+                case 'division': $bagian_key = 'Divisi'; break;
+                case 'department': $bagian_key = 'Departemen'; break;
+                case 'section': $bagian_key = 'Section'; break;
+                case 'sub_section': $bagian_key = 'Sub Section'; break;
+                case 'group': $bagian_key = 'Grup'; break;
+                default: break;
+            }
+            $rows[$counter]['bagian_key'] = $bagian_key;
+
+            $sel = mysqli_query($db, "SELECT nama FROM `" . $d['bagian_key'] . "` WHERE `id` = " . $d['bagian_value']);
+            $rec = mysqli_fetch_assoc($sel);
+            $rows[$counter]['nama'] = $rec['nama'];
+
+            $counter++;
+        }
+    } else {
+        while ($r = mysqli_fetch_assoc($query)) {
+            $rows[] = $r;
+        }
     }
 }
 

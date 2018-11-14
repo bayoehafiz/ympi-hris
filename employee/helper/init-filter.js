@@ -3,9 +3,10 @@ window.initFilter = function(data) {
     App.blocks('#filter-block', 'state_loading');
 
     // Fn for initial selector population
-    var initSelectors = function() {
+    var initFilterSelectors = function() {
         // Populate FILTER selectors :: BY STATUS
         $('#input-filter-status').select2({
+            minimumResultsForSearch: -1,
             data: [{
                     id: 'Tetap',
                     text: 'Tetap'
@@ -27,6 +28,7 @@ window.initFilter = function(data) {
 
         // Populate FILTER selectors :: BY JENIS_KELAMIN
         $('#input-filter-jenis_kelamin').select2({
+            minimumResultsForSearch: -1,
             data: [{
                     id: 'Laki-laki',
                     text: 'Laki-laki'
@@ -39,25 +41,25 @@ window.initFilter = function(data) {
         });
 
         // Populate other selectors
-        populateSelector('grade');
-        populateSelector('penugasan');
-        populateSelector('kode_bagian');
-        populateSelector('division');
-        populateSelector('department');
-        populateSelector('section');
-        populateSelector('sub_section');
-        populateSelector('group');
+        populateFilterSelector('grade');
+        populateFilterSelector('penugasan');
+        populateFilterSelector('kode_bagian');
+        populateFilterSelector('division');
+        populateFilterSelector('department');
+        populateFilterSelector('section');
+        populateFilterSelector('sub_section');
+        populateFilterSelector('group');
     };
 
     // Fn to populate ajax selctor
-    var populateSelector = function(target, parent) {
+    var populateFilterSelector = function(target, parent) {
         if (parent != null) var $url = ENV.BASE_API + 'getSelectorData.php?table=' + target + '&parent=' + parent;
         else var $url = ENV.BASE_API + 'getSelectorData.php?table=' + target;
-        console.log($url);
         var container = $('#input-filter-' + target);
 
-        // enable it first, then repopulate
-        if (enableSelector(target)) {
+        // enable it first
+        if (enableFilterSelector(target)) {
+            // then repopulate
             container.select2({
                 ajax: {
                     url: $url,
@@ -71,17 +73,32 @@ window.initFilter = function(data) {
                     processResults: function(data) {
                         return {
                             results: data
-                        };
+                        }
                     }
-                }
+                },
+                escapeMarkup: function(markup) { return markup; },
+                templateResult: formatKode,
+                templateSelection: formatKodeSelection
             });
+        }
+
+        function formatKode(data) {
+            if (data.kode === undefined) {
+                return data.text;
+            }
+            var markup = data.kode + " (" + data.nama + ")";
+            return markup;
+        }
+
+        function formatKodeSelection(data) {
+            return data.kode || data.text;
         }
 
         return true;
     };
 
     // FN to reset selector
-    var resetSelector = function(id) {
+    var resetFilterSelector = function(id) {
         var selector = $('#input-filter-' + id);
         // if not empty, then reset it
         if (selector.val() != null && selector.val() != '') {
@@ -91,19 +108,19 @@ window.initFilter = function(data) {
     }
 
     // Fn to disable selector
-    var disableSelector = function(id) {
+    var disableFilterSelector = function(id) {
         var selector = $('#input-filter-' + id);
         // if not empty, then reset it first
         if (selector.val() != null && selector.val() != '') {
             selector.val(null).trigger('change');
         }
         // then disable it
-        selector.attr('disabled', 'disabled');
+        selector.attr('disabled', true);
         return true;
     }
 
     // Fn to enable selector
-    var enableSelector = function(id) {
+    var enableFilterSelector = function(id) {
         var selector = $('#input-filter-' + id);
         // if not empty, then reset it first
         if (selector.val() != null && selector.val() != '') {
@@ -114,55 +131,54 @@ window.initFilter = function(data) {
         return true;
     }
 
-
     // Fn to handle selector changes
-    var handleChange = function(id, value) {
+    var handleFilterChange = function(id, value) {
         switch (id) {
             case 'division':
                 // 1. reset kode_bagian
-                resetSelector('kode_bagian');
+                resetFilterSelector('kode_bagian');
                 // 2. populate department selector
-                populateSelector('department', value);
+                populateFilterSelector('department', value);
                 // 3. disable section, sub_section, and group selectors
-                disableSelector('section');
-                disableSelector('sub_section');
-                disableSelector('group');
+                disableFilterSelector('section');
+                disableFilterSelector('sub_section');
+                disableFilterSelector('group');
                 break;
             case 'department':
                 // 1. reset kode_bagian
-                resetSelector('kode_bagian');
+                resetFilterSelector('kode_bagian');
                 // 2. populate section selector
-                populateSelector('section', value);
+                populateFilterSelector('section', value);
                 // 3. disable sub_section, and group selectors
-                disableSelector('sub_section');
-                disableSelector('group');
+                disableFilterSelector('sub_section');
+                disableFilterSelector('group');
                 break;
             case 'section':
                 // 1. reset kode_bagian
-                resetSelector('kode_bagian');
+                resetFilterSelector('kode_bagian');
                 // 2. populate sub_section selector
-                populateSelector('sub_section', value);
+                populateFilterSelector('sub_section', value);
                 // 3. disable group selector
-                disableSelector('group');
+                disableFilterSelector('group');
                 break;
             case 'sub_section':
                 // 1. reset kode_bagian
-                resetSelector('kode_bagian');
+                resetFilterSelector('kode_bagian');
                 // 2. populate group selector
-                populateSelector('group', value);
+                populateFilterSelector('group', value);
                 break;
             case 'group':
                 // 1. reset kode_bagian
-                resetSelector('kode_bagian');
+                resetFilterSelector('kode_bagian');
                 break;
             case 'kode_bagian':
                 // 1. Reset division selectors
-                resetSelector('division');
+                resetFilterSelector('division');
                 // 2. Disable other "Bagian" selectors
-                disableSelector('department');
-                disableSelector('section');
-                disableSelector('sub_section');
-                disableSelector('group');
+                disableFilterSelector('department');
+                disableFilterSelector('section');
+                disableFilterSelector('sub_section');
+                disableFilterSelector('group');
                 break;
             default:
                 break;
@@ -197,7 +213,7 @@ window.initFilter = function(data) {
 
         // Handle selector changes
         if (val) {
-            if (handleChange($id, val)) {
+            if (handleFilterChange($id, val)) {
                 submitFilter();
             }
         }
@@ -207,9 +223,16 @@ window.initFilter = function(data) {
     $(document).on('click', '#btn-reset-filter', function() {
         App.blocks('#filter-block', 'state_loading');
         // reset components which have value in them
+
         $('[id^=input-filter-]').filter(function() {
-            var $id = this.id.replace('input-filter-', '');
-            if (this.value != '') $('#input-filter-' + $id).val(null).trigger('change');
+            var id = this.id.replace('input-filter-', '');
+            var selector = $('#input-filter-' + id);
+            var is_disabled = selector.attr('disabled') ? true : false;
+            if (is_disabled) {
+                enableFilterSelector(id);
+            } else {
+                if (this.value != '') selector.val(null).trigger('change');
+            }
         });
 
         // reset datatable
@@ -217,7 +240,7 @@ window.initFilter = function(data) {
     });
 
     // Populate SELECTORS
-    initSelectors();
+    initFilterSelectors();
 
     // Call the sticky plugin
     $('#sticky-block').sticky({ topSpacing: 60, bottomSpacing: 100 });

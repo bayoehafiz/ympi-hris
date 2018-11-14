@@ -4,6 +4,7 @@ var renderAddElement = function(type, data_name, label, object, value) { // type
         var elem = '<div class="form-group push-10"><div class="form-material form-material-primary push-30">' +
             '<textarea class="form-control" id="input-' + data_name + '" name="elem-' + data_name + '"></textarea>' +
             '<label for="elem-' + data_name + '">' + label + '</label>' +
+            '<div class="help-block text-right">Tekan [Enter] utk ganti baris</div>' +
             '</div></div>';
 
     } else if (type == 'datepicker') {
@@ -17,28 +18,16 @@ var renderAddElement = function(type, data_name, label, object, value) { // type
 
     } else if (type == 'select') {
         var elem = '<div class="form-group push-10"><div class="form-material form-material-primary push-30">' +
-            '<select class="js-select2 form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1" style="width: 100%;">' +
-            '<option></option>';
-
-        object.forEach(function(x) {
-            elem += '<option value="' + x.value + '">' + x.label + '</option>';
-        });
-
-        elem += '</select>' +
+            '<select class="form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1">' +
+            '</select>' +
             '<label for="elem-' + data_name + '">' + label + '</label>' +
             '</div></div>';
 
-    } else if (type == 'predefined-select') {
+    } else if (type == 'select_ajax') {
         var elem = '<div class="form-group push-10"><div class="form-material form-material-primary push-30">' +
-            '<select class="js-select2 form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1" style="width: 100%;">' +
-            '<option></option>';
-
-        object.forEach(function(x) {
-            if (x.value == value) elem += '<option value="' + x.value + '" selected>' + x.label + '</option>';
-            else elem += '<option value="' + x.value + '">' + x.label + '</option>';
-        });
-
-        elem += '</select>' +
+            '<select class="form-control" id="input-' + data_name + '" name="elem-' + data_name + '" size="1">' +
+            '<option></option>' +
+            '</select>' +
             '<label for="elem-' + data_name + '">' + label + '</label>' +
             '</div></div>';
 

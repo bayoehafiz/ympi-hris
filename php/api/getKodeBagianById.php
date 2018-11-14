@@ -2,25 +2,15 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (isset($_POST['id'])) {
-    $id = $_POST['id'];
-
-    $sql = "SELECT * FROM `kode_bagian` WHERE id = {$id} LIMIT 1";
-
-    $query = $db->query($sql);
-    $rows = array();
-
-    if ($query->num_rows > 0) {
-        while ($r = mysqli_fetch_assoc($query)) {
-            $rows[] = $r;
-        };
-
-        $data['success'] = true;
-        $data['data'] = $rows;
-    } else {
-        $data['success'] = false;
-        $data['data'] = '';
-    }
-
-    echo json_encode($data);
-}
+$id = $_GET['id'];
+$sql = "SELECT a.*, 
+            (SELECT `nama` FROM `division` WHERE `id` = a.`division`) AS division_name,
+            (SELECT `nama` FROM `department` WHERE `id` = a.`department`) AS department_name,
+            (SELECT `nama` FROM `section` WHERE `id` = a.`section`) AS section_name,
+            (SELECT `nama` FROM `sub_section` WHERE `id` = a.`sub_section`) AS sub_section_name,
+            (SELECT `nama` FROM `group` WHERE `id` = a.`group`) AS group_name
+        FROM `kode_bagian` a
+        WHERE a.`id` = " . $id;
+$query = $db->query($sql);
+$rec = mysqli_fetch_assoc($query);
+echo json_encode($rec);

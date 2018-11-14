@@ -11,7 +11,7 @@ $sql = "SELECT
         WHERE
             a.`active` = 1
         GROUP BY a.`id`
-        ORDER BY a.`kode`";
+        ORDER BY a.`priority`";
 
 // ChromePhp::log($sql);
 
