@@ -42,9 +42,11 @@ var BasePagesEmployee = function() {
             $('#hidden-active-type').val(t);
             switch (t) {
                 case 'terminated':
+                    $('#floating-btn').addClass('hide');
                     window.initTableTerminated();
                     break;
                 default:
+                    if ($('#floating-btn').hasClass('hide')) $('#floating-btn').removeClass('hide');
                     window.initTableEmployee();
                     window.initFilter();
                     break;
@@ -55,11 +57,11 @@ var BasePagesEmployee = function() {
         // when ADD BUTTON is clicked
         $(document).on('click', '#btn-add', function() {
             App.blocks('#modal-block', 'state_loading');
+            // set modal scope
+            window.modal_scope = 'add';
             $('#photo-container-edit').removeClass('hide-me');
             $('#photo-container-view').addClass('hide-me');
             $('#opened-profile').val("");
-            // set modal scope
-            window.modal_scope = 'add';
             $('#modal-profile').modal({
                 show: true,
                 keyboard: false,
@@ -81,7 +83,7 @@ var BasePagesEmployee = function() {
         $('#hidden-active-type').val('employee');
     };
 
-    
+
 
     return {
         init: function() {

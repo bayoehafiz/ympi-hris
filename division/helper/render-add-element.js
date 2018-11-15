@@ -1,80 +1,25 @@
 // Function to render elements inside the modal :: ADD
-var renderAddElement = function(type, name, label, meta_data) {
+var renderAddElement = function(type, name, label, col_size) {
     var elem = '';
 
-    if (type == 'predefined-select') {
-        var container = $('#input-' + name);
-        // reset the selector first
-        container.empty();
-        container.append('<option value="" selected></option>');
-
-        meta_data.forEach(function(v) {
-            container.append('<option value="' + v.value + '">' + v.key + '</option>')
-        })
-
-        $('#label-' + name).html(label);
-
-    } else if (type == 'select') {
-        var container = $('#input-' + name);
-        // reset the selector first
-        container.empty();
-        container.append('<option value="" selected></option>');
-
-        if (name == 'parent') {
-            // get the source DB table to populate parent's select
-            if (label == 'Divisi Induk') var source_table = 'division';
-            else if (label == 'Departemen Induk') var source_table = 'department';
-            else if (label == 'Section Induk') var source_table = 'section';
-            else var source_table = 'sub_section';
-
-            $.ajax({
-                type: "POST",
-                url: ENV.BASE_API + 'getDivisionData.php',
-                dataType: 'json',
-                data: {
-                    table: source_table
-                }
-            }).done(function(res) {
-                if (res.success) {
-                    var data = res.data;
-                    data.forEach(function(v) {
-                        container.append('<option value="' + v.id + '">' + v.nama + '</option>');
-                    })
-                }
-            });
-        } else {
-            if (name == 'division') {
-                // populate the selector datas 
-                $.ajax({
-                    type: "POST",
-                    url: ENV.BASE_API + 'getSelectorDataClean.php',
-                    dataType: 'json',
-                    data: {
-                        table: name
-                    }
-                }).done(function(res) {
-                    if (res.success) {
-                        var obj = res.data;
-                        obj.forEach(function(o) {
-                            container.append('<option value="' + o.id + '">' + o.nama + '</option>');
-                        })
-                    }
-                });
-            } else {
-                // if other than DIVISION selector, the leave it blank (onChange() event will handle it later!)
-                container.append('<option value=""></option>');
-            }
-        }
-
-        $('#label-' + name).html(label);
+    if (type == 'select') {
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + '">' +
+            '<div class="form-material form-material-primary push-10">' +
+            '<select class="form-control" id="input-' + name + '" name="elem-' + name + '" size="1">' +
+            '</select>' +
+            '<label for="elem-' + name + '">' + label + '</label>' +
+            '</div></div></div>';
 
     } else {
         if (name == 'nama' || name == 'kode') var font_size = " font-s20 font-w700";
         else var font_size = "";
-        elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
+        elem += '<div class="form-group push-20-t">' +
+            '<div class="col-md-' + col_size + '">' +
+            '<div class="form-material form-material-primary push-30">' +
             '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
-            '</div></div>';
+            '</div></div></div>';
     }
 
     return elem;

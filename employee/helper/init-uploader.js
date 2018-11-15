@@ -6,7 +6,7 @@ var initUploader = function() {
     var $finalInput = $('#input-photo_url');
     var $profileModal = $('#modal-profile');
     var $uploadModal = $('#modal-uploader');
-    var cropper = null;
+    var cropper;
 
     $(document).on('click', '#preview-photo_url', function(e) {
         e.preventDefault();
@@ -56,6 +56,10 @@ var initUploader = function() {
     }).on('hidden.bs.modal', function() {
         $image.cropper('destroy');
         cropper = null;
+
+        if ($image.attr('src') != undefined) { // <- in case cropper.destroy() is not working!
+            $('#image').removeAttr('src');
+        }
 
         $profileModal.modal({
             show: true,

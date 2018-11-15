@@ -101,8 +101,6 @@ var destroyAllModalSelectors = function() {
 $('#modal-profile').on('shown.bs.modal', function() {
     // As long it's not from uploader modal
     if (!window.modal_upload) {
-        // you need to clear CROPPER here!!!
-
         var scope = window.modal_scope;
         // ADD
         if (scope == 'add') {
@@ -178,9 +176,7 @@ $('#modal-profile').on('shown.bs.modal', function() {
             }
 
         } else if (scope == 'edit') { // EDIT
-            console.log('im being called!');
             var id = $('#opened-profile').val();
-            console.log('scope / id:', window.modal_scope, id);
             $.ajax({
                 type: "POST",
                 url: ENV.BASE_API + "getEmployeeById.php",

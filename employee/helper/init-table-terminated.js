@@ -41,7 +41,7 @@ window.initTableTerminated = function(filterData) {
                 className: "font-w600",
                 data: "nama",
                 render: function(data, type, row) {
-                    return '<a data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
+                    return '<a class"link-view-terminated" data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
                 }
             }, {
                 className: "text-center",
@@ -61,7 +61,7 @@ window.initTableTerminated = function(filterData) {
                 data: null,
                 render: function(data, type, row) {
                     return '<div class="btn-group text-center">' +
-                        '<button class="btn btn-sm btn-default" type="button" id="btn-view-terminated"><i class="si si-eye"></i></button>' +
+                        '<button class="btn btn-sm btn-default btn-view-terminated" type="button"><i class="si si-eye"></i></button>' +
                         '<button class="btn btn-sm btn-default btn-remove-terminated" type="button"><i class="si si-trash"></i></button>' +
                         '</div>';
                 },
@@ -85,7 +85,7 @@ window.initTableTerminated = function(filterData) {
     // TABLE ACTIONS !!!
     // 
     // When employee NAME or TABLE'S VIEW button is clicked
-    $('#table-terminated tbody').on('click', 'a, #btn-view-terminated', function() {
+    $('#table-terminated tbody').on('click', 'a.link-view-terminated, .btn-view-terminated', function() {
         var id = $(this).parents('tr').attr('data-id');
         viewData(id);
     });

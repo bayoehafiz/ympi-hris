@@ -237,12 +237,6 @@ var BasePagesShift = function() {
                     }
                 }
 
-                html += '<div class="col-md-2 pull-right push-5-t">' +
-                    '<span class="h2 font-w300 text-primary animated flipInX">' +
-                    '<button type="button" class="btn btn-primary btn-circle btn-lg push-5" id="btn-add" data-type="' + type + '"><i class="fa fa-plus"></i></button>' +
-                    '</span>' +
-                    '</div>';
-
                 // append the result into container
                 container.html(html);
 

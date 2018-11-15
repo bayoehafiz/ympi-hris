@@ -66,7 +66,7 @@ if (isset($_POST['data'])) {
             $photoPath = '../../' . $rows[0]['photo_url'];
             if (file_exists($photoPath)) {
                 // if it's not default photo placeholder
-                if ($photoPath != '../../assets/img/avatars/avatar.jpg') {
+                if ($photoPath != '../../assets/img/avatar.jpg') {
                     if (unlink($photoPath)) {
                         // then save the new one
                         saveBase64ImagePng($file_name, $photoData, $path);

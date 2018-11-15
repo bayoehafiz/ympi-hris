@@ -29,7 +29,7 @@ var renderAddElement = function(type, name, label) {
     } else {
         if (name == 'nama') var font_size = " font-s20 font-w700";
         else var font_size = "";
-        elem += '<div class="form-group"><div class="form-material form-material-primary push-30">' +
+        elem += '<div class="form-group push-20-t"><div class="form-material form-material-primary push-30">' +
             '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div>';

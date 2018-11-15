@@ -243,5 +243,5 @@ window.initFilter = function(data) {
     initFilterSelectors();
 
     // Call the sticky plugin
-    $('#sticky-block').sticky({ topSpacing: 60, bottomSpacing: 100 });
+    $('#sticky-block').sticky({ topSpacing: 80, bottomSpacing: 100 });
 };

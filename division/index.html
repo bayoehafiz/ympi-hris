@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2-bootstrap.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
@@ -46,171 +48,175 @@
             <div class="content">
                 <div class="row">
                     <!-- Block Tabs Animated Fade -->
-                    <div class="block col-md-9 nopadding">
-                        <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
-                            <li class="active">
-                                <a href="#btabs-animated-fade-kode-bagian" class="tab-btn" data="kode_bagian">KODE BAGIAN</a>
-                            </li>
-                            <li>
-                                <a href="#btabs-animated-fade-divisi" class="tab-btn" data="division">DIVISI</a>
-                            </li>
-                            <li>
-                                <a href="#btabs-animated-fade-departemen" class="tab-btn" data="department">DEPARTEMEN</a>
-                            </li>
-                            <li>
-                                <a href="#btabs-animated-fade-section" class="tab-btn" data="section">SECTION</a>
-                            </li>
-                            <li>
-                                <a href="#btabs-animated-fade-sub-section" class="tab-btn" data="sub_section">SUB SECTION</a>
-                            </li>
-                            <li>
-                                <a href="#btabs-animated-fade-grup" class="tab-btn" data="group">GRUP</a>
-                            </li>
-                        </ul>
-                        <div class="block-content tab-content">
-                            <div class="tab-pane fade in active" id="btabs-animated-fade-kode-bagian">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Detail Bagian -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-kode-bagian" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="text-center">Kode</th>
-                                                    <th class="text-center">Jenis Bagian</th>
-                                                    <th class="text-center">Nama Bagian</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-                                        <!-- END Table Detail Bagian -->
+                    <div class="col-md-12">
+                        <div class="block">
+                            <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+                                <li class="active">
+                                    <a href="#tab-kode-bagian" class="tab-btn main-tabs" data="kode_bagian">KODE BAGIAN</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-divisi" class="tab-btn main-tabs" data="division">DIVISI</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-departemen" class="tab-btn main-tabs" data="department">DEPARTEMEN</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-section" class="tab-btn main-tabs" data="section">SECTION</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-sub-section" class="tab-btn main-tabs" data="sub_section">SUB SECTION</a>
+                                </li>
+                                <li>
+                                    <a href="#tab-grup" class="tab-btn main-tabs" data="group">GRUP</a>
+                                </li>
+                                <!-- <li class="btn btn-primary text-uppercase text-center font-w600" id="btn-add" style="cursor: pointer;">
+                                    <i class="si si-plus push-5-r font-w700"></i>Tambah Data
+                                </li> -->
+                            </ul>
+                            <div class="block-content tab-content">
+                                <div class="tab-pane fade in active" id="tab-kode-bagian">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Detail Bagian -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-kode-bagian" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="text-center">Kode</th>
+                                                        <th class="text-center">Jenis Bagian</th>
+                                                        <th class="text-center">Nama Bagian</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                </tbody>
+                                            </table>
+                                            <!-- END Table Detail Bagian -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="btabs-animated-fade-divisi">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Division -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-division" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="hidden-xs text-center" style="width: 25%!important;">Nama</th>
-                                                    <th class="text-center">Jml. Dept.</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <!-- END Table Division -->
+                                <div class="tab-pane fade" id="tab-divisi">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Division -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-division" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 25%!important;">Nama</th>
+                                                        <th class="text-center">Jml. Dept.</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <!-- END Table Division -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="btabs-animated-fade-departemen">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Department -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-department" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                    <th class="hidden-xs text-center">Jml. Section</th>
-                                                    <th class="hidden-xs text-center">Divisi Induk</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <!-- END Table Department -->
+                                <div class="tab-pane fade" id="tab-departemen">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Department -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-department" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                        <th class="hidden-xs text-center">Jml. Section</th>
+                                                        <th class="hidden-xs text-center">Divisi Induk</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <!-- END Table Department -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="btabs-animated-fade-section">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Section -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-section" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                    <th class="hidden-xs text-center">Jml. Sub Section</th>
-                                                    <th class="text-center">Dept. Induk</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <!-- END Table Section -->
+                                <div class="tab-pane fade" id="tab-section">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Section -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-section" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                        <th class="hidden-xs text-center">Jml. Sub Section</th>
+                                                        <th class="text-center">Dept. Induk</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <!-- END Table Section -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="btabs-animated-fade-sub-section">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Sub Section -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-sub-section" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                    <th class="hidden-xs text-center">Jml. Group</th>
-                                                    <th class="text-center">Section Induk</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-                                        <!-- END Table Sub Section -->
+                                <div class="tab-pane fade" id="tab-sub-section">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Sub Section -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-sub-section" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                        <th class="hidden-xs text-center">Jml. Group</th>
+                                                        <th class="text-center">Section Induk</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                </tbody>
+                                            </table>
+                                            <!-- END Table Sub Section -->
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="btabs-animated-fade-grup">
-                                <div class="block">
-                                    <div class="block-content">
-                                        <!-- Table Group -->
-                                        <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-group" style="width: 100%!important;">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
-                                                    <th class="text-center">Sub Section Induk</th>
-                                                    <th class="text-center">Status</th>
-                                                    <th class="text-center" style="width: 15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-                                        <!-- END Table Group -->
+                                <div class="tab-pane fade" id="tab-grup">
+                                    <div class="block">
+                                        <div class="block-content">
+                                            <!-- Table Group -->
+                                            <table class="js-dataTable-full table table-bordered table-striped table-vcenter table-responsive" id="table-group" style="width: 100%!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 25%;">Nama</th>
+                                                        <th class="text-center">Sub Section Induk</th>
+                                                        <th class="text-center">Status</th>
+                                                        <th class="text-center" style="width: 15%;">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                </tbody>
+                                            </table>
+                                            <!-- END Table Group -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- END Block Tabs Animated Fade -->
-                    <div class="col-md-3">
-                        <div id="sticky-sidebar">
-                            <div class="h3 font-w700 text-primary animated flipInX push-20 push-10-t">
-                                <button type="button" class="btn btn-block btn-square btn-primary push-5 text-uppercase" id="btn-add"><i class="si si-plus push-5-r"></i><span id="btn-add-text"></span></button>
-                            </div>
-                        </div>
+                </div>
+                <!-- Tab Panes -->
+                <div class="row">
+                    <div class="col-md-12">
                     </div>
                 </div>
+                <!-- END Tab Panes -->
             </div>
             <!-- END Page Content -->
         </main>
         </main>
         <!-- END Main Container -->
         <!-- Modal -->
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="modal" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
                 <form class="js-validation-material" action="" method="post" id="form-modal">
                     <div class="modal-content">
-                        <div class="block block-themed block-transparent remove-margin-b">
+                        <div class="block block-themed block-transparent remove-margin-b" id="modal-block">
                             <div class="block-header bg-primary-dark">
                                 <ul class="block-options">
                                     <li>
@@ -219,35 +225,9 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter row" id="modal-content">
-                                <div class="row push-5-t">
-                                    <div class="col-md-8">
-                                        <div id="generated-container">All generated elements will be here</div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group hide-me" id="hidden-bagian_key">
-                                            <div class="form-material form-material-primary push-30">
-                                                <select class="form-control" id="input-bagian_key" name="elem-bagian_key" size="1"></select>
-                                                <label for="elem-bagian_key" id="label-bagian_key"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group hide-me" id="hidden-bagian_value">
-                                            <div class="form-material form-material-primary push-30">
-                                                <select class="form-control" id="input-bagian_value" name="elem-bagian_value" size="1"></select>
-                                                <label for="elem-bagian_value" id="label-bagian_value"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group hide-me" id="hidden-parent">
-                                            <div class="form-material form-material-primary push-30">
-                                                <select class="form-control" id="input-parent" name="elem-parent" size="1"></select>
-                                                <label for="elem-parent" id="label-parent"></label>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="block-content" id="modal-content">
+                                <div class="block">
+                                    <div id="generated-container" class="row"></div>
                                 </div>
                             </div>
                         </div>
@@ -261,6 +241,11 @@
             </div>
         </div>
         <!-- END Modal -->
+        <!-- Floating ADD button -->
+        <div class="zoom animated bounceIn" data-toggle="tooltip" title="" data-placement="left" data-original-title="Klik untuk menambah data">
+            <a class="zoom-fab zoom-btn-large btn btn-primary" id="btn-add"><i class="fa fa-plus fa-2x"></i></a>
+        </div>
+        <!-- END Floating ADD button -->
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
@@ -313,7 +298,9 @@
     <script src="helper/repopulate-selector.js"></script>
     <script src="helper/render-add-element.js"></script>
     <script src="helper/render-edit-element.js"></script>
-    <!-- <script src="helper/init-validation.js"></script> -->
+    <script src="helper/init-validation.js"></script>
+    <script src="helper/init-stat.js"></script>
+    <script src="helper/init-tables.js"></script>
     <script src="division.js"></script>
     <script>
     jQuery(function() {

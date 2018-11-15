@@ -46,7 +46,7 @@ window.initTableEmployee = function(filter) {
                 className: "font-w600",
                 data: "nama",
                 render: function(data, type, row) {
-                    return '<a href="javascript:void(0)">' + data + '</a>';
+                    return '<a class="link-view" href="javascript:void(0)">' + data + '</a>';
                 }
             }, {
                 className: "text-center",
@@ -99,7 +99,7 @@ window.initTableEmployee = function(filter) {
                 data: null,
                 render: function(data, type, row) {
                     return '<div class="btn-group text-center">' +
-                        '<button class="btn btn-sm btn-default" type="button" id="btn-view"><i class="si si-eye"></i></button>' +
+                        '<button class="btn btn-sm btn-default btn-view" type="button"><i class="si si-eye"></i></button>' +
                         '<button class="btn btn-sm btn-default btn-edit" type="button"><i class="si si-pencil"></i></button>' +
                         '<button class="btn btn-sm btn-default btn-remove" type="button"><i class="si si-trash"></i></button>' +
                         '</div>';
@@ -126,20 +126,20 @@ window.initTableEmployee = function(filter) {
     // TABLE ACTIONS !!!
     // 
     // When employee NAME or TABLE'S VIEW button is clicked
-    $('#table-employee tbody').on('click', 'a, #btn-view', function() {
+    $(document).on('click', 'a.link-view, .btn-view', function() {
         var id = $(this).parents('tr').attr('data-id');
         viewData(id);
     });
 
     // When TABLE'S EDIT button is clicked
-    $('#table-employee tbody').on('click', '.btn-edit', function() {
+    $(document).on('click', '.btn-edit', function() {
         var id = $(this).parents('tr').attr('data-id');
         $('#origin').val('direct');
         editData(id);
     });
 
     // When table-employee DELETE button is clicked
-    $('#table-employee tbody').on('click', '.btn-remove', function() {
+    $(document).on('click', '.btn-remove', function() {
         var id = $(this).parents('tr').attr('data-id');
         removeData(id);
     });

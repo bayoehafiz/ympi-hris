@@ -14,7 +14,7 @@ var BasePagesGrade = function() {
 
         // load footer
         $('#page-footer').load("../partials/footer.html", function() {
-            // console.log("Footer loaded!");
+            //
         });
 
         // when menu button is clicked
@@ -37,12 +37,12 @@ var BasePagesGrade = function() {
             switch (t) {
                 case 'penugasan':
                     initStat('penugasan');
-                    $('#btn-add-text').text('Tambah Jabatan');
+                    $('#btn-add-text').text('Tambah Data Penugasan / Jabatan');
                     initTablePenugasan();
                     break;
                 default:
                     initStat('grade');
-                    $('#btn-add-text').text('Tambah Grade');
+                    $('#btn-add-text').text('Tambah Data Grade');
                     initTableGrade();
                     break;
             }
@@ -77,7 +77,11 @@ var BasePagesGrade = function() {
 
             // hide unrelated buttons
             $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-            $('#modal').modal('show');
+            $('#modal').modal({
+                show: true,
+                keyboard: false,
+                backdrop: 'static'
+            });
         });
 
         // When ACTION buttons clicked
@@ -257,6 +261,32 @@ var BasePagesGrade = function() {
 
         // Surpress DT warning into JS errors
         $.fn.dataTableExt.sErrMode = 'throw';
+
+        $('#zoomBtn').click(function() {
+            $('.zoom-btn-sm').toggleClass('scale-out');
+            if (!$('.zoom-card').hasClass('scale-out')) {
+                $('.zoom-card').toggleClass('scale-out');
+            }
+        });
+
+        $('.zoom-btn-sm').click(function() {
+            var btn = $(this);
+            var card = $('.zoom-card');
+            if ($('.zoom-card').hasClass('scale-out')) {
+                $('.zoom-card').toggleClass('scale-out');
+            }
+            if (btn.hasClass('zoom-btn-person')) {
+                card.css('background-color', '#d32f2f');
+            } else if (btn.hasClass('zoom-btn-doc')) {
+                card.css('background-color', '#fbc02d');
+            } else if (btn.hasClass('zoom-btn-tangram')) {
+                card.css('background-color', '#388e3c');
+            } else if (btn.hasClass('zoom-btn-report')) {
+                card.css('background-color', '#1976d2');
+            } else {
+                card.css('background-color', '#7b1fa2');
+            }
+        });
     };
 
     var initStat = function(type) {
@@ -350,22 +380,14 @@ var BasePagesGrade = function() {
         })
     };
 
-    var initSidebar = function() {
-        $('#sticky-sidebar').sticky({ topSpacing: 65, bottomSpacing: 100 });
-    };
-
     var initTableGrade = function() {
         // Table initiation
         var table = $('#table-grade').DataTable({
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
             order: [
-                [0, 'desc']
+                [0, 'asc']
             ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
             pageLength: 10,
             lengthMenu: [
                 [10, 20, 50, 100],
@@ -385,7 +407,7 @@ var BasePagesGrade = function() {
                 $(row).attr('data-id', data.id);
             },
             columns: [
-                { data: "updated" },
+                { className: "hidden-xs text-center", data: "priority" },
                 {
                     className: "font-w600 ",
                     data: "nama",
@@ -435,12 +457,8 @@ var BasePagesGrade = function() {
             destroy: true, // destroy it first, if there is an active table instance
             autoWidth: false,
             order: [
-                [1, 'asc']
+                [0, 'asc']
             ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
             pageLength: 10,
             lengthMenu: [
                 [10, 20, 50, 100],
@@ -460,7 +478,6 @@ var BasePagesGrade = function() {
                 $(row).attr('data-id', data.id);
             },
             columns: [
-                { data: "updated" },
                 { className: "hidden-xs text-center", data: "priority" },
                 {
                     className: "font-w600 ",
@@ -509,7 +526,6 @@ var BasePagesGrade = function() {
             set_base('grade');
             bsDataTables();
             initStat();
-            initSidebar();
             initGradePage();
         }
     };

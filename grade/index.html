@@ -45,26 +45,26 @@
             <!-- Page Content -->
             <div class="content">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-12">
                         <!-- Block Tabs Animated Fade -->
                         <div class="block">
                             <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                                 <li class="active">
-                                    <a href="#btabs-animated-fade-grade" class="tab-btn" data="grade">GRADE</a>
+                                    <a href="#tab-grade" class="tab-btn" data="grade">GRADE</a>
                                 </li>
                                 <li>
-                                    <a href="#btabs-animated-fade-penugasan" class="tab-btn" data="penugasan">PENUGASAN / JABATAN</a>
+                                    <a href="#tab-penugasan" class="tab-btn" data="penugasan">PENUGASAN / JABATAN</a>
                                 </li>
                             </ul>
                             <div class="block-content tab-content">
                                 <!-- Table grade -->
-                                <div class="tab-pane fade in active" id="btabs-animated-fade-grade">
+                                <div class="tab-pane fade in active" id="tab-grade">
                                     <div class="block">
                                         <div class="block-content">
                                             <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-grade" style="width: 100%!important;">
                                                 <thead>
                                                     <tr>
-                                                        <th></th>
+                                                        <th class="hidden-xs text-center" style="width: 5%;">No.</th>
                                                         <th class="hidden-xs text-center">Nama Grade</th>
                                                         <th class="text-center">Kode</th>
                                                         <th class="text-center">Status</th>
@@ -78,13 +78,12 @@
                                 </div>
                                 <!-- END Table grade -->
                                 <!-- Table penugasan -->
-                                <div class="tab-pane fade" id="btabs-animated-fade-penugasan">
+                                <div class="tab-pane fade" id="tab-penugasan">
                                     <div class="block">
                                         <div class="block-content">
                                             <table class="table table-bordered table-striped js-dataTable-full table-vcenter" id="table-penugasan" style="width: 100%!important;">
                                                 <thead>
                                                     <tr>
-                                                        <th></th>
                                                         <th class="hidden-xs text-center" style="width: 5%;">No.</th>
                                                         <th class="hidden-xs text-center">Nama</th>
                                                         <th class="text-center">Status</th>
@@ -100,13 +99,6 @@
                             </div>
                         </div>
                         <!-- END Block Tabs Animated Fade -->
-                    </div>
-                    <div class="col-md-3">
-                        <div id="sticky-sidebar">
-                            <div class="h3 font-w700 text-primary animated flipInX push-20 push-10-t">
-                                <button type="button" class="btn btn-block btn-square btn-primary push-5 text-uppercase" id="btn-add"><i class="si si-plus push-5-r"></i><span id="btn-add-text"></span></button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -128,8 +120,8 @@
                                 </ul>
                                 <h3 class="block-title" id="modal-title"></h3>
                             </div>
-                            <div class="block-content bg-gray-lighter" id="modal-content">
-                                <span id="generated-container">All generated elements will be here</span>
+                            <div class="block-content" id="modal-content">
+                                <span id="generated-container"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -142,6 +134,11 @@
             </div>
         </div>
         <!-- END Modal -->
+        <!-- Floating ADD button -->
+        <div class="zoom animated bounceIn" data-toggle="tooltip" title="" data-placement="left" data-original-title="Klik untuk menambah data">
+            <a class="zoom-fab zoom-btn-large btn btn-primary" id="btn-add"><i class="fa fa-plus fa-2x"></i></a>
+        </div>
+        <!-- END Floating ADD button -->
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
