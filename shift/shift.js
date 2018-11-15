@@ -537,16 +537,16 @@ var BasePagesShift = function() {
             $('#hidden-active-type').val(t);
             switch (t) {
                 case 'group_shift':
-                    $('#btn-add').attr('data-type', 'Group Shift');
+                    $('#btn-add').attr('data-type', 'group_shift');
                     // initStat('group_shift');
                     initTableGroupShift();
                     break;
                 case 'penugasan_shift':
-                    $('#btn-add').attr('data-type', 'Penugasan Shift');
+                    $('#btn-add').attr('data-type', 'transfer_shift');
                     // initContentPenugasanShift();
                     break;
                 default:
-                    $('#btn-add').attr('data-type', 'Shift');
+                    $('#btn-add').attr('data-type', 'shift');
                     // initStat('shift');
                     initTableShift();
                     break;
@@ -565,32 +565,7 @@ var BasePagesShift = function() {
             $('#hidden-type').val(data_type);
 
             switch (data_type) {
-                case "group_shift":
-                    html += renderAddElement('text', 'nama', 'Nama Group Shift', null, 8);
-                    html += renderAddElement('text', 'kode', 'Kode', null, 4);
-                    html += renderAddElement('daterange', 'date', 'Hari efektif', null, 8);
-
-                    renderAddElement('select', 'shift', 'Pilih Shift', null, null, 'shift');
-                    renderAddElement('group', 'assignation', 'Pilih Penugasan', [{
-                        label: 'Departemen',
-                        value: 'department'
-                    }, {
-                        label: 'Section',
-                        value: 'section'
-                    }, {
-                        label: 'Sub Section',
-                        value: 'sub_section'
-                    }, {
-                        label: 'Grup',
-                        value: 'group'
-                    }]);
-
-                    break;
-                case "penugasan_shift":
-                    html += renderAddElement('text', 'nama', 'Nama Penugasan');
-                    html += renderAddElement('text', 'kode', 'Kode');
-                    break;
-                default:
+                case "shift":
                     html += renderAddElement('text', 'nama', 'Nama Shift', null, 8);
                     html += renderAddElement('text', 'kode', 'Kode', null, 4);
                     html += renderAddElement('multi-select', 'hari_efektif', 'Hari Efektif', [{
@@ -623,6 +598,34 @@ var BasePagesShift = function() {
 
                     html += renderAddElement('time-picker', 'awal_scan_keluar', 'Scan Keluar', null, 3);
                     html += renderAddElement('time-picker', 'akhir_scan_keluar', '', null, 3);
+
+                    break;
+                case "group_shift":
+                    html += renderAddElement('text', 'nama', 'Nama Group Shift', null, 8);
+                    html += renderAddElement('text', 'kode', 'Kode', null, 4);
+                    html += renderAddElement('daterange', 'date', 'Hari efektif', null, 8);
+
+                    renderAddElement('select', 'shift', 'Pilih Shift', null, null, 'shift');
+                    renderAddElement('group', 'assignation', 'Pilih Penugasan', [{
+                        label: 'Departemen',
+                        value: 'department'
+                    }, {
+                        label: 'Section',
+                        value: 'section'
+                    }, {
+                        label: 'Sub Section',
+                        value: 'sub_section'
+                    }, {
+                        label: 'Grup',
+                        value: 'group'
+                    }]);
+
+                    break;
+                case "transfer_shift":
+                    html += renderAddElement('text', 'nama', 'Nama Penugasan');
+                    html += renderAddElement('text', 'kode', 'Kode');
+                    break;
+                default:
                     break;
             }
 
@@ -673,39 +676,7 @@ var BasePagesShift = function() {
                 $('#hidden-type').val(data_type);
 
                 switch (data_type) {
-                    case "group_shift":
-                        html += renderEditElement('text', 'nama', 'Nama Group Shift', data.nama, null, 8);
-                        html += renderEditElement('text', 'kode', 'Kode', data.kode, null, 4);
-                        html += renderEditElement('daterange', 'date', 'Hari efektif', {
-                            from: data.date_from,
-                            to: data.date_to
-                        }, null, 8);
-
-                        renderEditElement('select', 'shift', 'Pilih Shift', data.shift, null, null,
-                            'shift');
-                        renderEditElement('group', 'assignation', 'Pilih Penugasan', {
-                            key: data.assignation_key,
-                            value: data.assignation_value
-                        }, [{
-                            label: 'Departemen',
-                            value: 'department'
-                        }, {
-                            label: 'Section',
-                            value: 'section'
-                        }, {
-                            label: 'Sub Section',
-                            value: 'sub_section'
-                        }, {
-                            label: 'Grup',
-                            value: 'group'
-                        }]);
-
-                        break;
-                    case "penugasan_shift":
-                        // html += renderAddElement('text', 'nama', 'Nama Penugasan');
-                        // html += renderAddElement('text', 'kode', 'Kode');
-                        break;
-                    default:
+                    case "shift":
                         html += renderEditElement('text', 'nama', 'Nama Shift', data.nama, null, 8);
                         html += renderEditElement('text', 'kode', 'Kode', data.kode, null, 4);
                         html += renderEditElement('multi-select', 'hari_efektif', 'Hari Efektif', data.hari_efektif, [{
@@ -739,6 +710,41 @@ var BasePagesShift = function() {
 
                         html += renderEditElement('time-picker', 'awal_scan_keluar', 'Scan Keluar', data.awal_scan_keluar, null, 3);
                         html += renderEditElement('time-picker', 'akhir_scan_keluar', '', data.akhir_scan_keluar, null, 3);
+
+                        break;
+                    case "group_shift":
+                        html += renderEditElement('text', 'nama', 'Nama Group Shift', data.nama, null, 8);
+                        html += renderEditElement('text', 'kode', 'Kode', data.kode, null, 4);
+                        html += renderEditElement('daterange', 'date', 'Tanggal efektif', {
+                            from: data.date_from,
+                            to: data.date_to
+                        }, null, 8);
+
+                        renderEditElement('select', 'shift', 'Pilih Shift', data.shift, null, null,
+                            'shift');
+                        renderEditElement('group', 'assignation', 'Pilih Penugasan', {
+                            key: data.assignation_key,
+                            value: data.assignation_value
+                        }, [{
+                            label: 'Departemen',
+                            value: 'department'
+                        }, {
+                            label: 'Section',
+                            value: 'section'
+                        }, {
+                            label: 'Sub Section',
+                            value: 'sub_section'
+                        }, {
+                            label: 'Grup',
+                            value: 'group'
+                        }]);
+
+                        break;
+                    case "transfer_shift":
+                        // html += renderAddElement('text', 'nama', 'Nama Penugasan');
+                        // html += renderAddElement('text', 'kode', 'Kode');
+                        break;
+                    default:
                         break;
                 }
 

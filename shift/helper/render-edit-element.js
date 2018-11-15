@@ -110,8 +110,10 @@ var renderEditElement = function(type, name, label, value, data_object, col_size
             '</div>' +
             '</div>';
     } else {
+        if (name == 'nama' || name == 'kode') var font_size = " font-s20 font-w700";
+        else var font_size = "";
         elem += '<div class="form-group"><div class="col-md-' + col_size + '"><div class="form-material form-material-primary push-30">' +
-            '<input class="form-control" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" value="' + value + '">' +
+            '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" value="' + value + '">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div></div>';
     }

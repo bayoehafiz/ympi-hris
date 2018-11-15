@@ -4,12 +4,8 @@ include "inc/chromePhp.php";
 
 function formatDate($olddate)
 {
-    if (strlen($olddate) < 10) {
-        if (substr($olddate, 6, 2) >= 50) {
-            $standarddate = substr($olddate, 0, 2) . "-" . substr($olddate, 3, 2) . "-19" . substr($olddate, 6, 2);
-        } else {
-            $standarddate = substr($olddate, 0, 2) . "-" . substr($olddate, 3, 2) . "-20" . substr($olddate, 6, 2);
-        }
+    if (strlen($olddate) > 8) {
+        $standarddate = substr($olddate, 6, 4) . "-" . substr($olddate, 3, 2) . "-" . substr($olddate, 0, 2);
         return $standarddate;
     } else {
         return $olddate;

@@ -34,7 +34,7 @@ var renderProfileView = function(data) {
         else if (data.status == "Kontrak 2") var snik = '<span class="text-info">' + data.nik + '</span>';
         else var snik = '<span class="text-muted">' + data.nik + '</span>';
     } else {
-        var snik = '<span class="text-danger"><i class="si si-ban push-5-r"></i>' + data.nik + '</span>';
+        var snik = '<span class="text-muted">' + data.nik + '</span>';
     }
 
     $('#modal-nik').removeClass('hide-me');
@@ -78,19 +78,19 @@ var renderProfileView = function(data) {
 
     $('#profile-status').html('<div class="text-muted push-5">Status Karyawan</div>' + status);
     // 9. Tanggal masuk
-    $('#profile-tgl-masuk').html('<div class="text-muted push-5">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'DD-MM-YYYY').format('D MMM YYYY'));
+    $('#profile-tgl-masuk').html('<div class="text-muted push-5">Tanggal Masuk</div>' + moment(data.tgl_masuk, 'YYYY-MM-DD').format('D MMM YYYY'));
 
     if (data.active == 0) {
         // 9.a. Tgl Terminasi
-        $('#profile-termination_date').html('<div class="text-muted push-5">Tgl Terminasi</div>' + moment(data.termination_date, 'DD-MM-YYYY').format('D MMM YYYY'));
+        $('#profile-termination_date').html('<div class="text-muted push-5">Tgl Terminasi</div>' + moment(data.termination_date, 'YYYY-MM-DD').format('D MMM YYYY'));
 
         // 9.b. Alasan Terminasi
         $('#profile-termination_reason').html('<div class="text-muted push-5">Alasan Terminasi</div>' + data.termination_reason);
     }
 
     // 10. Masa Kerja
-    var now = moment(moment(), 'DD-MM-YYYY');
-    var start = moment(data.tgl_masuk, 'DD-MM-YYYY');
+    var now = moment(moment(), 'YYYY-MM-DD');
+    var start = moment(data.tgl_masuk, 'YYYY-MM-DD');
     var diff = now.diff(start, 'days');
     if (data.status == 'Tetap') {
         $('#profile-masa-kerja').html('<div class="text-muted push-5">Masa Kerja</div>' + humaniseMasaKerja(diff)); // <- Helper
@@ -114,7 +114,7 @@ var renderProfileView = function(data) {
     // 12. Tgl Keluar
     if (data.active == 1) {
         if (data.tgl_keluar != null) {
-            var tgl_keluar = moment(data.tgl_keluar, 'DD-MM-YYYY').format('D MMM YYYY');
+            var tgl_keluar = moment(data.tgl_keluar, 'YYYY-MM-DD').format('D MMM YYYY');
             $('#profile-tgl-keluar').html('<div class="text-muted push-5">Tgl Selesai ' + kontrak_type + '</div>' + tgl_keluar);
         }
     }
@@ -127,9 +127,9 @@ var renderProfileView = function(data) {
     if (!data.tgl_lahir) {
         $('#profile-tgl-lahir').html('<div class="text-muted push-5">Tanggal Lahir</div>-');
     } else {
-        var lahir = moment(data.tgl_lahir, 'DD-MM-YYYY');
+        var lahir = moment(data.tgl_lahir, 'YYYY-MM-DD');
         var usia = now.diff(lahir, 'days');
-        var tgl_lahir = moment(data.tgl_lahir, 'DD-MM-YYYY').format('DD MMM YYYY') + " (" + humaniseUsia(usia) + ")"; // <- Helper
+        var tgl_lahir = moment(data.tgl_lahir, 'YYYY-MM-DD').format('DD MMM YYYY') + " (" + humaniseUsia(usia) + ")"; // <- Helper
         $('#profile-tgl-lahir').html('<div class="text-muted push-5">Tanggal Lahir</div>' + tgl_lahir);
     }
     // 15. agama

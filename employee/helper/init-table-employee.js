@@ -31,7 +31,7 @@ window.initTableEmployee = function(filter) {
             $(row).attr('data-id', data.id);
         },
         columns: [{
-                data: "updated",
+                data: "tgl_masuk",
                 visible: false
             },
             {

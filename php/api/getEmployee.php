@@ -19,7 +19,7 @@ if ($scope == 'active') {
                 a.`nama`,
                 a.`status`,
                 a.`photo_url`,
-                a.`updated`,
+                a.`tgl_masuk`,
                 -- a.*,
                 b.`nama` AS `nama_division`,
                 c.`nama` AS `nama_department`,

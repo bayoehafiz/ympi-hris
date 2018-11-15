@@ -38,7 +38,7 @@ var renderProfileEdit = function(data) {
 
     // Tab DATA KERJA ::
     $('#profile-status').html(renderAddElement('select', 'status', 'Status Karyawan'));
-    $('#profile-tgl-masuk').html(renderEditElement('datepicker', data.tgl_masuk, 'tgl_masuk', 'Tanggal Masuk', false));
+    $('#profile-tgl-masuk').html(renderEditElement('datepicker', moment(data.tgl_masuk, 'YYYY-MM-DD').format('DD-MM-YYYY'), 'tgl_masuk', 'Tanggal Masuk', false));
     var containerMasaKontrak = $('#profile-masa-kontrak');
     var containerTglKeluar = $('#profile-tgl-keluar');
     if (data.status != 'Tetap') {
@@ -106,7 +106,7 @@ var renderProfileEdit = function(data) {
                 .trigger('change.select2');
         });
 
-        $('#profile-tgl-keluar').html(renderEditElement('datepicker', data.tgl_keluar, 'tgl_keluar', label, false));
+        $('#profile-tgl-keluar').html(renderEditElement('datepicker', moment(data.tgl_keluar, 'YYYY-MM-DD').format('DD-MM-YYYY'), 'tgl_keluar', label, false));
     } else {
         // destroy Select2 instance if existed
         if ($('#input-masa_kontrak').hasClass("select2-hidden-accessible")) {
@@ -118,7 +118,7 @@ var renderProfileEdit = function(data) {
 
     // Tab DATA PRIBADI ::
     $('#profile-tempat-lahir').html(renderEditElement('text', data.tempat_lahir, 'tempat_lahir', 'Tempat Lahir', false));
-    $('#profile-tgl-lahir').html(renderEditElement('datepicker', data.tgl_lahir, 'tgl_lahir', 'Tanggal Lahir', false));
+    $('#profile-tgl-lahir').html(renderEditElement('datepicker', moment(data.tgl_lahir, 'YYYY-MM-DD').format('DD-MM-YYYY'), 'tgl_lahir', 'Tanggal Lahir', false));
     $('#profile-agama').html(renderAddElement('select', 'agama', 'Agama'));
     $('#profile-jenis-kelamin').html(renderAddElement('select', 'jenis_kelamin', 'Jenis Kelamin'));
     $('#profile-alamat-lengkap').html(renderEditElement('textarea', data.alamat_lengkap, 'alamat_lengkap', 'Alamat Lengkap', false));

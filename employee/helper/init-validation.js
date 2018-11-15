@@ -114,8 +114,17 @@ var initValidation = function() {
                 // exclude empty input
                 if (elem['value'] != '') {
                     var key = elem['id'].replace('input-', '');
-                    if (key == 'tgl_masuk') tgl_masuk = elem['value']; // save tgl_masuk for NIK generation
-                    if (key == 'status') status = elem['value']; // save status for NIK generation
+                    if (key == 'tgl_masuk' || key == 'tgl_keluar' || key == 'tgl_lahir') {
+                        // format date into SQL format
+                        elem['value'] = moment(elem['value'], 'DD-MM-YYYY').format('YYYY-MM-DD');
+                        if (key == 'tgl_masuk') {
+                            tgl_masuk = elem['value'] // save tgl_masuk for NIK generation
+                        }
+                    }
+
+                    if (key == 'status') {
+                        status = elem['value']; // save status for NIK generation
+                    }
 
                     // if kode bagian is changed, mark it!
                     if ((key == 'kode_bagian') && (elem['value'] != old_kode_bagian)) {
@@ -138,9 +147,9 @@ var initValidation = function() {
 
                 // then generate new NIK
                 $.when(getLatestNik()).done(function(response) {
-                    var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
-                    var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
-                    var month = moment(tgl_masuk, 'DD-MM-YYYY').format('MM');
+                    var year = moment(tgl_masuk, 'YYYY-MM-DD').year();
+                    var short_year = moment(tgl_masuk, 'YYYY-MM-DD').format('YY');
+                    var month = moment(tgl_masuk, 'YYYY-MM-DD').format('MM');
 
                     // Generate latest 4 digits
                     if (response.success) {
@@ -194,14 +203,15 @@ var initValidation = function() {
 
                 if ((old_tgl_masuk != tgl_masuk) || (old_status != status)) {
                     // generate new NIK
-                    var year = moment(tgl_masuk, 'DD-MM-YYYY').year();
-                    var short_year = moment(tgl_masuk, 'DD-MM-YYYY').format('YY');
-                    var month = moment(tgl_masuk, 'DD-MM-YYYY').format('MM');
+                    var year = moment(tgl_masuk, 'YYYY-MM-DD').year();
+                    var short_year = moment(tgl_masuk, 'YYYY-MM-DD').format('YY');
+                    var month = moment(tgl_masuk, 'YYYY-MM-DD').format('MM');
                     var pin = '';
 
                     // Get latest 4 digits from OLD NIK
                     var old_nik = $('#opened-nik').val();
-                    pin = old_nik.substring(5, 9);
+                    if (status == 'Tetap') pin = old_nik.substring(5, 9);
+                    else pin = old_nik.substring(4, 8);
 
                     // Generate the Year Letter
                     var letter = "";
@@ -227,10 +237,11 @@ var initValidation = function() {
                 var payload = {
                     id: $id,
                     data: data
-                }
+                };
 
                 // Send the data !!!
                 sendData(apiUrl, payload);
+
             }
         }
     });

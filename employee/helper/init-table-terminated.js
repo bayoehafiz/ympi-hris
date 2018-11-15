@@ -41,7 +41,7 @@ window.initTableTerminated = function(filterData) {
                 className: "font-w600",
                 data: "nama",
                 render: function(data, type, row) {
-                    return '<a class"link-view-terminated" data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</a>';
+                    return '<span class"text-muted" data-id="' + row.nik + '" href="javascript:void(0)">' + data + '</span>';
                 }
             }, {
                 className: "text-center",
@@ -85,13 +85,13 @@ window.initTableTerminated = function(filterData) {
     // TABLE ACTIONS !!!
     // 
     // When employee NAME or TABLE'S VIEW button is clicked
-    $('#table-terminated tbody').on('click', 'a.link-view-terminated, .btn-view-terminated', function() {
+    $(document).on('click', '.btn-view-terminated', function() {
         var id = $(this).parents('tr').attr('data-id');
         viewData(id);
     });
 
     // When table-employee DELETE button is clicked
-    $('#table-terminated tbody').on('click', '.btn-remove-terminated', function() {
+    $(document).on('click', '.btn-remove-terminated', function() {
         var id = $(this).parents('tr').attr('data-id');
         removeData(id);
     });
