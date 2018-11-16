@@ -14,13 +14,15 @@
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2-bootstrap.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="../assets/js/plugins/fullcalendar/fullcalendar.min.css">
     <link rel="stylesheet" href="../assets/css/daterangepicker.css">
+    <link rel="stylesheet" href="../assets/js/plugins/fullcalendar/fullcalendar.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
-<link rel="stylesheet" id="css-main" href="../assets/css/app.css">
+    <link rel="stylesheet" id="css-main" href="../assets/css/app.css">
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
@@ -48,17 +50,17 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
-                            <a href="#btabs-animated-fade-shift" class="tab-btn" data="shift">SHIFT</a>
+                            <a href="#tab-shift" class="tab-btn" data="shift">SHIFT</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-group_shift" class="tab-btn" data="group_shift">GROUP SHIFT</a>
+                            <a href="#tab-group_shift" class="tab-btn" data="group_shift">GROUP SHIFT</a>
                         </li>
                         <li>
-                            <a href="#btabs-animated-fade-transfer_shift" class="tab-btn" data="transfer_shift">TRANSFER SHIFT</a>
+                            <a href="#tab-shift_transfer" class="tab-btn" data="shift_transfer">TRANSFER SHIFT</a>
                         </li>
                     </ul>
                     <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-shift">
+                        <div class="tab-pane fade in active" id="tab-shift">
                             <div class="block">
                                 <div class="block-content">
                                     <!-- Table shift -->
@@ -81,7 +83,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-group_shift">
+                        <div class="tab-pane fade" id="tab-group_shift">
                             <div class="block">
                                 <div class="block-content">
                                     <!-- Table group shift -->
@@ -103,32 +105,42 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-transfer_shift">
+                        <div class="tab-pane fade" id="tab-shift_transfer">
                             <div class="block">
                                 <div class="block-content">
                                     <div class="row items-push">
-                                        <div class="col-md-4 col-lg-2">
-                                            <!-- Select employee -->
-                                            <div class="form-group">
-                                                <div class="form-material form-material-primary push-50">
-                                                    <input class="js-autocomplete form-control" type="text" id="employee-selector" name="elem-employee-selector" placeholder="Ketik nama karyawan...">
-                                                    <label for="elem-employee-selector">Karyawan</label>
+                                        <div class="col-md-4 col-lg-3">
+                                            <div class="block" id="sticky-block">
+                                                <!-- Select employee -->
+                                                <div class="block block-bordered block-rounded">
+                                                    <div class="block-content">
+                                                        <div class="form-group">
+                                                            <div class="form-material form-material-primary">
+                                                                <select class="form-control" id="employee-search" name="elem-employee-search"></select>
+                                                                <label for="elem-employee-search">Cari Karyawan</label>
+                                                            </div>
+                                                        </div>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+                                                <!-- END Select employee -->
+                                                <!-- employee Details -->
+                                                <div class="block block-rounded block-bordered bg-themed push-20-t" id="employee-details">
+                                                    <div class="block-content bg-gray-lighter" id="employee-details-content"></div>
+                                                </div>
+                                                <!-- END employee Details -->
+                                            </div>
+                                        </div>
+                                        <!-- Calendar Container -->
+                                        <div class="col-md-8 col-lg-9">
+                                            <div class="block block-transparent" id="calendar-block">
+                                                <div class="block-content-full">
+                                                    <div class="js-calendar" id="shift-calendar"></div>
                                                 </div>
                                             </div>
-                                            <!-- END Select employee -->
-                                            <!-- Event List -->
-                                            <ul class="js-events list list-events"></ul>
-                                            <div class="text-center text-muted hide-me" id="shift-list-footer">
-                                                <small><em><i class="fa fa-arrows"></i> Drag and drop events on the calendar</em></small>
-                                            </div>
-                                            <!-- END Event List -->
                                         </div>
-                                        <div class="col-md-8 col-lg-10">
-                                            <!-- Calendar Container -->
-                                            <div class="js-calendar" id="shift-calendar"></div>
-                                        </div>
+                                        <!-- END Calendar -->
                                     </div>
-                                    <!-- END Calendar -->
                                 </div>
                             </div>
                         </div>
@@ -249,22 +261,19 @@
     <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
     <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
-    <script src="../assets/js/plugins/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
-    <script src="../assets/js/plugins/dropzonejs/dropzone.min.js"></script>
     <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar/moment.min.js"></script>
     <script src="../assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
+    <script src="../assets/js/plugins/fullcalendar/locale-all.js"></script>
+    <script src="../assets/js/core/jquery.sticky.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
     <script src="helper/render-add-element.js"></script>
     <script src="helper/render-edit-element.js"></script>
-    <script src="helper/init-events.js"></script>
-    <script src="helper/init-calendar.js"></script>
     <script src="helper/generate-color.js"></script>
     <script src="helper/repopulate-selector.js"></script>
+    <script src="helper/init-calendar.js"></script>
     <script src="shift.js"></script>
     <script>
     jQuery(function() {

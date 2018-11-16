@@ -7,6 +7,7 @@ window.initFilter = function(data) {
         // Populate FILTER selectors :: BY STATUS
         $('#input-filter-status').select2({
             minimumResultsForSearch: -1,
+            allowClear: true,
             data: [{
                     id: 'Tetap',
                     text: 'Tetap'
@@ -29,6 +30,7 @@ window.initFilter = function(data) {
         // Populate FILTER selectors :: BY JENIS_KELAMIN
         $('#input-filter-jenis_kelamin').select2({
             minimumResultsForSearch: -1,
+            allowClear: true,
             data: [{
                     id: 'Laki-laki',
                     text: 'Laki-laki'
@@ -61,6 +63,7 @@ window.initFilter = function(data) {
         if (enableFilterSelector(target)) {
             // then repopulate
             container.select2({
+                allowClear: true,
                 ajax: {
                     url: $url,
                     dataType: 'json',

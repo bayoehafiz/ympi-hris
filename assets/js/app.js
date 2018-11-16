@@ -1383,6 +1383,14 @@ jQuery(function() {
             ENV.BASE_API = ENV.BASE_URL + '/php/api/';
         };
 
+        // Sweetalert Default Config
+        swal.setDefaults({
+            buttonsStyling: false,
+            cancelButtonClass: 'btn btn-default btn-md text-uppercase push-5-l push-5-r',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+
         // Init an error alert on button click
         $(document).on('click', '.js-swal-error', function() {
             swal('Oops...', 'Sedang dalam pengembangan!', 'warning');

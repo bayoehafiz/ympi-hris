@@ -471,33 +471,272 @@ var BasePagesShift = function() {
         });
     };
 
-    var initContentTransferShift = function() {
-        // render list of shift events
-        $.ajax({
-            type: "POST",
-            url: ENV.BASE_API + 'getShift.php',
-            dataType: 'json',
-            data: {
-                table: 'group_shift'
+    var initCalendar = function() {
+        // Init calendar
+        $('#shift-calendar').fullCalendar({
+            defaultView: "month",
+            header: {
+                left: 'title',
+                right: 'prev,next'
             },
-            success: function(response) {
-                if (response.success) {
-                    var container = $('.js-events');
-                    container.empty();
-
-                    var data = response.data;
-                    data.forEach(function(d) {
-                        container.append('<li style="background-color: ' + d.color + '">' + d.nama.toUpperCase() + ' (' + d.jam_masuk + ' - ' + d.jam_keluar + ')</li>');
-                    })
-
-                    // enable shift-list footer
-                    $('#shift-list-footer').removeClass('hide-me');
+            locale: 'id',
+            dayClick: function(date, allDay, jsEvent, view) {
+                console.log(date);
+                console.log(allDay);
+                console.log(jsEvent);
+                console.log(view);
+            },
+            eventRender: function(event, element) {
+                element.find(".fc-content").remove();
+                if (event.title != 'LIBUR') {
+                    var new_description =
+                        '<p class="font-s20">' + event.title + '</p>' +
+                        event.jam_masuk + ' - ' + event.jam_keluar;
+                } else {
+                    var new_description =
+                        '<p class="font-s20">' + event.title + '</p>';
                 }
+                element.append(new_description);
+                element.css("height: 100%!important;");
             }
         });
+    };
 
-        // FullCalendar, for more examples you can check out http://fullcalendar.io/
-        initCalendar();
+    var initTabShiftTransfer = function() {
+        App.blocks('#calendar-block', 'state_loading');
+
+        // Fn to localize day name
+        var localizeDays = function(string) {
+            // var formatted = [];
+            var days = string.split(",").map(function(d) {
+                switch (d) {
+                    case "Senin":
+                        return "Monday";
+                        break;
+                    case "Selasa":
+                        return "Tuesday";
+                        break;
+                    case "Rabu":
+                        return "Wednesday";
+                        break;
+                    case "Kamis":
+                        return "Thursday";
+                        break;
+                    case "Jumat":
+                        return "Friday";
+                        break;
+                    case "Sabtu":
+                        return "Saturday";
+                        break;
+                    case "Minggu":
+                        return "Sunday";
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            return days;
+        };
+
+        // Fn to enumerate date range
+        var enumerateDays = function(startDate, endDate) {
+            var dates = [];
+            var currDate = moment(startDate).startOf('day');
+            var lastDate = moment(endDate).startOf('day');
+            while (currDate.add(1, 'days').diff(lastDate) < 0) {
+                dates.push(currDate.clone().toDate());
+            }
+            return dates;
+        };
+
+        // Fn to render employee's calendar
+        var renderEmployeeCalendar = function(id) {
+            $.getJSON(ENV.BASE_API + 'getShiftByEmployee.php?id=' + id, function(res) {
+                var shifts = [];
+                if (res.length > 0) {
+                    res.forEach(function(data) {
+                        // localize days
+                        var active_days = localizeDays(data.hari_efektif);
+                        // Get date range
+                        var days = enumerateDays(moment(data.date_from, 'DD-MM-YYYY').subtract(1, "days"), moment(data.date_to, 'DD-MM-YYYY').add(1, "days"));
+                        days.forEach(function(day) {
+                            // compare each day with active_days
+                            if (jQuery.inArray(moment(day).format('dddd'), active_days) !== -1) {
+                                shifts.push({
+                                    "id": data.id,
+                                    title: data.nama.toUpperCase(),
+                                    jam_masuk: data.jam_masuk,
+                                    jam_keluar: data.jam_keluar,
+                                    start: new Date(moment(day).format('YYYY/MM/DD')),
+                                    backgroundColor: '#a48ad4',
+                                    borderColor: '#a48ad4',
+                                    textColor: '#fff',
+                                    allDay: true
+                                })
+                            } else {
+                                shifts.push({
+                                    "id": data.id,
+                                    title: "LIBUR",
+                                    start: new Date(moment(day).format('YYYY/MM/DD')),
+                                    backgroundColor: '#777',
+                                    borderColor: '#777',
+                                    textColor: '#fff',
+                                    allDay: true
+                                })
+                            }
+                        });
+                    })
+                } else {
+                    swal({
+                        title: "Data Shift Kosong!",
+                        html: "Karyawan ini tidak memiliki data shift.<br>Tambahkan data pada Tab <strong>Group Shift</strong>.",
+                        type: "error",
+                        confirmButtonText: 'ok',
+                        confirmButtonClass: 'btn btn-danger btn-md text-uppercase'
+                    });
+                }
+
+                if (shifts.length > 0) {
+                    $('#shift-calendar').fullCalendar('removeEvents');
+                    $('#shift-calendar').fullCalendar('addEventSource', shifts);
+                }
+
+                // reset selector (employee search) to initial state
+                $('#employee-search').val(null).trigger('change.select2');
+
+                App.blocks('#employee-details', 'state_normal');
+            });
+        };
+
+        // Fn to render employee's calendar
+        var renderEmployeeDetails = function(id) {
+            if ($('#employee-details').hasClass('hide-me')) $('#employee-details').removeClass('hide-me');
+            $.ajax({
+                type: "POST",
+                url: ENV.BASE_API + "getEmployeeById.php",
+                dataType: 'json',
+                data: {
+                    id: id
+                }
+            }).done(function(res) {
+                if (res.success) {
+                    var data = res.data;
+                    var html = '<div class="block-content nopadding push-10">';
+                    $.each(data, function(key, val) {
+                        var div = $('#details-' + key);
+                        if (key == 'nama') {
+                            html += '<div class="push-20"><h3>' + val + '</h3></div>';
+                        }
+                        if (key == 'nik') {
+                            html += '<div class="push-10"><h5>' + val + '</h5></div>';
+                        }
+                        if (key == 'kode_grade') {
+                            html += '<div class="push-10"><span class="text-muted">Grade</span><br>' + val + '</div>';
+                        }
+                        if (key == 'penugasan' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Jabatan/Penugasan</span><br>' + val + '</div>';
+                        }
+                        if (key == 'kode_bagian' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Kode Bagian</span><br>' + val + '</div>';
+                        }
+                        if (key == 'nama_division') {
+                            html += '<div class="push-10"><span class="text-muted">Divisi</span><br>' + val + '</div>';
+                        }
+                        if (key == 'nama_department' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Departemen</span><br>' + val + '</div>';
+                        }
+                        if (key == 'nama_section' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Section</span><br>' + val + '</div>';
+                        }
+                        if (key == 'nama_sub_section' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Sub Section</span><br>' + val + '</div>';
+                        }
+                        if (key == 'nama_group' && val != null) {
+                            html += '<div class="push-10"><span class="text-muted">Grup</span><br>' + val + '</div>';
+                        }
+                    })
+                    html += '</div>';
+
+                    // Append to container
+                    $('#employee-details-content').html(html);
+
+                    // Send data to calendar
+                    renderEmployeeCalendar(data.id);
+                }
+            })
+        };
+
+        // Fn to populate modal's ajax selector (Select2)
+        var initSelector = function() {
+            var container = $('#employee-search');
+            container.select2({
+                width: '100%',
+                placeholder: "Ketik Nama atau NIK..",
+                ajax: {
+                    url: ENV.BASE_API + 'getSelectorData.php?table=employee',
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            q: params.term
+                        }
+                        return query;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                escapeMarkup: function(markup) { return markup; },
+                templateResult: formatKode,
+                templateSelection: formatKodeSelection
+            });
+
+            function formatKode(data) {
+                var markup = data.text.toUpperCase() + ' - ' + data.nik;
+                return markup;
+            }
+
+            function formatKodeSelection(data) {
+                return data.text.toUpperCase() || data.nik;
+            }
+
+            return true;
+        };
+
+        // Destroy existed Select2 instance
+        if ($('#employee-search').hasClass("select2-hidden-accessible")) {
+            $('#employee-search').val(null).trigger('change');
+        }
+
+        // reset employee details
+        if (initSelector()) {
+            // empty employee details block
+            $('#employee-details-content').empty()
+            if (!$('#employee-details').hasClass('hide-me')) $('#employee-details').addClass('hide-me');
+        }
+
+        // re-render calendar
+        $('#shift-calendar').fullCalendar('removeEvents');
+        setTimeout(function() {
+            $('#shift-calendar').fullCalendar('render');
+            App.blocks('#calendar-block', 'state_normal');
+        }, 1000);
+
+        // Employee Search on change
+        $(document).on('change', '#employee-search', function() {
+            App.blocks('#employee-details', 'state_loading');
+            if (this.value != '') {
+                renderEmployeeDetails(this.value);
+            }
+        })
+
+        // Calendar's day on click
+
+
+        // Sticky block
+        $('#sticky-block').sticky({ topSpacing: 80, bottomSpacing: 100 });
     };
 
     var initShiftPage = function() {
@@ -536,19 +775,23 @@ var BasePagesShift = function() {
             var t = $(this).attr('data');
             $('#hidden-active-type').val(t);
             switch (t) {
+                case 'shift':
+                    $('#btn-add').attr('data-type', 'shift');
+                    if ($('#btn-add').hasClass('hide-me')) $('#btn-add').removeClass('hide-me');
+                    initStat('shift');
+                    initTableShift();
+                    break;
                 case 'group_shift':
                     $('#btn-add').attr('data-type', 'group_shift');
-                    // initStat('group_shift');
+                    if ($('#btn-add').hasClass('hide-me')) $('#btn-add').removeClass('hide-me');
+                    initStat('group_shift');
                     initTableGroupShift();
                     break;
-                case 'penugasan_shift':
-                    $('#btn-add').attr('data-type', 'transfer_shift');
-                    // initContentPenugasanShift();
+                case 'shift_transfer':
+                    if (!$('#btn-add').hasClass('hide-me')) $('#btn-add').addClass('hide-me');
+                    initTabShiftTransfer();
                     break;
                 default:
-                    $('#btn-add').attr('data-type', 'shift');
-                    // initStat('shift');
-                    initTableShift();
                     break;
             };
         })
@@ -621,7 +864,7 @@ var BasePagesShift = function() {
                     }]);
 
                     break;
-                case "transfer_shift":
+                case "shift_transfer":
                     html += renderAddElement('text', 'nama', 'Nama Penugasan');
                     html += renderAddElement('text', 'kode', 'Kode');
                     break;
@@ -740,7 +983,7 @@ var BasePagesShift = function() {
                         }]);
 
                         break;
-                    case "transfer_shift":
+                    case "shift_transfer":
                         // html += renderAddElement('text', 'nama', 'Nama Penugasan');
                         // html += renderAddElement('text', 'kode', 'Kode');
                         break;
@@ -919,12 +1162,9 @@ var BasePagesShift = function() {
 
         // when modal on close
         $('#modal').on('hidden.bs.modal', function() {
-            console.log('Destroying validator and resetting elements...');
             window.$validator.destroy();
-
             // reset all elements
             $('[id^=input-]').html('').empty();
-
             // hide all hidden elements
             $('[id^=hidden-]').addClass('hide-me');
         })
@@ -943,6 +1183,7 @@ var BasePagesShift = function() {
         init: function() {
             set_base('shift');
             initStat('shift');
+            initCalendar();
             initShiftPage();
         }
     };
