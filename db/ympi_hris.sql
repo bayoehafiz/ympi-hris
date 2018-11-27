@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 15, 2018 at 10:37 PM
+-- Generation Time: Nov 28, 2018 at 12:04 AM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
@@ -2050,7 +2050,8 @@ INSERT INTO `employee` (`id`, `nik`, `pin`, `status`, `kode_bagian`, `nama`, `tg
 (1866, 'D00080613', NULL, 'Tetap', NULL, 'Andi Suwardi', '2000-08-07', NULL, NULL, 'Laki-laki', 'Sidoarjo', '1977-03-02', 'Islam', 'Jl. Raci Sekolahan-2/3-Raci-Rembang-Pasuruan', 'Jl. Raci Sekolahan-2/3-Raci-Rembang-Pasuruan', 'K2', 'S2', 'SMA Muhamadiyah 2 Sidoarjo', 'A2/Biologi', '3515080302770001', '0', '00N40103850', '0001542030434', '48.709.736.2-624.000', '00N40103850000', '1440004831381', 'assets/img/avatar.jpg', 4, 5, 13, 25, 22, NULL, 26, NULL, 1, NULL, NULL, '2018-10-18 02:27:28', '2018-11-15 14:59:24'),
 (1867, 'D00080614', NULL, 'Tetap', NULL, 'Dwi Wijanarko', '2000-08-07', NULL, NULL, 'Laki-laki', 'Sidoarjo', '1981-09-03', 'Islam', 'Jl. Raya Raci-2/3-Raci-Rembang-Pasuruan', 'Jl. Raya Raci-2/3-Raci-Rembang-Pasuruan', 'K2', 'S2', 'SMK PGRI 1 Sidoarjo', 'Mesin', '3515080309810003', '0', '00N40103868', '0001542030873', '48.709.738.8-624.000', '00N40103868000', '1440004829617', 'assets/img/avatar.jpg', 4, 5, 13, 25, 22, NULL, 26, NULL, 1, NULL, NULL, '2018-10-18 02:27:28', '2018-11-15 14:59:24'),
 (1868, 'L08051258', NULL, 'Tetap', NULL, 'Achmad Muzammil', '2008-05-06', NULL, NULL, 'Laki-laki', 'Pasuruan', '1986-02-02', 'Islam', 'Ketanen 30-1/3-Gempeng-Bangil-Pasuruan', 'Ketanen 30-1/3-Gempeng-Bangil-Pasuruan', 'K1', 'S2', '0', '0', '3514140202860002', '0', '08010442393', '0001542031547', '78.447.867.9-624.000', '08010442393000', '1440006844788', 'assets/img/avatar.jpg', 4, 5, 13, 25, 22, NULL, 24, NULL, 1, NULL, NULL, '2018-10-18 02:27:28', '2018-11-15 14:59:24'),
-(1869, '16113897', NULL, 'Kontrak 2', NULL, 'M. Zulfanaufal', '2016-11-01', 24, '2018-11-01', 'Laki-laki', 'Kediri', '1998-01-10', 'Islam', 'Dsn. Bibis-01/01-Baye-Kayen-Kediri', 'Dsn. Bibis-01/01-Baye-Kayen-Kediri', 'Tk', 'S2', 'SMKN 1 Kediri', 'Teknik Instalasi Tenaga Listrik', '3506241001980001', '085706109498', '16054790510', '0002203265619', '0', '16054790510000', '1440016236645', 'assets/img/avatar.jpg', 4, 5, 13, 25, 22, NULL, 21, NULL, 1, NULL, NULL, '2018-10-18 02:27:28', '2018-11-15 14:51:17');
+(1869, '16113897', NULL, 'Kontrak 2', NULL, 'M. Zulfanaufal', '2016-11-01', 24, '2018-11-01', 'Laki-laki', 'Kediri', '1998-01-10', 'Islam', 'Dsn. Bibis-01/01-Baye-Kayen-Kediri', 'Dsn. Bibis-01/01-Baye-Kayen-Kediri', 'Tk', 'S2', 'SMKN 1 Kediri', 'Teknik Instalasi Tenaga Listrik', '3506241001980001', '085706109498', '16054790510', '0002203265619', '0', '16054790510000', '1440016236645', 'assets/img/avatar.jpg', 4, 5, 13, 25, 22, NULL, 21, NULL, 1, NULL, NULL, '2018-10-18 02:27:28', '2018-11-15 14:51:17'),
+(1881, '18064877', '4877', 'Percobaan', 49, 'Jack Sparrow', '2018-06-20', 3, '2018-09-20', 'Laki-laki', 'Surabaya', '1987-09-17', 'Islam', 'Jl. Panglima Sudirman 123\nSurabaya', 'Jl. Sukarno Hatta 456\nPasuruan', 'K2', 'S5', 'Univ. Pancasila Surabaya', 'Teknik Mesin', '350700100010001', '081123456789', '1111-2222-3333', '4444-5555-6666', '1234-5678-9', '123-abc-456', '1111-22-3333-44', 'assets/img/avatars/18064877-c38b95xreswcb6ec.jpg', 2, 3, 10, 20, 9, NULL, 24, NULL, 1, '17-11-2018', NULL, '2018-11-17 06:24:50', '2018-11-17 06:33:29');
 
 -- --------------------------------------------------------
 
@@ -2073,7 +2074,7 @@ CREATE TABLE `grade` (
 --
 
 INSERT INTO `grade` (`id`, `nama`, `kode`, `priority`, `active`, `created`, `updated`) VALUES
-(21, ' Operator Kontrak', 'E0', 1, 1, '2018-10-18 03:43:34', '2018-11-14 06:10:54'),
+(21, 'Operator Kontrak', 'E0', 1, 1, '2018-10-18 03:43:34', '2018-11-17 07:57:25'),
 (22, ' Junior Operator', 'E1', 2, 1, '2018-10-18 03:43:46', '2018-11-14 06:10:56'),
 (23, ' Junior Staff', 'E1', 3, 1, '2018-10-18 03:44:30', '2018-11-14 06:10:57'),
 (24, ' Junior Operator', 'E2', 4, 1, '2018-10-18 03:44:44', '2018-11-14 06:11:00'),
@@ -2181,8 +2182,7 @@ INSERT INTO `group` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VAL
 (54, 'Sax', 5, 1, '2018-10-03 09:50:43', '2018-10-03 09:50:43'),
 (55, 'Venova', 55, 1, '2018-10-03 09:50:56', '2018-10-03 09:50:56'),
 (56, 'WST - Office', 66, 1, '2018-10-03 09:52:13', '2018-10-03 09:52:13'),
-(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-11-08 03:02:10'),
-(59, 'TEST 123', 83, 0, '2018-11-15 12:56:29', '2018-11-15 12:56:29');
+(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-11-08 03:02:10');
 
 -- --------------------------------------------------------
 
@@ -2196,9 +2196,11 @@ CREATE TABLE `group_shift` (
   `nama` varchar(255) DEFAULT NULL,
   `shift` int(11) DEFAULT NULL,
   `assignation_key` varchar(255) DEFAULT NULL,
-  `assignation_value` int(11) DEFAULT NULL,
+  `assignation_value` varchar(255) DEFAULT NULL,
   `date_from` varchar(255) DEFAULT NULL,
   `date_to` varchar(255) DEFAULT NULL,
+  `schema` varchar(255) DEFAULT NULL,
+  `transferable` tinyint(1) NOT NULL DEFAULT '0',
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -2208,11 +2210,15 @@ CREATE TABLE `group_shift` (
 -- Dumping data for table `group_shift`
 --
 
-INSERT INTO `group_shift` (`id`, `kode`, `nama`, `shift`, `assignation_key`, `assignation_value`, `date_from`, `date_to`, `active`, `created`, `updated`) VALUES
-(4, 'S1', 'Shift 1', 9, 'sub_section', 25, '09-11-2018', '15-11-2018', 1, '2018-10-25 10:16:12', '2018-11-08 15:49:39'),
-(6, 'S2', 'Shift 2', 7, 'section', 12, '26-10-2018', '01-11-2018', 1, '2018-10-25 12:30:58', '2018-10-25 14:06:06'),
-(10, '123', 'Shift GA Malam', 8, 'sub_section', 21, '09-11-2018', '15-11-2018', 1, '2018-11-08 15:06:06', '2018-11-08 15:52:21'),
-(11, 'T', 'TEST', 7, 'sub_section', 20, '09-11-2018', '15-11-2018', 1, '2018-11-08 15:40:25', '2018-11-08 15:40:31');
+INSERT INTO `group_shift` (`id`, `kode`, `nama`, `shift`, `assignation_key`, `assignation_value`, `date_from`, `date_to`, `schema`, `transferable`, `active`, `created`, `updated`) VALUES
+(4, 'T1', 'Non Shift', 8, 'division', '1,4', '2018-11-01', '2018-12-31', '0d0', 0, 1, '2018-10-25 10:16:12', '2018-11-24 10:17:40'),
+(6, 'S2', 'Shift 1', 7, 'division', '3', '2018-11-26', '2018-12-02', '6d1', 1, 1, '2018-10-25 12:30:58', '2018-11-26 07:18:06'),
+(13, 'S2', 'Shift 2', 14, 'division', '3', '2018-12-03', '2018-12-09', '6d1', 1, 1, '2018-11-23 14:16:50', '2018-11-26 07:18:12'),
+(14, 'S3', 'Shift 3', 9, 'division', '3', '2018-12-10', '2018-12-16', '6d1', 1, 1, '2018-11-23 14:17:35', '2018-11-26 07:18:17'),
+(15, 'AP1', 'AP 1 Nov', 7, 'section', '3,27', '2018-11-19', '2018-11-26', '3d1', 0, 1, '2018-11-24 09:44:32', '2018-11-26 11:46:51'),
+(16, '123', 'Test #1', 14, 'employee', '472,1296,1626,1468,743', '2018-11-05', '2018-11-18', '4d1', 0, 1, '2018-11-27 03:21:10', '2018-11-27 16:13:58'),
+(17, 'T2', 'Test #2', 14, 'group', '23', '2018-11-27', '2018-12-27', '5d1', 1, 1, '2018-11-27 16:13:20', '2018-11-27 16:14:00'),
+(18, 'T3', 'Test #3', 18, 'sub_section', '20,22', '2018-11-01', '2018-12-31', '4d1', 1, 1, '2018-11-27 16:14:56', '2018-11-27 16:14:58');
 
 -- --------------------------------------------------------
 
@@ -2394,6 +2400,9 @@ CREATE TABLE `shift` (
   `akhir_scan_masuk` varchar(255) DEFAULT NULL,
   `awal_scan_keluar` varchar(255) DEFAULT NULL,
   `akhir_scan_keluar` varchar(255) DEFAULT NULL,
+  `on_freeday` tinyint(4) NOT NULL DEFAULT '0',
+  `override` tinyint(4) NOT NULL DEFAULT '0',
+  `override_shift` varchar(255) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -2403,12 +2412,23 @@ CREATE TABLE `shift` (
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `active`, `created`, `updated`) VALUES
-(7, 'MLM', 'Shift Malam', 'Senin,Selasa,Rabu,Kamis,Jumat', '17:14', '17:14', '17:14', '17:14', '17:14', '17:14', 1, '2018-10-25 10:14:13', '2018-10-25 10:15:38'),
-(8, 'SPG', 'Shift Pagi', 'Senin,Selasa,Rabu,Kamis,Jumat', '08:14', '17:14', '07:14', '08:14', '17:14', '18:14', 1, '2018-10-25 10:14:36', '2018-10-25 10:18:58'),
-(9, 'SWE', 'Shift Weekend', 'Jumat,Sabtu,Minggu', '09:14', '17:14', '09:14', '09:14', '17:14', '17:14', 1, '2018-10-25 10:14:56', '2018-10-25 13:41:58'),
-(11, 'TLG', 'Hello World', 'Selasa,Sabtu,Minggu', '19:30', '09:30', '19:30', '19:30', '19:30', '19:30', 0, '2018-10-25 12:30:44', '2018-11-09 02:32:20'),
-(12, 'TTT', 'TEST 123', 'Senin,Selasa,Sabtu,Minggu', '22:06', '22:06', '22:06', '22:06', '22:06', '22:06', 1, '2018-11-08 15:06:27', '2018-11-08 15:49:32');
+INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `on_freeday`, `override`, `override_shift`, `active`, `created`, `updated`) VALUES
+(7, 'S1', 'Shift 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '16:00', '05:00', '10:00', '13:00', '22:00', 0, 0, NULL, 1, '2018-10-25 10:14:13', '2018-11-23 14:19:36'),
+(8, 'NS', 'Non Shift', 'Senin,Selasa,Rabu,Kamis,Jumat', '07:00', '16:00', '05:50', '06:10', '15:50', '16:10', 0, 0, NULL, 1, '2018-10-25 10:14:36', '2018-11-26 01:58:37'),
+(9, 'S3', 'Shift 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:30', '07:10', '20:30', '00:00', '04:01', '09:00', 0, 0, NULL, 1, '2018-10-25 10:14:56', '2018-11-23 14:19:16'),
+(14, 'S2', 'Shift 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '15:55', '00:15', '12:00', '18:00', '22:00', '03:00', 0, 0, NULL, 1, '2018-11-19 07:45:34', '2018-11-23 14:19:42'),
+(15, 'J1', 'Jumat 1', 'Jumat', '07:00', '16:30', '05:00', '10:00', '12:00', '22:00', 0, 1, '8,7', 1, '2018-11-19 07:52:04', '2018-11-26 01:59:08'),
+(16, 'J2', 'Jumat 2', 'Jumat', '16:25', '00:45', '12:00', '18:00', '21:00', '03:00', 0, 1, '14', 1, '2018-11-19 07:53:47', '2018-11-20 06:28:04'),
+(17, 'J3', 'Jumat 3', 'Jumat', '23:59', '07:40', '20:30', '01:00', '04:01', '09:00', 0, 1, '9', 1, '2018-11-19 07:55:23', '2018-11-20 06:28:12'),
+(18, 'SP', 'Security Pagi', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '15:00', '05:00', '08:00', '14:00', '18:00', 0, 0, NULL, 1, '2018-11-19 08:02:14', '2018-11-19 08:02:20'),
+(19, 'SS', 'Security Siang', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '15:00', '23:00', '13:00', '16:00', '22:00', '02:00', 0, 0, NULL, 1, '2018-11-19 08:07:34', '2018-11-19 08:07:37'),
+(20, 'SM', 'Security Malam', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:00', '07:00', '21:00', '00:00', '06:00', '10:00', 0, 0, NULL, 1, '2018-11-19 08:08:55', '2018-11-19 08:08:58'),
+(21, 'C1', 'Chef 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '06:00', '15:00', '04:00', '08:00', '12:00', '19:00', 0, 0, NULL, 1, '2018-11-19 08:11:09', '2018-11-19 08:19:04'),
+(22, 'C2', 'Chef 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '12:00', '20:00', '10:00', '15:00', '18:00', '23:00', 0, 0, NULL, 1, '2018-11-19 08:12:01', '2018-11-19 08:19:07'),
+(23, 'C3', 'Chef 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:00', '07:00', '20:00', '01:00', '04:00', '10:00', 0, 0, NULL, 1, '2018-11-19 08:15:29', '2018-11-19 08:19:05'),
+(24, 'L1', 'Lembur 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '16:00', '05:00', '09:00', '09:00', '19:00', 1, 0, NULL, 1, '2018-11-19 08:23:18', '2018-11-27 16:40:26'),
+(25, 'L2', 'Lembur 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '16:00', '00:15', '12:00', '18:00', '19:00', '02:00', 1, 0, NULL, 1, '2018-11-19 08:25:12', '2018-11-27 16:35:17'),
+(26, 'L3', 'Lembur 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:30', '07:10', '22:00', '01:00', '04:00', '08:00', 1, 0, NULL, 1, '2018-11-19 08:26:35', '2018-11-27 16:31:34');
 
 -- --------------------------------------------------------
 
@@ -2419,9 +2439,19 @@ INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_kel
 CREATE TABLE `shift_transfer` (
   `id` int(11) NOT NULL,
   `employee` int(11) DEFAULT NULL,
-  `group_shift` int(11) DEFAULT NULL,
-  `date` varchar(255) DEFAULT NULL
+  `old_shift` int(11) DEFAULT NULL,
+  `new_shift` int(11) DEFAULT NULL,
+  `transfer_date` varchar(255) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `shift_transfer`
+--
+
+INSERT INTO `shift_transfer` (`id`, `employee`, `old_shift`, `new_shift`, `transfer_date`, `created`, `updated`) VALUES
+(12, 1296, 0, 25, '2018-12-09', '2018-11-27 17:00:37', '2018-11-27 17:00:37');
 
 -- --------------------------------------------------------
 
@@ -2520,7 +2550,7 @@ INSERT INTO `sub_section` (`id`, `nama`, `parent`, `active`, `created`, `updated
 (80, 'SND SAX', 25, 1, '2018-10-03 09:18:50', '2018-10-03 09:18:50'),
 (81, 'SOLDER FL KEY', 25, 1, '2018-10-03 09:18:59', '2018-10-03 09:18:59'),
 (82, 'Buffing', 25, 1, '2018-10-03 09:19:07', '2018-10-03 09:19:07'),
-(83, 'TEST 321', 30, 1, '2018-11-15 05:54:38', '2018-11-15 07:42:13');
+(83, 'TEST 321', 30, 0, '2018-11-15 05:54:38', '2018-11-17 07:08:28');
 
 --
 -- Indexes for dumped tables
@@ -2652,7 +2682,7 @@ ALTER TABLE `division`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1879;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1882;
 --
 -- AUTO_INCREMENT for table `grade`
 --
@@ -2662,17 +2692,17 @@ ALTER TABLE `grade`
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT for table `group_shift`
 --
 ALTER TABLE `group_shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `kode_bagian`
 --
 ALTER TABLE `kode_bagian`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 --
 -- AUTO_INCREMENT for table `penugasan`
 --
@@ -2692,12 +2722,12 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `shift_transfer`
 --
 ALTER TABLE `shift_transfer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
