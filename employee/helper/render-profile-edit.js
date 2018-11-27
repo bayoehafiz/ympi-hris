@@ -1,6 +1,6 @@
 // Render elements when editing profile
 var renderProfileEdit = function(data) {
-    $('#modal-title').html('Profil Karyawan: Ubah Data');
+    $('#modal-title').html('Ubah Data Karyawan');
 
     // hide/show (un)related buttons
     $('#btn-edit-profile, #btn-terminate-profile, #btn-close-profile, #btn-generate-profile').addClass('hide-me');

@@ -1,3 +1,63 @@
+/*Block loading state*/
+.block.block-opt-refresh>.block-header {
+    opacity: 0;
+}
+
+.block.block-opt-refresh>.block-content {
+    opacity: 0;
+}
+
+.block.block-opt-refresh:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    color: #646464;
+    font-family: Simple-Line-Icons;
+    font-size: 18px;
+    text-align: center;
+    z-index: 2;
+    content: "\e09a";
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+
+.ie9 .block.block-opt-refresh:after {
+    content: "Sedang Memproses.." !important;
+}
+
+/*custom font size*/
+.font-s8 {
+    font-size: 8px !important;
+}
+
+.font-s10 {
+    font-size: 10px !important;
+}
+
+.font-s14 {
+    font-size: 14px !important;
+}
+
+.font-s15 {
+    font-size: 15px !important;
+}
+
+.font-s16 {
+    font-size: 16px !important;
+}
+
+.font-s18 {
+    font-size: 18px !important;
+}
+
+.font-s20 {
+    font-size: 20px !important;
+}
+
 /*DT pagination*/
 .dataTables_wrapper .dataTables_paginate {
     margin-right: 20px !important;
@@ -59,6 +119,14 @@
 .select2-container {
     width: 100% !important;
     padding: 0;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: transparent !important;
+}
+
+.select2-container--default .select2-selection--multiple {
+    background-color: transparent !important;
 }
 
 /*User added*/
@@ -304,4 +372,15 @@ span.next {
 
 .scale-transition.scale-in {
     transform: scale(1);
+}
+
+/*Full Calendar*/
+.fc h2 {
+    font-size: 22px;
+    text-transform: uppercase;
+    /*padding-top: 10px;*/
+}
+
+.fc-event{
+    cursor: pointer;
 }

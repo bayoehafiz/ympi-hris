@@ -129,7 +129,7 @@ window.initValidation = function(data_type) {
                     required: 'Pilih Jenis Bagian'
                 },
                 'elem-bagian_value': {
-                    required: 'Pilih *'
+                    required: 'Pilih Unit (Pilih Jenis Bagian Dahulu)'
                 }
             };
             break;

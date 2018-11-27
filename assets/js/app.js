@@ -1383,10 +1383,14 @@ jQuery(function() {
             ENV.BASE_API = ENV.BASE_URL + '/php/api/';
         };
 
+        // Set global MOMENT.js locale
+        moment.locale('id');
+
         // Sweetalert Default Config
         swal.setDefaults({
             buttonsStyling: false,
-            cancelButtonClass: 'btn btn-default btn-md text-uppercase push-5-l push-5-r',
+            confirmButtonClass: "btn btn-primary btn-sm text-uppercase push-5-r",
+            cancelButtonClass: 'btn btn-default btn-sm text-uppercase push-5-l',
             allowOutsideClick: false,
             allowEscapeKey: false
         });
@@ -1395,7 +1399,6 @@ jQuery(function() {
         $(document).on('click', '.js-swal-error', function() {
             swal('Oops...', 'Sedang dalam pengembangan!', 'warning');
         });
-
 
         // Our application inititation
         App.init();

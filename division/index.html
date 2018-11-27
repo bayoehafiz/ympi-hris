@@ -26,6 +26,11 @@
     <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
     <link rel="stylesheet" id="css-theme" href="../assets/css/themes/amethyst.min.css">
     <!-- END Stylesheets -->
+    <style type="text/css">
+    .select2-container--default .select2-selection--single {
+        background-color: transparent !important;
+    }
+    </style>
 </head>
 
 <body data-spy="scroll">
@@ -216,25 +221,25 @@
             <div class="modal-dialog modal-dialog-popin">
                 <form class="js-validation-material" action="" method="post" id="form-modal">
                     <div class="modal-content">
-                        <div class="block block-themed block-transparent remove-margin-b" id="modal-block">
-                            <div class="block-header bg-primary-dark">
+                        <div class="block block-rounded block-transparent remove-margin-b" id="modal-block">
+                            <div class="block-header bg-gray-lighter">
                                 <ul class="block-options">
                                     <li>
                                         <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
                                     </li>
                                 </ul>
-                                <h3 class="block-title" id="modal-title"></h3>
+                                <div class="block-title text-uppercase text-gray-dark font-w700"><i class="si si-layers push-5-r font-w700"></i><span id="modal-title" class="push-5-l"></span></div>
                             </div>
-                            <div class="block-content" id="modal-content">
+                            <div class="block-content bg-gray-lighter" id="modal-content">
                                 <div class="block">
-                                    <div id="generated-container" class="row"></div>
+                                    <div id="generated-container" class="row items-push bg-gray-lighter"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer bg-gray-lighter">
                             <!-- <button class="btn btn-sm btn-danger pull-left" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus Data</button> -->
-                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
-                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
+                            <button class="btn btn-sm btn-default text-uppercase" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
+                            <button class="btn btn-sm btn-primary text-uppercase" type="submit" id="btn-modal-save"><i class="si si-check font-w700"></i> Simpan</button>
                         </div>
                     </div>
                 </form>

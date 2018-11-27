@@ -45,8 +45,8 @@ var removeData = function(id) {
             text: "Data yang dihapus tidak akan dapat dikembalikan",
             type: "question",
             showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Hapus!",
+            confirmButtonClass: "btn btn-danger btn-sm text-uppercase push-5-r",
+            confirmButtonText: "Hapus",
             cancelButtonText: "Batal",
             showLoaderOnConfirm: true,
             preConfirm: function() {
@@ -340,11 +340,12 @@ $(document).on('click', '#btn-cancel-profile', function() {
 $(document).on('click', '#btn-terminate-profile', function() {
     swal({
             title: "Peringatan!",
-            html: "Karyawan akan dipindahkan ke data \"Karyawan Non Aktif\".<br>Klik <strong>OK</strong> untuk melanjutkan.",
+            html: "Karyawan akan dipindahkan ke data <strong>Karyawan Non Aktif</strong>." +
+                "<br>Klik <strong>Lanjut</strong> untuk melanjutkan.",
             type: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Ok",
+            confirmButtonClass: "btn btn-danger btn-sm text-uppercase push-5-r",
+            confirmButtonText: "Lanjut",
             cancelButtonText: "Batal",
             allowOutsideClick: false
         })

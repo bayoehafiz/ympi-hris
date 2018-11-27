@@ -1,6 +1,6 @@
 // Render elements when opening / viewing profile
 var renderProfileView = function(data) {
-    $('#modal-title').html('Profil Karyawan');
+    $('#modal-title').html('Data Karyawan');
 
     // hide/show (un)related buttons
     if (data.active == 1) {
@@ -34,7 +34,7 @@ var renderProfileView = function(data) {
         else if (data.status == "Kontrak 2") var snik = '<span class="text-info">' + data.nik + '</span>';
         else var snik = '<span class="text-muted">' + data.nik + '</span>';
     } else {
-        var snik = '<span class="text-muted">' + data.nik + '</span>';
+        var snik = '<span class="text-danger">' + data.nik + '</span>';
     }
 
     $('#modal-nik').removeClass('hide-me');

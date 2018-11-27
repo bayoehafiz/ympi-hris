@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="../assets/css/daterangepicker.css">
     <link rel="stylesheet" href="../assets/js/plugins/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
@@ -41,7 +43,7 @@
         <main id="main-container">
             <!-- Stats -->
             <div class="content-mini content-mini-full bg-white border-b">
-                <div class="row items-push text-uppercase text-center center-block" id="stat-shift"></div>
+                <div class="items-push text-center center-block push-10-t text-center" id="stat-shift"></div>
             </div>
             <!-- END Stats -->
             <!-- Page Content -->
@@ -53,10 +55,10 @@
                             <a href="#tab-shift" class="tab-btn" data="shift">SHIFT</a>
                         </li>
                         <li>
-                            <a href="#tab-group_shift" class="tab-btn" data="group_shift">GROUP SHIFT</a>
+                            <a href="#tab-group_shift" class="tab-btn" data="group_shift">SHIFT PLOT</a>
                         </li>
                         <li>
-                            <a href="#tab-shift_transfer" class="tab-btn" data="shift_transfer">TRANSFER SHIFT</a>
+                            <a href="#tab-shift_transfer" class="tab-btn" data="shift_transfer">TRANSFER / PINDAH SHIFT</a>
                         </li>
                     </ul>
                     <div class="block-content tab-content">
@@ -69,11 +71,11 @@
                                             <tr>
                                                 <th></th>
                                                 <th class="text-center">Kode</th>
-                                                <th>Nama</th>
+                                                <th style="width: 10%!important;">Nama</th>
                                                 <th class="text-center">Hari Efektif</th>
-                                                <th class="text-center">Jam</th>
-                                                <th class="text-center">Scan Masuk</th>
-                                                <th class="text-center">Scan Keluar</th>
+                                                <th class="text-center" style="width: 10%!important;">Jam (WIB)</th>
+                                                <th class="text-center hidden-md">Scan Masuk (WIB)</th>
+                                                <th class="text-center hidden-md">Scan Keluar (WIB)</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 15%;">Actions</th>
                                             </tr>
@@ -92,10 +94,10 @@
                                             <tr>
                                                 <th></th>
                                                 <th class="text-center">Kode</th>
-                                                <th class="hidden-xs text-center">Nama</th>
+                                                <th class="hidden-xs text-center" style="width: 10%!important;">Nama</th>
                                                 <th class="text-center">Assigned Shift</th>
-                                                <th class="text-center">Assigned Unit</th>
-                                                <th class="text-center">Tgl Efektif</th>
+                                                <th class="text-center">Assigned Unit(s)</th>
+                                                <th class="text-center" style="width: 20%!important;">Tgl Efektif</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center" style="width: 15%;">Actions</th>
                                             </tr>
@@ -111,7 +113,7 @@
                                     <div class="row items-push">
                                         <div class="col-md-4 col-lg-3">
                                             <div class="block" id="sticky-block">
-                                                <!-- Select employee -->
+                                                <!-- SEARCH employee -->
                                                 <div class="block block-bordered block-rounded">
                                                     <div class="block-content">
                                                         <div class="form-group">
@@ -123,19 +125,36 @@
                                                         <div></div>
                                                     </div>
                                                 </div>
-                                                <!-- END Select employee -->
-                                                <!-- employee Details -->
-                                                <div class="block block-rounded block-bordered bg-themed push-20-t" id="employee-details">
-                                                    <div class="block-content bg-gray-lighter" id="employee-details-content"></div>
+                                                <!-- END SEARCH employee -->
+                                                <!-- EMPLOYEE Details -->
+                                                <div class="block block-rounded block-bordered bg-themed" id="employee-details">
+                                                    <div class="block-content bg-gray-lighter" id="employee-details-content" style="padding-bottom: 10px!important;"></div>
                                                 </div>
-                                                <!-- END employee Details -->
+                                                <!-- END EMPLOYEE Details -->
                                             </div>
                                         </div>
                                         <!-- Calendar Container -->
                                         <div class="col-md-8 col-lg-9">
                                             <div class="block block-transparent" id="calendar-block">
                                                 <div class="block-content-full">
+                                                    <div class="alert alert-danger hide-me" id="error-block">
+                                                        <p>Karyawan ini tidak memiliki data shift. Tambahkan data pada Tab <strong>GROUP SHIFT</strong>.</p>
+                                                    </div>
                                                     <div class="js-calendar" id="shift-calendar"></div>
+                                                    <div class="text-center push-10-t font-s12">
+                                                        <div class="push-10">
+                                                            <span class="push-10-r"><i class="fa fa-square push-5-r text-primary"></i>Shift Utama</span>
+                                                            <span class="push-10-r push-10-l"><i class="fa fa-square push-5-r" style="color: #1abc9c;"></i>Shift Khusus</span>
+                                                            <span class="push-10-r push-10-l"><i class="fa fa-square push-5-r" style="color: #3498db;"></i>Overriding Shift</span>
+                                                            <span class="push-10-l"><i class="fa fa-square push-5-r text-danger"></i>Transferred Shift</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="push-10-r"><i class="si si-clock push-5-r"></i>Jam Masuk - Keluar</span>
+                                                            <span class="push-10-r push-10-l"><i class="si si-calendar push-5-r"></i>Shift Plot</span>
+                                                            <span class="push-10-r push-10-l"><i class="si si-shuffle push-5-r"></i>Transferable</span>
+                                                            <span class="push-10-l"><i class="fa fa-exchange push-5-r"></i>Shift Asal</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,70 +170,96 @@
             <!-- END Page Content -->
         </main>
         <!-- END Main Container -->
-        <!-- Modal -->
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <!-- Main Modal -->
+        <div class="modal fade" id="modal" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-popin">
                 <form class="js-validation-material" method="post" id="form-modal">
                     <div class="modal-content">
-                        <div class="block block-themed block-transparent remove-margin-b">
-                            <div class="block-header bg-primary-dark">
+                        <div class="block block-rounded block-transparent remove-margin-b" id="modal-block">
+                            <div class="block-header bg-gray-lighter">
                                 <ul class="block-options">
                                     <li>
                                         <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
                                     </li>
                                 </ul>
-                                <h3 class="block-title" id="modal-title"></h3>
+                                <div class="block-title text-uppercase text-gray-dark font-w700"><i class="si si-calendar push-5-r font-w700"></i><span id="modal-title" class="push-5-l"></span></div>
                             </div>
-                            <div class="block-content row  push-20" id="modal-content">
-                                <span id="generated-container">All generated elements will be here</span>
-                                <div class="form-group hide-me" id="hidden-shift">
-                                    <div class="col-md-7">
-                                        <div class="form-material form-material-primary push-30">
-                                            <select class="form-control" id="input-shift" name="elem-shift" size="1"></select>
-                                            <label for="elem-shift" id="label-shift"></label>
-                                        </div>
-                                    </div>
+                            <div class="block-content bg-gray-lighter" id="modal-content">
+                                <div class="block">
+                                    <div id="generated-container" class="row bg-gray-lighter"></div>
                                 </div>
-                                <div class="hide-me" id="hidden-assignation">
-                                    <div class="form-group">
-                                        <div class="col-md-6">
-                                            <div class="form-material form-material-primary push-30">
-                                                <select class="form-control" id="input-assignation_key" name="elem-assignation_key" size="1"></select>
-                                                <label for="elem-assignation_key" id="label-assignation_key"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-6">
-                                            <div class="form-material form-material-primary push-30">
-                                                <select class="form-control" id="input-assignation_value" name="elem-assignation_value" size="1" multiselect></select>
-                                                <label for="elem-assignation_value" id="label-assignation_value"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- <div class="form-group hide-me" id="hidden-date">
-                                    <div class="col-md-6 push-30">
-                                        <label for="elem-date" id="label-date"></label>
-                                        <input class="form-control daterangepicker" type="text" id="input-date" name="elem-date">
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-sm btn-warning" type="button" id="btn-modal-edit"><i class="si si-pencil"></i> Ubah</button>
-                            <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus</button>
-                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
+                        <div class="modal-footer bg-gray-lighter">
                             <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
-                            <button class="btn btn-sm btn-default" type="button" id="btn-modal-cancel"><i class="si si-action-undo"></i> Batal</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
                         </div>
                     </div>
                 </form>
-                <input type="hidden" id="act-type">
                 <input type="hidden" id="data-id">
             </div>
         </div>
-        <!-- END Modal -->
+        <!-- END Main Modal -->
+        <!-- Shift Transfer Modal -->
+        <div class="modal fade" id="transfer-modal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-popin">
+                <form class="js-validation-material" method="post" id="form-transfer-modal">
+                    <div class="modal-content">
+                        <div class="block block-rounded block-transparent remove-margin-b" id="transfer-modal-block">
+                            <div class="block-header bg-gray-lighter">
+                                <ul class="block-options">
+                                    <li>
+                                        <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+                                    </li>
+                                </ul>
+                                <div class="block-title text-uppercase text-gray-dark font-w700"><i class="si si-shuffle push-5-r font-w700"></i><span class="push-5-l">TRANSFER SHIFT</span></div>
+                            </div>
+                            <div class="block-content bg-gray-lighter" id="transfer-modal-content">
+                                <div class="block">
+                                    <div class="row bg-gray-lighter center-block">
+                                        <div class="col-md-5">
+                                            <div class="block">
+                                                <div class="block-content block-content-full block-rounded text-white" id="old-shift-block">
+                                                    <div class="text-center push-10-t push-10">
+                                                        <h3 class="h4 push-10 center-block font-w600" id="old-shift-title"></h3>
+                                                        <div id="old-shift-content"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <i class="fa fa-exchange text-gray font-w700 fa-3x push-50-t"></i>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="block">
+                                                <div class="block-content block-content-full block-rounded" id="new-shift-block" style="padding-top: 5px!important;">
+                                                    <div class="text-center">
+                                                        <div class="form-group">
+                                                            <div class="form-material form-material-primary">
+                                                                <select class="form-control" id="input-new_shift" name="elem-new_shift" size="1" tabindex="-1" aria-hidden="true"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div id="new-shift-content"></div>
+                                                        <input type="hidden" id="input-employee" name="elem-employee">
+                                                        <input type="hidden" id="input-old_shift" name="elem-old_shift">
+                                                        <input type="hidden" id="input-transfer_date" name="elem-date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-gray-lighter">
+                            <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Batal</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END Shift Transfer Modal -->
         <!-- Floating ADD button -->
         <div class="zoom animated bounceIn" data-toggle="tooltip" title="" data-placement="left" data-original-title="Klik untuk menambah data">
             <a class="zoom-fab zoom-btn-large btn btn-primary" id="btn-add"><i class="fa fa-plus fa-2x"></i></a>
@@ -223,8 +268,6 @@
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
-        <input type="hidden" id="hidden-type">
-        <input type="hidden" id="hidden-active-type">
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->
@@ -258,6 +301,7 @@
     <script src="../assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
     <script src="../assets/js/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="../assets/js/plugins/slick/slick.min.js"></script>
     <script src="../assets/js/plugins/select2/select2.full.min.js"></script>
     <script src="../assets/js/plugins/masked-inputs/jquery.maskedinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.js"></script>
@@ -269,11 +313,13 @@
     <script src="../assets/js/core/jquery.sticky.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
+    <script src="helper/init-validation.js"></script>
     <script src="helper/render-add-element.js"></script>
     <script src="helper/render-edit-element.js"></script>
     <script src="helper/generate-color.js"></script>
     <script src="helper/repopulate-selector.js"></script>
-    <script src="helper/init-calendar.js"></script>
+    <script src="helper/render-shift-calendar.js"></script>
+    <script src="helper/render-employee-details.js"></script>
     <script src="shift.js"></script>
     <script>
     jQuery(function() {

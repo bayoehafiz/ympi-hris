@@ -1,59 +1,58 @@
 // Function to render elements inside the modal :: ADD
-var renderAddElement = function(type, name, label, data_object, col_size, target_table) {
+window.renderAddElement = function(type, name, label, data_object, col_size, target_table) {
     var elem = '';
 
-    if (type == 'group') {
-        // Unhide the referred element
-        $('#hidden-' + name).removeClass('hide-me');
-        $('#label-' + name + '_key').html(label);
-
-        var key_container = $('#input-' + name + '_key'),
-            value_container = $('#input-' + name + '_value');
-
-        key_container.append('<option value=""></option>')
-        data_object.forEach(function(val) {
-            key_container.append('<option value="' + val.value + '">' + val.label + '</option>');
-        });
-
-    } else if (type == 'daterange') {
-        // Unhide the referred element
-        // $('#hidden-' + name).removeClass('hide-me');
-        // $('#label-' + name).html(label);
-
-        // do something here
+    if (type == 'daterange') {
         elem += '<div class="form-group">' +
-            '<div class="col-md-' + col_size + '">' +
-            '<div class="form-material form-material-primary push-30">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
+            '<div class="form-material form-material-primary">' +
             '<input class="form-control daterangepicker" type="text" id="input-' + name + '" name="elem-' + name + '"  style="position:initial!important;">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div></div>';
 
     } else if (type == 'select') {
-        // Unhide the referred element
-        $('#hidden-' + name).removeClass('hide-me');
-        $('#label-' + name).html(label);
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
+            '<div class="form-material form-material-primary">' +
+            '<select class="form-control" id="input-' + name + '" name="elem-' + name + '" size="1">' +
+            '</select>' +
+            '<label for="elem-' + name + '">' + label + '</label>' +
+            '</div></div></div>';
 
-        // Get data for the selector
-        $.ajax({
-            method: "POST",
-            url: ENV.BASE_API + 'getSelectorDataClean.php',
-            dataType: 'json',
-            data: {
-                table: target_table
-            }
-        }).done(function(res) {
-            if (res.success) {
-                var container = $('#input-' + name);
-                container.append('<option value=""></option>');
-                res.data.forEach(function(val) {
-                    container.append('<option value="' + val.id + '">' + val.nama + '</option>');
-                });
-            }
-        });
+    } else if (type == 'multiselect') {
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
+            '<div class="form-material form-material-primary">' +
+            '<select class="form-control" id="input-' + name + '" name="elem-' + name + '" data-placeholder="Ketik utk mencari" multiple="multiple">' +
+            '</select>' +
+            '<label for="elem-' + name + '">' + label + '</label>' +
+            '</div></div></div>';
+
+    } else if (type == 'time-picker') {
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
+            '<div class="form-material form-material-primary">' +
+            '<input class="js-datetimepicker form-control" type="text" id="input-' + name + '" name="elem-' + name + '">' +
+            '<label for="elem-' + name + '">' + label + '</label>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+    } else if (type == 'check') {
+        var padding = (name == 'override') ? ' push-10-t' : '';
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + ' push-20' + padding + '">' +
+            '<div class="form-material form-material-primary">' +
+            '<label class="css-input css-checkbox css-checkbox-primary">' +
+            '<input type="checkbox" id="input-' + name + '" name="elem-' + name + '"><span></span> ' + label +
+            '</label>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
 
     } else if (type == 'multi-select') {
-        elem += '<div class="form-group push-30">' +
-            '<div class="col-md-' + col_size + '">' +
+        elem += '<div class="form-group">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
             '<div class="form-material form-material-primary">' +
             '<select class="form-control" id="input-' + name + '" name="elem-' + name + '" size="7" multiple>';
 
@@ -66,22 +65,28 @@ var renderAddElement = function(type, name, label, data_object, col_size, target
             '<div class="help-block text-right">&#8984;/Ctrl + klik untuk multi select</div>' +
             '</div></div></div>';
 
-    } else if (type == 'time-picker') {
-        elem += '<div class="form-group push-30">' +
-            '<div class="col-md-' + col_size + '">' +
+    } else if (type == 'text') {
+        if (name == 'nama') {
+            var font_size = " font-s20 font-w600";
+            top = ' push-10-t';
+            bottom = '';
+        } else if (name == 'kode') {
+            var font_size = " font-s20 font-w600";
+            top = '';
+            bottom = ' push-10';
+        }
+
+        elem += '<div class="form-group' + top + bottom + '">' +
+            '<div class="col-md-' + col_size + ' push-20">' +
             '<div class="form-material form-material-primary">' +
-            '<input class="js-datetimepicker form-control" type="text" id="input-' + name + '" name="elem-' + name + '">' +
-            '<label for="elem-' + name + '">' + label + '</label>' +
-            '</div>' +
-            '</div>' +
-            '</div>';
-    } else {
-        if (name == 'nama' || name == 'kode') var font_size = " font-s20 font-w700";
-        else var font_size = "";
-        elem += '<div class="form-group"><div class="col-md-' + col_size + '"><div class="form-material form-material-primary push-30">' +
-            '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '">' +
+            '<input class="form-control' + font_size + '" type="' + type + '" id="input-' + name + '" name="elem-' + name + '" autofill="false">' +
             '<label for="elem-' + name + '">' + label + '</label>' +
             '</div></div></div>';
+
+    } else {
+        elem += '<div class="col-md-' + col_size + ' push-20 push-20-t">' +
+            '-' +
+            '</div>';
     }
 
     return elem;

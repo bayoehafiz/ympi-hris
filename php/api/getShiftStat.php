@@ -2,14 +2,12 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-// $type = $_POST['type'];
-
 $sql = "SELECT
-        kode, nama, assignation_key, assignation_value
+        `kode`, `nama`, `assignation_key`, `assignation_value`
         FROM
-        group_shift
-        WHERE active = 1
-        GROUP BY id";
+        `group_shift`
+        WHERE `active` = 1
+        GROUP BY `id`";
 
 $query = $db->query($sql);
 $rows = array();
@@ -17,9 +15,18 @@ $rows = array();
 if ($query->num_rows > 0) {
     while ($r = mysqli_fetch_assoc($query)) {
         // fetch total employee implied
-        $sel = mysqli_query($db, "SELECT IFNULL(COUNT(*),0) AS total FROM `employee` WHERE " . $r['assignation_key'] . " = " . $r['assignation_value']);
-        $rec = mysqli_fetch_assoc($sel);
-        $r['total'] = $rec['total'];
+        $total_e = 0;
+        $vals = explode(',', $r['assignation_value']);
+        if ($r['assignation_key'] != 'employee') {
+            foreach ($vals as $val) {
+                $sel = mysqli_query($db, "SELECT IFNULL(COUNT(*),0) AS `total` FROM `employee` WHERE `" . $r['assignation_key'] . "` = " . $val);
+                $rec = mysqli_fetch_assoc($sel);
+                $total_e = $total_e + $rec['total'];
+            }
+        } else {
+            $total_e = sizeof($vals);
+        }
+        $r['total'] = $total_e;
         $rows[] = $r;
     }
 

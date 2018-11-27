@@ -29,7 +29,7 @@ var initValidation = function() {
                 },
                 'elem-kode': {
                     required: true,
-                    minlength: 3
+                    minlength: 2
                 }
             };
             var messages = {
@@ -39,7 +39,7 @@ var initValidation = function() {
                 },
                 'elem-kode': {
                     required: 'Isikan Kode ' + nama,
-                    minlength: 'Minimal 3 karakter'
+                    minlength: 'Minimal 2 karakter'
                 }
             };
             break;

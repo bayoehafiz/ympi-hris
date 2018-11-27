@@ -1,9 +1,7 @@
 var BasePagesDivision = function() {
-
     window.initSidebar = function() {
         $('#sticky-sidebar').sticky({ topSpacing: 65, bottomSpacing: 100 });
     };
-
 
     var initDivisionPage = function() {
         // load sidebar
@@ -130,11 +128,11 @@ var BasePagesDivision = function() {
 
                 swal({
                         title: "Konfirmasi",
-                        text: "Hapus " + nama_kode + " dari database?",
+                        html: "Hapus Kode Bagian <strong>" + nama_kode + "</strong> dari database?",
                         type: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Hapus!",
+                        confirmButtonClass: "btn btn-md btn-danger text-uppercase push-5-r push-5-l",
+                        confirmButtonText: "Hapus",
                         cancelButtonText: "Batal",
                         showLoaderOnConfirm: true,
                         allowOutsideClick: false
@@ -313,8 +311,8 @@ var BasePagesDivision = function() {
                         default: // <- Kode Bagian
                             title = 'Tambah Data Kode Bagian';
                             html += renderAddElement('text', 'kode', 'Kode Bagian', 8);
-                            html += renderAddElement('select', 'bagian_key', 'Jenis Bagian', 6);
-                            html += renderAddElement('select', 'bagian_value', '', 6);
+                            html += renderAddElement('select', 'bagian_key', 'Jenis Bagian', 5);
+                            html += renderAddElement('select', 'bagian_value', '', 7);
                             break;
                     }
 
@@ -395,8 +393,8 @@ var BasePagesDivision = function() {
                             default:
                                 title = 'Ubah Data Kode Bagian';
                                 html += renderEditElement('text', 'kode', 'Kode Bagian', data.kode, 8);
-                                html += renderEditElement('predefined-select', 'bagian_key', 'Jenis Bagian', null, 6);
-                                html += renderEditElement('select', 'bagian_value', '', null, 6);
+                                html += renderEditElement('predefined-select', 'bagian_key', 'Jenis Bagian', null, 5);
+                                html += renderEditElement('select', 'bagian_value', '', null, 7);
                                 break;
                         }
 

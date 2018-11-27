@@ -81,6 +81,11 @@ var BasePagesEmployee = function() {
 
         // Set default hidden-active-type
         $('#hidden-active-type').val('employee');
+
+        // modal bug patch
+        // $('#modal-profile').show().on('shown', function() {
+        //     $('#modal-profile').modal('hide')
+        // });
     };
 
 

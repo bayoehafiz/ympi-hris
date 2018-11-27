@@ -111,20 +111,22 @@
             <div class="modal-dialog modal-dialog-popin">
                 <div class="modal-content">
                     <form class="js-validation-material" action="" method="post" id="form-modal">
-                        <div class="block block-themed block-transparent remove-margin-b">
-                            <div class="block-header bg-primary-dark">
+                        <div class="block block-rounded block-transparent remove-margin-b">
+                            <div class="block-header bg-gray-lighter">
                                 <ul class="block-options">
                                     <li>
                                         <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
                                     </li>
                                 </ul>
-                                <h3 class="block-title" id="modal-title"></h3>
+                                <div class="block-title text-uppercase text-gray-dark font-w700"><i class="si si-briefcase push-5-r font-w700"></i><span id="modal-title" class="push-5-l"></span></div>
                             </div>
-                            <div class="block-content" id="modal-content">
-                                <span id="generated-container"></span>
+                            <div class="block-content bg-gray-lighter" id="modal-content">
+                                <div class="block">
+                                    <div id="generated-container" class="row bg-gray-lighter"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer bg-gray-lighter">
                             <button class="btn btn-sm btn-danger" type="button" id="btn-modal-remove"><i class="si si-trash"></i> Hapus Data</button>
                             <button class="btn btn-sm btn-default" type="button" data-dismiss="modal" id="btn-modal-close">Tutup</button>
                             <button class="btn btn-sm btn-primary" type="submit" id="btn-modal-save"><i class="si si-check"></i> Simpan</button>

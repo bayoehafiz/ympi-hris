@@ -2,6 +2,13 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
+function getBagianName($db, $table, $id)
+{
+    $sel = mysqli_query($db, "SELECT nama FROM `" . $table . "` WHERE `id` = " . $id);
+    $rec = mysqli_fetch_assoc($sel);
+    return $rec['nama'];
+}
+
 if (isset($_POST['table'])) {
     $table = $_POST['table'];
 
@@ -18,55 +25,70 @@ if (isset($_POST['table'])) {
     $searchQuery = " ";
     if ($searchValue != '') {
         if ($table == 'group_shift') {
-            $searchQuery = " and (a.kode like '%" . $searchValue . "%' or
-                                a.nama like '%" . $searchValue . "%' or
-                                b.nama like '%" . $searchValue . "%')";
-        } elseif ($table == 'shift') {
-            $searchQuery = " and (kode like '%" . $searchValue . "%' or
-                                nama like '%" . $searchValue . "%' or
-                                hari_efektif like '%" . $searchValue . "%')";
+            $searchQuery = " and (a.`kode` like '%" . $searchValue . "%' or
+                                a.`nama` like '%" . $searchValue . "%' or
+                                b.`nama` like '%" . $searchValue . "%')";
+        } else if ($table == 'shift') {
+            $searchQuery = " and (a.`kode` like '%" . $searchValue . "%' or
+                                a.`nama` like '%" . $searchValue . "%')";
         } else {
-            $searchQuery = " and (kode like '%" . $searchValue . "%' or
-                                nama like '%" . $searchValue . "%' or
-                                nama_shift like '%" . $searchValue . "%')";
+            // $searchQuery = " and (`kode` like '%" . $searchValue . "%' or
+            //                     `nama` like '%" . $searchValue . "%' or
+            //                     `nama_shift` like '%" . $searchValue . "%')";
         }
     }
 
     ## Total number of records without filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}`");
+    $sel = mysqli_query($db, "select count(*) as allcount from `" . $table . "` a");
     $records = mysqli_fetch_assoc($sel);
     $totalRecords = $records['allcount'];
 
     ## Total number of record with filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1 " . $searchQuery);
+    if ($table == "group_shift") {
+        $totQuery = "select count(*) as `allcount` from `" . $table . "` a LEFT JOIN `shift` b ON b.`id` = a.`shift` WHERE 1" . $searchQuery;
+    } else {
+        $totQuery = "select count(*) as `allcount` from `" . $table . "` a WHERE 1" . $searchQuery;
+    }
+    $sel = mysqli_query($db, $totQuery);
     $records = mysqli_fetch_assoc($sel);
     $totalRecordwithFilter = $records['allcount'];
 
     ## Fetch records
     if ($table == "group_shift") {
-        $empQuery = "SELECT a.*, b.nama AS nama_shift
+        $empQuery = "SELECT a.*, b.nama AS nama_shift, b.kode AS kode_shift
                 FROM `group_shift` a
-                LEFT JOIN `shift` b ON b.id = a.shift
+                LEFT JOIN `shift` b ON b.`id` = a.`shift`
                 WHERE 1 {$searchQuery}
-                GROUP BY id
+                GROUP BY `id`
                 ORDER BY {$columnName} {$columnSortOrder}
                 LIMIT {$row},{$rowperpage}";
     } else {
-        $empQuery = "SELECT *
-                FROM `{$table}`
+        $empQuery = "SELECT a.*
+                FROM `{$table}` a
                 WHERE 1 {$searchQuery}
-                GROUP BY id
+                GROUP BY a.`id`
                 ORDER BY {$columnName} {$columnSortOrder}
                 LIMIT {$row},{$rowperpage}";
     }
 
-    // ChromePhp::log($empQuery);
-
     $empRecords = mysqli_query($db, $empQuery);
     $rows = array();
 
+    $counter = 0;
     while ($r = mysqli_fetch_assoc($empRecords)) {
-        $rows[] = $r;
+        if ($table == "group_shift") {
+            $rows[$counter] = $r;
+            $arr = array();
+            $av = explode(',', $r['assignation_value']);
+            foreach ($av as $value) {
+                $dt = getBagianName($db, $r['assignation_key'], $value);
+                array_push($arr, $dt);
+            }
+            $rows[$counter]['assignation_name'] = $arr;
+        } else {
+            $rows[$counter] = $r;
+        }
+        $counter++;
     }
 
     ## Response

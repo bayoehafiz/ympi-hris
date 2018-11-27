@@ -76,11 +76,12 @@ window.initTableKodeBagian = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {
@@ -151,11 +152,12 @@ window.initTableDivision = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {
@@ -227,11 +229,12 @@ window.initTableDepartment = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {
@@ -303,11 +306,12 @@ window.initTableSection = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {
@@ -379,11 +383,12 @@ window.initTableSubSection = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {
@@ -454,11 +459,12 @@ window.initTableGroup = function() {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
-                    if (data == 1) return '<span class="label label-success">Aktif</span>';
-                    else return '<span class="label label-default">Non Aktif</span>';
+                    if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
+                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
                 }
             },
             {
+                sortable: false,
                 data: null,
                 className: "text-center",
                 render: function(data, type, row) {

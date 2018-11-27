@@ -1,6 +1,6 @@
 // Render elements when add new data
 var renderProfileAdd = function() {
-    $('#modal-title').html('Profil Karyawan - Tambah Data');
+    $('#modal-title').html('Tambah Data Karyawan');
 
     // hide/show (un)related buttons
     $('#btn-edit-profile, #btn-terminate-profile, #btn-cancel-profile').addClass('hide-me');
