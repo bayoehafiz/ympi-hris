@@ -2,232 +2,15 @@ var BasePagesAttendance = function() {
     var syncData = function() {
         $.ajax({
             type: "GET",
-            url: ENV.BASE_API + 'syncAttendanceData.php',
+            url: ENV.BASE_API + 'syncAttendanceData.php?start=' + moment().subtract(1, 'months').format('YYYY-MM-DD HH:MM:SS'),
             dataType: 'json',
             success: function(res) {
                 // if (res.success) {
-                    console.log(res);
+                console.log(res);
                 // }
             }
         })
     }
-
-    var initAttendancePage = function() {
-        // load sidebar
-        $('#sidebar').load("../partials/sidebar.html", function() {
-            // Set active class for related menu
-            $('#menu-attendance').addClass('active');
-        });
-
-        // load header-nav
-        $('#header-navbar').load("../partials/header-nav.html", function() {
-            // Set the page title
-            $('#header-title').html('<i class="si si-check push-10-r"></i>Data Presensi');
-        });
-
-        // load footer
-        $('#page-footer').load("../partials/footer.html", function() {
-            // console.log("Footer loaded!");
-        });
-
-        // when menu button is clicked
-        $(document).on('click', '.nav-menu, .logo', function(e) {
-            e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
-            return false;
-        });
-
-        // Logout button
-        $('#btn-logout').click(function() {
-            sessionStorage.clear();
-            location.reload();
-        });
-
-        // when tabs clicked
-        $(document).on('click', '.tab-btn', function() {
-            var t = $(this).attr('data');
-            $('#hidden-active-type').val(t);
-            switch (t) {
-                case 'employee_attendance':
-                    $('#btn-add').attr('data', 'Absensi Karyawan');
-                    // initTableEmployeeAttendance();
-                    break;
-                default:
-                    $('#btn-add').attr('data', 'Absensi');
-                    initTableAttendance();
-                    break;
-            };
-        })
-
-        // when ADD button is clicked
-        $(document).on('click', '#btn-add', function() {
-            // reset the modal first!
-            $('#modal-title, #generated-container').html('');
-            $('#hidden-select').addClass('hide-me');
-
-            var html = '';
-            data_type = $(this).attr('data-type');
-            $('#hidden-type').val(data_type);
-
-            switch (data_type) {
-                case "attendance":
-                    html += renderAddElement('text', 'kode', 'Kode', 4);
-                    html += renderAddElement('text', 'jenis', 'Jenis Absensi / Cuti', 8);
-                    html += renderAddElement('textarea', 'keterangan', 'Keterangan', 12);
-                    html += renderAddElement('check', 'potongan_cuti', 'Potongan Cuti?', 6);
-                    break;
-                default:
-                    break;
-            }
-
-            $('#modal-title').html('Tambah Data: ' + data_type);
-            $('#generated-container').html(html);
-
-            // hide unrelated buttons
-            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-            $('#modal').modal('show');
-
-            // reinitiate datetime picker
-            $('.js-datetimepicker').datetimepicker({
-                format: 'HH:mm'
-            });
-            App.initHelpers(['datetimepicker']);
-
-            // reinitiate validation
-            initValidation(data_type);
-
-            // set the action type
-            $('#act-type').val('add');
-        });
-
-        // When ACTION buttons clicked
-        $(document).on('click', '.js-dataTable-full tbody button', function() {
-            var act = $(this).attr('act');
-            var active_table_id = $(this).parents("table").attr('id');
-            var table = $('#' + active_table_id).DataTable();
-            var data = table.row($(this).parents('tr')).data();
-
-            // Lets decide which button is clicked:
-            if (act == 'edit') { // edit the data
-                // reset the modal first!
-                $('#modal-title, #generated-container').html('');
-
-                var html = '';
-                data_type = $(this).attr('data-active-type');
-                $('#hidden-type').val(data_type);
-                console.log(data_type);
-
-                switch (data_type) {
-                    case "attendance":
-                        html += renderEditElement('text', 'kode', 'Kode', data.kode, 4);
-                        html += renderEditElement('text', 'jenis', 'Jenis Absensi / Cuti', data.jenis, 8);
-                        html += renderEditElement('textarea', 'keterangan', 'Keterangan', data.keterangan, 12);
-                        html += renderEditElement('check', 'potongan_cuti', 'Potongan Cuti?', data.potongan_cuti, 6);
-                        break;
-                    default:
-                        break;
-                }
-
-                $('#modal-title').html('Tambah Data ' + data_type);
-                $('#generated-container').html(html);
-
-                // hide unrelated buttons
-                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-                $('#modal').modal('show');
-
-                // then assign the values into the multiple select
-                if (data.hari_efektif) {
-                    var value = data.hari_efektif;
-                    $.each(value.split(','), function(i, e) {
-                        $("#input-hari_efektif option[value='" + e + "']").prop("selected", true);
-                    })
-                }
-
-                // reinitiate datetime picker
-                $('.js-datetimepicker').datetimepicker({
-                    format: 'HH:mm'
-                });
-                App.initHelpers(['datetimepicker']);
-
-                // reinitiate validation
-                initValidation(data_type);
-
-                // set the action-type and data-id
-                $('#act-type').val('edit');
-                $('#data-id').val(data.id);
-            } else { // remove the data
-                swal({
-                    title: "Konfirmasi",
-                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: ENV.BASE_API + "deleteAttendanceData.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
-
-                                    // reload the table
-                                    var table = $('#table-' + dType).DataTable();
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                })
-            }
-        });
-
-        // when modal on close
-        $('#modal').on('hidden.bs.modal', function() {
-            console.log('Destroying validator and resetting elements...');
-            window.$validator.destroy();
-
-            // reset all elements
-            $('[id^=input-]').html('').empty();
-
-            // hide all hidden elements
-            $('[id^=hidden-]').addClass('hide-me');
-        })
-
-
-        // When SYNC button is clicked
-        $(document).on('click', '#sync-data', function() {
-            syncData();
-        })
-
-        // set default hidden value for ACTIVE type
-        $('#hidden-active-type').val('attendance');
-
-        // Lets init our first table :: Attendance Table
-        // initTableAttendance();
-
-        // Surpress DT warning into JS errors
-        $.fn.dataTableExt.sErrMode = 'throw';
-    };
 
     var initStat = function(type) {
         // clear the container first
@@ -271,86 +54,184 @@ var BasePagesAttendance = function() {
         })
     };
 
-    var initTableAttendance = function() {
-        // init table BS style
-        bsDataTables();
-
-        // Table initiation
-        var table = $('#table-attendance').DataTable({
-            destroy: true, // destroy it first, if there is an active table instance
-            order: [
-                [0, 'desc']
-            ],
-            columnDefs: [{
-                "visible": false,
-                "targets": 0
-            }],
-            pageLength: 10,
-            lengthMenu: [
-                [10, 20, 50, 100],
-                [10, 20, 50, 100]
-            ],
-            processing: true,
-            serverSide: true,
-            serverMethod: 'post',
-            ajax: {
-                url: ENV.BASE_API + 'getAttendance.php',
-                data: {
-                    table: 'attendance'
+    var initCalendar = function() {
+        // Init calendar
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title',
+                right: 'next'
+            },
+            locale: 'id',
+            buttonText: {
+                today: "Bulan Ini"
+            },
+            defaultView: "month",
+            validRange: function(currentDate) {
+                return {
+                    start: moment().subtract(3, 'months').format('YYYY-MM-DD'),
+                    end: moment().add(3, 'months').format('YYYY-MM-DD')
                 }
             },
-            deferRender: true,
-            createdRow: function(row, data, dataIndex) {
-                $(row).attr('data-id', data.id);
-            },
-            columns: [
-                { data: "updated" },
-                { className: "text-center", data: "kode" },
-                { className: "font-w600", data: "jenis" },
-                {
-                    className: "text-center",
-                    data: "potongan_cuti",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<i class="fa fa-lg fa-check text-success"></i>';
-                        else return '<i class="fa fa-lg fa-close text-muted"></i>'
+            eventRender: function(event, element) {
+                if (event.attendance) {
+                    if (event.title == 'IN') {
+                        var html  = '<span class="text-white font-w600 push-5"><i class="fa fa-arrow-circle-right text-white push-5-r"></i>' + event.description + '</span>';
+                    } else {
+                        var html = '<span class="text-white font-w600 push-5"><i class="fa fa-arrow-circle-left text-white push-5-r"></i>' + event.description + '</span>';
                     }
-                },
-                { data: "keterangan" },
-                {
-                    className: "hidden-xs text-center",
-                    data: "active",
-                    render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success">Aktif</span>';
-                        else return '<span class="label label-default">Non Aktif</span>';
+                } else {
+                    var html = '<div class="push-5-l push-5-t push-5-r push-5">';
+                    if (event.absence !== undefined) {
+                        html += '<div class="h5 text-white push-5">' + event.title + '</div>' +
+                            '<div class="text-white"><i class="si si-ban text-white push-5-r"></i>' + event.description + '</div>';
+                    } else if (event.title == "LIBUR") {
+                        html += '<div class="h5 text-white push-5">' + event.title + '</div>' +
+                            '<i class="si si-ban text-white"></i>';
+                    } else {
+                        html += '<div class="h5 text-white push-5">' + event.title.toUpperCase() + ' (' + event.kode + ')</div>' +
+                            '<div class="text-white"><i class="si si-clock push-5-r"></i>' + event.jam_masuk + ' - ' + event.jam_keluar + '</div>';
                     }
-                },
-                {
-                    data: null,
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return '<div class="btn-group text-center">' +
-                            '<button class="btn btn-xs btn-default" type="button" act="switch"><i class="fa fa-exchange"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="edit"><i class="fa fa-pencil"></i></button>' +
-                            '<button class="btn btn-xs btn-default" type="button" act="remove"><i class="fa fa-trash"></i></button>' +
-                            '</div>';
-                    }
+                    html += '</div>';
                 }
-            ],
-            language: {
-                emptyTable: "Tidak ada data tersedia",
-                processing: "Mengambil Data... ",
-                zeroRecords: "Tidak ada data ditemukan",
-                info: "Menampilkan _START_ - _END_ dari total _TOTAL_ data",
-                infoEmpty: "Menampilkan 0 dari total 0 data",
-                search: "Cari: ",
+                element.find('.fc-title').html(html);
             },
+            eventClick: function(event) {
+                openAbsenceModal(window.searched_user, event);
+            }
         });
+    };
+
+    // Main page function
+    var initAttendancePage = function() {
+        App.blocks('#calendar-block', 'state_loading');
+
+        // load sidebar
+        $('#sidebar').load("../partials/sidebar.html", function() {
+            // Set active class for related menu
+            $('#menu-attendance').addClass('active');
+        });
+
+        // load header-nav
+        $('#header-navbar').load("../partials/header-nav.html", function() {
+            // Set the page title
+            $('#header-title').html('<i class="si si-user-following push-10-r"></i>Data Presensi');
+        });
+
+        // load footer
+        $('#page-footer').load("../partials/footer.html", function() {
+            // console.log("Footer loaded!");
+        });
+
+        // when menu button is clicked
+        $(document).on('click', '.nav-menu, .logo', function(e) {
+            e.preventDefault;
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
+            return false;
+        });
+
+        // Logout button
+        $('#btn-logout').click(function() {
+            sessionStorage.clear();
+            location.reload();
+        });
+
+        // MAIN FUNCTIONS
+        // Fn to populate modal's ajax selector (Select2)
+        var initSelector = function() {
+            var container = $('#employee-search');
+            container.select2({
+                width: '100%',
+                placeholder: "Ketik Nama atau NIK..",
+                ajax: {
+                    url: ENV.BASE_API + 'getSelectorData.php?table=employee',
+                    dataType: 'json',
+                    data: function(params) {
+                        var query = {
+                            q: params.term,
+                            page: params.page || 1
+                        }
+                        return query;
+                    },
+                    processResults: function(data, params) {
+                        var page = params.page || 1;
+                        return {
+                            results: data,
+                            pagination: {
+                                // THE `10` SHOULD BE SAME AS "$resultCount FROM API, it is the number of records to fetch from table"
+                                more: (data[0] !== undefined) ? (page * 10) <= data[0].total_count : 0
+                            }
+                        };
+                    }
+                },
+                escapeMarkup: function(markup) { return markup; },
+                templateResult: formatKode,
+                templateSelection: formatKodeSelection
+            });
+
+            function formatKode(data) {
+                var markup = data.text + ' - ' + data.nik;
+                return markup;
+            }
+
+            function formatKodeSelection(data) {
+                return data.text || data.nik;
+            }
+
+            return true;
+        };
+
+        // Destroy existed Select2 instance
+        if ($('#employee-search').hasClass("select2-hidden-accessible")) {
+            $('#employee-search').val(null).trigger('change');
+        }
+
+        // reset employee details
+        if (initSelector()) {
+            // empty employee details block
+            $('#employee-details-content').empty()
+            if (!$('#employee-details').hasClass('hide-me')) $('#employee-details').addClass('hide-me');
+        }
+
+        // re-render calendar
+        $('#calendar').fullCalendar('removeEvents');
+        setTimeout(function() {
+            $('#calendar').fullCalendar('render');
+            App.blocks('#calendar-block', 'state_normal');
+        }, 1000);
+
+        // Employee Search on change
+        $(document).on('change', '#employee-search', function() {
+            App.blocks('#employee-details', 'state_loading');
+            if (this.value != '') {
+                window.searched_user = this.value; // save user ID
+                renderEmployeeDetails(this.value);
+            }
+        })
+
+        // when modal on close
+        $('#modal').on('hidden.bs.modal', function() {
+            console.log('Destroying validator and resetting elements...');
+            window.$validator.destroy();
+
+            // reset all elements
+            $('[id^=input-]').html('').empty();
+
+            // hide all hidden elements
+            $('[id^=hidden-]').addClass('hide-me');
+        })
+
+        // When SYNC button is clicked
+        $(document).on('click', '#sync', function() {
+            syncData();
+        })
     };
 
     return {
         init: function() {
             set_base('attendance');
             // initStat('attendance');
+            initCalendar();
             initAttendancePage();
         }
     };

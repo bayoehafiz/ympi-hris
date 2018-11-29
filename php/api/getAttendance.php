@@ -2,66 +2,153 @@
 include "../config/conn.php";
 include "../inc/chromePhp.php";
 
-if (isset($_POST['table'])) {
-    $table = $_POST['table'];
+function findOverrode($db, $id)
+{
+    $recs = array();
+    $query = "SELECT *
+            FROM `shift`
+            WHERE `override` = 1 
+                AND find_in_set(" . $id . ", `override_shift`) 
+                AND `active` = 1";
 
-    ## Read value
-    $draw = $_POST['draw'];
-    $row = $_POST['start'];
-    $rowperpage = $_POST['length']; // Rows display per page
-    $columnIndex = $_POST['order'][0]['column']; // Column index
-    $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
-    $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
-    $searchValue = $_POST['search']['value']; // Search value
-
-    ## Search
-    $searchQuery = " ";
-    if ($searchValue != '') {
-        if ($table == 'attendance') {
-            $searchQuery = " and (kode like '%" . $searchValue . "%' or
-                                jenis like '%" . $searchValue . "%' or
-                                keterangan like '%" . $searchValue . "%')";
-        } else {
-            $searchQuery = " and (kode like '%" . $searchValue . "%' or
-                                nama like '%" . $searchValue . "%' or
-                                nama_shift like '%" . $searchValue . "%')";
-        }
+    $sel = mysqli_query($db, $query);
+    while ($r = mysqli_fetch_assoc($sel)) {
+        $recs[] = $r;
     }
-
-    ## Total number of records without filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}`");
-    $records = mysqli_fetch_assoc($sel);
-    $totalRecords = $records['allcount'];
-
-    ## Total number of record with filtering
-    $sel = mysqli_query($db, "select count(*) as allcount from `{$table}` WHERE 1 " . $searchQuery);
-    $records = mysqli_fetch_assoc($sel);
-    $totalRecordwithFilter = $records['allcount'];
-
-    ## Fetch records
-    $empQuery = "SELECT * 
-                FROM `{$table}`
-                WHERE 1 {$searchQuery}
-                GROUP BY id
-                ORDER BY {$columnName} {$columnSortOrder}
-                LIMIT {$row},{$rowperpage}";
-
-    // ChromePhp::log($empQuery);
-
-    $empRecords = mysqli_query($db, $empQuery);
-    $rows = array();
-
-    while ($r = mysqli_fetch_assoc($empRecords)) {
-        $rows[] = $r;
-    }
-
-    ## Response
-    $response = array(
-        "draw" => intval($draw),
-        "iTotalRecords" => $totalRecordwithFilter,
-        "iTotalDisplayRecords" => $totalRecords,
-        "aaData" => $rows,
-    );
-
-    echo json_encode($response);
+    return $recs;
 }
+
+function findShift($db, $bagian, $value)
+{
+    $recs = array();
+    $query = "SELECT a.*,
+                b.`kode` AS `kode_shift`,
+                b.`nama` AS `nama_shift`,
+                b.`hari_efektif`,
+                b.`jam_masuk`,
+                b.`jam_keluar`,
+                b.`override`,
+                b.`override_shift`
+            FROM `group_shift` a
+                LEFT JOIN `shift` b ON b.`id` = a.`shift`
+            WHERE a.`assignation_key` = '" . $bagian . "' 
+                AND find_in_set(" . $value . ", a.`assignation_value`)
+                AND a.`active` = 1";
+
+    $sel = mysqli_query($db, $query);
+    while ($r = mysqli_fetch_assoc($sel)) {
+        $r['overrode_by'] = findOverrode($db, $r['shift']);
+        $recs[] = $r;
+    }
+    return $recs;
+}
+
+function findAbsence($db, $id)
+{
+    $recs = array();
+    $query = "SELECT a.*, 
+                b.`kode` AS `kode_absence`, 
+                b.`nama` AS `nama_absence`, 
+                b.`jenis` AS `jenis_absence`,
+                b.`potongan_cuti`
+            FROM `employee_absence` a
+                LEFT JOIN `absence` b ON b.`id` = a.`absence`
+            WHERE a.`employee` = " . $id;
+
+    $sel = mysqli_query($db, $query);
+    while ($r = mysqli_fetch_assoc($sel)) {
+        $recs[] = $r;
+    }
+    return $recs;
+}
+
+function findAttendance($db, $nik)
+{
+    $recs = array();
+    $query = "SELECT `id`, `scan_date`
+            FROM `attendance`
+            WHERE `nik` = '" . $nik . "'
+            ORDER BY `scan_date`";
+
+    $sel = mysqli_query($db, $query);
+    while ($r = mysqli_fetch_assoc($sel)) {
+        $recs[] = $r;
+    }
+    return $recs;
+}
+
+$sql = "SELECT a.`id`,
+        a.`nik`,
+        a.`nama`,
+        a.`tgl_masuk`,
+        a.`status`,
+        a.`division`,
+        a.`department`,
+        a.`section`,
+        a.`sub_section`,
+        a.`group`,
+        b.`nama` AS `nama_division`,
+        IFNULL(c.`nama`, '-') AS `nama_department`,
+        IFNULL(d.`nama`, '-') AS `nama_section`,
+        IFNULL(e.`nama`, '-') AS `nama_sub_section`,
+        IFNULL(f.`nama`, '-') AS `nama_group`,
+        IFNULL(g.`kode`, '-') AS `nama_kode_bagian`,
+        h.`nama` AS `nama_grade`,
+        h.`kode` AS `kode_grade`,
+        IFNULL(i.`nama`, '-') AS `nama_penugasan`
+    FROM
+        `employee` a
+            LEFT JOIN
+        `division` b ON b.`id` = a.`division`
+            LEFT JOIN
+        `department` c ON c.`id` = a.`department`
+            LEFT JOIN
+        `section` d ON d.`id` = a.`section`
+            LEFT JOIN
+        `sub_section` e ON e.`id` = a.`sub_section`
+            LEFT JOIN
+        `group` f ON f.`id` = a.`group`
+            LEFT JOIN
+        `kode_bagian` g ON g.`id` = a.`kode_bagian`
+            LEFT JOIN
+        `grade` h ON h.`id` = a.`grade`
+            LEFT JOIN
+        `penugasan` i ON i.`id` = a.`penugasan`
+    WHERE a.`id` = " . $_GET['id'];
+
+$query = $db->query($sql);
+$data = array();
+$shift = array();
+// $found = 0;
+
+if ($query->num_rows > 0) {
+    $r = mysqli_fetch_assoc($query);
+    $data['employee'] = $r;
+
+    // check if there's any SHIFT PLOT assigned by_employee
+    $shift['by_employee'] = findShift($db, 'employee', $r['id']);
+
+    // Get all related shifts
+    if ($r['group'] != null) {
+        $shift['by_group'] = findShift($db, 'group', $r['group']);
+    }
+    if ($r['sub_section'] != null) {
+        $shift['by_sub_section'] = findShift($db, 'sub_section', $r['sub_section']);
+    }
+    if ($r['section'] != null) {
+        $shift['by_section'] = findShift($db, 'section', $r['section']);
+    }
+    if ($r['department'] != null) {
+        $shift['by_department'] = findShift($db, 'department', $r['department']);
+    }
+    $shift['by_division'] = findShift($db, 'division', $r['division']);
+    $data['shift'] = $shift;
+
+    // Get all related absence
+    $data['absence'] = findAbsence($db, $r['id']);
+
+    // Get all related attendance
+    $data['attendance'] = findAttendance($db, $r['nik']);
+}
+
+echo json_encode($data);

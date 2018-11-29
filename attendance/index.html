@@ -14,8 +14,12 @@
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="../assets/js/plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/datatables/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/select2/select2-bootstrap.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="../assets/js/plugins/fullcalendar/fullcalendar.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css">
+    <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css">
     <!-- Bootstrap and OneUI CSS framework -->
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" id="css-main" href="../assets/css/oneui.min.css">
@@ -43,64 +47,59 @@
             <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
-                <!-- Block Tabs Animated Fade -->
-                <div class="block">
-                    <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
-                        <li class="active">
-                            <!-- <a href="#btabs-animated-fade-attendance" class="tab-btn" data="shift">Data Presensi</a> -->
-                            <div class=" push-10-t push-10-r push-10 center-block pull-right">
-                                Last Sync: <span class="text-muted push-10-r" id="sync-last">NULL</span>
-                                <button class="btn btn-sm btn-primary" id="sync-data">Sync Fingerprint Data<i class="si si-refresh push-10-l"></i></button>
-                            </div>
-                        </li>
-                        <!-- <li>
-                            <a href="#btabs-animated-fade-employee_attendance" class="tab-btn" data="group_shift">Absensi Karyawan</a>
-                        </li> -->
-                    </ul>
-                    <div class="block-content tab-content">
-                        <div class="tab-pane fade in active" id="btabs-animated-fade-attendance">
-                            <div class="block">
-                                <div class="block-content">
-                                    <!-- Table attendance -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-attendance" style="width: 100%!important;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="text-center">Kode</th>
-                                                <th>Jenis</th>
-                                                <th class="text-center">Potongan Cuti</th>
-                                                <th class="text-center">Keterangan</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center">Actions</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <!-- END Table attendance -->
+                <div class="block block-rounded">
+                    <div class="block-header bg-gray-lighter">
+                        <ul class="block-options">
+                            <li>
+                                <button type="button" class="text-uppercase" id="sync"><i class="si si-refresh push-5-r"></i></button>
+                            </li>
+                        </ul>
+                        <h3 class="block-title"><small class="text-gray push-10-r">Last Device Sync</small>Hello World</h3>
+                    </div>
+                    <div class="block-content">
+                        <div class="row items-push">
+                            <div class="col-md-4 col-lg-3">
+                                <div class="block" id="sticky-block">
+                                    <!-- SEARCH employee -->
+                                    <div class="block block-bordered block-rounded">
+                                        <div class="block-content">
+                                            <div class="form-group">
+                                                <div class="form-material form-material-primary">
+                                                    <select class="form-control" id="employee-search" name="elem-employee-search"></select>
+                                                    <label for="elem-employee-search">Cari Karyawan</label>
+                                                </div>
+                                            </div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <!-- END SEARCH employee -->
+                                    <!-- EMPLOYEE Details -->
+                                    <div class="block block-rounded block-bordered bg-themed" id="employee-details">
+                                        <div class="block-content bg-gray-lighter" id="employee-details-content" style="padding-bottom: 10px!important;"></div>
+                                    </div>
+                                    <!-- END EMPLOYEE Details -->
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="btabs-animated-fade-employee_attendance">
-                            <div class="block">
-                                <div class="block-content">
-                                    <!-- Table ... -->
-                                    <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee-attendance" style="width: 100%!important;">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th class="hidden-xs text-center" style="width: 25%;">Nama Grade</th>
-                                                <th class="text-center">Kode</th>
-                                                <th class="text-center">Status</th>
-                                                <th class="text-center" style="width: 10%;">Actions</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <!-- END Table ... -->
+                            <!-- Calendar Container -->
+                            <div class="col-md-8 col-lg-9">
+                                <div class="block block-transparent" id="calendar-block">
+                                    <div class="block-content-full">
+                                        <div class="alert alert-danger hide-me" id="error-block">
+                                            <p>Karyawan ini tidak memiliki data shift. Tambahkan data pada Tab <strong>GROUP SHIFT</strong>.</p>
+                                        </div>
+                                        <div class="js-calendar" id="calendar"></div>
+                                        <div class="text-center push-10-t font-s12">
+                                            <!-- <span class="push-10-r"><i class="fa fa-square push-5-r" style="color: #a48ad4;"></i>Hari Kerja</span>
+                                            <span class="push-10-r push-10-l"><i class="fa fa-square push-5-r" style="color: #7f8c8d;"></i>Hari Libur</span>
+                                            <span class="push-10-r push-10-l"><i class="fa fa-square push-5-r text-danger"></i>Absen/Cuti</span> -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- END Calendar -->
                         </div>
                     </div>
                 </div>
-                <!-- END Block Tabs Animated Fade -->
             </div>
             <!-- END Page Content -->
         </main>
@@ -132,21 +131,12 @@
                         </div>
                     </div>
                 </form>
-                <input type="hidden" id="act-type">
-                <input type="hidden" id="data-id">
             </div>
         </div>
         <!-- END Modal -->
-        <!-- Floating ADD button -->
-        <div class="zoom animated bounceIn" data-toggle="tooltip" title="" data-placement="left" data-original-title="Klik untuk menambah data">
-            <a class="zoom-fab zoom-btn-large btn btn-primary" id="btn-add"><i class="fa fa-plus fa-2x"></i></a>
-        </div>
-        <!-- END Floating ADD button -->
         <!-- Footer -->
         <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
         <!-- END Footer -->
-        <input type="hidden" id="hidden-type">
-        <input type="hidden" id="hidden-active-type">
     </div>
     <!-- END Page Container -->
     <!-- END Apps Modal -->
@@ -187,14 +177,11 @@
     <script src="../assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="../assets/js/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar/moment.min.js"></script>
     <script src="../assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
+    <script src="../assets/js/plugins/fullcalendar/locale-all.js"></script>
     <!-- Page JS Code -->
-    <script src="helper/bs-datatables.js"></script>
-    <!-- <script src="helper/render-add-element.js"></script>
-    <script src="helper/render-edit-element.js"></script>
-    <script src="helper/init-validation.js"></script> -->
+    <script src="helper/render-calendar.js"></script>
+    <script src="helper/render-employee-details.js"></script>
     <script src="attendance.js"></script>
     <script>
     jQuery(function() {
