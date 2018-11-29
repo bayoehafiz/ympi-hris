@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 28, 2018 at 12:04 AM
+-- Generation Time: Nov 29, 2018 at 06:47 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.5
 
@@ -23,27 +23,45 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `attendance`
+-- Table structure for table `absence`
 --
 
-CREATE TABLE `attendance` (
+CREATE TABLE `absence` (
   `id` int(11) NOT NULL,
   `kode` varchar(255) DEFAULT NULL,
-  `jenis` varchar(255) DEFAULT NULL,
+  `nama` varchar(255) DEFAULT NULL,
+  `jenis` tinyint(4) DEFAULT '0',
   `potongan_cuti` tinyint(1) NOT NULL DEFAULT '1',
   `keterangan` text,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `active` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `attendance`
+-- Dumping data for table `absence`
 --
 
-INSERT INTO `attendance` (`id`, `kode`, `jenis`, `potongan_cuti`, `keterangan`, `active`, `created`, `updated`) VALUES
-(1, 'CT', 'Cuti Tahunan', 1, 'Hari Kerja', 1, '2018-10-25 16:58:56', '2018-10-25 16:58:56'),
-(2, 'CK', 'Cuti Khusus Lainnya', 0, 'Hari Kerja', 1, '2018-10-25 17:07:58', '2018-10-25 17:07:58');
+INSERT INTO `absence` (`id`, `kode`, `nama`, `jenis`, `potongan_cuti`, `keterangan`, `active`, `created`, `updated`) VALUES
+(1, 'CT', 'Cuti Tahunan', 0, 1, 'Suspendisse potenti. Integer a enim vestibulum, feugiat lectus eget, finibus est. Mauris eu dictum est.', 1, '2018-10-25 16:58:56', '2018-11-29 09:54:55'),
+(2, 'CK', 'Cuti Khusus', 0, 1, 'Nunc vehicula, neque eget suscipit bibendum, quam ipsum vehicula ex, vitae semper ante velit non erat. ', 1, '2018-10-25 17:07:58', '2018-11-29 10:32:32'),
+(3, 'CH', 'Melahirkan', 0, 0, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dignissim eget magna quis accumsan.', 1, '2018-11-28 04:37:33', '2018-11-29 11:19:48'),
+(4, 'IS', 'Sakit', 1, 0, 'Hello World', 1, '2018-11-29 10:26:45', '2018-11-29 10:37:38'),
+(5, 'AL', 'Alpha / Tanpa Alasan', 2, 1, NULL, 0, '2018-11-29 10:28:18', '2018-11-29 11:18:32'),
+(6, 'IB', 'Berkabung', 1, 1, 'Lazy Fox', 1, '2018-11-29 10:28:46', '2018-11-29 10:40:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance`
+--
+
+CREATE TABLE `attendance` (
+  `id` int(11) NOT NULL,
+  `nik` varchar(255) DEFAULT NULL,
+  `pin` int(11) DEFAULT NULL,
+  `scan_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -81,7 +99,7 @@ INSERT INTO `department` (`id`, `nama`, `parent`, `active`, `created`, `updated`
 (14, 'Educational Instrument', 3, 1, '2018-10-03 07:52:03', '2018-11-09 06:02:46'),
 (15, 'Quality Assurance', 3, 1, '2018-10-03 07:52:20', '2018-11-03 04:05:40'),
 (17, 'GA', 2, 1, '2018-11-08 09:34:45', '2018-11-08 09:34:48'),
-(18, 'TEST 321', 7, 1, '2018-11-15 05:54:06', '2018-11-15 07:41:59');
+(18, 'TEST 321', 7, 0, '2018-11-15 05:54:06', '2018-11-29 11:33:01');
 
 -- --------------------------------------------------------
 
@@ -2056,6 +2074,31 @@ INSERT INTO `employee` (`id`, `nik`, `pin`, `status`, `kode_bagian`, `nama`, `tg
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `employee_absence`
+--
+
+CREATE TABLE `employee_absence` (
+  `id` int(11) NOT NULL,
+  `absence` int(11) DEFAULT NULL,
+  `employee` int(11) DEFAULT NULL,
+  `leave_date` varchar(255) DEFAULT NULL,
+  `leave_period` int(11) DEFAULT '1',
+  `keterangan` text,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `employee_absence`
+--
+
+INSERT INTO `employee_absence` (`id`, `absence`, `employee`, `leave_date`, `leave_period`, `keterangan`, `created`, `updated`) VALUES
+(6, 1, 472, '2018-12-01', 1, NULL, '2018-11-29 11:07:08', '2018-11-29 11:07:08'),
+(7, 1, 1296, '2018-12-01', 1, NULL, '2018-11-29 11:45:39', '2018-11-29 11:45:39');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `grade`
 --
 
@@ -2076,8 +2119,8 @@ CREATE TABLE `grade` (
 INSERT INTO `grade` (`id`, `nama`, `kode`, `priority`, `active`, `created`, `updated`) VALUES
 (21, 'Operator Kontrak', 'E0', 1, 1, '2018-10-18 03:43:34', '2018-11-17 07:57:25'),
 (22, ' Junior Operator', 'E1', 2, 1, '2018-10-18 03:43:46', '2018-11-14 06:10:56'),
-(23, ' Junior Staff', 'E1', 3, 1, '2018-10-18 03:44:30', '2018-11-14 06:10:57'),
-(24, ' Junior Operator', 'E2', 4, 1, '2018-10-18 03:44:44', '2018-11-14 06:11:00'),
+(23, ' Junior Staff', 'E1', 3, 1, '2018-10-18 03:44:30', '2018-11-29 11:27:44'),
+(24, ' Junior Operator', 'E2', 4, 1, '2018-10-18 03:44:44', '2018-11-29 11:27:46'),
 (25, ' Junior Staff', 'E2', 5, 1, '2018-10-18 03:44:52', '2018-11-14 06:11:03'),
 (26, ' Junior Operator', 'E3', 6, 1, '2018-10-18 03:45:04', '2018-11-14 06:11:09'),
 (27, ' Junior Staff', 'E3', 7, 1, '2018-10-18 03:45:13', '2018-11-14 06:11:13'),
@@ -2182,7 +2225,8 @@ INSERT INTO `group` (`id`, `nama`, `parent`, `active`, `created`, `updated`) VAL
 (54, 'Sax', 5, 1, '2018-10-03 09:50:43', '2018-10-03 09:50:43'),
 (55, 'Venova', 55, 1, '2018-10-03 09:50:56', '2018-10-03 09:50:56'),
 (56, 'WST - Office', 66, 1, '2018-10-03 09:52:13', '2018-10-03 09:52:13'),
-(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-11-08 03:02:10');
+(57, 'WSTA Office', 6, 1, '2018-10-03 09:52:32', '2018-11-08 03:02:10'),
+(58, 'Test 123', 41, 0, '2018-11-29 11:35:33', '2018-11-29 11:35:33');
 
 -- --------------------------------------------------------
 
@@ -2215,9 +2259,9 @@ INSERT INTO `group_shift` (`id`, `kode`, `nama`, `shift`, `assignation_key`, `as
 (6, 'S2', 'Shift 1', 7, 'division', '3', '2018-11-26', '2018-12-02', '6d1', 1, 1, '2018-10-25 12:30:58', '2018-11-26 07:18:06'),
 (13, 'S2', 'Shift 2', 14, 'division', '3', '2018-12-03', '2018-12-09', '6d1', 1, 1, '2018-11-23 14:16:50', '2018-11-26 07:18:12'),
 (14, 'S3', 'Shift 3', 9, 'division', '3', '2018-12-10', '2018-12-16', '6d1', 1, 1, '2018-11-23 14:17:35', '2018-11-26 07:18:17'),
-(15, 'AP1', 'AP 1 Nov', 7, 'section', '3,27', '2018-11-19', '2018-11-26', '3d1', 0, 1, '2018-11-24 09:44:32', '2018-11-26 11:46:51'),
-(16, '123', 'Test #1', 14, 'employee', '472,1296,1626,1468,743', '2018-11-05', '2018-11-18', '4d1', 0, 1, '2018-11-27 03:21:10', '2018-11-27 16:13:58'),
-(17, 'T2', 'Test #2', 14, 'group', '23', '2018-11-27', '2018-12-27', '5d1', 1, 1, '2018-11-27 16:13:20', '2018-11-27 16:14:00'),
+(15, 'AP1', 'AP 1 Nov', 7, 'section', '3,27', '2018-11-19', '2018-11-26', '3d1', 0, 1, '2018-11-24 09:44:32', '2018-11-29 11:45:04'),
+(16, '123', 'Test #1', 14, 'employee', '472,1296,1626,1468,743', '2018-11-05', '2018-11-18', '4d1', 0, 1, '2018-11-27 03:21:10', '2018-11-29 10:25:55'),
+(17, 'T2', 'Test #2', 14, 'group', '23', '2018-11-27', '2018-12-27', '5d1', 1, 1, '2018-11-27 16:13:20', '2018-11-29 11:45:03'),
 (18, 'T3', 'Test #3', 18, 'sub_section', '20,22', '2018-11-01', '2018-12-31', '4d1', 1, 1, '2018-11-27 16:14:56', '2018-11-27 16:14:58');
 
 -- --------------------------------------------------------
@@ -2249,7 +2293,7 @@ INSERT INTO `kode_bagian` (`id`, `kode`, `bagian_key`, `bagian_value`, `division
 (30, '0fc', 'department', 2, 1, 2, NULL, NULL, NULL, 1, '2018-11-09 06:29:56', '2018-11-09 06:31:50'),
 (31, '0fc', 'department', 17, 2, 17, NULL, NULL, NULL, 1, '2018-11-09 06:32:00', '2018-11-10 12:05:45'),
 (32, '0fc', 'department', 3, 2, 3, NULL, NULL, NULL, 1, '2018-11-09 06:32:12', '2018-11-09 07:55:54'),
-(33, '0fc', 'department', 11, 3, 11, NULL, NULL, NULL, 1, '2018-11-09 06:32:31', '2018-11-09 07:55:52'),
+(33, '0fc', 'department', 11, 3, 11, NULL, NULL, NULL, 0, '2018-11-09 06:32:31', '2018-11-29 11:30:56'),
 (34, '0fc', 'department', 7, 5, 7, NULL, NULL, NULL, 1, '2018-11-09 06:32:44', '2018-11-09 07:55:50'),
 (36, '0fc', 'department', 5, 4, 5, NULL, NULL, NULL, 1, '2018-11-09 06:33:11', '2018-11-09 07:55:48'),
 (37, '0fc', 'department', 10, 3, 10, NULL, NULL, NULL, 1, '2018-11-09 06:33:19', '2018-11-09 07:55:46'),
@@ -2316,23 +2360,10 @@ INSERT INTO `penugasan` (`id`, `nama`, `priority`, `active`, `created`, `updated
 (4, 'General Manager', 3, 1, '2018-10-03 12:35:58', '2018-11-11 12:36:23'),
 (5, 'Leader', 7, 1, '2018-10-03 12:36:06', '2018-11-11 12:37:28'),
 (6, 'Manager', 4, 1, '2018-10-03 12:36:12', '2018-11-11 12:36:26'),
-(7, 'President Director', 1, 1, '2018-10-03 12:36:20', '2018-11-11 12:36:12'),
+(7, 'President Director', 1, 0, '2018-10-03 12:36:20', '2018-11-29 11:26:56'),
 (8, 'Senior Chief', 5, 1, '2018-10-03 12:36:26', '2018-11-11 12:36:30'),
 (9, 'Senior Foreman', 9, 1, '2018-10-03 12:36:33', '2018-11-11 12:37:39'),
 (10, 'Sub Leader', 8, 1, '2018-10-03 12:36:39', '2018-11-11 12:37:35');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `presence`
---
-
-CREATE TABLE `presence` (
-  `id` int(11) NOT NULL,
-  `nik` varchar(255) DEFAULT NULL,
-  `pin` int(11) DEFAULT NULL,
-  `scan_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2381,7 +2412,7 @@ INSERT INTO `section` (`id`, `nama`, `parent`, `active`, `created`, `updated`) V
 (26, 'Welding-Surface Treatment', 12, 1, '2018-10-03 08:14:39', '2018-10-03 08:14:39'),
 (27, 'Surface Treatment', 12, 1, '2018-10-03 08:14:57', '2018-10-04 03:45:30'),
 (29, 'Security', 17, 1, '2018-11-08 09:35:10', '2018-11-08 09:35:14'),
-(30, 'TEST 321', 18, 1, '2018-11-15 05:54:27', '2018-11-15 07:42:06');
+(30, 'TEST 321', 18, 0, '2018-11-15 05:54:27', '2018-11-29 11:34:57');
 
 -- --------------------------------------------------------
 
@@ -2414,7 +2445,7 @@ CREATE TABLE `shift` (
 
 INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_keluar`, `awal_scan_masuk`, `akhir_scan_masuk`, `awal_scan_keluar`, `akhir_scan_keluar`, `on_freeday`, `override`, `override_shift`, `active`, `created`, `updated`) VALUES
 (7, 'S1', 'Shift 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '16:00', '05:00', '10:00', '13:00', '22:00', 0, 0, NULL, 1, '2018-10-25 10:14:13', '2018-11-23 14:19:36'),
-(8, 'NS', 'Non Shift', 'Senin,Selasa,Rabu,Kamis,Jumat', '07:00', '16:00', '05:50', '06:10', '15:50', '16:10', 0, 0, NULL, 1, '2018-10-25 10:14:36', '2018-11-26 01:58:37'),
+(8, 'NS', 'Non Shift', 'Senin,Selasa,Rabu,Kamis,Jumat', '07:00', '16:00', '05:50', '06:10', '15:50', '16:10', 0, 0, NULL, 1, '2018-10-25 10:14:36', '2018-11-29 11:44:55'),
 (9, 'S3', 'Shift 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:30', '07:10', '20:30', '00:00', '04:01', '09:00', 0, 0, NULL, 1, '2018-10-25 10:14:56', '2018-11-23 14:19:16'),
 (14, 'S2', 'Shift 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '15:55', '00:15', '12:00', '18:00', '22:00', '03:00', 0, 0, NULL, 1, '2018-11-19 07:45:34', '2018-11-23 14:19:42'),
 (15, 'J1', 'Jumat 1', 'Jumat', '07:00', '16:30', '05:00', '10:00', '12:00', '22:00', 0, 1, '8,7', 1, '2018-11-19 07:52:04', '2018-11-26 01:59:08'),
@@ -2426,7 +2457,7 @@ INSERT INTO `shift` (`id`, `kode`, `nama`, `hari_efektif`, `jam_masuk`, `jam_kel
 (21, 'C1', 'Chef 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '06:00', '15:00', '04:00', '08:00', '12:00', '19:00', 0, 0, NULL, 1, '2018-11-19 08:11:09', '2018-11-19 08:19:04'),
 (22, 'C2', 'Chef 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '12:00', '20:00', '10:00', '15:00', '18:00', '23:00', 0, 0, NULL, 1, '2018-11-19 08:12:01', '2018-11-19 08:19:07'),
 (23, 'C3', 'Chef 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:00', '07:00', '20:00', '01:00', '04:00', '10:00', 0, 0, NULL, 1, '2018-11-19 08:15:29', '2018-11-19 08:19:05'),
-(24, 'L1', 'Lembur 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '16:00', '05:00', '09:00', '09:00', '19:00', 1, 0, NULL, 1, '2018-11-19 08:23:18', '2018-11-27 16:40:26'),
+(24, 'L1', 'Lembur 1', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '07:00', '16:00', '05:00', '09:00', '09:00', '19:00', 1, 0, NULL, 1, '2018-11-19 08:23:18', '2018-11-29 10:25:59'),
 (25, 'L2', 'Lembur 2', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '16:00', '00:15', '12:00', '18:00', '19:00', '02:00', 1, 0, NULL, 1, '2018-11-19 08:25:12', '2018-11-27 16:35:17'),
 (26, 'L3', 'Lembur 3', 'Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu', '23:30', '07:10', '22:00', '01:00', '04:00', '08:00', 1, 0, NULL, 1, '2018-11-19 08:26:35', '2018-11-27 16:31:34');
 
@@ -2451,7 +2482,8 @@ CREATE TABLE `shift_transfer` (
 --
 
 INSERT INTO `shift_transfer` (`id`, `employee`, `old_shift`, `new_shift`, `transfer_date`, `created`, `updated`) VALUES
-(12, 1296, 0, 25, '2018-12-09', '2018-11-27 17:00:37', '2018-11-27 17:00:37');
+(14, 1468, 7, 9, '2018-12-01', '2018-11-28 07:43:05', '2018-11-28 07:43:05'),
+(16, 1296, 15, 17, '2018-11-30', '2018-11-29 08:10:07', '2018-11-29 08:10:07');
 
 -- --------------------------------------------------------
 
@@ -2557,6 +2589,12 @@ INSERT INTO `sub_section` (`id`, `nama`, `parent`, `active`, `created`, `updated
 --
 
 --
+-- Indexes for table `absence`
+--
+ALTER TABLE `absence`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `attendance`
 --
 ALTER TABLE `attendance`
@@ -2588,6 +2626,12 @@ ALTER TABLE `employee`
   ADD KEY `id_jabatan_idxfk` (`jabatan`),
   ADD KEY `id_grade_idxfk` (`grade`),
   ADD KEY `id_penugasan_idxfk` (`penugasan`);
+
+--
+-- Indexes for table `employee_absence`
+--
+ALTER TABLE `employee_absence`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `grade`
@@ -2628,12 +2672,6 @@ ALTER TABLE `penugasan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `presence`
---
-ALTER TABLE `presence`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `section`
 --
 ALTER TABLE `section`
@@ -2664,10 +2702,15 @@ ALTER TABLE `sub_section`
 --
 
 --
+-- AUTO_INCREMENT for table `absence`
+--
+ALTER TABLE `absence`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `department`
 --
@@ -2684,6 +2727,11 @@ ALTER TABLE `division`
 ALTER TABLE `employee`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1882;
 --
+-- AUTO_INCREMENT for table `employee_absence`
+--
+ALTER TABLE `employee_absence`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
 -- AUTO_INCREMENT for table `grade`
 --
 ALTER TABLE `grade`
@@ -2692,7 +2740,7 @@ ALTER TABLE `grade`
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT for table `group_shift`
 --
@@ -2709,11 +2757,6 @@ ALTER TABLE `kode_bagian`
 ALTER TABLE `penugasan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT for table `presence`
---
-ALTER TABLE `presence`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `section`
 --
 ALTER TABLE `section`
@@ -2727,7 +2770,7 @@ ALTER TABLE `shift`
 -- AUTO_INCREMENT for table `shift_transfer`
 --
 ALTER TABLE `shift_transfer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `sub_section`
 --
