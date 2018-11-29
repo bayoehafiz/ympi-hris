@@ -1,4 +1,234 @@
 var BasePagesAttendance = function() {
+    var syncData = function() {
+        $.ajax({
+            type: "GET",
+            url: ENV.BASE_API + 'syncAttendanceData.php',
+            dataType: 'json',
+            success: function(res) {
+                // if (res.success) {
+                    console.log(res);
+                // }
+            }
+        })
+    }
+
+    var initAttendancePage = function() {
+        // load sidebar
+        $('#sidebar').load("../partials/sidebar.html", function() {
+            // Set active class for related menu
+            $('#menu-attendance').addClass('active');
+        });
+
+        // load header-nav
+        $('#header-navbar').load("../partials/header-nav.html", function() {
+            // Set the page title
+            $('#header-title').html('<i class="si si-check push-10-r"></i>Data Presensi');
+        });
+
+        // load footer
+        $('#page-footer').load("../partials/footer.html", function() {
+            // console.log("Footer loaded!");
+        });
+
+        // when menu button is clicked
+        $(document).on('click', '.nav-menu, .logo', function(e) {
+            e.preventDefault;
+            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
+            return false;
+        });
+
+        // Logout button
+        $('#btn-logout').click(function() {
+            sessionStorage.clear();
+            location.reload();
+        });
+
+        // when tabs clicked
+        $(document).on('click', '.tab-btn', function() {
+            var t = $(this).attr('data');
+            $('#hidden-active-type').val(t);
+            switch (t) {
+                case 'employee_attendance':
+                    $('#btn-add').attr('data', 'Absensi Karyawan');
+                    // initTableEmployeeAttendance();
+                    break;
+                default:
+                    $('#btn-add').attr('data', 'Absensi');
+                    initTableAttendance();
+                    break;
+            };
+        })
+
+        // when ADD button is clicked
+        $(document).on('click', '#btn-add', function() {
+            // reset the modal first!
+            $('#modal-title, #generated-container').html('');
+            $('#hidden-select').addClass('hide-me');
+
+            var html = '';
+            data_type = $(this).attr('data-type');
+            $('#hidden-type').val(data_type);
+
+            switch (data_type) {
+                case "attendance":
+                    html += renderAddElement('text', 'kode', 'Kode', 4);
+                    html += renderAddElement('text', 'jenis', 'Jenis Absensi / Cuti', 8);
+                    html += renderAddElement('textarea', 'keterangan', 'Keterangan', 12);
+                    html += renderAddElement('check', 'potongan_cuti', 'Potongan Cuti?', 6);
+                    break;
+                default:
+                    break;
+            }
+
+            $('#modal-title').html('Tambah Data: ' + data_type);
+            $('#generated-container').html(html);
+
+            // hide unrelated buttons
+            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+            $('#modal').modal('show');
+
+            // reinitiate datetime picker
+            $('.js-datetimepicker').datetimepicker({
+                format: 'HH:mm'
+            });
+            App.initHelpers(['datetimepicker']);
+
+            // reinitiate validation
+            initValidation(data_type);
+
+            // set the action type
+            $('#act-type').val('add');
+        });
+
+        // When ACTION buttons clicked
+        $(document).on('click', '.js-dataTable-full tbody button', function() {
+            var act = $(this).attr('act');
+            var active_table_id = $(this).parents("table").attr('id');
+            var table = $('#' + active_table_id).DataTable();
+            var data = table.row($(this).parents('tr')).data();
+
+            // Lets decide which button is clicked:
+            if (act == 'edit') { // edit the data
+                // reset the modal first!
+                $('#modal-title, #generated-container').html('');
+
+                var html = '';
+                data_type = $(this).attr('data-active-type');
+                $('#hidden-type').val(data_type);
+                console.log(data_type);
+
+                switch (data_type) {
+                    case "attendance":
+                        html += renderEditElement('text', 'kode', 'Kode', data.kode, 4);
+                        html += renderEditElement('text', 'jenis', 'Jenis Absensi / Cuti', data.jenis, 8);
+                        html += renderEditElement('textarea', 'keterangan', 'Keterangan', data.keterangan, 12);
+                        html += renderEditElement('check', 'potongan_cuti', 'Potongan Cuti?', data.potongan_cuti, 6);
+                        break;
+                    default:
+                        break;
+                }
+
+                $('#modal-title').html('Tambah Data ' + data_type);
+                $('#generated-container').html(html);
+
+                // hide unrelated buttons
+                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
+                $('#modal').modal('show');
+
+                // then assign the values into the multiple select
+                if (data.hari_efektif) {
+                    var value = data.hari_efektif;
+                    $.each(value.split(','), function(i, e) {
+                        $("#input-hari_efektif option[value='" + e + "']").prop("selected", true);
+                    })
+                }
+
+                // reinitiate datetime picker
+                $('.js-datetimepicker').datetimepicker({
+                    format: 'HH:mm'
+                });
+                App.initHelpers(['datetimepicker']);
+
+                // reinitiate validation
+                initValidation(data_type);
+
+                // set the action-type and data-id
+                $('#act-type').val('edit');
+                $('#data-id').val(data.id);
+            } else { // remove the data
+                swal({
+                    title: "Konfirmasi",
+                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Hapus!",
+                    cancelButtonText: "Batal",
+                    showLoaderOnConfirm: true,
+                    preConfirm: function() {
+                        var dType = $('#hidden-active-type').val();
+                        $.ajax({
+                                type: "POST",
+                                url: ENV.BASE_API + "deleteAttendanceData.php",
+                                dataType: 'json',
+                                data: {
+                                    id: data.id,
+                                    table: dType
+                                }
+                            }).done(function(response) {
+                                if (response.status == 'err') {
+                                    swal('Error', response.message, 'error');
+                                } else {
+                                    swal.close();
+                                    $.notify({
+                                        "icon": "fa fa-check-circle",
+                                        "message": response.message
+                                    }, {
+                                        "type": "success"
+                                    })
+
+                                    // reload the table
+                                    var table = $('#table-' + dType).DataTable();
+                                    table.ajax.reload();
+                                }
+                            })
+                            .fail(function() {
+                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
+                            });
+                    },
+                    allowOutsideClick: false
+                })
+            }
+        });
+
+        // when modal on close
+        $('#modal').on('hidden.bs.modal', function() {
+            console.log('Destroying validator and resetting elements...');
+            window.$validator.destroy();
+
+            // reset all elements
+            $('[id^=input-]').html('').empty();
+
+            // hide all hidden elements
+            $('[id^=hidden-]').addClass('hide-me');
+        })
+
+
+        // When SYNC button is clicked
+        $(document).on('click', '#sync-data', function() {
+            syncData();
+        })
+
+        // set default hidden value for ACTIVE type
+        $('#hidden-active-type').val('attendance');
+
+        // Lets init our first table :: Attendance Table
+        // initTableAttendance();
+
+        // Surpress DT warning into JS errors
+        $.fn.dataTableExt.sErrMode = 'throw';
+    };
+
     var initStat = function(type) {
         // clear the container first
         var container = $('#stat-attendance');
@@ -117,226 +347,14 @@ var BasePagesAttendance = function() {
         });
     };
 
-    var initAttendancePage = function() {
-        // load sidebar
-        $('#sidebar').load("../partials/sidebar.html", function() {
-            // Set active class for related menu
-            $('#menu-attendance').addClass('active');
-        });
-
-        // load header-nav
-        $('#header-navbar').load("../partials/header-nav.html", function() {
-            // Set the page title
-            $('#header-title').html('<i class="si si-ban push-10-r"></i>Data Absensi');
-        });
-
-        // load footer
-        $('#page-footer').load("../partials/footer.html", function() {
-            // console.log("Footer loaded!");
-        });
-
-        // when menu button is clicked
-        $(document).on('click', '.nav-menu, .logo', function(e) {
-            e.preventDefault;
-            if ($(this).attr('route') != undefined) window.location.replace(ENV.BASE_URL + $(this).attr('route'));
-            return false;
-        });
-
-        // Logout button
-        $('#btn-logout').click(function() {
-            sessionStorage.clear();
-            location.reload();
-        });
-
-        // when tabs clicked
-        $(document).on('click', '.tab-btn', function() {
-            var t = $(this).attr('data');
-            $('#hidden-active-type').val(t);
-            switch (t) {
-                case 'employee_attendance':
-                    $('#btn-add').attr('data', 'Absensi Karyawan');
-                    // initTableEmployeeAttendance();
-                    break;
-                default:
-                    $('#btn-add').attr('data', 'Absensi');
-                    initTableAttendance();
-                    break;
-            };
-        })
-
-        // when ADD button is clicked
-        $(document).on('click', '#btn-add', function() {
-            // reset the modal first!
-            $('#modal-title, #generated-container').html('');
-            $('#hidden-select').addClass('hide-me');
-
-            var html = '';
-            data_type = $(this).attr('data-type');
-            $('#hidden-type').val(data_type);
-
-            switch (data_type) {
-                case "attendance":
-                    html += renderAddElement('text', 'kode', 'Kode', 4);
-                    html += renderAddElement('text', 'jenis', 'Jenis Absensi / Cuti', 8);
-                    html += renderAddElement('textarea', 'keterangan', 'Keterangan', 12);
-                    html += renderAddElement('check', 'potongan_cuti', 'Potongan Cuti?', 6);
-                    break;
-                default:
-                    break;
-            }
-
-            $('#modal-title').html('Tambah Data: ' + data_type);
-            $('#generated-container').html(html);
-
-            // hide unrelated buttons
-            $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-            $('#modal').modal('show');
-
-            // reinitiate datetime picker
-            $('.js-datetimepicker').datetimepicker({
-                format: 'HH:mm'
-            });
-            App.initHelpers(['datetimepicker']);
-
-            // reinitiate validation
-            initValidation(data_type);
-
-            // set the action type
-            $('#act-type').val('add');
-        });
-
-        // When ACTION buttons clicked
-        $(document).on('click', '.js-dataTable-full tbody button', function() {
-            var act = $(this).attr('act');
-            var active_table_id = $(this).parents("table").attr('id');
-            var table = $('#' + active_table_id).DataTable();
-            var data = table.row($(this).parents('tr')).data();
-
-            // Lets decide which button is clicked:
-            if (act == 'edit') { // edit the data
-                // reset the modal first!
-                $('#modal-title, #generated-container').html('');
-
-                var html = '';
-                data_type = $(this).attr('hidden-active-type');
-                $('#hidden-type').val(data_type);
-                console.log(data_type);
-
-                switch (data_type) {
-                    case "attendance":
-                        html += renderEditElement('text', 'kode', 'Kode', data.kode, 4);
-                        html += renderEditElement('text', 'jenis', 'Jenis Absensi / Cuti', data.jenis, 8);
-                        html += renderEditElement('textarea', 'keterangan', 'Keterangan', data.keterangan, 12);
-                        html += renderEditElement('check', 'potongan_cuti', 'Potongan Cuti?', data.potongan_cuti, 6);
-                        break;
-                    default:
-                        break;
-                }
-
-                $('#modal-title').html('Tambah Data ' + data_type);
-                $('#generated-container').html(html);
-
-                // hide unrelated buttons
-                $('#btn-modal-edit, #btn-modal-remove, #btn-modal-cancel').addClass('hide-me');
-                $('#modal').modal('show');
-
-                // then assign the values into the multiple select
-                if (data.hari_efektif) {
-                    var value = data.hari_efektif;
-                    $.each(value.split(','), function(i, e) {
-                        $("#input-hari_efektif option[value='" + e + "']").prop("selected", true);
-                    })
-                }
-
-                // reinitiate datetime picker
-                $('.js-datetimepicker').datetimepicker({
-                    format: 'HH:mm'
-                });
-                App.initHelpers(['datetimepicker']);
-
-                // reinitiate validation
-                initValidation(data_type);
-
-                // set the action-type and data-id
-                $('#act-type').val('edit');
-                $('#data-id').val(data.id);
-            } else { // remove the data
-                swal({
-                    title: "Konfirmasi",
-                    text: "Hapus " + data.nama.toUpperCase() + " dari database?",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Hapus!",
-                    cancelButtonText: "Batal",
-                    showLoaderOnConfirm: true,
-                    preConfirm: function() {
-                        var dType = $('#hidden-active-type').val();
-                        $.ajax({
-                                type: "POST",
-                                url: ENV.BASE_API + "deleteAttendanceData.php",
-                                dataType: 'json',
-                                data: {
-                                    id: data.id,
-                                    table: dType
-                                }
-                            }).done(function(response) {
-                                if (response.status == 'err') {
-                                    swal('Error', response.message, 'error');
-                                } else {
-                                    swal.close();
-                                    $.notify({
-                                        "icon": "fa fa-check-circle",
-                                        "message": response.message
-                                    }, {
-                                        "type": "success"
-                                    })
-
-                                    // reload the table
-                                    var table = $('#table-' + dType).DataTable();
-                                    table.ajax.reload();
-                                }
-                            })
-                            .fail(function() {
-                                swal('Error', 'Terjadi kesalahan. Coba lagi nanti!', 'error');
-                            });
-                    },
-                    allowOutsideClick: false
-                })
-            }
-        });
-
-        // when modal on close
-        $('#modal').on('hidden.bs.modal', function() {
-            console.log('Destroying validator and resetting elements...');
-            window.$validator.destroy();
-
-            // reset all elements
-            $('[id^=input-]').html('').empty();
-
-            // hide all hidden elements
-            $('[id^=hidden-]').addClass('hide-me');
-        })
-
-        // set default hidden value for ACTIVE type
-        $('#hidden-active-type').val('attendance');
-
-        // Lets init our first table :: Attendance Table
-        initTableAttendance();
-
-        // Surpress DT warning into JS errors
-        $.fn.dataTableExt.sErrMode = 'throw';
-    };
-
-
     return {
         init: function() {
             set_base('attendance');
-            initStat('attendance');
+            // initStat('attendance');
             initAttendancePage();
         }
     };
 }();
 
 // Initialize when page loads
-jQuery(function() {BasePagesAttendance.init();});
+jQuery(function() { BasePagesAttendance.init(); });

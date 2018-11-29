@@ -40,8 +40,6 @@ if (isset($_GET['parent'])) {
     }
 }
 
-
-
 // paging
 if (isset($_GET['page'])) {
     $page = $_GET['page'];

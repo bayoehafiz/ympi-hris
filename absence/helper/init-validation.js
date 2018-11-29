@@ -1,23 +1,38 @@
 // Init Material Forms Validation, for more examples you can check out https://github.com/jzaefferer/jquery-validation
 var initValidation = function(data_type) {
     switch (data_type) {
-        case 'attendance':
+        case 'absence':
             var nama = 'Absensi';
             var rules = {
-            'elem-jenis': {
-                required: true,
-            },
-            'elem-kode': {
-                required: true
+                'elem-jenis': {
+                    required: true,
+                },
+                'elem-nama': {
+                    required: true,
+                },
+                'elem-kode': {
+                    required: true
+                }
             }
-        }
-
-        var messages = {
-            'elem-jenis': 'Masukkan Jenis ' + nama,
-            'elem-kode': 'Masukkan Kode ' + nama
-        }
+            var messages = {
+                'elem-jenis': 'Pilih Jenis Absensi',
+                'elem-nama': 'Isikan Nama Absensi',
+                'elem-kode': 'Isikan Kode'
+            }
             break;
         default:
+            var rules = {
+                'elem-absence': {
+                    required: true,
+                },
+                'elem-leave_period': {
+                    required: true
+                }
+            }
+            var messages = {
+                'elem-absence': 'Pilih Jenis Cuti/Absensi',
+                'elem-leave_period': 'Pilih Jangka Waktu'
+            }
             break;
     }
 
@@ -71,37 +86,25 @@ var initValidation = function(data_type) {
             });
 
             // Read current data-type and act-type
-            var dType = $('#hidden-active-type').val();
-            var actType = $('#act-type').val();
-            if (actType == 'add') {
-                var api_url = ENV.BASE_API + 'addAttendanceData.php';
-
-                // add random color for drag & drop attendances
-                // data.push({
-                //     key: "color",
-                //     value: generateColor()
-                // })
-
+            if (window.modal_scope == 'add') {
+                var api_url = ENV.BASE_API + 'addAbsenceData.php';
                 var payload = {
                     data: data,
-                    table: dType
+                    table: data_type
                 };
-
                 var msg = "Data berhasil ditambahkan";
             } else {
-                var api_url = ENV.BASE_API + 'updateAttendanceData.php';
+                var api_url = ENV.BASE_API + 'updateAbsenceData.php';
                 var payload = {
                     data: data,
-                    table: dType,
-                    id: $('#data-id').val()
+                    table: data_type,
+                    id: window.opened_data
                 };
-
                 var msg = "Data berhasil di-update";
             }
 
             // Saving...
-            console.log("Saving...", payload);
-            
+            // console.log("Saving...", payload);
             $.ajax({
                 method: "POST",
                 url: api_url,
@@ -116,9 +119,15 @@ var initValidation = function(data_type) {
                         }, {
                             "type": "success"
                         })
-                        // reload the table
-                        var table = $('#table-' + dType).DataTable();
-                        table.ajax.reload();
+
+                        if (data_type == 'absence') {
+                            // reload the table
+                            var table = $('#table-' + data_type).DataTable();
+                            table.ajax.reload();
+                        } else {
+                            // reload the calendar
+                            renderEmployeeDetails(window.searched_user);
+                        }
                     } else {
                         swal("Error!", res.message, "error");
                     }

@@ -116,26 +116,37 @@ var BasePagesGrade = function() {
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
             },
-            columns: [
-                { className: "hidden-xs text-center", data: "priority" },
+            columns: [{
+                    className: "hidden-xs text-center",
+                    data: "priority",
+                    render: function(data, type, row) {
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
+                    }
+                },
                 {
                     className: "font-w600 ",
                     data: "nama",
                     render: function(data, type, row) {
-                        if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-success push-10-l">BARU</span>';
-                        } else {
-                            return data;
-                        }
+                        if (row.created == row.updated) data = '<span class="label label-success push-10-r">BARU</span>' + data;
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
-                { className: "hidden-xs text-center", data: "kode" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "kode",
+                    render: function(data, type, row) {
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
+                    }
+                },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
                     render: function(data, type, row) {
                         if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                        else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                        else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                     }
                 },
                 {
@@ -188,17 +199,23 @@ var BasePagesGrade = function() {
             createdRow: function(row, data, dataIndex) {
                 $(row).attr('data-id', data.id);
             },
-            columns: [
-                { className: "hidden-xs text-center", data: "priority" },
+            columns: [{
+                    className: "hidden-xs text-center",
+                    data: "priority",
+                    render: function(data, type, row) {
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
+                    }
+                },
                 {
                     className: "font-w600 ",
                     data: "nama",
                     render: function(data, type, row) {
-                        if (row.active == 0 && row.created == row.updated) {
-                            return data + '<span class="label label-success push-10-l">BARU</span>';
-                        } else {
-                            return data;
+                        if (row.created == row.updated) {
+                            data = '<span class="label label-success push-10-r">BARU</span>' + data;
                         }
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
                 {
@@ -206,7 +223,7 @@ var BasePagesGrade = function() {
                     data: "active",
                     render: function(data, type, row) {
                         if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                        else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                        else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                     }
                 },
                 {

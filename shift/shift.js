@@ -93,7 +93,14 @@ var BasePagesShift = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "text-center", data: "kode" },
+                {
+                    className: "text-center",
+                    data: "kode",
+                    render: function(data, type, row) {
+                        if (row.active == '1') return '<span class="">' + data + '</span>';
+                        else return '<span class="text-gray">' + data + '</span>';
+                    }
+                },
                 {
                     className: "font-w600",
                     data: "nama",
@@ -105,7 +112,8 @@ var BasePagesShift = function() {
                         if (row.override == '1') {
                             add += '<span class="pull-right hidden-md" style="padding-top: 2px;"><i class="si si-loop font-w700 text-danger"></i></span>';
                         }
-                        return data + add;
+                        if (row.active == '1') return '<span>' + data + add + '</span>';
+                        else return '<span class="text-gray">' + data + add + '</span>';
                     }
                 },
                 {
@@ -118,11 +126,11 @@ var BasePagesShift = function() {
                         var splitted_string = raw_string.split(',');
                         if (splitted_string.length > 6) { //  <- if full days
                             if (row.active == 1) final_string += '<span class="label label-primary text-uppercase push-5-r"><i class="si si-calendar push-5-r"></i>Semua Hari</span>';
-                            else final_string += '<span class="label label-default  text-uppercase push-5-r"><i class="si si-calendar push-5-r"></i>Semua Hari</span>';
+                            else final_string += '<span class="label bg-gray text-uppercase push-5-r"><i class="si si-calendar push-5-r"></i>Semua Hari</span>';
                         } else {
                             splitted_string.forEach(function(s) {
                                 if (row.active == 1) final_string += '<span class="label label-primary text-uppercase push-5-r">' + s + '</span>';
-                                else final_string += '<span class="label label-default text-uppercase push-5-r">' + s + '</span>';
+                                else final_string += '<span class="label bg-gray text-uppercase push-5-r">' + s + '</span>';
                             });
                         }
                         return final_string;
@@ -132,21 +140,24 @@ var BasePagesShift = function() {
                     className: "text-center",
                     data: "jam_masuk",
                     render: function(data, type, row) {
-                        return '<span class="font-w700">' + row.jam_masuk + ' - ' + row.jam_keluar + '</span>';
+                        if (row.active == '1') return '<span class="font-w700">' + row.jam_masuk + ' - ' + row.jam_keluar + '</span>';
+                        else return '<span class="font-w700 text-gray">' + row.jam_masuk + ' - ' + row.jam_keluar + '</span>';
                     }
                 },
                 {
                     className: "text-center",
                     data: "awal_scan_masuk",
                     render: function(data, type, row) {
-                        return row.awal_scan_masuk + ' - ' + row.akhir_scan_masuk;
+                        if (row.active == '1') return row.awal_scan_masuk + ' - ' + row.akhir_scan_masuk;
+                        else return '<span class="text-gray">' + row.awal_scan_masuk + ' - ' + row.akhir_scan_masuk + '</span>';
                     }
                 },
                 {
                     className: "text-center",
                     data: "awal_scan_keluar",
                     render: function(data, type, row) {
-                        return row.awal_scan_keluar + ' - ' + row.akhir_scan_keluar;
+                        if (row.active == '1') return row.awal_scan_keluar + ' - ' + row.akhir_scan_keluar;
+                        else return '<span class="text-gray">' + row.awal_scan_keluar + ' - ' + row.akhir_scan_keluar + '</span>';
                     }
                 },
                 {
@@ -154,7 +165,7 @@ var BasePagesShift = function() {
                     data: "active",
                     render: function(data, type, row) {
                         if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                        else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                        else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                     }
                 },
                 {
@@ -213,24 +224,31 @@ var BasePagesShift = function() {
             },
             columns: [
                 { data: "updated" },
-                { className: "hidden-xs text-center", data: "kode" },
+                {
+                    className: "hidden-xs text-center",
+                    data: "kode",
+                    render: function(data, type, row) {
+                        if (row.active == '0') return '<span class="text-gray">' + data + '</span>';
+                        return data;
+                    }
+                },
                 {
                     className: "font-w600 ",
                     data: "nama",
                     render: function(data, type, row) {
-                        if (row.transferable == '1') {
-                            return data + '<span class="pull-right hidden-md"><i class="si si-shuffle font-w700 text-success"></i></span>';
-                        } else {
-                            return data;
-                        }
+                        if (row.transferable == '1') data = data + '<span class="pull-right hidden-md"><i class="si si-shuffle font-w700 text-success"></i></span>';
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
                 {
                     className: "text-center",
                     data: "nama_shift",
                     render: function(data, type, row) {
-                        if (row.active == 1) return '<span class="label label-primary text-uppercase push-5-r">' + data + ' (' + row.kode_shift + ')</span>';
-                        else return '<span class="label label-default text-uppercase push-5-r">' + data + ' (' + row.kode_shift + ')</span>';
+                        if (row.active == 1) data = '<span class="label label-primary text-uppercase push-5-r">' + data + ' (' + row.kode_shift + ')</span>';
+                        else data = '<span class="label bg-gray text-uppercase push-5-r">' + data + ' (' + row.kode_shift + ')</span>';
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
                 {
@@ -240,8 +258,9 @@ var BasePagesShift = function() {
                     render: function(data, type, row, meta) {
                         var names = '';
                         data.forEach(function(dt) {
-                            names += '<span class="label label-primary text-uppercase push-5-r">' + dt + '</span>';
-                        })
+                            if (row.active == 1) names += '<span class="label label-primary text-uppercase push-5-r">' + dt + '</span>';
+                            else names += '<span class="label bg-gray text-uppercase push-5-r">' + dt + '</span>';
+                        });
                         return names;
                     }
                 },
@@ -249,15 +268,19 @@ var BasePagesShift = function() {
                     className: "text-center",
                     data: "date_from",
                     render: function(data, type, row) {
-                        return '<strong>' + moment(row.date_from, 'YYYY-MM-DD').format('D MMM YYYY') + '</strong> <small>s/d</small> <strong>' + moment(row.date_to, 'YYYY-MM-DD').format('D MMM YYYY') + '</strong>';
+                        data = '<strong>' + moment(row.date_from, 'YYYY-MM-DD').format('D MMM YYYY') + '</strong> <small>s/d</small> <strong>' + moment(row.date_to, 'YYYY-MM-DD').format('D MMM YYYY') + '</strong>';
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
                 {
                     className: "hidden-xs text-center",
                     data: "active",
                     render: function(data, type, row) {
-                        if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                        else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                        if (data == 1) data = '<span class="label label-success text-uppercase">Aktif</span>';
+                        else data = '<span class="label label-danger text-uppercase">Non Aktif</span>';
+                        if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                        return data;
                     }
                 },
                 {
@@ -456,28 +479,30 @@ var BasePagesShift = function() {
                 }
             },
             eventRender: function(event, element) {
+                var html = '<div class="push-5-l push-5-t push-5-r push-5">';
                 if (event.title == "LIBUR") {
-                    var html = '<div class="h5 text-white push-5">' + event.title + '</div>' +
+                    html += '<div class="h5 text-white push-5">' + event.title + '</div>' +
                         '<i class="si si-ban text-white"></i>';
                 } else {
                     if (event.transferable == "1") var transferable = '<i class="si si-shuffle"></i>';
                     else var transferable = '';
 
                     if (event.transferable == '9') {
-                        var html = '<div class="h5 text-white push-5">' + event.title.toUpperCase() + ' (' + event.kode + ')</div>' +
+                        html += '<div class="h5 text-white push-5">' + event.title.toUpperCase() + ' (' + event.kode + ')</div>' +
                             '<div class="text-white"><i class="si si-clock push-5-r"></i>' + event.jam_masuk + ' - ' + event.jam_keluar + '</div>' +
                             '<div class="font-s12"><i class="fa fa-exchange push-5-r"></i>' + event.description + '</div>';
                     } else {
-                        var html = '<div class="h5 text-white push-5">' + event.title.toUpperCase() + ' (' + event.kode + ')<span class="pull-right font-s13">' + transferable + '</span></div>' +
+                        html += '<div class="h5 text-white push-5">' + event.title.toUpperCase() + ' (' + event.kode + ')<span class="pull-right font-s13">' + transferable + '</span></div>' +
                             '<div class="text-white"><i class="si si-clock push-5-r"></i>' + event.jam_masuk + ' - ' + event.jam_keluar + '</div>' +
                             '<div class="font-s12"><i class="si si-calendar push-5-r"></i>' + event.description + '</div>';
                     }
                 }
+                html += '</div>';
                 element.find('.fc-title').html(html);
             },
             eventClick: function(event) {
                 openTransferModal(window.searched_user, event);
-            },
+            }
         });
     };
 

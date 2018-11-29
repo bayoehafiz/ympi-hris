@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>YMPI HRIS - Data Absensi</title>
+    <title>YMPI HRIS - Data Kehadiran</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Stylesheets -->
     <!-- Web fonts -->
@@ -37,9 +37,9 @@
         <!-- Main Container -->
         <main id="main-container">
             <!-- Stats -->
-            <div class="content-mini content-mini-full bg-white border-b">
+            <!-- <div class="content-mini content-mini-full bg-white border-b">
                 <div class="row items-push text-uppercase text-center center-block" id="stat-attendance"></div>
-            </div>
+            </div> -->
             <!-- END Stats -->
             <!-- Page Content -->
             <div class="content">
@@ -47,17 +47,21 @@
                 <div class="block">
                     <ul class="nav nav-tabs nav-justified" data-toggle="tabs">
                         <li class="active">
-                            <a href="#btabs-animated-fade-attendance" class="tab-btn" data="shift">DATA CUTI & ABSENSI</a>
+                            <!-- <a href="#btabs-animated-fade-attendance" class="tab-btn" data="shift">Data Presensi</a> -->
+                            <div class=" push-10-t push-10-r push-10 center-block pull-right">
+                                Last Sync: <span class="text-muted push-10-r" id="sync-last">NULL</span>
+                                <button class="btn btn-sm btn-primary" id="sync-data">Sync Fingerprint Data<i class="si si-refresh push-10-l"></i></button>
+                            </div>
                         </li>
-                        <li>
-                            <a href="#btabs-animated-fade-employee_attendance" class="tab-btn" data="group_shift">ABSENSI KARYAWAN</a>
-                        </li>
+                        <!-- <li>
+                            <a href="#btabs-animated-fade-employee_attendance" class="tab-btn" data="group_shift">Absensi Karyawan</a>
+                        </li> -->
                     </ul>
                     <div class="block-content tab-content">
                         <div class="tab-pane fade in active" id="btabs-animated-fade-attendance">
                             <div class="block">
                                 <div class="block-content">
-                                    <!-- Table shift -->
+                                    <!-- Table attendance -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-attendance" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -71,14 +75,14 @@
                                             </tr>
                                         </thead>
                                     </table>
-                                    <!-- END Table shift -->
+                                    <!-- END Table attendance -->
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="btabs-animated-fade-employee_attendance">
                             <div class="block">
                                 <div class="block-content">
-                                    <!-- Table group shift -->
+                                    <!-- Table ... -->
                                     <table class="table table-bordered table-striped js-dataTable-full table-hover" id="table-employee-attendance" style="width: 100%!important;">
                                         <thead>
                                             <tr>
@@ -90,7 +94,7 @@
                                             </tr>
                                         </thead>
                                     </table>
-                                    <!-- END Table group shift -->
+                                    <!-- END Table ... -->
                                 </div>
                             </div>
                         </div>
@@ -188,9 +192,9 @@
     <script src="../assets/js/plugins/fullcalendar/gcal.min.js"></script>
     <!-- Page JS Code -->
     <script src="helper/bs-datatables.js"></script>
-    <script src="helper/render-add-element.js"></script>
+    <!-- <script src="helper/render-add-element.js"></script>
     <script src="helper/render-edit-element.js"></script>
-    <script src="helper/init-validation.js"></script>
+    <script src="helper/init-validation.js"></script> -->
     <script src="attendance.js"></script>
     <script>
     jQuery(function() {

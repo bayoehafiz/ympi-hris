@@ -34,8 +34,21 @@ var getDaysBySchema = function(startDate, endDate, schema) {
     return dates;
 };
 
+var getDays = function(startDate, endDate) {
+    var dates = [];
+
+    var currDate = moment(startDate).startOf('day');
+    var lastDate = moment(endDate).startOf('day');
+
+    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+        dates.push(currDate.clone().toDate());
+    }
+
+    return dates;
+};
+
 // Fn to render employee's calendar
-var renderShiftCalendar = function(res) {
+var renderCalendar = function(res, absence_data) {
     var calendar_data = [];
     if (res.length > 0) {
         // hide error block
@@ -68,7 +81,6 @@ var renderShiftCalendar = function(res) {
                 days.forEach(function(d) {
                     var day = d.date;
 
-                    console.log(moment.locale());
                     // if it is ACTIVE DAY (based on PLOT SCHEMA & HARI EFEKTIF array)
                     if (d.active && $.inArray(moment(day).format('dddd'), hari_efektif) !== -1) {
                         // if there is any OVERRIDING SHIFT
@@ -86,9 +98,8 @@ var renderShiftCalendar = function(res) {
                                         jam_keluar: dt.jam_keluar,
                                         start: new Date(moment(day).format('YYYY/MM/DD')),
                                         transferable: data.transferable,
-                                        backgroundColor: '#3498db', // <- peterriver
-                                        borderColor: '#3498db',
-                                        textColor: '#fff',
+                                        backgroundColor: '#a48ad4', // <- peterriver
+                                        borderColor: '#a48ad4',
                                         allDay: true
                                     };
                                 } else {
@@ -101,9 +112,8 @@ var renderShiftCalendar = function(res) {
                                         jam_keluar: data.jam_keluar,
                                         start: new Date(moment(day).format('YYYY/MM/DD')),
                                         transferable: data.transferable,
-                                        backgroundColor: '#1abc9c', // <- amethyst
-                                        borderColor: '#1abc9c',
-                                        textColor: '#fff',
+                                        backgroundColor: '#a48ad4', // <- amethyst
+                                        borderColor: '#a48ad4',
                                         allDay: true
                                     };
                                 }
@@ -119,9 +129,8 @@ var renderShiftCalendar = function(res) {
                                 jam_keluar: data.jam_keluar,
                                 start: new Date(moment(day).format('YYYY/MM/DD')),
                                 transferable: data.transferable,
-                                backgroundColor: '#1abc9c',
-                                borderColor: '#1abc9c',
-                                textColor: '#fff',
+                                backgroundColor: '#a48ad4',
+                                borderColor: '#a48ad4',
                                 allDay: true
                             };
                         }
@@ -134,9 +143,7 @@ var renderShiftCalendar = function(res) {
                             title: "LIBUR",
                             description: "[" + data.kode + "] " + data.nama.toUpperCase(),
                             start: new Date(moment(day).format('YYYY/MM/DD')),
-                            backgroundColor: '#95a5a6',
-                            borderColor: '#95a5a6',
-                            textColor: '#fff',
+                            backgroundColor: '#7f8c8d',
                             allDay: true
                         };
                     }
@@ -165,9 +172,8 @@ var renderShiftCalendar = function(res) {
                                             jam_keluar: dt.jam_keluar,
                                             start: new Date(moment(day).format('YYYY/MM/DD')),
                                             transferable: data.transferable,
-                                            backgroundColor: '#3498db',
-                                            borderColor: '#3498db',
-                                            textColor: '#fff',
+                                            backgroundColor: '#a48ad4',
+                                            borderColor: '#a48ad4',
                                             allDay: true
                                         };
                                     } else {
@@ -182,7 +188,6 @@ var renderShiftCalendar = function(res) {
                                             transferable: data.transferable,
                                             backgroundColor: '#a48ad4',
                                             borderColor: '#a48ad4',
-                                            textColor: '#fff',
                                             allDay: true
                                         };
                                     }
@@ -200,7 +205,6 @@ var renderShiftCalendar = function(res) {
                                     transferable: data.transferable,
                                     backgroundColor: '#a48ad4',
                                     borderColor: '#a48ad4',
-                                    textColor: '#fff',
                                     allDay: true
                                 };
                             }
@@ -213,9 +217,7 @@ var renderShiftCalendar = function(res) {
                                 title: "LIBUR",
                                 description: "[" + data.kode + "] " + data.nama.toUpperCase(),
                                 start: new Date(moment(day).format('YYYY/MM/DD')),
-                                backgroundColor: '#95a5a6',
-                                borderColor: '#95a5a6',
-                                textColor: '#fff',
+                                backgroundColor: '#7f8c8d',
                                 allDay: true
                             };
                         }
@@ -249,31 +251,76 @@ var renderShiftCalendar = function(res) {
                             jam_keluar: val.new_shift_data.jam_keluar,
                             start: new Date(moment(val.transfer_date, 'YYYY-MM-DD').format('YYYY/MM/DD')),
                             transferable: 9, // <- transferred shift flag!
-                            backgroundColor: '#d26a5c',
-                            borderColor: '#d26a5c',
-                            textColor: '#fff',
+                            backgroundColor: '#a48ad4',
+                            borderColor: '#a48ad4',
                             allDay: true
                         };
                     })
                 }
-
-                // compiling results
-                for (var key in temp) {
-                    calendar_data.push(temp[key]);
-                }
             }
         });
+
+        // Attaching any ABSENCE DAY if there any
+        $.each(absence_data, function(key, val) {
+            // get the day span
+            var start_date = moment(val.leave_date).subtract(1, "days").format('YYYY-MM-DD');
+            var end_date = moment(start_date, 'YYYY-MM-DD').add(parseInt(val.leave_period) + 1, 'days');
+            var date_range = getDays(start_date, end_date);
+            // iterate each ABSENCE DAY
+            $.each(date_range, function(key, date) {
+                // if it's FREE DAY, go to the day after END_DATE
+                if (temp[moment(date).format('YYYY-MM-DD')].title == 'LIBUR') {
+                    var replacement_date = '';
+                    if (temp[moment(end_date).add(1, 'days').format('YYYY-MM-DD')].title == 'LIBUR') { // if END_DATE +1 id free day
+                        if (temp[moment(end_date).add(2, 'days').format('YYYY-MM-DD')].title == 'LIBUR') { // if END_DATE +2 id free day
+                            replacement_date = moment(end_date).add(2, 'days').format('YYYY-MM-DD'); // -1
+                        } else {
+                            replacement_date = moment(end_date).add(1, 'days').format('YYYY-MM-DD'); // -1
+                        }
+                    } else {
+                        replacement_date = moment(end_date).format('YYYY-MM-DD'); // -1
+                    }
+
+                    temp[replacement_date] = {
+                        id: val.id,
+                        absence: true,
+                        title: val.nama_absence,
+                        description: (val.jenis_absence == '0') ? 'CUTI' : (val.jenis_absence == '1') ? 'IJIN' : 'LAINNYA',
+                        start: new Date(replacement_date),
+                        backgroundColor: '#d26a5c',
+                        borderColor: '#d26a5c',
+                        allDay: true
+                    };
+                } else {
+                    temp[moment(date).format('YYYY-MM-DD')] = {
+                        id: val.id,
+                        absence: true,
+                        title: val.nama_absence,
+                        description: (val.jenis_absence == '0') ? 'CUTI' : (val.jenis_absence == '1') ? 'IJIN' : 'LAINNYA',
+                        start: new Date(moment(date).format('YYYY/MM/DD')),
+                        backgroundColor: '#d26a5c',
+                        borderColor: '#d26a5c',
+                        allDay: true
+                    };
+                }
+            });
+        })
+
+        // compiling FINAL RESULTS !!!
+        for (var key in temp) {
+            calendar_data.push(temp[key]);
+        }
     }
     // Show error
     else {
         $('#error-block').removeClass('hide-me');
         // Remove cached events
-        $('#shift-calendar').fullCalendar('removeEvents');
+        $('#absence-calendar').fullCalendar('removeEvents');
     }
 
-    $('#shift-calendar').fullCalendar('removeEvents');
-    $('#shift-calendar').fullCalendar('addEventSource', calendar_data);
-    $('#shift-calendar').fullCalendar('gotoDate', new Date());
+    $('#absence-calendar').fullCalendar('removeEvents');
+    $('#absence-calendar').fullCalendar('addEventSource', calendar_data);
+    $('#absence-calendar').fullCalendar('gotoDate', new Date());
 
     // reset selector (employee search) to initial state
     $('#employee-search').val(null).trigger('change.select2');

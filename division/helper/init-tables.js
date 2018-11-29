@@ -38,10 +38,10 @@ window.initTableKodeBagian = function() {
                 data: "kode",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
             {
@@ -65,19 +65,25 @@ window.initTableKodeBagian = function() {
                             var jenis_bagian = 'Grup';
                             break;
                     }
-                    return jenis_bagian;
+                    data = jenis_bagian;
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
             {
                 className: "text-center",
-                data: "nama_bagian"
+                data: "nama_bagian",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
             },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
@@ -141,19 +147,26 @@ window.initTableDivision = function() {
                 data: "nama",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
-            { className: "hidden-xs text-center", data: "child" },
+            {
+                className: "hidden-xs text-center",
+                data: "child",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
@@ -217,20 +230,34 @@ window.initTableDepartment = function() {
                 data: "nama",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
-            { className: "hidden-xs text-center", data: "child" },
-            { className: "hidden-xs", data: "parent_name" },
+            {
+                className: "hidden-xs text-center",
+                data: "child",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
+            {
+                className: "hidden-xs",
+                data: "parent_name",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
@@ -294,20 +321,34 @@ window.initTableSection = function() {
                 data: "nama",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
-            { className: "hidden-xs text-center", data: "child" },
-            { className: "hidden-xs", data: "parent_name" },
+            {
+                className: "hidden-xs text-center",
+                data: "child",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
+            {
+                className: "hidden-xs",
+                data: "parent_name",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
@@ -371,20 +412,34 @@ window.initTableSubSection = function() {
                 data: "nama",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
-            { className: "hidden-xs text-center", data: "child", },
-            { className: "hidden-xs", data: "parent_name" },
+            {
+                className: "hidden-xs text-center",
+                data: "child",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
+            {
+                className: "hidden-xs",
+                data: "parent_name",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
@@ -448,19 +503,26 @@ window.initTableGroup = function() {
                 data: "nama",
                 render: function(data, type, row) {
                     if (row.active == 0 && row.created == row.updated) {
-                        return data + '<span class="label label-success push-10-l">BARU</span>';
-                    } else {
-                        return data;
+                        data = '<span class="label label-info push-10-r">BARU</span>' + data;
                     }
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
                 }
             },
-            { className: "hidden-xs", data: "parent_name" },
+            {
+                className: "hidden-xs",
+                data: "parent_name",
+                render: function(data, type, row) {
+                    if (row.active == 0) return '<span class="text-gray">' + data + '</span>';
+                    return data;
+                }
+            },
             {
                 className: "hidden-xs text-center",
                 data: "active",
                 render: function(data, type, row) {
                     if (data == 1) return '<span class="label label-success text-uppercase">Aktif</span>';
-                    else return '<span class="label label-default text-uppercase">Non Aktif</span>';
+                    else return '<span class="label label-danger text-uppercase">Non Aktif</span>';
                 }
             },
             {
